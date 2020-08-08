@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <record id="journal_production" model="account.journal">
+            <field name="name">Production journal</field>
+            <field name="code">PTJ</field>
+            <field name="type">general</field>
+        </record>
+    </data>
+</odoo>

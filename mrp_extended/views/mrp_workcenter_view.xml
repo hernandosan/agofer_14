@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="view_mrp_workcenter_form" model="ir.ui.view">
+            <field name="name">view.mrp.workcenter.form</field>
+            <field name="model">mrp.workcenter</field>
+            <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='costing']" position="replace">
+                    <group string="Costing Information" name="costing">
+                        <field name="costs_hour" invisible="1"/>
+                        <field name="costs_hour_workcenter"/>
+                        <field name="costs_hour_line" invisible="True"/>
+                        <field name="account_id" domain="[('internal_type', '=', 'other')]"/>
+                    </group>
+                    <group string="Indirect costs" groups="account.group_account_invoice">
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="product_id" domain="[('type', '=', 'service')]" required="1"/>
+                                    <field name="account_id" domain="[('internal_type', '=', 'other')]" required="1"/>
+                                    <field name="costs_hour" sum="Total"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
