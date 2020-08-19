@@ -15,25 +15,40 @@ class SaleOrder(models.Model):
         return super(SaleOrder, self).action_confirm()
 
     def action_confirm_before(self):
-        self.sell_below_cost()
+        self.validate_subtotal_standard()
 
-    def sell_below_cost(self):
-        self.order_line.sell_below_cost()
+    def validate_subtotal_standard(self):
+        for sale in self:
+            msg_validate = sale._validate_subtotal_standard()
+            if msg_validate:
+                # if self.env.user.has_group('sales_team.group_sale_manager'):
+                #     user = self.env.user.login
+                #     order = sale.name
+                #     body = _("Sell below cost. user %s, order %s \n") % (user, order) + msg_validate
+                #     _logger.warning(body)
+                #     sale.message_post(body=body)
+                # else:
+                msg = _('You cannot sell below the cost of the product. \n') + msg_validate
+                raise ValidationError(msg)
+
+    def _validate_subtotal_standard(self):
+        self.ensure_one()
+        return self.order_line.msg_subtotal_standard()
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    def sell_below_cost(self):
+    def msg_subtotal_standard(self):
+        msg = ""
         for line in self:
-            price_subtotal = line.price_subtotal
+            price_subtotal = line.price_subtotal / line.product_uom_qty
             standard_price = line.product_id.sudo().standard_price
             if price_subtotal < standard_price:
-                # if self.env.user.has_group('sales_team.group_sale_manager'):
-                #     user = self.env.user.login
-                #     order = line.order_id.name
-                #     _logger.warning(_("Sell below cost. user %s, order %s") % (user, order))
-                # else:
-                dic = line.product_id.read()[0]
-                product = dic.get('display_name') or line.product_id.name
-                raise ValidationError(_("You cannot sell below the cost of the product. %s (%s)") % (product, standard_price))
+                msg += line._msg_subtotal_standard(price_subtotal, standard_price)
+        return msg
+
+    def _msg_subtotal_standard(self, subtotal, standard):
+        self.ensure_one()
+        product = self.product_id.sudo().display_name
+        return _("Product: %s, Subtotal: %s, Standard: %s \n") % (product, subtotal, standard)
