@@ -22,7 +22,7 @@
             <field name="model">stock.kardex</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <form string="Idea form">
+                <form string="Report Kardex">
                     <header>
                         <button string="Compute" type="object" name="action_compute" class="oe_highlight" />
                     </header>

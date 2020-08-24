@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-19 19:38+0000\n"
-"PO-Revision-Date: 2020-08-19 19:38+0000\n"
+"POT-Creation-Date: 2020-08-24 18:52+0000\n"
+"PO-Revision-Date: 2020-08-24 18:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,282 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__company_id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__company_id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__company_id
+msgid "Company"
+msgstr "Compañia"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_form
+msgid "Compute"
+msgstr "Calcular"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__create_uid
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__create_uid
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__create_date
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__create_date
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__date_from
+msgid "Date From"
+msgstr "Desde"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__date_to
+msgid "Date To"
+msgstr "Hasta"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__location_dest_id
+msgid "Destination Location"
+msgstr "Ubicación destino"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__display_name
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__display_name
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__datetime
+msgid "Historization Time"
+msgstr "Fecha"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__cost
+msgid "Historized Cost"
+msgstr "Costo"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__account_move_id
+msgid "Journal Entry"
+msgstr "Asiento Contable"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__kardex_id
+msgid "Kardex"
+msgstr "Kardex"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history____last_update
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex____last_update
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line____last_update
+msgid "Last Modified on"
+msgstr "Ultima modificación el"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__write_uid
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__write_uid
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__write_uid
+msgid "Last Updated by"
+msgstr "Ultima actualización por"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__write_date
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__write_date
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__write_date
+msgid "Last Updated on"
+msgstr "Ultima actualización el"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__kardex_ids
+msgid "Lines"
+msgstr "Lineas"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__location_id
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,help:stock_account_extended.field_stock_kardex_line__location_dest_id
+msgid "Location where the system will stock the finished products."
+msgstr "Ubicación donde el sistema almacenará los productos terminados."
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "My Reports"
+msgstr "Mis Reportes"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: stock_account_extended
+#: model:ir.model.fields.selection,name:stock_account_extended.selection__stock_kardex_line__kardex_type__none
+msgid "None"
+msgstr "Nada"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_form
+msgid "Operations"
+msgstr "Operaciones"
+
+#. module: stock_account_extended
+#: model:ir.model,name:stock_account_extended.model_product_product
+#: model:ir.model.fields,field_description:stock_account_extended.field_product_price_history__product_id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex__product_id
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__product_id
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "Product"
+msgstr "Producto"
+
+#. module: stock_account_extended
+#: model:ir.model,name:stock_account_extended.model_product_price_history
+msgid "Product price history"
+msgstr "Historial del precio promedio"
+
+#. module: stock_account_extended
+#: model:ir.model.fields.selection,name:stock_account_extended.selection__stock_kardex_line__kardex_type__in
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: stock_account_extended
+#: model:ir.model.fields.selection,name:stock_account_extended.selection__stock_kardex_line__kardex_type__in_returned
+msgid "Purchase Returned"
+msgstr "Devolución de compra"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__quantity
+#: model:ir.model.fields,help:stock_account_extended.field_stock_kardex_line__quantity
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__qty_end
+msgid "Quantity End"
+msgstr "Cantidad final"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__qty_init
+msgid "Quantity Init"
+msgstr "Cantidad inicial"
+
+#. module: stock_account_extended
+#: model:ir.actions.act_window,name:stock_account_extended.action_stock_kardex
+#: model:ir.ui.menu,name:stock_account_extended.menu_stock_kardex
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_form
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_tree
+msgid "Report Kardex"
+msgstr "Reporte Kardex"
+
+#. module: stock_account_extended
+#: model:ir.actions.act_window,name:stock_account_extended.action_stock_kardex_line
+msgid "Report Kardex Line"
+msgstr "Linea Reporte Kardex"
+
+#. module: stock_account_extended
+#: model:ir.model.fields.selection,name:stock_account_extended.selection__stock_kardex_line__kardex_type__out
+msgid "Sale"
+msgstr "Venta"
+
+#. module: stock_account_extended
+#: model:ir.model.fields.selection,name:stock_account_extended.selection__stock_kardex_line__kardex_type__out_returned
+msgid "Sale Returned"
+msgstr "Devolución de venta"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "Search Report Kardex"
+msgstr "Busqueda Reporte Kardex"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,help:stock_account_extended.field_stock_kardex_line__location_id
+msgid ""
+"Sets a location if you produce at a fixed location. This can be a partner "
+"location if you subcontract the manufacturing operations."
+msgstr ""
+"Establece una ubicación si produce en una ubicación fija. Esta puede ser una ubicación de socio "
+" si subcontrata las operaciones de fabricación."
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__location_id
+msgid "Source Location"
+msgstr "Ubicación Origen"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__standard_price
+msgid "Standard Price"
+msgstr "Precio promedio"
+
+#. module: stock_account_extended
+#: model:ir.model,name:stock_account_extended.model_stock_kardex
+msgid "Stock Kardex"
+msgstr "Kardex de inventario"
+
+#. module: stock_account_extended
+#: model:ir.model,name:stock_account_extended.model_stock_kardex_line
+msgid "Stock Kardex Line"
+msgstr "Lineas de kardex"
+
+#. module: stock_account_extended
 #: model:ir.model,name:stock_account_extended.model_stock_move
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__stock_move_id
 msgid "Stock Move"
 msgstr "Movimiento de Existencias"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_form
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_line_tree
+msgid "Stock Moves"
+msgstr "Movimientos de inventario"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__price_total
+msgid "Total Cost"
+msgstr "Costo Total"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__value_total
+msgid "Total Value"
+msgstr "Valor Total"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__kardex_type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: stock_account_extended
+#: model:ir.model.fields,field_description:stock_account_extended.field_stock_kardex_line__price_unit
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: stock_account_extended
+#: model_terms:ir.ui.view,arch_db:stock_account_extended.view_stock_kardex_search
+msgid "User"
+msgstr "Usuario"
