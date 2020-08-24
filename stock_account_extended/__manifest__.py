@@ -21,9 +21,9 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'security/ir.model.access.csv',
         'views/templates.xml',
+        'views/stock_kardex_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
