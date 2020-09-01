@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "WMS Accounting Agofer",
+    'name': "Purchase Agofer",
 
-    'summary': "Inventory, Logistic, Valuation, Accounting",
+    'summary': "Purchase orders, tenders and agreements",
 
-    'description': "Inventory, Logistic, Valuation, Accounting",
+    'description': "Purchase orders, tenders and agreements",
 
     'author': "Agofer S.A.",
     'contributors': ['Juan Pablo Arcos jparcos@agofer.com.co'],
@@ -13,17 +13,20 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Hidden',
+    'category': 'Operations/Purchase',
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock_account'],
+    'depends': ['purchase_stock'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
+        'views/purchase_import_view.xml',
+        'views/product_template_view.xml',
+        # 'views/stock_move_view.xml',
         'views/templates.xml',
-        'views/stock_kardex_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

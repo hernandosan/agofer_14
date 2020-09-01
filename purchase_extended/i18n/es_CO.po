@@ -1,0 +1,603 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* purchase_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-01 21:32+0000\n"
+"PO-Revision-Date: 2020-09-01 21:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_product_product_form
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_product_template_form
+msgid "15.01.10.00.00"
+msgstr "15.01.10.00.00"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "<span class=\"o_form_label\">Purchase Import </span>"
+msgstr "<span class=\"o_form_label\">Orden de importación </span>"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__access_warning
+msgid "Access warning"
+msgstr "Alerta de acceso"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Decoración de Actividad  de Excepción"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Assign Serial Numbers"
+msgstr "Asignar números de serie"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_attachment_count
+msgid "Attachment Count"
+msgstr "Conteo de archivos adjuntos"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__cancel
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__company_id
+msgid "Company"
+msgstr "Compañia"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_approve
+msgid "Confirmation Date"
+msgstr "Fecha de confirmación"
+
+#. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_purchase_import
+msgid "Create a import"
+msgstr "Crear una importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__access_url
+msgid "Customer Portal URL"
+msgstr "URL del portal de cliente"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Define your terms and conditions ..."
+msgstr "Defina sus términos y condiciones ..."
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Demand"
+msgstr "Demanda"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Description"
+msgstr "Descripción"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__done
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Done"
+msgstr "Hecho"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Empresas)"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Future Activities"
+msgstr "Actividades futuras"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__id
+msgid "ID"
+msgstr "ID"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_exception_icon
+msgid "Icon"
+msgstr "Icono"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icono para indicar una actividad de excepción."
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_needaction
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_unread
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_has_error
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
+
+#. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid "Immediate Transfer?"
+msgstr "Transferencia Inmediata?"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_id
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_order__import_id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking__import_id
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Import"
+msgstr "Importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_import
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Import Date"
+msgstr "Fecha de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__name
+msgid "Import Reference"
+msgstr "Referencia de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__progress
+msgid "In Progress"
+msgstr "En Progreso"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__incoterm_id
+msgid "Incoterm"
+msgstr "Incoterm"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Initial Demand"
+msgstr "Demanda Inicial"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__incoterm_id
+msgid ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
+msgstr ""
+"Los términos de comercio internacional son una serie de condiciones "
+"comerciales usadas en las transacciones internacionales."
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__moves_ids
+msgid "Invoices"
+msgstr "Facturas"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_account_move
+msgid "Journal Entries"
+msgstr "Asientos contables"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Late Activities"
+msgstr "Actividades tardías"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjuntos principales"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de Envío de Mensaje"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "My Imports"
+msgstr "Mis importaciones"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Name, TIN, Email, or Reference"
+msgstr "Nombre, NIT, Email o Referencia"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Siguiente plazo de actividad"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la siguiente actividad"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_type_id
+msgid "Next Activity Type"
+msgstr "Siguiente tipo de actividad"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_has_error_counter
+msgid "Number of errors"
+msgstr "Numero de errores"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de envío"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes no leidos"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Operations"
+msgstr "Operaciones"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__orders_ids
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Orders"
+msgstr "Ordenes"
+
+#. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid "Please add some items to move."
+msgstr "Por favor agregue algunos items para procesar movimiento."
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_international
+msgid "Port International Date"
+msgstr "Fecha en Puerto Internacional"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_national
+msgid "Port National Date"
+msgstr "Fecha en Puerto Nacional"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__access_url
+msgid "Portal Access URL"
+msgstr "URL de acceso al portal"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_product_template
+msgid "Product Template"
+msgstr "Plantilla del Producto"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Progress"
+msgstr "En Progreso"
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__purchase
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_tree
+msgid "Purchase Import"
+msgstr "Orden de Importación"
+
+#. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_purchase_import
+#: model:ir.ui.menu,name:purchase_extended.menu_purchase_import
+msgid "Purchase Imports"
+msgstr "Ordenes de Importación"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_purchase_order
+msgid "Purchase Order"
+msgstr "Orden de Compra"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Purchase Representative"
+msgstr ""
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_purchase_import
+msgid "Purchase import"
+msgstr "Orden de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__partner_ref
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_tree
+msgid "Reference"
+msgstr "Referencia
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Register lots, packs, location"
+msgstr "Registrar lotes, paquetes, ubicación"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Reserved"
+msgstr "Reservado"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error de entrega del SMS"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Search Purchase Import"
+msgstr "Buscar orden de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__access_token
+msgid "Security Token"
+msgstr "Token de seguridad"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Show all records which has next action date is before today"
+msgstr "Mostrar todos los registros que tienen la próxima fecha de acción antes de hoy"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__origin
+msgid "Source Document"
+msgstr "Documento Origen"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estado basado en actividades\n"
+"Vencida: la fecha tope ya ha pasado\n"
+"Hoy: La fecha tope es hoy\n"
+"Planificada: futuras actividades."
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_stock
+msgid "Stock Date"
+msgstr "Fecha en Almacen"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Existencias"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__move_lines
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Stock Moves"
+msgstr "Movimientos de existencias"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__move_lines_done
+msgid "Stock Moves Done"
+msgstr "Movimientos de existencias terminados"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__picking_ids
+msgid "Stock Pickings"
+msgstr "Albaráne"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_product_product__tariff_code
+#: model:ir.model.fields,field_description:purchase_extended.field_product_template__tariff_code
+msgid "Tariff Reference"
+msgstr "Referencia Arancelaria"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__notes
+msgid "Terms and Conditions"
+msgstr "Terminos y condiciones"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Today Activities"
+msgstr "Actividades de Hoy"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__partner_id
+msgid "Trading"
+msgstr "Trading"
+
+#. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Tipo de actividad de excepción registrada."
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Unit of Measure"
+msgstr "Unidad de medida"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes sin leer"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes sin leer"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Validate"
+msgstr "Validar"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Vendor"
+msgstr "Trading"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+msgid "Warnings"
+msgstr "Avisos"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: purchase_extended
+#: model:ir.model.fields,help:purchase_extended.field_purchase_import__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicaciones del sitio web"
+
+#. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid ""
+"You cannot validate a transfer if no quantites are reserved nor done. To "
+"force the transfer, switch in edit more and encode the done quantities."
+msgstr ""
+"No puede validar una transferencia si no hay cantidades reservadas ni "
+"realizadas. Para forzar la transferencia, edite y coloque las cantidades "
+"hechas."
+
+#. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid "You need to supply a Lot/Serial number for product %s."
+msgstr "Debe proporcionar un lote/número de serie para %s."
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__draft
+msgid "draft"
+msgstr "Borrador"

@@ -1,0 +1,245 @@
+<odoo>
+    <data>
+
+        <record id="view_purchase_import_tree" model="ir.ui.view">
+            <field name="name">view.purchase.import.tree</field>
+            <field name="model">purchase.import</field>
+            <field name="arch" type="xml">
+                <tree decoration-bf="message_unread==True" decoration-muted="state=='cancel'" decoration-info="state in ('wait','confirmed')" string="Purchase Import" class="o_purchase_order">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="partner_ref" optional="hide"/>
+                    <field name="name" string="Reference" readonly="1"/>
+                    <field name="date_import" optional="show"/>
+                    <field name="date_approve" optional="show"/>
+                    <field name="partner_id"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" optional="show"/>
+                    <field name="user_id" optional="show"/>
+                    <field name="origin" optional="show"/>
+                    <!--<field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary" optional="hide"/>
+                    <field name="amount_total" sum="Total amount" widget="monetary" optional="show"/>-->
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state" invisible="0"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_purchase_import_search" model="ir.ui.view">
+            <field name="name">view.purchase.import.search</field>
+            <field name="model">purchase.import</field>
+            <field name="arch" type="xml">
+                <search string="Search Purchase Import">
+                    <field name="name" string="Import"
+                        filter_domain="['|', '|', ('name', 'ilike', self), ('partner_ref', 'ilike', self), ('partner_id', 'child_of', self)]"/>
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <filter name="my_imports" string="My Imports" domain="[('user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter name="import_date" string="Import Date" date="date_import"/>
+                    <separator/>
+                    <filter invisible="1" string="Late Activities" name="activities_overdue"
+                        domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                        help="Show all records which has next action date is before today"/>
+                    <filter invisible="1" string="Today Activities" name="activities_today"
+                        domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="Warnings" name="activities_exception"
+                        domain="[('activity_exception_decoration', '!=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Vendor" name="vendor" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Purchase Representative" name="representative" domain="[]" context="{'group_by': 'user_id'}"/>
+                        <filter string="Import Date" name="import_date" domain="[]" context="{'group_by': 'date_import'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_purchase_import_form" model="ir.ui.view">
+            <field name="name">view.purchase.import.form</field>
+            <field name="model">purchase.import</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Import" class="o_purchase_order">
+                    <header>
+                        <button string="Confirm" type="object" name="action_purchase" states="draft" class="oe_highlight" />
+                        <button string="Progress" type="object" name="action_progress" states="purchase" class="oe_highlight"/>
+                        <button string="Validate" type="object" name="button_validate" states="progress" class="oe_highlight"/>
+                        <!--<button string="Done" type="object" name="action_validate" states="progress" class="oe_highlight"/>-->
+                        <button string="Cancel" type="object" name="action_cancel" states="draft,purchase,progress" />
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+                        <div class="oe_title">
+                            <span class="o_form_label" >Purchase Import </span>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                                    placeholder="Name, TIN, Email, or Reference"
+                                />
+                                <field name="partner_ref"/>
+                                <field name="incoterm_id" required="True"/>
+                                <field name="currency_id" groups="base.group_multi_currency" force_save="1"/>
+                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="origin" attrs="{'invisible': [('origin','=',False)]}"/>
+                                <field name="date_import" attrs="{'invisible': [('state','=','purchase')]}"/>
+                                <field name="date_approve" attrs="{'invisible': [('state','!=','purchase')]}"/>
+                                <field name="date_international" />
+                                <field name="date_national" />
+                                <field name="date_stock" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Orders">
+                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done')]"/>
+                                <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
+                                <div class="oe_clear"/>
+                            </page>
+                            <page string="Operations" states="progress,done">
+                                <!-- <field name="move_lines" mode="tree,kanban" attrs="{'readonly': [('state', '!=', 'progress')]}"
+                                    context="{'form_view_ref':'purchase_extended.view_purchase_import_form', 'tree_view_ref': 'purchase_extended.view_stock_move_tree'}"/> -->
+                                <field name="move_lines" mode="tree,kanban" attrs="{'readonly': [('state', '!=', 'progress')], 'invisible': [('state', '=', 'done')]}">
+                                    <tree string="Stock Moves" editable="bottom" decoration-danger="state != 'done' and quantity_done &gt; reserved_availability and show_reserved_availability" decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="name" invisible="1"/>
+                                        <field name="state" invisible="1" readonly="0"/>
+                                        <field name="origin" optional="show" readonly="1"/>
+                                        <field name="picking_type_id" invisible="1"/>
+                                        <field name="location_id" invisible="1"/>
+                                        <field name="location_dest_id" invisible="1"/>
+                                        <field name="scrapped" invisible="1"/>
+                                        <field name="picking_code" invisible="1"/>
+                                        <field name="product_type" invisible="1"/>
+                                        <field name="show_details_visible" invisible="1"/>
+                                        <field name="show_reserved_availability" invisible="1"/>
+                                        <field name="show_operations" invisible="1" readonly="1"/>
+                                        <field name="additional" invisible="1"/>
+                                        <field name="has_move_lines" invisible="1"/>
+                                        <field name="is_locked" invisible="1"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="has_tracking" invisible="1"/>
+                                        <field name="display_assign_serial" invisible="1"/>
+                                        <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                                        <field name="description_picking" string="Description" optional="hide"/>
+                                        <field name="date_expected" optional="hide" domain="{'readonly': [('show_operations', '=', True), ('is_locked', '=', True)]}"/>
+                                        <field name="is_initial_demand_editable" invisible="1"/>
+                                        <field name="is_quantity_done_editable" invisible="1"/>
+                                        <field name="product_uom_qty" string="Demand" attrs="{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}"/>
+                                        <field name="reserved_availability" string="Reserved" invisible="1"/>
+                                        <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                                        <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                        <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list" width="0.1" attrs="{'invisible': [('show_details_visible', '=', False)]}" options="{&quot;warn&quot;: true}"/>
+                                        <button name="action_assign_serial" type="object" icon="fa-plus-square" width="0.1" role="img" title="Assign Serial Numbers" attrs="{'invisible': ['|', ('display_assign_serial', '=', False), ('show_operations', '=', False)]}"/>
+                                    </tree>
+                                    <form string="Stock Moves">
+                                        <header>
+                                            <field name="state" widget="statusbar"/>
+                                        </header>
+                                        <group>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field name="additional" invisible="1"/>
+                                            <field name="has_move_lines" invisible="1"/>
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                                            <field name="is_initial_demand_editable" invisible="1"/>
+                                            <field name="is_quantity_done_editable" invisible="1"/>
+                                            <field name="product_uom_qty" string="Initial Demand" attrs="{'readonly': [('is_initial_demand_editable', '=', False)]}"/>
+                                            <field name="reserved_availability" string="Reserved" attrs="{'invisible': ([('state','=', 'done')])}"/>
+                                            <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                                            <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                            <field name="description_picking" string="Description"/>
+                                        </group>
+                                    </form>
+                                </field>
+                                <!-- Moves done -->
+                                <field name="move_lines_done" mode="tree,kanban" readonly="1" attrs="{'invisible': [('state', '!=', 'done')]}">
+                                    <tree string="Stock Moves" editable="bottom" decoration-danger="state != 'done' and quantity_done &gt; reserved_availability and show_reserved_availability" decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="name" invisible="1"/>
+                                        <field name="state" invisible="1" readonly="0"/>
+                                        <field name="origin" optional="show" readonly="1"/>
+                                        <field name="picking_type_id" invisible="1"/>
+                                        <field name="location_id" invisible="1"/>
+                                        <field name="location_dest_id" invisible="1"/>
+                                        <field name="scrapped" invisible="1"/>
+                                        <field name="picking_code" invisible="1"/>
+                                        <field name="product_type" invisible="1"/>
+                                        <field name="show_details_visible" invisible="1"/>
+                                        <field name="show_reserved_availability" invisible="1"/>
+                                        <field name="show_operations" invisible="1" readonly="1"/>
+                                        <field name="additional" invisible="1"/>
+                                        <field name="has_move_lines" invisible="1"/>
+                                        <field name="is_locked" invisible="1"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="has_tracking" invisible="1"/>
+                                        <field name="display_assign_serial" invisible="1"/>
+                                        <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                                        <field name="description_picking" string="Description" optional="hide"/>
+                                        <field name="date_expected" optional="hide" domain="{'readonly': [('show_operations', '=', True), ('is_locked', '=', True)]}"/>
+                                        <field name="is_initial_demand_editable" invisible="1"/>
+                                        <field name="is_quantity_done_editable" invisible="1"/>
+                                        <field name="product_uom_qty" string="Demand" attrs="{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}"/>
+                                        <field name="reserved_availability" string="Reserved" invisible="1"/>
+                                        <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                                        <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                        <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list" width="0.1" attrs="{'invisible': [('show_details_visible', '=', False)]}" options="{&quot;warn&quot;: true}"/>
+                                        <button name="action_assign_serial" type="object" icon="fa-plus-square" width="0.1" role="img" title="Assign Serial Numbers" attrs="{'invisible': ['|', ('display_assign_serial', '=', False), ('show_operations', '=', False)]}"/>
+                                    </tree>
+                                    <form string="Stock Moves">
+                                        <header>
+                                            <field name="state" widget="statusbar"/>
+                                        </header>
+                                        <group>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field name="additional" invisible="1"/>
+                                            <field name="has_move_lines" invisible="1"/>
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                                            <field name="is_initial_demand_editable" invisible="1"/>
+                                            <field name="is_quantity_done_editable" invisible="1"/>
+                                            <field name="product_uom_qty" string="Initial Demand" attrs="{'readonly': [('is_initial_demand_editable', '=', False)]}"/>
+                                            <field name="reserved_availability" string="Reserved" attrs="{'invisible': ([('state','=', 'done')])}"/>
+                                            <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                                            <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                            <field name="description_picking" string="Description"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_purchase_import" model="ir.actions.act_window">
+            <field name="name">Purchase Imports</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.import</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_purchase_import_tree"/>
+            <field name="search_view_id" ref="view_purchase_import_search"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a import
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="action_purchase_import" id="menu_purchase_import" parent="purchase.menu_procurement_management" sequence="20"/>
+
+    </data>
+</odoo>

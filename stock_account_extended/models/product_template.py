@@ -32,7 +32,7 @@ class ProductProduct(models.Model):
     def product_price_history(self, value):
         for product in self:
             self.env['product.price.history'].create({
-                'product_template_id': product.id,
+                'product_id': product.id,
                 'cost': value
             })
 
