@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_move_tree" model="ir.ui.view">
+            <field name="name">view.stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Moves" editable="bottom" decoration-danger="state != 'done' and quantity_done &gt; reserved_availability and show_reserved_availability" decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)">
+                    <field name="company_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="state" invisible="1" readonly="0"/>
+                    <field name="picking_type_id" invisible="1"/>
+                    <field name="location_id" invisible="1"/>
+                    <field name="location_dest_id" invisible="1"/>
+                    <field name="scrapped" invisible="1"/>
+                    <field name="picking_code" invisible="1"/>
+                    <field name="product_type" invisible="1"/>
+                    <field name="show_details_visible" invisible="1"/>
+                    <field name="show_reserved_availability" invisible="1"/>
+                    <field name="show_operations" invisible="1" readonly="1"/>
+                    <field name="additional" invisible="1"/>
+                    <field name="has_move_lines" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="product_uom_category_id" invisible="1"/>
+                    <field name="has_tracking" invisible="1"/>
+                    <field name="display_assign_serial" invisible="1"/>
+                    <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                    <field name="description_picking" string="Description" optional="hide"/>
+                    <field name="date_expected" optional="hide" domain="{'readonly': [('show_operations', '=', True), ('is_locked', '=', True)]}"/>
+                    <field name="is_initial_demand_editable" invisible="1"/>
+                    <field name="is_quantity_done_editable" invisible="1"/>
+                    <field name="product_uom_qty" string="Demand" attrs="{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}"/>
+                    <field name="reserved_availability" string="Reserved" invisible="1"/>
+                    <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                    <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                    <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list" width="0.1" attrs="{'invisible': [('show_details_visible', '=', False)]}" options="{&quot;warn&quot;: true}"/>
+                    <button name="action_assign_serial" type="object" icon="fa-plus-square" width="0.1" role="img" title="Assign Serial Numbers" attrs="{'invisible': ['|', ('display_assign_serial', '=', False), ('show_operations', '=', False)]}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_stock_move_form" model="ir.ui.view">
+            <field name="name">view.stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <form string="Stock Moves">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <field name="product_uom_category_id" invisible="1"/>
+                        <field name="additional" invisible="1"/>
+                        <field name="has_move_lines" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
+                        <field name="is_initial_demand_editable" invisible="1"/>
+                        <field name="is_quantity_done_editable" invisible="1"/>
+                        <field name="product_uom_qty" string="Initial Demand" attrs="{'readonly': [('is_initial_demand_editable', '=', False)]}"/>
+                        <field name="reserved_availability" string="Reserved" attrs="{'invisible': ([('state','=', 'done')])}"/>
+                        <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                        <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                        <field name="description_picking" string="Description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
