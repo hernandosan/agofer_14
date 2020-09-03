@@ -62,7 +62,7 @@ class PurchaseImport(models.Model):
             purchase.move_lines_done = purchase.move_lines.filtered(lambda m: m.state == 'done')
 
     def action_purchase(self):
-        self.write({'state': 'purchase', 'date_approve': fields.Date.today()})
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
     
     def action_progress(self):
         self._action_progress()
@@ -74,20 +74,23 @@ class PurchaseImport(models.Model):
             move_lines = picking_ids.move_lines.filtered(lambda m: m.state == 'assigned')
             picking_ids.write({'import_id': purchase.id})
             move_lines.write({'import_id': purchase.id})
-    
+
+    def action_purchase_order(self):
+        self.orders_ids.action_purchase_import()
+
     def action_validate(self):
+        self.action_purchase_order()
         self.write({'state': 'done'})
-        # self.button_validate()
+        self.moves_ids.write({'import_bool': True})
     
     def action_cancel(self):
         self.write({'state': 'cancel'})
     
     def button_validate(self):
         self.ensure_one()
-        self.write({'state': 'done'})
         if not self.move_lines:
             raise UserError(_('Please add some items to move.'))
-        
+
         precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in self.picking_ids.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
         no_reserved_quantities = all(float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in self.picking_ids.move_line_ids)
@@ -107,9 +110,16 @@ class PurchaseImport(models.Model):
                         if not line.lot_name and not line.lot_id:
                             raise UserError(_('You need to supply a Lot/Serial number for product %s.') % product.display_name)
 
+        option = 'demand' if no_quantities_done else 'backorder'
+        self._assign_percent(option)
+
         if no_quantities_done:
             view = self.env.ref('stock.view_immediate_transfer')
-            wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(6, 0, self.picking_ids.ids)]})
+            vals = {
+                'pick_ids': [(6, 0, self.picking_ids.ids)],
+                'import_id': self.id
+            }
+            wiz = self.env['stock.immediate.transfer'].create(vals)
             return {
                 'name': _('Immediate Transfer?'),
                 'type': 'ir.actions.act_window',
@@ -122,20 +132,6 @@ class PurchaseImport(models.Model):
                 'context': self.env.context,
             }
 
-        # if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
-        #     view = self.env.ref('stock.view_overprocessed_transfer')
-        #     wiz = self.env['stock.overprocessed.transfer'].create({'picking_id': self.id})
-        #     return {
-        #         'type': 'ir.actions.act_window',
-        #         'view_mode': 'form',
-        #         'res_model': 'stock.overprocessed.transfer',
-        #         'views': [(view.id, 'form')],
-        #         'view_id': view.id,
-        #         'target': 'new',
-        #         'res_id': wiz.id,
-        #         'context': self.env.context,
-        #     }
-
         # Check backorder should check for other barcodes
         picking_ids = self.picking_ids
         backorder = False
@@ -146,3 +142,16 @@ class PurchaseImport(models.Model):
         for picking in picking_ids:
             picking.action_done()
         return
+
+    def _compute_amount_total(self):
+        self.ensure_one()
+        amount_total = abs(sum(move.amount_total_signed for move in self.moves_ids))
+        return amount_total
+
+    def _assign_percent(self, option):
+        self.ensure_one()
+        moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
+        total = sum(move.price_unit * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        for move in moves:
+            percentage = (move.price_unit * (move.product_uom_qty if option == 'demand' else move.quantity_done)) / total
+            move.write({'import_percentage': percentage})

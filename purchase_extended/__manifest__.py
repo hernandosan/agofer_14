@@ -24,8 +24,10 @@
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
         'views/purchase_import_view.xml',
+        'views/purchase_order_view.xml',
         'views/product_template_view.xml',
         # 'views/stock_move_view.xml',
+        'views/account_move_view.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

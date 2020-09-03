@@ -47,8 +47,8 @@
                     <filter string="Warnings" name="activities_exception"
                         domain="[('activity_exception_decoration', '!=', False)]"/>
                     <group expand="0" string="Group By">
-                        <filter string="Vendor" name="vendor" domain="[]" context="{'group_by': 'partner_id'}"/>
-                        <filter string="Purchase Representative" name="representative" domain="[]" context="{'group_by': 'user_id'}"/>
+                        <filter string="Trading" name="trading" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="User" name="user" domain="[]" context="{'group_by': 'user_id'}"/>
                         <filter string="Import Date" name="import_date" domain="[]" context="{'group_by': 'date_import'}"/>
                     </group>
                 </search>
@@ -62,7 +62,7 @@
                 <form string="Purchase Import" class="o_purchase_order">
                     <header>
                         <button string="Confirm" type="object" name="action_purchase" states="draft" class="oe_highlight" />
-                        <button string="Progress" type="object" name="action_progress" states="purchase" class="oe_highlight"/>
+                        <button string="In Progress" type="object" name="action_progress" states="purchase" class="oe_highlight"/>
                         <button string="Validate" type="object" name="button_validate" states="progress" class="oe_highlight"/>
                         <!--<button string="Done" type="object" name="action_validate" states="progress" class="oe_highlight"/>-->
                         <button string="Cancel" type="object" name="action_cancel" states="draft,purchase,progress" />
@@ -72,7 +72,7 @@
                         <div class="oe_button_box" name="button_box">
                         </div>
                         <div class="oe_title">
-                            <span class="o_form_label" >Purchase Import </span>
+                            <span class="o_form_label"> Purchase Import </span>
                             <h1>
                                 <field name="name" readonly="1"/>
                             </h1>
@@ -98,7 +98,7 @@
                         </group>
                         <notebook>
                             <page string="Orders">
-                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done')]"/>
+                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done'),('import_bool', '=', True)]"/>
                                 <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
                                 <div class="oe_clear"/>
                             </page>
@@ -212,6 +212,9 @@
                                         </group>
                                     </form>
                                 </field>
+                            </page>
+                            <page string="Invoices" states="progress,done">
+                                <field name="moves_ids" attrs="{'readonly': [('state','!=','progress')]}" domain="[('type', '=', 'in_invoice'),('state', '!=', 'cancel'),('import_bool', '=', False)]"/>
                             </page>
                         </notebook>
                     </sheet>
