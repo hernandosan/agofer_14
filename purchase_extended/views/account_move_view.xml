@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+
+        <record id="view_account_move_form" model="ir.ui.view">
+            <field name="name">view.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_info']/group[1]" position="inside">
+                    <group string="Import" attrs="{'invisible': [('type', '!=', 'in_invoice')]}">
+                        <field name="import_type" attrs="{'readonly': ['|',('state', '=', 'cancel'),('import_bool','=',True)]}"/>
+                        <field name="import_id" domain="[('state','=','progress')]" attrs="{'readonly': ['|',('state', '=', 'cancel'),('import_bool','=',True)]}"/>
+                        <field name="imports_ids" invisible="1"/>
+                        <field name="import_bool" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

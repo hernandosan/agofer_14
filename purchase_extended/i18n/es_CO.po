@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 21:32+0000\n"
-"PO-Revision-Date: 2020-09-01 21:32+0000\n"
+"POT-Creation-Date: 2020-09-03 16:27+0000\n"
+"PO-Revision-Date: 2020-09-03 16:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,8 @@ msgstr "15.01.10.00.00"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
-msgid "<span class=\"o_form_label\">Purchase Import </span>"
-msgstr "<span class=\"o_form_label\">Orden de importación </span>"
+msgid "<span class=\"o_form_label\"> Purchase Import </span>"
+msgstr "<span class=\"o_form_label\"> Orden de importación </span>"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__access_warning
@@ -62,6 +62,11 @@ msgid "Attachment Count"
 msgstr "Conteo de archivos adjuntos"
 
 #. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_backorder_confirmation
+msgid "Backorder Confirmation"
+msgstr "Confirmación de Entrega Pendiente"
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -85,6 +90,11 @@ msgstr "Confirmar"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_approve
 msgid "Confirmation Date"
 msgstr "Fecha de confirmación"
+
+#. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__account_move__import_type__cost
+msgid "Cost"
+msgstr "Costo"
 
 #. module: purchase_extended
 #: model_terms:ir.actions.act_window,help:purchase_extended.action_purchase_import
@@ -153,6 +163,11 @@ msgid "Followers (Partners)"
 msgstr "Seguidores (Empresas)"
 
 #. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__account_move__import_type__freight
+msgid "Freight"
+msgstr "Flete"
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Future Activities"
 msgstr "Actividades futuras"
@@ -190,6 +205,11 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_immediate_transfer
+msgid "Immediate Transfer"
+msgstr "Transferencia Inmediata"
+
+#. module: purchase_extended
 #: code:addons/purchase_extended/models/purchase_import.py:0
 #, python-format
 msgid "Immediate Transfer?"
@@ -197,12 +217,20 @@ msgstr "Transferencia Inmediata?"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_id
-#: model:ir.model.fields,field_description:purchase_extended.field_purchase_order__import_id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_immediate_transfer__import_id
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_id
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_picking__import_id
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_account_move_form
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_order_form
 msgid "Import"
 msgstr "Importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_bool
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_order__import_bool
+msgid "Import Bool"
+msgstr "Boleano de Importación"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__date_import
@@ -211,12 +239,30 @@ msgid "Import Date"
 msgstr "Fecha de importación"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_percentage
+msgid "Import Percentage"
+msgstr "Porcentaje de importación"
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__name
 msgid "Import Reference"
 msgstr "Referencia de importación"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_type
+msgid "Import type"
+msgstr "Tipo de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_account_move__imports_ids
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_order__imports_ids
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_backorder_confirmation__imports_ids
+msgid "Imports"
+msgstr "Importaciones"
+
+#. module: purchase_extended
 #: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__progress
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "In Progress"
 msgstr "En Progreso"
 
@@ -231,6 +277,11 @@ msgid "Initial Demand"
 msgstr "Demanda Inicial"
 
 #. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__account_move__import_type__insurance
+msgid "Insurance"
+msgstr "Seguro"
+
+#. module: purchase_extended
 #: model:ir.model.fields,help:purchase_extended.field_purchase_import__incoterm_id
 msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
@@ -241,6 +292,7 @@ msgstr ""
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__moves_ids
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Invoices"
 msgstr "Facturas"
 
@@ -351,6 +403,11 @@ msgid "Orders"
 msgstr "Ordenes"
 
 #. module: purchase_extended
+#: model:ir.model.fields.selection,name:purchase_extended.selection__account_move__import_type__other
+msgid "Other"
+msgstr "Otro"
+
+#. module: purchase_extended
 #: code:addons/purchase_extended/models/purchase_import.py:0
 #, python-format
 msgid "Please add some items to move."
@@ -382,11 +439,6 @@ msgid "Product Template"
 msgstr "Plantilla del Producto"
 
 #. module: purchase_extended
-#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
-msgid "Progress"
-msgstr "En Progreso"
-
-#. module: purchase_extended
 #: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__purchase
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_tree
@@ -405,11 +457,6 @@ msgid "Purchase Order"
 msgstr "Orden de Compra"
 
 #. module: purchase_extended
-#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
-msgid "Purchase Representative"
-msgstr ""
-
-#. module: purchase_extended
 #: model:ir.model,name:purchase_extended.model_purchase_import
 msgid "Purchase import"
 msgstr "Orden de importación"
@@ -418,7 +465,7 @@ msgstr "Orden de importación"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__partner_ref
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_tree
 msgid "Reference"
-msgstr "Referencia
+msgstr "Referencia"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
@@ -453,7 +500,9 @@ msgstr "Token de seguridad"
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Show all records which has next action date is before today"
-msgstr "Mostrar todos los registros que tienen la próxima fecha de acción antes de hoy"
+msgstr ""
+"Mostrar todos los registros que tienen la próxima fecha de acción antes de "
+"hoy"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__origin
@@ -522,6 +571,7 @@ msgstr "Actividades de Hoy"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__partner_id
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Trading"
 msgstr "Trading"
 
@@ -552,6 +602,7 @@ msgstr "Contador de mensajes sin leer"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__user_id
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "User"
 msgstr "Usuario"
 
@@ -559,11 +610,6 @@ msgstr "Usuario"
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Validate"
 msgstr "Validar"
-
-#. module: purchase_extended
-#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
-msgid "Vendor"
-msgstr "Trading"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
