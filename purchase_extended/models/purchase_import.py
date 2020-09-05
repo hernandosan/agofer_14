@@ -46,7 +46,8 @@ class PurchaseImport(models.Model):
     # Moves
     picking_ids = fields.One2many('stock.picking', 'import_id', 'Stock Pickings', copy=False)
     move_lines = fields.One2many('stock.move', 'import_id', 'Stock Moves', copy=False)
-    move_lines_done = fields.Many2many('stock.move', 'move_import_rel', 'import_id', 'move_id', 'Stock Moves Done', compute='_compute_move_lines_done')
+    move_lines_done = fields.One2many('stock.move', 'import_done_id', 'Stock Moves Done', copy=False)
+    moves_lines = fields.Many2many('stock.move', 'move_import_rel', 'import_id', 'move_id', 'Stocks Moves', compute='_compute_move_lines_done')
 
     @api.model
     def create(self, vals):
@@ -59,15 +60,15 @@ class PurchaseImport(models.Model):
 
     def _compute_move_lines_done(self):
         for purchase in self:
-            purchase.move_lines_done = purchase.move_lines.filtered(lambda m: m.state == 'done')
+            purchase.moves_lines = purchase.move_lines_done.filtered(lambda m: m.state == 'done')
 
     def action_purchase(self):
         self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
-    
+
     def action_progress(self):
         self._action_progress()
         self.write({'state': 'progress'})
-    
+
     def _action_progress(self):
         for purchase in self:
             picking_ids = purchase.orders_ids.picking_ids.filtered(lambda p: p.state == 'assigned')
@@ -78,14 +79,21 @@ class PurchaseImport(models.Model):
     def action_purchase_order(self):
         self.orders_ids.action_purchase_import()
 
+    def action_stock_move(self):
+        for purchase in self:
+            purchase.move_lines.write({'import_done_id': purchase.id})
+
     def action_validate(self):
         self.action_purchase_order()
-        self.write({'state': 'done'})
+        self.action_stock_move()
         self.moves_ids.write({'import_bool': True})
-    
+        self.picking_ids.write({'import_id': False})
+        self.move_lines.write({'import_id': False})
+        self.write({'state': 'done'})
+
     def action_cancel(self):
         self.write({'state': 'cancel'})
-    
+
     def button_validate(self):
         self.ensure_one()
         if not self.move_lines:

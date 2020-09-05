@@ -18,6 +18,7 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
 
     import_id = fields.Many2one('purchase.import', 'Import', copy=False)
+    import_done_id = fields.Many2one('purchase.import', 'Import Done', copy=False)
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
 
     def _action_done(self, cancel_backorder=False):

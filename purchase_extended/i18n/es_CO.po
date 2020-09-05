@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-03 16:27+0000\n"
-"PO-Revision-Date: 2020-09-03 16:27+0000\n"
+"POT-Creation-Date: 2020-09-05 15:36+0000\n"
+"PO-Revision-Date: 2020-09-05 15:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -237,6 +237,11 @@ msgstr "Boleano de Importación"
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Import Date"
 msgstr "Fecha de importación"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_done_id
+msgid "Import Done"
+msgstr "Importación finalizada"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_percentage
@@ -552,6 +557,11 @@ msgstr "Movimientos de existencias terminados"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__picking_ids
 msgid "Stock Pickings"
 msgstr "Albaráne"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__moves_lines
+msgid "Stocks Moves"
+msgstr "Movimientos de existencias"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_product_product__tariff_code

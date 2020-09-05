@@ -19,4 +19,4 @@ class AccountMove(models.Model):
     def _set_import_id(self):
         for move in self:
             if move.import_id:
-                move.write({'imports_ids': [(6, 0, [move.import_id.id])]}) 
+                move.write({'imports_ids': [(6, 0, [move.import_id.id])]})
