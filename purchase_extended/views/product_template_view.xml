@@ -3,15 +3,25 @@
         <record id="view_product_template_form" model="ir.ui.view">
             <field name="name">view.product.template.form</field>
             <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='default_code']" position="after">
-                    <field name="tariff_code" placeholder="15.01.10.00.00" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <group string="Import">
+                        <field name="tariff_code" placeholder="15.01.10.00.00" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+                        <field name="tariff_ids" attrs="{'invisible': [('product_variant_count', '>', 1)]}">
+                            <tree string="Tariff" editable="bottom" >
+                                <field name="template_id" invisible="1" />
+                                <field name="country_id" required="1" options="{'no_open': True, 'no_create': True}" />
+                                <field name="tax_id" required="1" domain="[('type_tax_use','=','purchase')]" 
+                                    options="{'no_open': True, 'no_create': True}"  />
+                            </tree>
+                        </field>
+                    </group>
                 </xpath>
             </field>
         </record>
 
-        <record id="view_product_product_form" model="ir.ui.view">
+        <!--<record id="view_product_product_form" model="ir.ui.view">
             <field name="name">view.product.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
@@ -20,6 +30,6 @@
                     <field name="tariff_code" placeholder="15.01.10.00.00"/>
                 </xpath>
             </field>
-        </record>
+        </record>-->
     </data>
 </odoo>

@@ -20,6 +20,7 @@ class StockMove(models.Model):
     import_id = fields.Many2one('purchase.import', 'Import', copy=False)
     import_done_id = fields.Many2one('purchase.import', 'Import Done', copy=False)
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
+    import_line_id = fields.Many2one('purchase.import.line', 'Import Line', copy=False)
 
     def _action_done(self, cancel_backorder=False):
         # Init a dict that will group the moves by valuation type, according to `move._is_valued_type`.
@@ -38,7 +39,7 @@ class StockMove(models.Model):
         moves = self.filtered(lambda m: m._is_in() and m.import_id)
         imports_ids = moves.import_id
         for purchase in imports_ids:
-            amount_total = purchase._compute_amount_total()
+            amount_total = purchase._compute_amount_total('vat')
             for move in moves.filtered(lambda m: m.import_id.id == purchase.id):
                 cost = move.import_percentage * amount_total
                 price_unit = move.price_unit + cost
