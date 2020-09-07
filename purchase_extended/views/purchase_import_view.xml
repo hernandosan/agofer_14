@@ -15,8 +15,8 @@
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" optional="show"/>
                     <field name="user_id" optional="show"/>
                     <field name="origin" optional="show"/>
-                    <!--<field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary" optional="hide"/>
-                    <field name="amount_total" sum="Total amount" widget="monetary" optional="show"/>-->
+                    <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary" optional="hide"/>
+                    <field name="amount_total" sum="Total amount" widget="monetary" optional="show"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="state" invisible="0"/>
                 </tree>
@@ -97,10 +97,81 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Orders">
-                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done'),('import_bool', '=', True)]"/>
+                            <page string="Products" states="done">
+                                <field name="import_line" widget="section_and_note_one2many" readonly="1">
+                                    <tree string="Purchase Import Lines">
+                                        <field name="display_type" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="product_type" invisible="1"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="product_id" />
+                                        <field name="name" invisible="1"/>
+                                        <field name="product_qty"/>
+                                        <field name="product_uom" string="UoM" groups="uom.group_uom" force_save="1" optional="show"/>
+                                        <field name="price_unit" />
+                                        <field name="price_customs" />
+                                        <field name="taxes_tariff_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase'), ('company_id', '=', parent.company_id)]" options="{'no_create': True}" optional="show"/>
+                                        <field name="price_tariff" />
+                                        <field name="price_vat" />
+                                        <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase'), ('company_id', '=', parent.company_id)]" options="{'no_create': True}" optional="show"/>
+                                        <field name="base_vat" />
+                                        <field name="price_subtotal" widget="monetary"/>
+                                    </tree>
+                                    <form string="Purchase Order Line">
+                                            <field name="state" invisible="1"/>
+                                            <field name="display_type" invisible="1"/>
+                                            <group attrs="{'invisible': [('display_type', '!=', False)]}">
+                                                <group>
+                                                    <field name="product_uom_category_id" invisible="1"/>
+                                                    <field name="product_id" context="{'partner_id': parent.partner_id}" widget="many2one_barcode" domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"/>
+                                                    <label for="product_qty"/>
+                                                    <div class="o_row">
+                                                        <field name="product_qty"/>
+                                                        <field name="product_uom" groups="uom.group_uom" attrs="{'required': [('display_type', '=', False)]}"/>
+                                                    </div>
+                                                    <field name="qty_received_method" invisible="1"/>
+                                                    <field name="qty_received" string="Received Quantity" attrs="{'invisible': [('parent.state', 'not in', ('purchase', 'done'))], 'readonly': [('qty_received_method', '!=', 'manual')]}"/>
+                                                    <field name="qty_invoiced" string="Billed Quantity" attrs="{'invisible': [('parent.state', 'not in', ('purchase', 'done'))]}"/>
+                                                    <field name="price_unit"/>
+                                                    <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase'), ('company_id', '=', parent.company_id)]" options="{'no_create': True}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="date_planned" widget="date" attrs="{'required': [('display_type', '=', False)]}"/>
+                                                    <field name="account_analytic_id" colspan="2" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" groups="analytic.group_analytic_accounting"/>
+                                                    <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                                </group>
+                                                <group colspan="12">
+                                                <notebook>
+                                                    <page string="Notes">
+                                                        <field name="name"/>
+                                                    </page>
+                                                    <page string="Invoices and Incoming Shipments">
+                                                        <field name="invoice_lines"/>
+                                                    </page>
+                                                </notebook>
+                                                </group>
+                                            </group>
+                                            <label for="name" string="Section Name (eg. Products, Services)" attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
+                                            <label for="name" string="Note" attrs="{'invisible': [('display_type', '!=', 'line_note')]}"/>
+                                            <field name="name" nolabel="1" attrs="{'invisible': [('display_type', '=', False)]}"/>
+                                    </form>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="amount_total"/>
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
                                 <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
                                 <div class="oe_clear"/>
+                            </page>
+                            <page string="Orders">
+                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done'),('import_bool', '=', True)]"/>
                             </page>
                             <page string="Operations" states="progress,done">
                                 <!-- <field name="move_lines" mode="tree,kanban" attrs="{'readonly': [('state', '!=', 'progress')]}"
@@ -215,6 +286,21 @@
                             </page>
                             <page string="Invoices" states="progress,done">
                                 <field name="moves_ids" attrs="{'readonly': [('state','!=','progress')]}" domain="[('type', '=', 'in_invoice'),('state', '!=', 'cancel'),('import_bool', '=', False)]"/>
+                            </page>
+                            <page string="Other Information">
+                                <group>
+                                    <group name="Information">
+                                        <field name="user_id" readonly="1"/>
+                                        <field name="fiscal_position_id" options="{'no_create': True}" 
+                                            attrs="{'readonly': [('state','=', 'invoiced')]}"/>
+                                        <field name="account_analytic_id" context="{'default_partner_id':parent.partner_id}" 
+                                            groups="analytic.group_analytic_accounting" domain="['|',('company_id','=',False),('company_id','=',parent.company_id)]"/>
+                                    </group>
+                                    <group string="Invoices" states="done">
+                                        <field name="invoice_tariff" readonly="1"/>
+                                        <field name="invoice_vat" readonly="1"/>
+                                    </group>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
