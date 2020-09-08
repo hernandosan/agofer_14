@@ -37,12 +37,11 @@ class StockMove(models.Model):
 
     def price_unit_update_before_done(self):
         moves = self.filtered(lambda m: m._is_in() and m.import_id)
-        imports_ids = moves.import_id
-        for purchase in imports_ids:
-            amount_total = purchase._compute_amount_total('vat')
-            for move in moves.filtered(lambda m: m.import_id.id == purchase.id):
-                cost = move.import_percentage * amount_total
-                price_unit = move.price_unit + cost
+        for move in moves:
+            line_id = move.import_id.import_line.filtered(lambda l: l.move_id and l.move_id.id == move.id)
+            if line_id:
+                price_subtotal = line_id.price_subtotal
+                price_unit = price_subtotal / move.quantity_done
                 move.write({'price_unit': price_unit})
 
     def _get_price_unit(self):
@@ -60,36 +59,39 @@ class StockMove(models.Model):
     def _generate_valuation_lines_data(self, partner_id, qty, debit_value, credit_value, debit_account_id, credit_account_id, description):
         rslt = super(StockMove, self)._generate_valuation_lines_data(partner_id, qty, debit_value, credit_value, debit_account_id, credit_account_id, description)
         if self.import_id and self.import_id.moves_ids and self.purchase_line_id and self.product_id.id == self.purchase_line_id.product_id.id:
-            price_unit = self._get_price_unit_purchase()
-            qty_done = self.quantity_done
-            value = price_unit * qty_done
-            credit_line_vals = {
-                'name': description,
-                'product_id': self.product_id.id,
-                'quantity': qty,
-                'product_uom_id': self.product_id.uom_id.id,
-                'ref': description,
-                'partner_id': partner_id,
-                'credit': value if credit_value > 0 else 0,
-                'debit': value if credit_value < 0 else 0,
-                'account_id': credit_account_id,
-            }
-            rslt.update(credit_line_vals=credit_line_vals)
-            for invoice in self.import_id.moves_ids.filtered(lambda m: not m.import_bool):
-                value = self.import_percentage * abs(invoice.amount_total_signed) * self.quantity_done
-                dic = {
+            line_id = self.import_id.import_line.filtered(lambda l: l.move_id and l.move_id.id == self.id)
+            if line_id:
+                value = line_id.price_cif
+                credit_line_vals = {
                     'name': description,
                     'product_id': self.product_id.id,
                     'quantity': qty,
                     'product_uom_id': self.product_id.uom_id.id,
                     'ref': description,
-                    'partner_id': invoice.partner_id.id,
+                    'partner_id': partner_id,
                     'credit': value if credit_value > 0 else 0,
                     'debit': value if credit_value < 0 else 0,
                     'account_id': credit_account_id,
                 }
-                name = 'credit_line_vals_' + str(invoice.id)
-                rslt[name] = dic
+                rslt.update(credit_line_vals=credit_line_vals)
+                for invoice in self.import_id.moves_ids.filtered(lambda m: m.import_type and m.import_type != 'vat'):
+                    flag = False if invoice.import_type == 'tariff' and not line_id.import_percentage_tariff else True
+                    if flag:
+                        percentage = line_id.import_percentage_tariff if invoice.import_type == 'tariff' else self.import_percentage
+                        value = percentage * abs(invoice.amount_total_signed)
+                        dic = {
+                            'name': description,
+                            'product_id': self.product_id.id,
+                            'quantity': qty,
+                            'product_uom_id': self.product_id.uom_id.id,
+                            'ref': description,
+                            'partner_id': invoice.partner_id.id,
+                            'credit': value if credit_value > 0 else 0,
+                            'debit': value if credit_value < 0 else 0,
+                            'account_id': credit_account_id,
+                        }
+                        name = 'credit_line_vals_' + str(invoice.id)
+                        rslt[name] = dic
         return rslt
 
     def _get_price_unit_purchase(self):
