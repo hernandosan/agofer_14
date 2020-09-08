@@ -17,13 +17,13 @@ class PurchaseImport(models.Model):
         'cancel': [('readonly', True)],
     }
 
-    name = fields.Char('Import Reference', required=True, index=True, copy=False, default='New')
+    name = fields.Char('Number', required=True, index=True, copy=False, default='New')
     origin = fields.Char('Source Document', copy=False)
     partner_ref = fields.Char('Reference', copy=False)
-    date_import = fields.Datetime('Import Date', required=True, states=READONLY_STATES, index=True, copy=False, default=fields.Datetime.now)
-    date_approve = fields.Datetime('Confirmation Date', readonly=1, index=True, copy=False)
     partner_id = fields.Many2one('res.partner', string='Trading', required=True, states=READONLY_STATES, change_default=True, tracking=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    currency_company_id = fields.Many2one(related='company_id.currency_id', store=True, string='Currency Company', readonly=True)
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, states=READONLY_STATES, default=lambda self: self.env.company.currency_id.id)
+    currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True, store=True, readonly=True, help='Ratio between the purchase order currency and the company currency')
     state = fields.Selection([
         ('draft', 'draft'),
         ('purchase', 'Purchase Import'),
@@ -35,25 +35,45 @@ class PurchaseImport(models.Model):
     incoterm_id = fields.Many2one('account.incoterms', 'Incoterm', states={'done': [('readonly', True)]}, help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")
     user_id = fields.Many2one('res.users', string='User', index=True, tracking=True, default=lambda self: self.env.user, check_company=True)
     company_id = fields.Many2one('res.company', 'Company', required=True, index=True, states=READONLY_STATES, default=lambda self: self.env.company.id)
-    # currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True, store=True, readonly=True, help='Ratio between the purchase order currency and the company currency')
     # Dates
+    date_import = fields.Datetime('Import Date', required=True, states=READONLY_STATES, index=True, copy=False, default=fields.Datetime.now)
+    date_approve = fields.Datetime('Confirmation Date', readonly=1, index=True, copy=False)
     date_international = fields.Date(string='Port International Date', index=True)
     date_national = fields.Date(string='Port National Date', index=True)
     date_stock = fields.Date(string='Stock Date', index=True)
     # Costs
+    price_type = fields.Selection([('price','Price'), ('weight','Weight')], 'Price Type', copy=False, default='price')
     orders_ids = fields.Many2many('purchase.order', 'import_order_rel', 'import_id', 'order_id', 'Orders', states=READONLY_STATES, copy=False)
     moves_ids = fields.Many2many('account.move', 'import_move_rel', 'import_id', 'move_id', 'Invoices', copy=False)
     # Moves
     picking_ids = fields.One2many('stock.picking', 'import_id', 'Stock Pickings', copy=False)
     move_lines = fields.One2many('stock.move', 'import_id', 'Stock Moves', copy=False)
     move_lines_done = fields.One2many('stock.move', 'import_done_id', 'Stock Moves Done', copy=False)
-    moves_lines = fields.Many2many('stock.move', 'move_import_rel', 'import_id', 'move_id', 'Stocks Moves', compute='_compute_move_lines_done')
     # Totals
     import_line = fields.One2many('purchase.import.line', 'import_id', string='Import Lines', copy=False)
     account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
-    amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all', tracking=True)
-    amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
-    amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
+    # Amount
+    amount_cost = fields.Monetary('Cost Amount Local', currency_field='currency_company_id')
+    amount_cost_currency = fields.Monetary('Cost Amount', compute='_compute_amount', store=True)
+    amount_insurance = fields.Monetary('Insurance Amount Local', currency_field='currency_company_id', compute='_compute_amount', store=True)
+    amount_insurance_currency = fields.Monetary('Insurance Amount')
+    amount_freight = fields.Monetary('Freight Amount Local', currency_field='currency_company_id', compute='_compute_amount', store=True)
+    amount_freight_currency = fields.Monetary('Freight Amount')
+    amount_cif = fields.Monetary('CIF Amount', currency_field='currency_company_id', compute='_compute_amount', store=True)
+
+    amount_expense = fields.Monetary('Expense Amount', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
+    amount_tariff = fields.Monetary('Tariff Amount', store=True, readonly=True, compute='_compute_amount_line', currency_field='currency_company_id')
+    amount_vat = fields.Monetary('VAT Amount', store=True, readonly=True, compute='_compute_amount_line', currency_field='currency_company_id')
+
+    amount_tax = fields.Monetary('Taxes', store=True, readonly=True, compute='_amount_all', currency_field='currency_company_id')
+    amount_untaxed = fields.Monetary('Untaxed Amount', store=True, readonly=True, compute='_amount_all', tracking=True, currency_field='currency_company_id')
+    amount_total = fields.Monetary('Total', store=True, readonly=True, compute='_amount_all', currency_field='currency_company_id')
+    # Expenses
+    expense_cost = fields.Monetary('Cost Expense', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
+    expense_insurance = fields.Monetary('Insurance Expense', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
+    expense_freight = fields.Monetary('Freight Expense', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
+    expense_other = fields.Monetary('Other Expense', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
+    # Invoice
     invoice_tariff = fields.Many2one('account.move', 'Invoice Tariff', copy=False)
     invoice_vat = fields.Many2one('account.move', 'Invoice Vat', copy=False)
     # Taxes
@@ -68,38 +88,110 @@ class PurchaseImport(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('purchase.import', sequence_date=seq_date) or '/'
         return super(PurchaseImport, self).create(vals)
 
-    def _compute_move_lines_done(self):
+    @api.depends('date_import', 'currency_id', 'company_id', 'company_id.currency_id')
+    def _compute_currency_rate(self):
         for purchase in self:
-            purchase.moves_lines = purchase.move_lines_done.filtered(lambda m: m.state == 'done')
+            purchase.currency_rate = self.env['res.currency']._get_conversion_rate(purchase.company_id.currency_id, purchase.currency_id, purchase.company_id, purchase.date_import)
+
+    @api.depends('amount_cost', 'amount_insurance_currency', 'amount_freight_currency')
+    def _compute_amount(self):
+        for purchase in self:
+            currency_company_id = purchase.currency_company_id
+            currency_id = purchase.currency_id
+            amount_cost_currency = currency_company_id.compute(purchase.amount_cost, currency_id)
+            amount_insurance = currency_id.compute(purchase.amount_insurance_currency, currency_company_id)
+            amount_freight = currency_id.compute(purchase.amount_freight_currency, currency_company_id)
+            amount_cif = purchase.amount_cost + amount_insurance + amount_freight
+            purchase.update({
+                'amount_cost_currency': amount_cost_currency,
+                'amount_insurance': amount_insurance,
+                'amount_freight': amount_freight,
+                'amount_cif': amount_cif,
+            })
+
+    @api.depends('moves_ids.amount_total_signed')
+    def _compute_expense(self):
+        for purchase in self:
+            expense_cost = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'cost')))
+            expense_insurance = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
+            expense_freight = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'freight')))
+            expense_other = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'other')))
+            amount_expense = expense_cost + expense_insurance + expense_freight + expense_other
+            purchase.update({
+                'expense_cost': expense_cost,
+                'expense_insurance': expense_insurance,
+                'expense_freight': expense_freight,
+                'expense_other': expense_other,
+                'amount_expense': amount_expense
+                })
+
+    @api.depends('import_line.price_tariff','import_line.price_tax')
+    def _compute_amount_line(self):
+        for purchase in self:
+            amount_tariff = amount_vat = 0.0
+            for line in purchase.import_line:
+                amount_tariff += line.price_tariff
+                amount_vat += line.price_tax
+            purchase.update({
+                'amount_tariff': purchase.currency_company_id.round(amount_tariff),
+                'amount_vat': purchase.currency_company_id.round(amount_vat),
+            })
+
+    @api.depends('import_line.price_total')
+    def _amount_all(self):
+        for purchase in self:
+            amount_untaxed = amount_tax = 0.0
+            for line in purchase.import_line:
+                amount_untaxed += line.price_subtotal
+                amount_tax += line.price_tax
+            purchase.update({
+                'amount_untaxed': purchase.currency_id.round(amount_untaxed),
+                'amount_tax': purchase.currency_id.round(amount_tax),
+                'amount_total': amount_untaxed + amount_tax,
+            })
 
     def action_purchase(self):
         self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
 
     def action_progress(self):
-        self._action_progress()
         self.write({'state': 'progress'})
+        for purchase in self:
+            purchase._action_progress()
 
     def _action_progress(self):
-        for purchase in self:
-            picking_ids = purchase.orders_ids.picking_ids.filtered(lambda p: p.state == 'assigned')
-            move_lines = picking_ids.move_lines.filtered(lambda m: m.state == 'assigned')
-            picking_ids.write({'import_id': purchase.id})
-            move_lines.write({'import_id': purchase.id})
+        self.ensure_one()
+        picking_ids = self.orders_ids.picking_ids.filtered(lambda p: p.state == 'assigned')
+        move_lines = picking_ids.move_lines.filtered(lambda m: m.state == 'assigned')
+        picking_ids.write({'import_id': self.id})
+        move_lines.write({'import_id': self.id})
 
-    def action_purchase_order(self):
-        self.orders_ids.action_purchase_import()
-
-    def action_stock_move(self):
+    def action_check(self):
         for purchase in self:
-            purchase.move_lines.write({'import_done_id': purchase.id})
+            purchase._action_check()
+
+    def _action_check(self):
+        self.ensure_one()
+        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in self.picking_ids.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
+        option = 'demand' if no_quantities_done else 'backorder'
+        self._assign_percent(option)
+        self._action_validate(option)
 
     def action_validate(self):
         self.action_purchase_order()
-        self.action_stock_move()
+        # self.create_account_move('vat')
         self.moves_ids.write({'import_bool': True})
         self.picking_ids.write({'import_id': False})
+        for purchase in self:
+            purchase.move_lines.filtered(lambda m: m.state == 'done').write({'import_done_id': purchase.id})
         self.move_lines.write({'import_id': False})
         self.write({'state': 'done'})
+
+    def _action_validate(self, option):
+        self.ensure_one()
+        moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
+        self._compute_amount_cif(moves, option)
+        self._action_create_line(moves, option)
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
@@ -162,102 +254,95 @@ class PurchaseImport(models.Model):
             picking.action_done()
         return
 
-    def _compute_amount_total(self, option):
-        # option: tariff, vat
-        self.ensure_one()
-        moves = self.moves_ids.filtered(lambda m: m.import_type != 'tariff') if option == 'tariff' else self.moves_ids.filtered(lambda m: m.import_type != 'vat')
-        amount_total = abs(sum(move.amount_total_signed for move in moves))
-        return amount_total
-
     def _assign_percent(self, option):
         self.ensure_one()
         moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
-        total = sum(move.price_unit * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        total = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
         for move in moves:
-            percentage = (move.price_unit * (move.product_uom_qty if option == 'demand' else move.quantity_done)) / total
+            tot_move = (move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done)
+            percentage = tot_move / total
             move.write({'import_percentage': percentage})
 
-    def _action_validate(self, option):
-        self.ensure_one()
-        # Create tariff invoice
-        moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
-        self._action_create_line(moves, option)
-        self._action_create_invoice('tariff')
+    def action_purchase_order(self):
+        self.orders_ids.action_purchase_import()
 
     # Lines
-    @api.depends('import_line.price_total')
-    def _amount_all(self):
-        for purchase in self:
-            amount_untaxed = amount_tax = 0.0
-            for line in purchase.import_line:
-                amount_untaxed += line.price_subtotal
-                amount_tax += line.price_tax
-            purchase.update({
-                'amount_untaxed': purchase.currency_id.round(amount_untaxed),
-                'amount_tax': purchase.currency_id.round(amount_tax),
-                'amount_total': amount_untaxed + amount_tax,
-            })
+    def _compute_amount_cif(self, moves, option):
+        self.ensure_one()
+        self.amount_cost = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        if not self.amount_insurance:
+            self.amount_insurance = abs(sum(move.amount_total_signed for move in self.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
+        if not self.amount_freight:
+            self.amount_freight = abs(sum(move.amount_total_signed for move in self.moves_ids.filtered(lambda m: m.import_type == 'freight')))
 
     def _action_create_line(self, moves, option):
         self.ensure_one()
         self.import_line.sudo().unlink()
         import_line = []
-        amount_total = self._compute_amount_total('tariff')
         for move in moves:
             price_unit = move._get_price_unit_purchase() or move._get_price_unit()
-            price_customs = price_unit + (move.import_percentage * amount_total)
+            price_cost = move.import_percentage * self.amount_cost
+            price_insurance = move.import_percentage * self.amount_insurance
+            price_freight = move.import_percentage * self.amount_freight
+            price_cif = move.import_percentage * self.amount_cif
+            price_expense = move.import_percentage * self.amount_expense
+            price_customs = price_cif + price_expense
             vals = {
+                'move_id': move.id,
                 'product_id': move.product_id.id,
                 'name': move.product_id.display_name,
                 'product_qty': move.product_uom_qty if option == 'demand' else move.quantity_done,
                 'product_uom': move.product_uom.id,
                 'price_unit': price_unit,
+                'import_percentage': move.import_percentage,
+                'price_cost': price_cost,
+                'price_insurance': price_insurance,
+                'price_freight': price_freight,
+                'price_cif': price_cif,
+                'price_expense': price_expense,
                 'price_customs': price_customs,
-                'taxes_tariff_id': [(4, t.id) for t in move.product_id.tariff_ids.filtered(lambda t: t.country_id == self.partner_id.country_id).tax_id]
+                'taxes_tariff_id': [(4, t.id) for t in move.product_id.tariff_ids.filtered(lambda t: t.country_id == self.partner_id.country_id).tax_id],
+                'taxes_id': [(4, t.id) for t in move.product_id.supplier_taxes_id]
             }
             import_line.append((0, 0, vals))
         self.write({'import_line': import_line})
 
-    def _action_create_invoice(self, option):
+    def create_account_move(self, option):
+        for purchase in self:
+            purchase._create_account_move(option)
+
+    def _create_account_move(self, option):
         self.ensure_one()
-        self._check_invoice(option)
+        taxes = self.import_line.taxes_id if option == 'vat' else self.import_line.taxes_tariff_id
         invoice_line_ids = []
-        lines = self.import_line.filtered(lambda l: l.taxes_tariff_id) if option == 'tariff' else self.import_line.filtered(lambda l: l.taxes_id)
-        for line in lines:
-            taxes = line.taxes_tariff_id if option == 'tariff' else line.taxes_id
-            for tax in taxes:
-                compute_all = tax.compute_all(line.price_customs, self.currency_id, quantity=line.product_qty, product=line.product_id, partner=line.partner_id)
-                dics = compute_all.get('taxes')
-                for dic in dics:
-                    val = {
-                        'name': '[' + self.name + '] ' + dic.get('name'),
-                        'account_id': dic.get('account_id'),
-                        'price_unit': dic.get('amount'),
-                        'tax_ids': False,
-                    }
-                    invoice_line_ids.append((0,0,val))
+        for tax in taxes:
+            # compute_all(self, price_unit, currency=None, quantity=1.0, product=None, partner=None, is_refund=False, handle_price_include=True)
+            lines = self.import_line.filtered(lambda l: l.taxes_id == tax) if option == 'vat' else self.import_line.filtered(lambda l: l.taxes_tariff_id == tax)
+            price_unit = sum(line.price_tax if option == 'vat' else line.price_tariff for line in lines)
+            # product = lines.product_id
+            compute = tax.compute_all(price_unit)
+            dics = compute.get('taxes')
+            for dic in dics:
+                line = {
+                    'name': '[' + self.name + '] ' + dic.get('name'),
+                    'account_id': dic.get('account_id'),
+                    # 'price_unit': dic.get('amount'),
+                    'price_unit': compute.get('total_excluded'),
+                }
+                invoice_line_ids.append((0,0,line))
         if invoice_line_ids:
-            vals = {
+            move = {
                 'type': 'in_invoice',
                 'company_id': self.company_id.id,
                 'invoice_origin': self.name,
+                'ref': self.partner_ref,
                 'import_id': self.id,
                 'import_type': 'tariff',
-                'invoice_line_ids': invoice_line_ids
+                'invoice_line_ids': invoice_line_ids,
             }
-            invoice = self.invoice_tariff if option == 'tariff' else self.invoice_vat
-            if invoice:
-                invoice.write(vals)
-            else:
-                am_id = self.env['account.move'].sudo().create(vals)
-                am = {'invoice_tariff': am_id.id} if option == 'tariff' else {'invoice_vat': am_id.id}
-                self.write(am)
-
-    def _check_invoice(self, option):
-        self.ensure_one()
-        invoice = self.invoice_tariff if option == 'tariff' else self.invoice_vat
-        if invoice and invoice.state == 'posted':
-            invoice.button_draft()
+            am = self.env['account.move'].sudo().create(move)
+            purchase = {'invoice_vat': am.id} if option == 'vat' else {'invoice_tariff': am.id}
+            self.write(purchase)
 
 
 class PurchaseImportLine(models.Model):
@@ -272,102 +357,66 @@ class PurchaseImportLine(models.Model):
     date_planned = fields.Datetime(string='Scheduled Date', index=True)
     taxes_id = fields.Many2many('account.tax', string='Taxes')
     taxes_tariff_id = fields.Many2many('account.tax', 'tax_import_res', string='Taxes tariff')
+
     product_uom = fields.Many2one('uom.uom', string='Unit of Measure', domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
     product_id = fields.Many2one('product.product', string='Product', domain=[('purchase_ok', '=', True)], change_default=True)
     product_type = fields.Selection(related='product_id.type', readonly=True)
-    price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price')
 
-    price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
-    price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
-    price_tax = fields.Float(compute='_compute_amount', string='Tax', store=True)
-    price_tax_tariff = fields.Float(compute='_compute_amount_tariff', string='Tax Tariff', store=True)
+    # Cost
+    price_unit = fields.Monetary(string='Unit Price', required=True, digits='Product Price')
+    price_subtotal = fields.Monetary(compute='_compute_price', string='Subtotal', store=True,  digits='Product Price')
+    price_total = fields.Monetary(compute='_compute_price', string='Total', store=True,  digits='Product Price')
+    price_tax = fields.Monetary(compute='_compute_price', string='Tax', store=True,  digits='Product Price')
+
+    price_cost = fields.Monetary('Cost Price', digits='Product Price')
+    price_insurance = fields.Monetary('Insurance Price', digits='Product Price')
+    price_freight = fields.Monetary('Freight Price', digits='Product Price')
+    price_cif= fields.Monetary('CIF Price', digits='Product Price')
+
+    price_expense = fields.Monetary('Expense Price', digits='Product Price', store=True)
+    price_customs = fields.Monetary('Customs Price', digits='Product Price')
+    price_tariff = fields.Monetary('Tariff Price', digits='Product Price', compute='_compute_price', store=True)
 
     import_id = fields.Many2one('purchase.import', string='Import Reference', index=True, required=True, ondelete='cascade')
+    import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
+    import_percentage_tariff = fields.Float('Import Percentage Tariff', compute='_compute_import_percentage_tariff', store=True)
+
+    move_id = fields.Many2one('stock.move', 'Move')
+
     account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
     company_id = fields.Many2one('res.company', related='import_id.company_id', string='Company', store=True, readonly=True)
     state = fields.Selection(related='import_id.state', store=True, readonly=False)
 
-    invoice_lines = fields.One2many('account.move.line', 'purchase_line_id', string="Bill Lines", readonly=True, copy=False)
-
     partner_id = fields.Many2one('res.partner', related='import_id.partner_id', string='Partner', readonly=True, store=True)
-    currency_id = fields.Many2one(related='import_id.currency_id', store=True, string='Currency', readonly=True)
-    date_order = fields.Datetime(related='import_id.date_import', string='Order Date', readonly=True)
+    currency_id = fields.Many2one(related='import_id.currency_company_id', store=True, string='Currency', readonly=True)
+    date_import = fields.Datetime(related='import_id.date_import', string='Import Date', readonly=True)
 
-    qty_invoiced = fields.Float(compute='_compute_qty_invoiced', string="Billed Qty", digits='Product Unit of Measure', store=True)
-
-    qty_received_method = fields.Selection([('manual', 'Manual')], string="Received Qty Method", compute='_compute_qty_received_method', store=True,
-        help="According to product configuration, the recieved quantity can be automatically computed by mechanism :\n"
-             "  - Manual: the quantity is set manually on the line\n"
-             "  - Stock Moves: the quantity comes from confirmed pickings\n")
-    qty_received = fields.Float("Received Qty", compute='_compute_qty_received', inverse='_inverse_qty_received', compute_sudo=True, store=True, digits='Product Unit of Measure')
-    qty_received_manual = fields.Float("Manual Received Qty", digits='Product Unit of Measure', copy=False)
-
-    display_type = fields.Selection([
-        ('line_section', "Section"),
-        ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
-    
-    # Costs
-    price_customs = fields.Float('Customs Price', digits='Product Price')
-    price_tariff = fields.Float('Tariff Price', digits='Product Price')
-    price_vat = fields.Float('Vat Price', digits='Product Price')
-    base_vat = fields.Float('Base VAT', digits='Product Price')
-
-    @api.depends('product_qty', 'price_unit', 'taxes_id')
-    def _compute_amount(self):
+    @api.depends('price_customs', 'taxes_tariff_id', 'taxes_id')
+    def _compute_price(self):
         for line in self:
-            vals = line._prepare_compute_all_values()
-            taxes = line.taxes_id.compute_all(
-                vals['price_unit'],
-                vals['currency_id'],
-                vals['product_qty'],
-                vals['product'],
-                vals['partner'])
+            # compute_all(self, price_unit, currency=None, quantity=1.0, product=None, partner=None, is_refund=False, handle_price_include=True)
+            price_customs = line.price_customs
+            taxes_tariff = line.taxes_tariff_id.compute_all(price_customs)
+            price_tariff = sum(t.get('amount', 0.0) for t in taxes_tariff.get('taxes', []))
+            price_vat = price_customs + price_tariff
+            product = line.product_id
+            partner = line.partner_id
+            taxes = line.taxes_id.compute_all(price_vat, product=product, partner=partner)
+            price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
+            price_total = taxes.get('total_included')
+            price_subtotal = taxes.get('total_excluded')
             line.update({
-                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
-                'price_total': taxes['total_included'],
-                'price_subtotal': taxes['total_excluded'],
+                'price_tariff': price_tariff,
+                'price_tax': price_tax,
+                'price_subtotal': price_subtotal,
+                'price_total': price_total,
             })
 
-    @api.depends('product_qty', 'price_customs', 'taxes_tariff_id')
-    def _compute_amount_tariff(self):
-        for line in self:
-            vals = line._prepare_compute_all_values()
-            taxes = line.taxes_tariff_id.compute_all(
-                vals['price_customs'],
-                vals['currency_id'],
-                vals['product_qty'],
-                vals['product'],
-                vals['partner'])
-            line.update({
-                'price_tax_tariff': sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-            })
-
-    def _prepare_compute_all_values(self):
-        # Hook method to returns the different argument values for the
-        # compute_all method, due to the fact that discounts mechanism
-        # is not implemented yet on the purchase orders.
-        # This method should disappear as soon as this feature is
-        # also introduced like in the sales module.
-        self.ensure_one()
-        return {
-            'price_unit': self.price_unit,
-            'price_customs': self.price_customs,
-            'currency_id': self.import_id.currency_id,
-            'product_qty': self.product_qty,
-            'product': self.product_id,
-            'partner': self.import_id.partner_id,
-        }
-
-    @api.depends('invoice_lines.move_id.state', 'invoice_lines.quantity')
-    def _compute_qty_invoiced(self):
-        for line in self:
-            qty = 0.0
-            for inv_line in line.invoice_lines:
-                if inv_line.move_id.state not in ['cancel']:
-                    if inv_line.move_id.type == 'in_invoice':
-                        qty += inv_line.product_uom_id._compute_quantity(inv_line.quantity, line.product_uom)
-                    elif inv_line.move_id.type == 'in_refund':
-                        qty -= inv_line.product_uom_id._compute_quantity(inv_line.quantity, line.product_uom)
-            line.qty_invoiced = qty
+    @api.depends('price_tariff')
+    def _compute_import_percentage_tariff(self):
+        for purchase in self.import_id:
+            amount_tariff = purchase.amount_tariff
+            for line in self.filtered(lambda l: l.import_id == purchase):
+                line.import_percentage_tariff = line.price_tariff / amount_tariff if amount_tariff else 0.0
