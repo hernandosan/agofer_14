@@ -380,7 +380,6 @@ class PurchaseImportLine(models.Model):
 
     import_id = fields.Many2one('purchase.import', string='Import Reference', index=True, required=True, ondelete='cascade')
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
-    import_percentage_tariff = fields.Float('Import Percentage Tariff', compute='_compute_import_percentage_tariff', store=True)
 
     move_id = fields.Many2one('stock.move', 'Move')
 
@@ -413,10 +412,3 @@ class PurchaseImportLine(models.Model):
                 'price_subtotal': price_subtotal,
                 'price_total': price_total,
             })
-
-    @api.depends('price_tariff')
-    def _compute_import_percentage_tariff(self):
-        for purchase in self.import_id:
-            amount_tariff = purchase.amount_tariff
-            for line in self.filtered(lambda l: l.import_id == purchase):
-                line.import_percentage_tariff = line.price_tariff / amount_tariff if amount_tariff else 0.0

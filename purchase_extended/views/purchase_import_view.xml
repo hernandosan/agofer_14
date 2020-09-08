@@ -140,7 +140,6 @@
                                         <field name="price_customs" sum="Customs"/>
                                         <field name="taxes_tariff_id" widget="many2many_tags" optional="show"/>
                                         <field name="price_tariff" optional="hide" sum="Tariff"/>
-                                        <field name="import_percentage_tariff" invisible="1" sum="Percentage Tariff"/>
                                         <field name="price_subtotal" widget="monetary" optional="show" sum="Subtotal"/>
                                         <field name="taxes_id" widget="many2many_tags" optional="show"/>
                                         <field name="price_tax" widget="monetary" optional="hide" sum="Tax"/>
