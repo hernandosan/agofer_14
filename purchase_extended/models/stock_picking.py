@@ -75,23 +75,20 @@ class StockMove(models.Model):
                 }
                 rslt.update(credit_line_vals=credit_line_vals)
                 for invoice in self.import_id.moves_ids.filtered(lambda m: m.import_type and m.import_type != 'vat'):
-                    flag = False if invoice.import_type == 'tariff' and not line_id.import_percentage_tariff else True
-                    if flag:
-                        percentage = line_id.import_percentage_tariff if invoice.import_type == 'tariff' else self.import_percentage
-                        value = percentage * abs(invoice.amount_total_signed)
-                        dic = {
-                            'name': description,
-                            'product_id': self.product_id.id,
-                            'quantity': qty,
-                            'product_uom_id': self.product_id.uom_id.id,
-                            'ref': description,
-                            'partner_id': invoice.partner_id.id,
-                            'credit': value if credit_value > 0 else 0,
-                            'debit': value if credit_value < 0 else 0,
-                            'account_id': credit_account_id,
-                        }
-                        name = 'credit_line_vals_' + str(invoice.id)
-                        rslt[name] = dic
+                    value = self.import_percentage * abs(invoice.amount_total_signed) if invoice.import_type != 'tariff' else line_id.price_tariff
+                    dic = {
+                        'name': description,
+                        'product_id': self.product_id.id,
+                        'quantity': qty,
+                        'product_uom_id': self.product_id.uom_id.id,
+                        'ref': description,
+                        'partner_id': invoice.partner_id.id,
+                        'credit': value if credit_value > 0 else 0,
+                        'debit': value if credit_value < 0 else 0,
+                        'account_id': credit_account_id,
+                    }
+                    name = 'credit_line_vals_' + str(invoice.id)
+                    rslt[name] = dic
         return rslt
 
     def _get_price_unit_purchase(self):
