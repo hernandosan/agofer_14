@@ -143,11 +143,7 @@ msgstr "Orden de Venta"
 #. module: sale_extended
 #: model:ir.model,name:sale_extended.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
-"#-#-#-#-#  es_CO.po (Odoo 9.0)  #-#-#-#-#\n"
-"Línea de Orden de Ventas\n"
-"#-#-#-#-#  es_CO.po (Odoo 9.0)  #-#-#-#-#\n"
-"Línea de Órdenes de Venta"
+msgstr "Línea de Órdenes de Venta"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_type
