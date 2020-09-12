@@ -25,7 +25,7 @@ class PurchaseImport(models.Model):
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, states=READONLY_STATES, default=lambda self: self.env.company.currency_id.id)
     currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True, store=True, readonly=True, help='Ratio between the purchase order currency and the company currency')
     state = fields.Selection([
-        ('draft', 'draft'),
+        ('draft', 'Draft'),
         ('purchase', 'Purchase Import'),
         ('progress', 'In Progress'),
         ('done', 'Done'),
@@ -66,7 +66,7 @@ class PurchaseImport(models.Model):
     amount_vat = fields.Monetary('VAT Amount', store=True, readonly=True, compute='_compute_amount_line', currency_field='currency_company_id')
 
     amount_tax = fields.Monetary('Taxes', store=True, readonly=True, compute='_amount_all', currency_field='currency_company_id')
-    amount_untaxed = fields.Monetary('Untaxed Amount', store=True, readonly=True, compute='_amount_all', tracking=True, currency_field='currency_company_id')
+    amount_untaxed = fields.Monetary('Untaxed Amount', store=True, readonly=True, compute='_amount_all', currency_field='currency_company_id')
     amount_total = fields.Monetary('Total', store=True, readonly=True, compute='_amount_all', currency_field='currency_company_id')
     # Expenses
     expense_cost = fields.Monetary('Cost Expense', store=True, readonly=True, compute='_compute_expense', currency_field='currency_company_id')
@@ -177,6 +177,15 @@ class PurchaseImport(models.Model):
         self._assign_percent(option)
         self._action_validate(option)
 
+    def _assign_percent(self, option):
+        self.ensure_one()
+        moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
+        total = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        for move in moves:
+            tot_move = (move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done)
+            percentage = tot_move / total
+            move.write({'import_percentage': percentage})
+
     def action_validate(self):
         self.action_purchase_order()
         # self.create_account_move('vat')
@@ -192,6 +201,9 @@ class PurchaseImport(models.Model):
         moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
         self._compute_amount_cif(moves, option)
         self._action_create_line(moves, option)
+
+    def action_draft(self):
+        self.write({'state': 'draft'})
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
@@ -254,22 +266,13 @@ class PurchaseImport(models.Model):
             picking.action_done()
         return
 
-    def _assign_percent(self, option):
-        self.ensure_one()
-        moves = self.move_lines if option == 'demand' else self.move_lines.filtered(lambda m: m.quantity_done)
-        total = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
-        for move in moves:
-            tot_move = (move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done)
-            percentage = tot_move / total
-            move.write({'import_percentage': percentage})
-
     def action_purchase_order(self):
         self.orders_ids.action_purchase_import()
 
     # Lines
     def _compute_amount_cif(self, moves, option):
         self.ensure_one()
-        self.amount_cost = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        self.amount_cost = sum((move._get_price_unit_purchase()) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
         if not self.amount_insurance:
             self.amount_insurance = abs(sum(move.amount_total_signed for move in self.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
         if not self.amount_freight:
@@ -280,8 +283,9 @@ class PurchaseImport(models.Model):
         self.import_line.sudo().unlink()
         import_line = []
         for move in moves:
+            product_qty = move.product_uom_qty if option == 'demand' else move.quantity_done
             price_unit = move._get_price_unit_purchase() or move._get_price_unit()
-            price_cost = move.import_percentage * self.amount_cost
+            price_cost = price_unit * product_qty
             price_insurance = move.import_percentage * self.amount_insurance
             price_freight = move.import_percentage * self.amount_freight
             price_cif = move.import_percentage * self.amount_cif
@@ -289,9 +293,10 @@ class PurchaseImport(models.Model):
             price_customs = price_cif + price_expense
             vals = {
                 'move_id': move.id,
+                'order_id': move.purchase_line_id.order_id.id,
                 'product_id': move.product_id.id,
                 'name': move.product_id.display_name,
-                'product_qty': move.product_uom_qty if option == 'demand' else move.quantity_done,
+                'product_qty': product_qty,
                 'product_uom': move.product_uom.id,
                 'price_unit': price_unit,
                 'import_percentage': move.import_percentage,
@@ -348,7 +353,7 @@ class PurchaseImport(models.Model):
 class PurchaseImportLine(models.Model):
     _name = 'purchase.import.line'
     _description = 'Purchase Import Line'
-    _order = 'import_id, sequence, id'
+    _order = 'import_id, order_id, sequence, id'
 
     name = fields.Text(string='Description', required=True)
     sequence = fields.Integer(string='Sequence', default=10)
@@ -378,6 +383,7 @@ class PurchaseImportLine(models.Model):
     price_customs = fields.Monetary('Customs Price', digits='Product Price')
     price_tariff = fields.Monetary('Tariff Price', digits='Product Price', compute='_compute_price', store=True)
 
+    order_id = fields.Many2one('purchase.order', 'Order')
     import_id = fields.Many2one('purchase.import', string='Import Reference', index=True, required=True, ondelete='cascade')
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
 
