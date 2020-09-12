@@ -4,6 +4,7 @@
             <field name="name">view.product.pricelist.form</field>
             <field name="model">product.pricelist</field>
             <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='pricelist_discounts']" position="inside">
                     <label for="discount_maximum" />

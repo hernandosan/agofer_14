@@ -23,6 +23,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/res_partner_view.xml',
+        'views/account_payment_term_view.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

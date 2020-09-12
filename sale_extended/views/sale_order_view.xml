@@ -5,6 +5,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[1]/field[@name='price_unit']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
@@ -13,7 +16,7 @@
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="after">
                     <group string="Shipping Type">
-                        <field name="shipping_type" required="True"/>
+                        <field name="shipping_type" required="True" attrs="{'readonly': [('state','=','done')]}"/>
                     </group>
                 </xpath>
             </field>

@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_stock'],
+    'depends': ['sale_stock', 'account_credit_control_extended'],
 
     # always loaded
     'data': [

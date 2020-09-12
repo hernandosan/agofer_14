@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-11 15:04+0000\n"
-"PO-Revision-Date: 2020-09-11 15:04+0000\n"
+"POT-Creation-Date: 2020-09-12 15:04+0000\n"
+"PO-Revision-Date: 2020-09-12 15:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,11 @@ msgid "Administrative Quota"
 msgstr "Cupo Administrativo"
 
 #. module: account_credit_control_extended
+#: model:ir.model.fields.selection,name:account_credit_control_extended.selection__account_payment_term__credit_type__cash
+msgid "Cash"
+msgstr "ContadoS"
+
+#. module: account_credit_control_extended
 #: model:ir.model.fields.selection,name:account_credit_control_extended.selection__res_partner__credit_type__committee
 msgid "Committee Quota"
 msgstr "Cupo Comité"
@@ -31,6 +36,13 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: account_credit_control_extended
+#: model:ir.model.fields.selection,name:account_credit_control_extended.selection__account_payment_term__credit_type__credit
+msgid "Credit"
+msgstr "Crédito"
+
+#. module: account_credit_control_extended
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_control
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_res_users__credit_control
 #: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_view
 msgid "Credit Control"
 msgstr "Control de Crédito"
@@ -47,6 +59,11 @@ msgid "Credit Limit"
 msgstr "Crédito límite"
 
 #. module: account_credit_control_extended
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_payment_term__credit_type
+msgid "Credit Type"
+msgstr "Tipo de credito"
+
+#. module: account_credit_control_extended
 #: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_view
 msgid "Followup"
 msgstr "Seguimiento"
@@ -57,10 +74,21 @@ msgid "Insured Quota"
 msgstr "Cupo Asegurado"
 
 #. module: account_credit_control_extended
+#: model:ir.model,name:account_credit_control_extended.model_account_payment_term
+msgid "Payment Terms"
+msgstr "Plazos de pago"
+
+#. module: account_credit_control_extended
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_type
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_users__credit_type
 msgid "Quota Type"
 msgstr "Tipo de cupo"
+
+#. module: account_credit_control_extended
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_quota
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_res_users__credit_quota
+msgid "Total Quota"
+msgstr "Cupo Total"
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_maturity

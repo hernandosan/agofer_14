@@ -6,12 +6,14 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    credit_limit = fields.Float(tracking=True)
+    credit_control = fields.Boolean('Credit Control')
+    credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
         ('insured','Insured Quota'),
         ('administrative','Administrative Quota'),
         ('committee','Committee Quota')], 'Quota Type', tracking=True)
     credit_maturity = fields.Monetary(compute='_compute_credit_maturity', string='Total Receivable Maturity')
+    credit_quota = fields.Monetary(compute='_compute_credit_quota', string='Total Quota')
 
     @api.depends_context('force_company')
     def _compute_credit_maturity(self):
@@ -38,3 +40,8 @@ class ResPartner(models.Model):
                     treated |= partner
         remaining = (self - treated)
         remaining.credit_maturity = False
+
+    @api.depends('credit_limit', 'credit_maturity')
+    def _compute_credit_quota(self):
+        for partner in self:
+            partner.credit_quota = partner.credit_limit - partner.credit
