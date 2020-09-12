@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record id="view_res_partner_view" model="ir.ui.view">
+            <field name="name">view.res.partner.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_credit_control.partner_followup_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='credit_control']" position="replace">
+                    <page string="Credit Control" name="credit_control" 
+                        attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}" 
+                        groups="account_credit_control.group_account_credit_control_user">
+                        <group>
+                            <group string="Credit Control" attrs="{'invisible': [('credit_control','=',True)]}">
+                                <field name="credit_control"/>
+                            </group>
+                            <group string="Credit Control" attrs="{'invisible': [('credit_control','=',False)]}">
+                                <field name="credit_control"/>
+                                <field name="credit_type" attrs="{'required': [('credit_control','=',True)]}"/>
+                                <field name="credit_limit" attrs="{'required': [('credit_type','!=',False)]}"/>
+                                <field name="credit" readonly="True"/>
+                                <field name="credit_maturity" readonly="True"/>
+                                <field name="credit_quota" readonly="True"/>
+                            </group>
+                            <group name="followup" string="Followup" 
+                                attrs="{'invisible': [('credit_control','=',False)]}" 
+                                groups="account_credit_control.group_account_credit_control_manager">
+                                <field name="credit_policy_id" widget="selection"/>
+                                <field name="payment_responsible_id"/>
+                                <field name="payment_note"/>
+                                <field name="payment_next_action_type"/>
+                                <field name="payment_next_action"/>
+                                <field name="payment_next_action_date"/>
+                            </group>
+                        </group>
+                        <group string="Credit Control Levels" 
+                            attrs="{'invisible': [('credit_control','=',False)]}" 
+                            groups="account_credit_control.group_account_credit_control_manager">
+                            <field name="credit_control_analysis_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom" >
+                                    <field name="policy_id"/>
+                                    <field name="policy_level_id"/>
+                                    <field name="level"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
