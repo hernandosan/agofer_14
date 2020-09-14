@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-12 15:12+0000\n"
-"PO-Revision-Date: 2020-09-12 15:12+0000\n"
+"POT-Creation-Date: 2020-09-14 20:24+0000\n"
+"PO-Revision-Date: 2020-09-14 20:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -151,3 +151,21 @@ msgstr "Línea de Órdenes de Venta"
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
 msgid "Shipping Type"
 msgstr "Tipo de Entrega"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "You are not authorized to cancel a order"
+msgstr "No estas autorizado para cancelar pedido"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "You are not authorized to copy a order"
+msgstr "No estas autorizado para copiar pedido"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "You are not authorized to draft a order"
+msgstr "No estas autorizado para reiniciar pedido"
