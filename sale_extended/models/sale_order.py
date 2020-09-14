@@ -12,8 +12,26 @@ class SaleOrder(models.Model):
 
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
 
+    def copy(self):
+        if not self.env.user.has_group('sales_team.group_sale_manager'):
+            msg = _('You are not authorized to copy a order')
+            raise ValidationError(msg)
+        return super(SaleOrder, self).copy()
+
     def action_confirm(self):
         self.action_before_confirm()
+        return super(SaleOrder, self).action_confirm()
+
+    def action_cancel(self):
+        if not self.env.user.has_group('sales_team.group_sale_manager'):
+            msg = _('You are not authorized to cancel a order')
+            raise ValidationError(msg)
+        return super(SaleOrder, self).action_confirm()
+
+    def action_draft(self):
+        if not self.env.user.has_group('sales_team.group_sale_manager'):
+            msg = _('You are not authorized to draft a order')
+            raise ValidationError(msg)
         return super(SaleOrder, self).action_confirm()
 
     def action_before_confirm(self):
@@ -58,7 +76,6 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return self.order_line.msg_product_qty()
 
-    # PB0017
     def validate_price_discount(self):
         for sale in self:
             msg_validate = sale._validate_price_discount()
