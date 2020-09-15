@@ -16,7 +16,18 @@
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="after">
                     <group string="Shipping Type">
+                        <field name="shipping_bool" invisible="True"/>
                         <field name="shipping_type" required="True" attrs="{'readonly': [('state','=','done')]}"/>
+                        <field name="delivery_bool" attrs="{'invisible': [('shipping_type','!=','delivery')]}"/>
+                        <field name="upload_delay" invisible="True"/>
+                        <field name="upload_date" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
+                        <field name="delivery_delay" invisible="True"/>
+                        <field name="delivery_date" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
+                        <field name="pick_bool" attrs="{'invisible': [('shipping_type','!=','pick')]}"/>
+                        <field name="pick_date" 
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
                     </group>
                 </xpath>
             </field>

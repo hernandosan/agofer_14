@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, exceptions
+from datetime import timedelta, datetime
 from odoo.exceptions import ValidationError
 
 import logging
@@ -10,7 +11,32 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    shipping_bool = fields.Boolean('Shipping Bool', copy=False)
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
+    pick_bool = fields.Boolean('Pick Bool')
+    pick_date = fields.Date('Pick Date')
+    upload_date = fields.Date('Upload Date')
+    upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
+    delivery_bool = fields.Boolean('Delivery Bool')
+    delivery_date = fields.Date('Delivery Date')
+    delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
+
+    @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
+    def _compute_delay(self):
+        for sale in self:
+            upload_delay = max(line.upload_delay for line in sale.order_line) if sale.order_line else 0
+            delivery_delay = max(line.delivery_delay for line in sale.order_line) if sale.order_line else 0
+            sale.update({'upload_delay': upload_delay, 'delivery_delay': delivery_delay})
+
+    @api.onchange('date_order')
+    def _onchange_date_order(self):
+        if self.date_order:
+            self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 1)
+
+    @api.onchange('upload_date')
+    def _onchange_upload_date(self):
+        if self.upload_date:
+            self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 2)
 
     def copy(self):
         if not self.env.user.has_group('sales_team.group_sale_manager'):
@@ -26,18 +52,19 @@ class SaleOrder(models.Model):
         if not self.env.user.has_group('sales_team.group_sale_manager'):
             msg = _('You are not authorized to cancel a order')
             raise ValidationError(msg)
-        return super(SaleOrder, self).action_confirm()
+        return super(SaleOrder, self).action_cancel()
 
     def action_draft(self):
         if not self.env.user.has_group('sales_team.group_sale_manager'):
             msg = _('You are not authorized to draft a order')
             raise ValidationError(msg)
-        return super(SaleOrder, self).action_confirm()
+        return super(SaleOrder, self).action_draft()
 
     def action_before_confirm(self):
         self.validate_standard_price()
         self.validate_price_discount()
         self.validate_product_qty()
+        self.validate_delivery_date()
         self.validate_credit_control()
 
     def validate_standard_price(self):
@@ -130,12 +157,66 @@ class SaleOrder(models.Model):
                 msg = _("Order blocked by maturity. Maturity: $ %s") % (credit_maturity)
                 raise ValidationError(msg)
 
+    def validate_delivery_date(self):
+        for sale in self:
+            sale._validate_delivery_date()
+
+    def _validate_delivery_date(self):
+        self.ensure_one()
+        date_order = fields.Date.today()
+        weekday = date_order.weekday()
+        days = 3 if weekday not in (3, 4, 5) else 4
+        date = date_order + timedelta(days=days)
+        if not self.delivery_bool and self.delivery_date and self.delivery_date < date:
+            if self.env.user.has_group('sales_team.group_sale_manager'):
+                user = self.env.user.login
+                order = self.name
+                body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
+                _logger.warning(body)
+                self.message_post(body=body)
+            else:
+                msg = _("Order blocked by days. Delivery date cannot be less than three days")
+                raise ValidationError(msg)
+
+    def run_reservation(self):
+        incoterm = self.env.ref('sale_extended.incoterm_res').id
+        date = datetime.now() - timedelta(days=15)
+        sales = self.search([('state','=','done'),('incoterm','=',incoterm),('date_order','<=',date),('shipping_bool','=',False)])
+        sales.action_reservation()
+
+    def action_reservation(self):
+        for sale in self:
+            sale._action_reservation()
+
+    def _action_reservation(self):
+        self.ensure_one()
+        vals = {
+            'res_id': self.id,
+            'res_model_id': self.env['ir.model']._get('sale.order').id,
+            'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
+            'date_deadline': fields.Date.today(),
+            'user_id': self.user_id.id if self.user_id else self.create_user.id,
+            'summary': _('Check Sale Order'),
+            'note': _('Order reserved for more than 15 days. Confirm or Cancel')
+        }
+        self.env['mail.activity'].sudo().create(vals)
+        self.write({'shipping_bool': True})
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
     shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
+    upload_delay = fields.Float(related='product_id.upload_delay', store=True)
+    delivery_delay = fields.Float(related='product_id.delivery_delay', store=True)
+
+    @api.onchange('discount')
+    def _onchange_discount(self):
+        if self.discount and self.pricelist_id:
+            message = self.msg_price_discount()
+            if message:
+                msg = _('Order blocked by discount. \n') + message
+                raise ValidationError(msg)
 
     def msg_standard_price(self):
         msg = ""
@@ -150,15 +231,6 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         product = self.product_id.sudo().display_name
         return _("Product: %s, Subtotal: %s, Standard: %s \n") % (product, subtotal, standard)
-
-    # PB0017
-    @api.onchange('discount')
-    def _onchange_discount(self):
-        if self.discount and self.pricelist_id:
-            message = self.msg_price_discount()
-            if message:
-                msg = _('Order blocked by discount. \n') + message
-                raise ValidationError(msg)
 
     def msg_price_discount(self):
         msg = ""
