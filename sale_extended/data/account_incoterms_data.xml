@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <record id="incoterm_res" model="account.incoterms">
+            <field name="code">RES</field>
+            <field name="name">RESERVATION</field>
+        </record>
+    </data>
+</odoo>

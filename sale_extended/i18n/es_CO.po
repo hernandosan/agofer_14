@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 20:24+0000\n"
-"PO-Revision-Date: 2020-09-14 20:24+0000\n"
+"POT-Creation-Date: 2020-09-15 21:57+0000\n"
+"PO-Revision-Date: 2020-09-15 21:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,62 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "Check Sale Order"
+msgstr "Revisar Pedido de Venta"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_product_product__delivery_delay
+#: model:ir.model.fields,field_description:sale_extended.field_product_template__delivery_delay
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__delivery_delay
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__delivery_delay
+msgid "Customer Delivery Time"
+msgstr "Plazo de entrega del cliente"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_product_product__sale_delay
+#: model:ir.model.fields,field_description:sale_extended.field_product_template__sale_delay
+msgid "Customer Lead Time"
+msgstr "Plazo de Entrega del Cliente"
+
+#. module: sale_extended
 #: model:ir.model.fields.selection,name:sale_extended.selection__sale_order__shipping_type__pick
 msgid "Customer Pick"
 msgstr "Cliente Recoge"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_product_product__upload_delay
+#: model:ir.model.fields,field_description:sale_extended.field_product_template__upload_delay
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__upload_delay
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__upload_delay
+msgid "Customer Upload Time"
+msgstr "Plazo de Cargue del cliente"
+
+#. module: sale_extended
 #: model:ir.model.fields.selection,name:sale_extended.selection__sale_order__shipping_type__delivery
 msgid "Delivery Agofer"
 msgstr "Agofer Entrega"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__delivery_bool
+msgid "Delivery Bool"
+msgstr "Sin Fecha de Entrega"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__delivery_date
+msgid "Delivery Date"
+msgstr "Fecha de Entrega"
+
+#. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_product_product__sale_delay
+#: model:ir.model.fields,help:sale_extended.field_product_template__sale_delay
+msgid ""
+"Delivery lead time, in days. It's the number of days, promised to the "
+"customer, between the confirmation of the sales order and the delivery."
+msgstr ""
+"Plazo de entrega, en días. Es el numero de días, prometidos al cliente, "
+"desde la confirmación del pedido de venta hasta la entrega"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__discount_freight
@@ -33,7 +81,9 @@ msgstr "Porcentaje de flete"
 #. module: sale_extended
 #: model:ir.model.fields,help:sale_extended.field_sale_order_line__pricelist_id
 msgid "If you change the pricelist, only newly added lines will be affected."
-msgstr "Si cambia la lista de precios, solo se verán afectadas las líneas recién agregadas."
+msgstr ""
+"Si cambia la lista de precios, solo se verán afectadas las líneas recién "
+"agregadas."
 
 #. module: sale_extended
 #: model:ir.model.fields,help:sale_extended.field_product_pricelist__discount_maximum
@@ -55,6 +105,12 @@ msgstr "Porcentaje máximo"
 #, python-format
 msgid "Order blocked by cost of product. \n"
 msgstr "Pedido bloqueado por costo del producto. \n"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "Order blocked by days. Delivery date cannot be less than three days"
+msgstr "Pedido bloqueado por días. Fecha de entrega no puede ser menor a 3 días"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -85,7 +141,13 @@ msgstr "Pedido bloqueado por cupo. Cupo: $ %s, Valor: $ %s"
 #: code:addons/sale_extended/models/sale_order.py:0
 #, python-format
 msgid "Order confirmed by cost. User: %s, Order: %s \n"
-msgstr "Pedido confirmado por costo. User: %s, Order: %s \n"
+msgstr "Pedido confirmado por costo. Usuario: %s, Pedido: %s \n"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "Order confirmed by days. User: %s, Order: %s"
+msgstr "Pedido confirmado por días. Usuario: %s, Pedido: %s"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -112,10 +174,31 @@ msgid "Order confirmed by quota. User: %s, Order: %s"
 msgstr "Pedido confirmado por cupo. Usuario: %s, Pedido: %s"
 
 #. module: sale_extended
+#: code:addons/sale_extended/models/sale_order.py:0
+#, python-format
+msgid "Order reserved for more than 15 days. Confirm or Cancel"
+msgstr "Pedido reservado por mas de 15 días. Confirmar o Cancelar"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pick_bool
+msgid "Pick Bool"
+msgstr "Sin Fecha de Recogida"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pick_date
+msgid "Pick Date"
+msgstr "Fecha de Recogida"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__pricelist_id
 msgid "Pricelist"
 msgstr "Lista de Precios"
+
+#. module: sale_extended
+#: model:ir.model,name:sale_extended.model_product_template
+msgid "Product Template"
+msgstr "Plantilla del Producto"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -136,6 +219,18 @@ msgid "Product: %s, Subtotal: %s, Standard: %s \n"
 msgstr "Producto: %s, Subtotal: %s, Costo: %s \n"
 
 #. module: sale_extended
+#: model:account.incoterms,name:sale_extended.incoterm_res
+msgid "RESERVATION"
+msgstr "RESERVA"
+
+#. module: sale_extended
+#: model:ir.actions.server,name:sale_extended.ir_cron_run_reservation_ir_actions_server
+#: model:ir.cron,cron_name:sale_extended.ir_cron_run_reservation
+#: model:ir.cron,name:sale_extended.ir_cron_run_reservation
+msgid "Sale: run reservation"
+msgstr "Venta: correr reserva"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_sale_order
 msgid "Sales Order"
 msgstr "Orden de Venta"
@@ -146,11 +241,21 @@ msgid "Sales Order Line"
 msgstr "Línea de Órdenes de Venta"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_bool
+msgid "Shipping Bool"
+msgstr "Boleano de Entrega"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_type
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__shipping_type
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
 msgid "Shipping Type"
 msgstr "Tipo de Entrega"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__upload_date
+msgid "Upload Date"
+msgstr "Fecha de Cargue"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -169,3 +274,8 @@ msgstr "No estas autorizado para copiar pedido"
 #, python-format
 msgid "You are not authorized to draft a order"
 msgstr "No estas autorizado para reiniciar pedido"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_product_template_form
+msgid "days"
+msgstr "días"
