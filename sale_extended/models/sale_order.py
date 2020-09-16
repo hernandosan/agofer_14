@@ -38,11 +38,11 @@ class SaleOrder(models.Model):
         if self.upload_date:
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 2)
 
-    def copy(self):
+    def copy(self, default=None):
         if not self.env.user.has_group('sales_team.group_sale_manager'):
             msg = _('You are not authorized to copy a order')
             raise ValidationError(msg)
-        return super(SaleOrder, self).copy()
+        return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
         self.action_before_confirm()
@@ -230,7 +230,7 @@ class SaleOrderLine(models.Model):
     def _msg_standard_price(self, subtotal, standard):
         self.ensure_one()
         product = self.product_id.sudo().display_name
-        return _("Product: %s, Subtotal: %s, Standard: %s \n") % (product, subtotal, standard)
+        return _("Product: %s, Subtotal: $ %s, Standard: $ %s \n") % (product, subtotal, standard)
 
     def msg_price_discount(self):
         msg = ""
@@ -248,15 +248,15 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         product = self.product_id.sudo().display_name
         discount = self.discount
-        return _("Product: %s, Discount: %s% \n") % (product, discount)
+        return _("Product: %s, Discount: %s \n") % (product, discount)
 
     def msg_product_qty(self):
         msg = ""
         for line in self:
             free_qty_today = line.free_qty_today
             product_uom_qty = line.product_uom_qty
-            if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
-                product_uom_qty = line.product_uom._compute_quantity(product_uom_qty, line.product_id.uom_id)
+            # if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
+            #     product_uom_qty = line.product_uom._compute_quantity(product_uom_qty, line.product_id.uom_id)
             if product_uom_qty > free_qty_today:
                 msg += line._msg_product_qty(product_uom_qty, free_qty_today)
         return msg
