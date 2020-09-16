@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-15 21:57+0000\n"
-"PO-Revision-Date: 2020-09-15 21:57+0000\n"
+"POT-Creation-Date: 2020-09-16 18:55+0000\n"
+"PO-Revision-Date: 2020-09-16 18:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -203,8 +203,8 @@ msgstr "Plantilla del Producto"
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
 #, python-format
-msgid "Product: %s, Discount: %s% \n"
-msgstr "Producto: %s, Descuento: %s% \n"
+msgid "Product: %s, Discount: %s \n"
+msgstr "Producto: %s, Descuento: %s \n"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -215,8 +215,8 @@ msgstr "Producto: %s, Cantidad: %s, Disponible: %s \n"
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
 #, python-format
-msgid "Product: %s, Subtotal: %s, Standard: %s \n"
-msgstr "Producto: %s, Subtotal: %s, Costo: %s \n"
+msgid "Product: %s, Subtotal: $ %s, Standard: $ %s \n"
+msgstr "Producto: %s, Subtotal: $ %s, Costo: $ %s \n"
 
 #. module: sale_extended
 #: model:account.incoterms,name:sale_extended.incoterm_res
