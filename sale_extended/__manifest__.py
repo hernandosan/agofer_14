@@ -21,9 +21,10 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'data/account_incoterms_data.xml',
         'data/ir_cron_data.xml',
+        'views/res_partner_view.xml',
         'views/product_template_view.xml',
         'views/product_pricelist_view.xml',
         'views/sale_order_view.xml',

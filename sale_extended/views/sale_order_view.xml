@@ -5,6 +5,18 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <!--<xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>-->
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
+                </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="attributes">
                     <attribute name="required">1</attribute>
                 </xpath>
@@ -13,6 +25,12 @@
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state','=','done')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state','=','done')]}</attribute>
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="after">
                     <group string="Shipping Type">
@@ -29,6 +47,29 @@
                         <field name="pick_date" 
                             attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
                     </group>
+                </xpath>
+                <xpath expr="//page[@name='other_information']" position="before">
+                    <group string="Payments">
+                        <field name="payments_id" attrs="{'readonly': [('state','not in',('draft','sent'))]}" 
+                        context="{
+                            'default_payment_type': 'inbound', 
+                            'default_partner_id': partner_id, 
+                            'default_amount': amount_total, 
+                            'default_currency_id': currency_id, 
+                            'default_communication': name
+                            }"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_form_stock" model="ir.ui.view">
+            <field name="name">view.sale.order.form.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='incoterm']" position="attributes">
+                    <attribute name="required">1</attribute>
                 </xpath>
             </field>
         </record>

@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    credit_control = fields.Boolean('Credit Control')
+    credit_control = fields.Boolean('Credit Control', default=True)
     credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
         ('insured','Insured Quota'),

@@ -8,5 +8,5 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     sale_delay = fields.Float(default=3)
-    upload_delay = fields.Float('Customer Upload Time', default=1)
-    delivery_delay = fields.Float('Customer Delivery Time', default=2)
+    upload_delay = fields.Float('Customer Upload Time', default=2)
+    delivery_delay = fields.Float('Customer Delivery Time', default=1)

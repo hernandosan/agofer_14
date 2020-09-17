@@ -10,4 +10,4 @@ class AccountPaymentTerm(models.Model):
 
     def _compute_credit_type(self):
         for term in self:
-            term.credit_type = 'credit' if sum(l.days for l in term.line_ids) else 'cash'
+            term.credit_type = 'credit' if term.line_ids and sum(l.days for l in term.line_ids) else 'cash'

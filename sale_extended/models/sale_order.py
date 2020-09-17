@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
     shipping_bool = fields.Boolean('Shipping Bool', copy=False)
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
     pick_bool = fields.Boolean('Pick Bool')
@@ -20,6 +21,7 @@ class SaleOrder(models.Model):
     delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
+    payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):
@@ -31,41 +33,49 @@ class SaleOrder(models.Model):
     @api.onchange('date_order')
     def _onchange_date_order(self):
         if self.date_order:
-            self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 1)
+            self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 2)
 
     @api.onchange('upload_date')
     def _onchange_upload_date(self):
         if self.upload_date:
-            self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 2)
+            self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
 
     def copy(self, default=None):
         if not self.env.user.has_group('sales_team.group_sale_manager'):
-            msg = _('You are not authorized to copy a order')
-            raise ValidationError(msg)
+            default = dict(default or {})
+            pricelist_id = self.env['product.pricelist'].search([], limit=1).id
+            warehouse_id = self.env['stock.warehouse'].search([], limit=1).id
+            default.update(pricelist_id=pricelist_id, warehouse_id=warehouse_id)
         return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
         self.action_before_confirm()
         return super(SaleOrder, self).action_confirm()
 
-    def action_cancel(self):
-        if not self.env.user.has_group('sales_team.group_sale_manager'):
-            msg = _('You are not authorized to cancel a order')
-            raise ValidationError(msg)
-        return super(SaleOrder, self).action_cancel()
-
-    def action_draft(self):
-        if not self.env.user.has_group('sales_team.group_sale_manager'):
-            msg = _('You are not authorized to draft a order')
-            raise ValidationError(msg)
-        return super(SaleOrder, self).action_draft()
-
     def action_before_confirm(self):
-        self.validate_standard_price()
         self.validate_price_discount()
+        self.validate_standard_price()
         self.validate_product_qty()
         self.validate_delivery_date()
-        self.validate_credit_control()
+        self.validate_credit_type()
+
+    def validate_price_discount(self):
+        for sale in self:
+            msg_validate = sale._validate_price_discount()
+            if msg_validate:
+                if self.env.user.has_group('sales_team.group_sale_manager'):
+                    user = self.env.user.login
+                    order = sale.name
+                    body = _("Order confirmed by discount. User: %s, Order: %s \n") % (user, order) + msg_validate
+                    _logger.warning(body)
+                    sale.message_post(body=body)
+                else:
+                    msg = _('Order blocked by discount. \n') + msg_validate
+                    raise ValidationError(msg)
+
+    def _validate_price_discount(self):
+        self.ensure_one()
+        return self.order_line.msg_price_discount()
 
     def validate_standard_price(self):
         for sale in self:
@@ -103,27 +113,55 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return self.order_line.msg_product_qty()
 
-    def validate_price_discount(self):
+    def validate_delivery_date(self):
         for sale in self:
-            msg_validate = sale._validate_price_discount()
-            if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_manager'):
-                    user = self.env.user.login
-                    order = sale.name
-                    body = _("Order confirmed by discount. User: %s, Order: %s \n") % (user, order) + msg_validate
-                    _logger.warning(body)
-                    sale.message_post(body=body)
-                else:
-                    msg = _('Order blocked by discount. \n') + msg_validate
-                    raise ValidationError(msg)
+            sale._validate_delivery_date()
 
-    def _validate_price_discount(self):
+    def _validate_delivery_date(self):
         self.ensure_one()
-        return self.order_line.msg_price_discount()
+        date_order = self.date_order.date()
+        weekday = date_order.weekday()
+        days = 3 if weekday not in (3, 4, 5) else 4
+        date = date_order + timedelta(days=days)
+        if not self.delivery_bool and self.delivery_date and self.delivery_date < date:
+            if self.env.user.has_group('sales_team.group_sale_manager'):
+                user = self.env.user.login
+                order = self.name
+                body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
+                _logger.warning(body)
+                self.message_post(body=body)
+            else:
+                msg = _("Order blocked by days. Delivery date cannot be less than three days")
+                raise ValidationError(msg)
+
+    def validate_credit_type(self):
+        for sale in self:
+            sale.validate_cash_control() if sale.credit_type == 'cash' else sale.validate_credit_control()
+
+    def validate_cash_control(self):
+        for sale in self:
+            sale._validate_cash_control()
+
+    def _validate_cash_control(self):
+        self.ensure_one()
+        currency_id = self.company_id.currency_id
+        decimal_places = currency_id.decimal_places
+        amount_total = currency_id.compute(self.amount_total, self.currency_id)
+        amount_payment = sum(currency_id.compute(payment.amount, payment.currency_id) for payment in self.payments_id) if self.payments_id else 0.0
+        if amount_payment < amount_total:
+            if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
+                user = self.env.user.login
+                order = self.name
+                body = _("Order confirmed by cash. User: %s, Order: %s") % (user, order)
+                _logger.warning(body)
+                self.message_post(body=body)
+            else:
+                msg = _("Order blocked by cash. Total: $ %s, Payment: $ %s") % (round(amount_total,decimal_places), round(amount_payment,decimal_places))
+                raise ValidationError(msg)
 
     def validate_credit_control(self):
         for sale in self:
-            if sale.partner_id.credit_control:
+            if sale.partner_id and sale.partner_id.commercial_partner_id and sale.partner_id.commercial_partner_id.credit_control:
                 sale._validate_credit_quota()
                 sale._validate_credit_maturity()
 
@@ -157,27 +195,6 @@ class SaleOrder(models.Model):
                 msg = _("Order blocked by maturity. Maturity: $ %s") % (credit_maturity)
                 raise ValidationError(msg)
 
-    def validate_delivery_date(self):
-        for sale in self:
-            sale._validate_delivery_date()
-
-    def _validate_delivery_date(self):
-        self.ensure_one()
-        date_order = fields.Date.today()
-        weekday = date_order.weekday()
-        days = 3 if weekday not in (3, 4, 5) else 4
-        date = date_order + timedelta(days=days)
-        if not self.delivery_bool and self.delivery_date and self.delivery_date < date:
-            if self.env.user.has_group('sales_team.group_sale_manager'):
-                user = self.env.user.login
-                order = self.name
-                body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
-                _logger.warning(body)
-                self.message_post(body=body)
-            else:
-                msg = _("Order blocked by days. Delivery date cannot be less than three days")
-                raise ValidationError(msg)
-
     def run_reservation(self):
         incoterm = self.env.ref('sale_extended.incoterm_res').id
         date = datetime.now() - timedelta(days=15)
@@ -202,9 +219,13 @@ class SaleOrder(models.Model):
         self.env['mail.activity'].sudo().create(vals)
         self.write({'shipping_bool': True})
 
+    def action_sale_register_payment(self):
+        return self.env['account.payment'].with_context(active_ids=self.ids, active_model='sale.order', active_id=self.id).action_register_payment()
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    price_unit = fields.Float(copy=False)
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
     shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
     upload_delay = fields.Float(related='product_id.upload_delay', store=True)
@@ -224,13 +245,13 @@ class SaleOrderLine(models.Model):
             price_subtotal = line.price_subtotal / line.product_uom_qty
             standard_price = line.product_id.sudo().standard_price
             if price_subtotal < standard_price:
-                msg += line._msg_standard_price(price_subtotal, standard_price)
+                msg += line._msg_standard_price(price_subtotal)
         return msg
 
-    def _msg_standard_price(self, subtotal, standard):
+    def _msg_standard_price(self, subtotal):
         self.ensure_one()
         product = self.product_id.sudo().display_name
-        return _("Product: %s, Subtotal: $ %s, Standard: $ %s \n") % (product, subtotal, standard)
+        return _("Product: %s, Subtotal: $ %s \n") % (product, subtotal)
 
     def msg_price_discount(self):
         msg = ""
