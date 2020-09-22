@@ -49,9 +49,11 @@ class PurchaseImport(models.Model):
     picking_ids = fields.One2many('stock.picking', 'import_id', 'Stock Pickings', copy=False)
     move_lines = fields.One2many('stock.move', 'import_id', 'Stock Moves', copy=False)
     move_lines_done = fields.One2many('stock.move', 'import_done_id', 'Stock Moves Done', copy=False)
+    # Journal Items
+    lines_move_ids = fields.Many2many('account.move.line', 'import_line_rel', 'import_id', 'move_id', 'Journal Items (Stock)', compute='_compute_lines_ids')
+    lines_invoice_ids = fields.Many2many('account.move.line', 'import_line_rel', 'import_id', 'invoice_id', 'Journal Items (Invoice)', compute='_compute_lines_ids')
     # Totals
     import_line = fields.One2many('purchase.import.line', 'import_id', string='Import Lines', copy=False)
-    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
     # Amount
     amount_cost = fields.Monetary('Cost Amount Local', currency_field='currency_company_id')
     amount_cost_currency = fields.Monetary('Cost Amount', compute='_compute_amount', store=True)
@@ -76,8 +78,7 @@ class PurchaseImport(models.Model):
     # Invoice
     invoice_tariff = fields.Many2one('account.move', 'Invoice Tariff', copy=False)
     invoice_vat = fields.Many2one('account.move', 'Invoice Vat', copy=False)
-    # Taxes
-    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    invoice_cif = fields.Many2one('account.move', 'Invoice CIF', copy=False)
 
     @api.model
     def create(self, vals):
@@ -149,6 +150,17 @@ class PurchaseImport(models.Model):
                 'amount_tax': purchase.currency_id.round(amount_tax),
                 'amount_total': amount_untaxed + amount_tax,
             })
+
+    @api.depends('move_lines_done', 'moves_ids')
+    def _compute_lines_ids(self):
+        for purchase in self:
+            move_ids = purchase.move_lines_done.stock_valuation_layer_ids.account_move_id.line_ids.ids
+            invoice_ids = purchase.moves_ids.filtered(lambda m: m.state == 'posted').line_ids.ids
+            lines_ids = {
+                'lines_move_ids': [(6,0,move_ids)],
+                'lines_invoice_ids': [(6,0,invoice_ids)]
+            }
+            purchase.update(lines_ids)
 
     def action_purchase(self):
         self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
@@ -269,14 +281,70 @@ class PurchaseImport(models.Model):
     def action_purchase_order(self):
         self.orders_ids.action_purchase_import()
 
-    # Lines
+    def action_invoice(self):
+        for purchase in self:
+            purchase._action_invoice()
+
+    def _action_invoice(self):
+        self.ensure_one()
+        partner_id = self.partner_id
+        # Copy purchase lines.
+        invoice = {
+            'date': self.date_import,
+            'type': 'in_invoice',
+            'company_id': self.company_id.id,
+            'import_id': self.id,
+            'import_type': 'cif',
+            'partner_id': partner_id.id,
+            'invoice_origin': self.name,
+            'ref': self.partner_ref,
+            # Partner
+            'fiscal_position_id': partner_id.property_account_position_id.id if partner_id.property_account_position_id else False,
+            'invoice_payment_term_id': partner_id.property_supplier_payment_term_id.id if partner_id.property_supplier_payment_term_id else False,
+            'currency_id': self.currency_id.id,
+        }
+        invoice_id = self.env['account.move'].sudo().create(invoice)
+        invoice_line_ids = []
+        for line in self.import_line:
+            lines = line.line_id._prepare_account_move_line(invoice_id)
+            # account
+            accounts = line.product_id.product_tmpl_id.get_product_accounts(fiscal_pos=self.env['account.fiscal.position'].browse(invoice.get('fiscal_position_id')))
+            lines.update(quantity=line.product_qty, account_id=accounts['expense'])
+            invoice_line_ids.append((0,0,lines))
+        if self.amount_insurance_currency:
+            product_id = self.env.ref('purchase_extended.product_product_insurance')
+            lines = {
+                'name': '%s: %s' % (self.name, product_id.display_name),
+                'move_id': invoice_id.id,
+                'currency_id': self.currency_id,
+                'date_maturity': invoice_id.invoice_date_due,
+                'product_uom_id': product_id.uom_id.id,
+                'product_id': product_id.id,
+                'price_unit': self.amount_insurance_currency,
+                'quantity': 1.0,
+                'partner_id': invoice_id.partner_id.id,
+            }
+            invoice_line_ids.append((0,0,lines))
+        if self.amount_freight_currency:
+            product_id = self.env.ref('purchase_extended.product_product_freight')
+            lines = {
+                'name': '%s: %s' % (self.name, product_id.display_name),
+                'move_id': invoice_id.id,
+                'currency_id': self.currency_id,
+                'date_maturity': invoice_id.invoice_date_due,
+                'product_uom_id': product_id.uom_id.id,
+                'product_id': product_id.id,
+                'price_unit': self.amount_freight_currency,
+                'quantity': 1.0,
+                'partner_id': invoice_id.partner_id.id,
+            }
+            invoice_line_ids.append((0,0,lines))
+        invoice_id.write({'invoice_line_ids': invoice_line_ids})
+        self.update({'invoice_cif': invoice_id.id})
+
     def _compute_amount_cif(self, moves, option):
         self.ensure_one()
         self.amount_cost = sum((move._get_price_unit_purchase()) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
-        if not self.amount_insurance:
-            self.amount_insurance = abs(sum(move.amount_total_signed for move in self.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
-        if not self.amount_freight:
-            self.amount_freight = abs(sum(move.amount_total_signed for move in self.moves_ids.filtered(lambda m: m.import_type == 'freight')))
 
     def _action_create_line(self, moves, option):
         self.ensure_one()
@@ -296,6 +364,7 @@ class PurchaseImport(models.Model):
             vals = {
                 'move_id': move.id,
                 'order_id': move.purchase_line_id.order_id.id,
+                'line_id': move.purchase_line_id.id,
                 'product_id': move.product_id.id,
                 'weight': move.product_id.weight * product_qty,
                 'name': move.product_id.display_name,
@@ -376,7 +445,6 @@ class PurchaseImportLine(models.Model):
 
     categ_id = fields.Many2one(related='product_id.categ_id', store=True)
 
-    # Cost
     currency_import_id = fields.Many2one(related='import_id.currency_id', store=True, string='Import Currency')
     price_unit_currency = fields.Monetary('Unit Price Currency', digits='Product Price', currency_field='currency_import_id')
     price_cost_currency = fields.Monetary('Cost Price Currency', digits='Product Price', currency_field='currency_import_id')
@@ -395,14 +463,14 @@ class PurchaseImportLine(models.Model):
     price_customs = fields.Monetary('Customs Price', digits='Product Price')
     price_tariff = fields.Monetary('Tariff Price', digits='Product Price', compute='_compute_price', store=True)
 
-    order_id = fields.Many2one('purchase.order', 'Order')
+    order_id = fields.Many2one('purchase.order', 'Order', ondelete='set null', index=True, readonly=True)
+    line_id = fields.Many2one('purchase.order.line', 'Order Line', ondelete='set null', index=True, readonly=True)
+
     import_id = fields.Many2one('purchase.import', string='Import Reference', index=True, required=True, ondelete='cascade')
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
 
     move_id = fields.Many2one('stock.move', 'Move')
 
-    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
-    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
     company_id = fields.Many2one('res.company', related='import_id.company_id', string='Company', store=True, readonly=True)
     state = fields.Selection(related='import_id.state', store=True, readonly=False)
 
