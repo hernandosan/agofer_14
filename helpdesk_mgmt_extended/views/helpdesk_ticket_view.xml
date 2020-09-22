@@ -1,0 +1,55 @@
+<odoo>
+    <record id="ticket_action_views" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search" />
+    </record>
+
+    <record id="ticket_view_tree" model="ir.ui.view">
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='last_stage_update']" position="after">
+                <field name="timesheet" readonly="1"/>
+                <field name="expiration" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">expiration > 60</attribute>
+                <attribute name="decoration-bf">expiration > 60</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_search" model="ir.ui.view">
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search" />
+        <field name="arch" type="xml">
+            <field name="stage_id" position="after">
+                <field name="timesheet" />
+            </field>
+        </field>
+    </record>
+
+    <record id="ticket_view_form" model="ir.ui.view">
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='number']" position="replace">
+                <field name="number" decoration-danger="expiration > 50" decoration-bf="expiration > 50"/>
+            </xpath>
+            <xpath expr="//field[@name='last_stage_update']" position="after">
+                <label for="time_hours"/>
+                    <div>
+                      <field name="time_hours" class="oe_inline"/>
+                      Horas
+                    </div>
+                <field name="timesheet" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='closed_date']" position="after">
+<!--                <field name="progress" decoration-danger="progress > 60" decoration-bf="progress > 60"/>-->
+                    <field name="expiration" widget="progressbar" options="{'max_field': 'maximum_rate'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
