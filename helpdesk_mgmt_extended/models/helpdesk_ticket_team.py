@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 
-class HelpdeskCategoryTeam(models.Model):
+class HelpdeskTicketTeam(models.Model):
     _inherit = "helpdesk.ticket.team"
 
-    category_ids = fields.One2many('helpdesk.ticket.catagory', 'team_id', 'Categories')
+    category_ids = fields.One2many('helpdesk.ticket.category', 'team_id', 'Categories')

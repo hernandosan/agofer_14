@@ -22,10 +22,11 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/helpdesk_ticket_type_view.xml',
+        'data/helpdesk_ticket_stage_data.xml',
         'views/helpdesk_sla_view.xml',
         'views/helpdesk_ticket_category_view.xml',
         'views/helpdesk_ticket_team_view.xml',
+        'views/helpdesk_ticket_type_view.xml',
         'views/helpdesk_ticket_view.xml',
     ],
     # only loaded in demonstration mode

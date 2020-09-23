@@ -5,7 +5,7 @@
             <field name="model">helpdesk.sla</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <tree string="Tag">
+                <tree string="SLA Policies">
                     <field name="name"/>
                     <field name="team_id"/>
                     <field name="active"/>
@@ -51,7 +51,6 @@
                 </form>
             </field>
         </record>
-        
 
         <record model="ir.actions.act_window" id="action_helpdesk_sla">
             <field name="name">Helpdesk SLA</field>

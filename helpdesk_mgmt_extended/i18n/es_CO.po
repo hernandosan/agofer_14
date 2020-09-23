@@ -1,0 +1,290 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* helpdesk_mgmt_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-23 22:21+0000\n"
+"PO-Revision-Date: 2020-09-23 22:21+0000\n"
+"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "Apply on"
+msgstr "Aplicar sobre"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_team__category_ids
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_team_form
+msgid "Categories"
+msgstr "Categorias"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__category_id
+msgid "Category"
+msgstr "Categoria"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__company_id
+msgid "Company"
+msgstr "Compañia"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__create_uid
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__create_date
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__create_date
+msgid "Created on"
+msgstr "Creado"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__time_days
+msgid "Days"
+msgstr "Días"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "Description of the policy..."
+msgstr "Descripción de la política..."
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__display_name
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__display_name
+msgid "Display Name"
+msgstr "Nombre Público"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_form
+msgid "Done"
+msgstr "Terminado"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.actions.act_window,name:helpdesk_mgmt_extended.action_helpdesk_sla
+#: model:ir.model,name:helpdesk_mgmt_extended.model_helpdesk_sla
+#: model:ir.ui.menu,name:helpdesk_mgmt_extended.menu_helpdesk_sla
+msgid "Helpdesk SLA"
+msgstr "ANS Helpdesk"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model,name:helpdesk_mgmt_extended.model_helpdesk_ticket
+msgid "Helpdesk Ticket"
+msgstr "Ticket Helpdesk"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model,name:helpdesk_mgmt_extended.model_helpdesk_ticket_category
+msgid "Helpdesk Ticket Category"
+msgstr "Categoría de ticket Helpdesk"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model,name:helpdesk_mgmt_extended.model_helpdesk_ticket_team
+msgid "Helpdesk Ticket Team"
+msgstr "Equipo de ticket Helpdesk"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model,name:helpdesk_mgmt_extended.model_helpdesk_ticket_type
+msgid "Helpdesk Ticket Type"
+msgstr "Tipo de Ticket Helpdesk"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields.selection,name:helpdesk_mgmt_extended.selection__helpdesk_sla__priority__2
+msgid "High"
+msgstr "Alta"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__time_hours
+msgid "Hours"
+msgstr "Horas"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__id
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__id
+msgid "ID"
+msgstr ""
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla____last_update
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__write_uid
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__write_uid
+msgid "Last Updated by"
+msgstr "Actualizado por"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__write_date
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__write_date
+msgid "Last Updated on"
+msgstr "Actualizado"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields.selection,name:helpdesk_mgmt_extended.selection__helpdesk_sla__priority__0
+msgid "Low"
+msgstr "Baja"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields.selection,name:helpdesk_mgmt_extended.selection__helpdesk_sla__priority__1
+msgid "Medium"
+msgstr "Media"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__name
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_form
+msgid "Other Information"
+msgstr "Otra Información"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__priority
+msgid "Priority"
+msgstr "Prioridad"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_form
+msgid "Progress"
+msgstr "Progreso"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "Reach In"
+msgstr "Alcanzar en"
+
+#. module: helpdesk_mgmt_extended
+#: model:helpdesk.ticket.stage,name:helpdesk_mgmt_extended.helpdesk_ticket_stage_result
+msgid "Result"
+msgstr "Resuelto"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__sla_id
+msgid "SLA"
+msgstr "ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__sla_date
+msgid "SLA Date"
+msgstr "Fecha cierre ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__sla_deadline
+msgid "SLA Deadline"
+msgstr "Fecha límite ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_tree
+msgid "SLA Policies"
+msgstr "Políticas ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "SLA Policy"
+msgstr "Política ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__sla_progress
+msgid "SLA Progress"
+msgstr "Progreso ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__sla_time
+msgid "SLA Time"
+msgstr "Tiempo ANS"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_type__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__stage_id
+msgid "Stage"
+msgstr "Etapa"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_type_tree
+msgid "Tag"
+msgstr "Tipo de Ticket"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "Target"
+msgstr "Objetivo"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__team_id
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket_category__team_id
+msgid "Team"
+msgstr "Equipo"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.actions.act_window,name:helpdesk_mgmt_extended.action_helpdesk_ticket_type
+#: model:ir.ui.menu,name:helpdesk_mgmt_extended.menu_helpdesk_ticket_type
+msgid "Ticket Type"
+msgstr "Tipo de Ticket"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__time_total
+msgid "Time"
+msgstr "Tiempo"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_sla__type_id
+#: model:ir.model.fields,field_description:helpdesk_mgmt_extended.field_helpdesk_ticket__type_id
+msgid "Type"
+msgstr "Tipo"
+
+#. module: helpdesk_mgmt_extended
+#: model:ir.model.fields.selection,name:helpdesk_mgmt_extended.selection__helpdesk_sla__priority__3
+msgid "Very High"
+msgstr "Urgente"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "days<br/>"
+msgstr "días<br/>"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "e.g. Close urgent tickets within 36 hours"
+msgstr "p.e. Cierre urgente de tickets dentro de las 36 horas"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_ticket_form
+msgid "hours"
+msgstr "horas"
+
+#. module: helpdesk_mgmt_extended
+#: model_terms:ir.ui.view,arch_db:helpdesk_mgmt_extended.view_helpdesk_sla_form
+msgid "hours<br/>"
+msgstr "horas<br/>"

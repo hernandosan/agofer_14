@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="view_helpdesk_ticket_category_form">
             <field name="name">view.helpdesk.ticket.category.form</field>
             <field name="model">helpdesk.ticket.category</field>
@@ -27,6 +26,5 @@
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>
