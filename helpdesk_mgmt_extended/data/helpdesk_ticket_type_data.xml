@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="helpdesk_ticket_type_incidents" model="helpdesk.ticket.type">
+            <field name="sequence">1</field>
+            <field name="name">Management of incidents</field>
+        </record>
+
+        <record id="helpdesk_ticket_type_changes" model="helpdesk.ticket.type">
+            <field name="sequence">2</field>
+            <field name="name">Change Management</field>
+        </record>
+
+        <record id="helpdesk_ticket_type_others" model="helpdesk.ticket.type">
+            <field name="sequence">3</field>
+            <field name="name">Management of others</field>
+        </record>
+
+        <record id="helpdesk_ticket_type_training" model="helpdesk.ticket.type">
+            <field name="sequence">4</field>
+            <field name="name">Training management</field>
+        </record>
+    </data>
+</odoo>

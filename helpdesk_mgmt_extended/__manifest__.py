@@ -23,6 +23,8 @@
     'data': [
         'security/ir.model.access.csv',
         'data/helpdesk_ticket_stage_data.xml',
+        'data/helpdesk_ticket_type_data.xml',
+        'data/helpdesk_ticket_team_data.xml',
         'views/helpdesk_sla_view.xml',
         'views/helpdesk_ticket_category_view.xml',
         'views/helpdesk_ticket_team_view.xml',
