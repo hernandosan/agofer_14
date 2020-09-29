@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record id="view_purchase_import_tree" model="ir.ui.view">
             <field name="name">view.purchase.import.tree</field>
             <field name="model">purchase.import</field>
@@ -63,7 +62,7 @@
                     <header>
                         <button string="Confirm" type="object" name="action_purchase" states="draft" class="oe_highlight" />
                         <button string="In Progress" type="object" name="action_progress" states="purchase" class="oe_highlight"/>
-                        <button string="Check" type="object" name="action_check" states="progress"/>
+                        <button string="Calculate" type="object" name="action_calculate" states="progress"/>
                         <button string="Validate" type="object" name="button_validate" states="progress" class="oe_highlight"/>
                         <button string="Create Invoice" type="object" name="action_invoice" class="oe_highlight" 
                             attrs="{'invisible': ['|',('invoice_cif','!=',False),('state','!=','done')]}"/>
@@ -73,6 +72,10 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_account" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible':[('account_ids','=',[])]}">
+                                <field name="account_count" widget="statinfo" string="Journal Items"/>
+                                <field name="account_ids" invisible="1"/>
+                            </button>
                         </div>
                         <div class="oe_title">
                             <span class="o_form_label"> Purchase Import </span>
@@ -222,11 +225,12 @@
                                         <field name="categ_id" readonly="1" optional="hide"/>
                                         <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
                                         <field name="description_picking" string="Description" optional="hide"/>
-                                        <field name="date_expected" optional="hide" domain="{'readonly': [('show_operations', '=', True), ('is_locked', '=', True)]}"/>
+                                        <field name="date" invisible="1" />
                                         <field name="is_initial_demand_editable" invisible="1"/>
                                         <field name="is_quantity_done_editable" invisible="1"/>
                                         <field name="product_uom_qty" string="Demand" attrs="{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}"/>
                                         <field name="reserved_availability" string="Reserved" invisible="1"/>
+                                        <field name="product_qty" invisible="1" readonly="1"/>
                                         <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
                                         <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
                                         <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list" width="0.1" attrs="{'invisible': [('show_details_visible', '=', False)]}" options="{&quot;warn&quot;: true}"/>
@@ -276,11 +280,12 @@
                                         <field name="display_assign_serial" invisible="1"/>
                                         <field name="product_id" required="1" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('has_move_lines', '=', True)]}"/>
                                         <field name="description_picking" string="Description" optional="hide"/>
-                                        <field name="date_expected" optional="hide" domain="{'readonly': [('show_operations', '=', True), ('is_locked', '=', True)]}"/>
+                                        <field name="date" invisible="1"/>
                                         <field name="is_initial_demand_editable" invisible="1"/>
                                         <field name="is_quantity_done_editable" invisible="1"/>
                                         <field name="product_uom_qty" string="Demand" attrs="{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}"/>
                                         <field name="reserved_availability" string="Reserved" invisible="1"/>
+                                        <field name="product_qty" invisible="1" readonly="1"/>
                                         <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
                                         <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
                                         <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list" width="0.1" attrs="{'invisible': [('show_details_visible', '=', False)]}" options="{&quot;warn&quot;: true}"/>
@@ -309,15 +314,7 @@
                             </page>
                             <page string="Invoices" states="progress,done">
                                 <field name="moves_ids" attrs="{'readonly': [('state','!=','progress')]}" 
-                                    domain="[('type', '=', 'in_invoice'),('state', '!=', 'cancel'),('import_bool', '=', False),('import_type', 'not in', ('tariff','vat'))]"/>
-                            </page>
-                            <page string="Journal Items" states="done">
-                                <group string="Journal Items (Stock)">
-                                    <field name="lines_move_ids" readonly="True" nolabel="1"/>
-                                </group>
-                                <group string="Journal Items (Invoice)">
-                                    <field name="lines_invoice_ids" readonly="True" nolabel="1"/>
-                                </group>
+                                    domain="[('move_type', '=', 'in_invoice'),('state', '!=', 'cancel'),('import_bool', '=', False),('import_type', 'not in', ('tariff','vat'))]"/>
                             </page>
                             <page string="Other Information">
                                 <group>
@@ -358,7 +355,10 @@
             </field>
         </record>
 
-        <menuitem action="action_purchase_import" id="menu_purchase_import" parent="purchase.menu_procurement_management" sequence="20"/>
+        <menuitem id="menu_parent_import" name="Imports" parent="purchase.menu_purchase_root" sequence="5" />
 
+        <menuitem id="purchase.menu_purchase_products" name="Products" parent="purchase.menu_purchase_root" sequence="10"/>
+
+        <menuitem action="action_purchase_import" id="menu_purchase_import" parent="menu_parent_import" sequence="5"/>
     </data>
 </odoo>
