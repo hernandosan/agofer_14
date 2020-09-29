@@ -1,2 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_pricelist_history_manager,product.pricelist.history,model_product_pricelist_history,sales_team.group_sale_manager,1,1,1,1
+access_account_payment_asesor,account.payment.asesor,account.model_account_payment,sales_team.group_sale_salesman,1,0,1,0
+access_account_payment_method_asesor,account.payment.method.asesor,account.model_account_payment_method,sales_team.group_sale_salesman,1,0,0,0
+access_stock_scrap_asesor,account.stock.scrap.asesor,stock.model_stock_scrap,sales_team.group_sale_salesman,1,0,0,0
+access_stock_quant_asesor,account.stock.quant.asesor,stock.model_stock_quant,sales_team.group_sale_salesman,1,0,0,0
