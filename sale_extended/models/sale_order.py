@@ -41,11 +41,9 @@ class SaleOrder(models.Model):
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
 
     def copy(self, default=None):
-        if not self.env.user.has_group('sales_team.group_sale_manager'):
+        if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
             default = dict(default or {})
-            pricelist_id = self.env['product.pricelist'].search([], limit=1).id
-            warehouse_id = self.env['stock.warehouse'].search([], limit=1).id
-            default.update(pricelist_id=pricelist_id, warehouse_id=warehouse_id)
+            default.update(pricelist_id=self.warehouse_id.pricelists_ids[0].id)
         return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
@@ -63,7 +61,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_price_discount()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_manager'):
+                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by discount. User: %s, Order: %s \n") % (user, order) + msg_validate
@@ -81,7 +79,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_standard_price()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_manager'):
+                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by cost. User: %s, Order: %s \n") % (user, order) + msg_validate
@@ -99,7 +97,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_product_qty()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_manager'):
+                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by quanity. User %s, Order %s \n") % (user, order) + msg_validate
@@ -124,7 +122,7 @@ class SaleOrder(models.Model):
         days = 3 if weekday not in (3, 4, 5) else 4
         date = date_order + timedelta(days=days)
         if not self.delivery_bool and self.delivery_date and self.delivery_date < date:
-            if self.env.user.has_group('sales_team.group_sale_manager'):
+            if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                 user = self.env.user.login
                 order = self.name
                 body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
@@ -144,10 +142,9 @@ class SaleOrder(models.Model):
 
     def _validate_cash_control(self):
         self.ensure_one()
-        currency_id = self.company_id.currency_id
-        decimal_places = currency_id.decimal_places
-        amount_total = currency_id.compute(self.amount_total, self.currency_id)
-        amount_payment = sum(currency_id.compute(payment.amount, payment.currency_id) for payment in self.payments_id) if self.payments_id else 0.0
+        decimal_places = self.currency_id.decimal_places
+        amount_total = self.amount_total
+        amount_payment = sum(payment.currency_id.with_context(date=payment.payment_date).compute(payment.amount, self.currency_id) for payment in self.payments_id) if self.payments_id else 0.0
         if amount_payment < amount_total:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
                 user = self.env.user.login
@@ -161,14 +158,14 @@ class SaleOrder(models.Model):
 
     def validate_credit_control(self):
         for sale in self:
-            if sale.partner_id and sale.partner_id.commercial_partner_id and sale.partner_id.commercial_partner_id.credit_control:
+            if sale.partner_id.commercial_partner_id.credit_control:
                 sale._validate_credit_quota()
                 sale._validate_credit_maturity()
 
     def _validate_credit_quota(self):
         self.ensure_one()
-        amount_total = self.company_id.currency_id.compute(self.amount_total, self.currency_id)
-        credit_quota = self.partner_id.credit_quota
+        amount_total = self.currency_id.with_context(date=self.date_order).compute(self.amount_total, self.company_id.currency_id)
+        credit_quota = self.partner_id.commercial_partner_id.credit_quota
         decimal_places = self.company_id.currency_id.decimal_places
         if amount_total > credit_quota:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
@@ -183,7 +180,7 @@ class SaleOrder(models.Model):
 
     def _validate_credit_maturity(self):
         self.ensure_one()
-        credit_maturity = self.partner_id.credit_maturity
+        credit_maturity = self.partner_id.commercial_partner_id.credit_maturity
         if credit_maturity:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
                 user = self.env.user.login

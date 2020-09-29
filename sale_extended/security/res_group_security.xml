@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="group_sale_manager" model="res.groups">
+            <field name="name">Asesor Assistant</field>
+            <field name="comment">the user will have an access to the sales configuration as well as statistic reports.</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_sale_salesman_all_leads'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>-->
+
+        <record id="sales_team.group_sale_salesman" model="res.groups">
+            <field name="name">Asesor</field>
+        </record>
+
+        <record id="sales_team.group_sale_salesman_all_leads" model="res.groups">
+            <field name="name">Assistant</field>
+        </record>
+    </data>
+</odoo>

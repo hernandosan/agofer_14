@@ -28,5 +28,9 @@
                 </xpath>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="stock.product_form_view_procurement_button">
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        </record>
     </data>
 </odoo>

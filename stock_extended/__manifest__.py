@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Purchase Agofer",
+    'name': "Inventory Agofer",
 
-    'summary': "Purchase orders, tenders and agreements",
+    'summary': "Manage your stock and logistics activities",
 
-    'description': "Purchase orders, tenders and agreements",
+    'description': "Manage your stock and logistics activities",
 
     'author': "Agofer S.A.",
     'contributors': ['Juan Pablo Arcos jparcos@agofer.com.co'],
@@ -13,22 +13,17 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Operations/Purchase',
+    'category': 'Operations/Inventory',
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['purchase_stock'],
+    'depends': ['stock'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'data/ir_sequence_data.xml',
-        'data/product_template_data.xml',
-        'views/account_move_view.xml',
+        # 'security/ir.model.access.csv',
         'views/product_template_view.xml',
-        'views/purchase_import_view.xml',
-        'views/purchase_order_view.xml',
-        # 'views/stock_move_view.xml',
+        'views/stock_picking_view.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

@@ -41,7 +41,7 @@ class ResPartner(models.Model):
         remaining = (self - treated)
         remaining.credit_maturity = False
 
-    @api.depends('credit_limit', 'credit_maturity')
+    @api.depends('credit_limit', 'credit')
     def _compute_credit_quota(self):
         for partner in self:
             partner.credit_quota = partner.credit_limit - partner.credit

@@ -22,12 +22,15 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/res_group_security.xml',
         'data/account_incoterms_data.xml',
         'data/ir_cron_data.xml',
-        'views/res_partner_view.xml',
-        'views/product_template_view.xml',
+        'views/account_payment_view.xml',
         'views/product_pricelist_view.xml',
+        'views/product_template_view.xml',
+        'views/res_partner_view.xml',
         'views/sale_order_view.xml',
+        'views/stock_warehouse_view.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
