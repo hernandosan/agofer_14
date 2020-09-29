@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_helpdesk_ticket_team_form">
+            <field name="name">view.helpdesk.ticket.team.form</field>
+            <field name="model">helpdesk.ticket.team</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_team_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='alias_user_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='members']" position="after">
+                    <page string="Categories">
+                        <field name="category_ids" widget="many2many" options="{'not_delete': True}"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
