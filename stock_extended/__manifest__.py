@@ -14,10 +14,14 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Operations/Inventory',
-    'version': '13.1',
+    'version': '14.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock'],
+    'depends': [
+        'delivery', 
+        'sale_purchase_stock', 
+        'stock_landed_costs',
+    ],
 
     # always loaded
     'data': [
