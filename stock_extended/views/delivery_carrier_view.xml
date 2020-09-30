@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+        <record id="view_delivery_carrier_form" model="ir.ui.view">
+            <field name="name">view.delivery.carrier.form</field>
+            <field name="model">delivery.carrier</field>
+            <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='title']" position="replace">
+                    <div class="oe_title" name="title">
+                        <label for="name" string="Name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. UPS Express" 
+                                attrs="{'readonly':[('carrier_type','=','stock')], 'required':[('carrier_type','!=','stock')]}"/>
+                        </h1>
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='provider_details']" position="replace">
+                    <group name="provider_details">
+                        <field name="active" invisible="1"/>
+                        <field name="prod_environment" invisible="1"/>
+                        <field name="debug_logging" invisible="1"/>
+                        <field name="carrier_type" invisible="1"/>
+                        <field name="delivery_type" invisible="1"/>
+                        <field name="partner_id" required="True" domain="[('category_id','child_of','Carrier')]"/>
+                        <field name="warehouse_id" attrs="{'required':[('carrier_type','=','stock')]}"/>
+                        <field name="warehouse_dest_id" attrs="{'invisible':[('carrier_type','=','stock')]}"/>
+                        <field name="destination"  
+                            attrs="{'invisible':[('carrier_type','!=','stock')], 'required':[('carrier_type','=','stock')]}"/>
+                        <field name="integration_level" widget="radio" attrs="{'invisible': ['|', ('delivery_type', '=', 'fixed'), ('delivery_type', '=', 'base_on_rule')]}"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@name='delivery_details']" position="replace">
+                    <group name="delivery_details">
+                        <field name="product_id" domain="[('type','=','service'),('landed_cost_ok','=',True)]"/>
+                        <field name="invoice_policy" widget="radio" attrs="{'invisible': ['|', ('delivery_type', 'in', ('fixed', 'base_on_rule')), ('integration_level', '=', 'rate')]}"/>
+                        <field name="price_kg"/>
+                        <field name="tolerance" attrs="{'invisible':[('carrier_type','!=','stock')]}"/>
+                        <label for="margin" invisible="True"/>
+                        <div invisible="True"> 
+                            <field name="margin" class="oe_inline"/>%
+                        </div>
+                        <field name="free_over" invisible="True"/>
+                        <field name="amount" attrs="{'required':[('free_over','!=',False)], 'invisible':[('free_over','=',False)]}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='pricing']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='destination']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="notes" string="Notes">
+                        <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
+                        <div class="oe_clear"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="delivery.action_delivery_carrier_form" model="ir.actions.act_window">
+            <field name="domain">[('carrier_type', '=', 'stock')]</field>
+            <field name="context">{'default_carrier_type': 'stock'}</field>
+        </record>
+    </data>
+</odoo>

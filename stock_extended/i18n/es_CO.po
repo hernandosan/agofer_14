@@ -1,0 +1,133 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-30 17:38+0000\n"
+"PO-Revision-Date: 2020-09-30 17:38+0000\n"
+"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__partner_id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__carrier_id
+#: model:res.partner.category,name:stock_extended.res_partner_category_carrier
+msgid "Carrier"
+msgstr "Transportador"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
+msgid "Define your terms and conditions ..."
+msgstr "Defina sus terminos y condiciones ..."
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__name
+msgid "Delivery Method"
+msgstr "Método entrega"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__carrier_type
+msgid "Delivery Type"
+msgstr "Tipo de envío"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__destination
+msgid "Destination"
+msgstr "Destino"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__warehouse_dest_id
+msgid "Destination Location"
+msgstr "Ubicación Destino"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__display_name
+msgid "Display Name"
+msgstr "Nombre Público"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__landed_type
+msgid "Landed Type"
+msgstr "Tipo de costo"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__price_kg
+msgid "Price (Kg)"
+msgstr "Precio (Kg)"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_carrier__carrier_type__purchase
+#: model:ir.model.fields.selection,name:stock_extended.selection__stock_landed_cost__landed_type__purchase
+msgid "Purchase"
+msgstr "Compras"
+
+#. module: stock_extended
+#: model:ir.model,name:stock_extended.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Métodos de envío"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__warehouse_id
+msgid "Source Location"
+msgstr "Ubicación Origen"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_carrier__carrier_type__stock
+#: model:ir.model.fields.selection,name:stock_extended.selection__stock_landed_cost__landed_type__stock
+msgid "Stock"
+msgstr "Inventario"
+
+#. module: stock_extended
+#: model:ir.model,name:stock_extended.model_stock_landed_cost
+msgid "Stock Landed Cost"
+msgstr "Costo en Destino"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__notes
+msgid "Terms and Conditions"
+msgstr "Terminos y condiciones"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__tolerance
+msgid "Tolerance (%)"
+msgstr "Tolerancia (%)"
+
+#. module: stock_extended
+#: model:ir.model.fields,help:stock_extended.field_delivery_carrier__tolerance
+msgid "Tolerance allowed in price."
+msgstr "Tolerancia permitida en el precio"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
+msgid "e.g. UPS Express"
+msgstr "por ejemplo, UPS Express"

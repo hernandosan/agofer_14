@@ -5,10 +5,10 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='%(stock.product_open_orderpoint)d'][1]" position="attributes">
+                <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
-                <xpath expr="//button[@name='%(stock.product_open_orderpoint)d'][2]" position="attributes">
+                <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
             </field>

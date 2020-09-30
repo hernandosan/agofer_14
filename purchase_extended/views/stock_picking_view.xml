@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <menuitem id="menu_stock_picking" 
+            action="stock.action_picking_tree_all" 
+            name="Transfers" 
+            parent="menu_parent_import" 
+            sequence="5"/>
+    </data>
+</odoo>
