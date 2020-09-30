@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_stock_landed_cost_form" model="ir.ui.view">
+            <field name="name">view.stock.landed.cost.form</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_ids']" position="before">
+                    <field name="landed_type" invisible="True"/>
+                    <field name="carrier_id" required="True"/>
+                </xpath>
+                <xpath expr="//field[@name='picking_ids']" position="attributes">
+                    <attribute name="domain">[('id','in',allowed_picking_ids),('carrier_id','=',carrier_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_landed_costs.action_stock_landed_cost" model="ir.actions.act_window">
+            <field name="domain">[('landed_type', '=', 'stock')]</field>
+            <field name="context">{'default_landed_type': 'stock'}</field>
+        </record>
+    </data>
+</odoo>

@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 22:20+0000\n"
-"PO-Revision-Date: 2020-09-29 22:20+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2020-09-30 17:43+0000\n"
+"PO-Revision-Date: 2020-09-30 17:43+0000\n"
+"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -193,6 +193,11 @@ msgid "Create a import"
 msgstr "Crear una importación"
 
 #. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_landed_cost
+msgid "Create a new landed cost"
+msgstr "Crear un nuevo coste en destino "
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__create_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__create_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__create_uid
@@ -245,9 +250,19 @@ msgid "Customs Price"
 msgstr "Valor en Aduanas"
 
 #. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_delivery_carrier
+msgid "Define a new delivery method"
+msgstr "Definir un nuevo método de envío. "
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Define your terms and conditions ..."
 msgstr "Defina sus términos y condiciones ..."
+
+#. module: purchase_extended
+#: model:ir.ui.menu,name:purchase_extended.menu_delivery_carrier_parent
+msgid "Delivery"
+msgstr "Entrega"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
@@ -286,6 +301,17 @@ msgstr "Hecho"
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Draft"
 msgstr "Borrador"
+
+#. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_delivery_carrier
+msgid ""
+"Cada transportador (por ejemplo UPS) puede tener múltiples métodos de reparto (por ejemplo,\n"
+"                UPS Express, UPS normal) con una serie de reglas de precio adjunto\n"
+"                a cada método."
+msgstr ""
+"Each carrier (e.g. UPS) can have several delivery methods (e.g.\n"
+"                UPS Express, UPS Standard) with a set of pricing rules attached\n"
+"                to each method."
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__amount_expense
@@ -576,6 +602,12 @@ msgstr "Contador apuntes contables"
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Journal Items"
 msgstr "Apuntes contable"
+
+#. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_stock_landed_cost
+#: model:ir.ui.menu,name:purchase_extended.menu_stock_landed_cost
+msgid "Landed Costs"
+msgstr "Costos en el Destino"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move____last_update
@@ -903,6 +935,12 @@ msgid "Sequence"
 msgstr "Secuencia"
 
 #. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_delivery_carrier
+#: model:ir.ui.menu,name:purchase_extended.menu_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Métodos de envío"
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
@@ -1014,6 +1052,17 @@ msgid "Terms and Conditions"
 msgstr "Terminos y condiciones"
 
 #. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_delivery_carrier
+msgid ""
+"These methods allow to automatically compute the delivery price\n"
+"                according to your settings; on the sales order (based on the\n"
+"                quotation) or the invoice (based on the delivery orders)."
+msgstr ""
+"Estos métodos permiten calcular automáticamente el precio\n"
+"                de la entrega de acuerdo a su configuración; en el pedido de venta (basada en el\n"
+"                 presupuesto) o la factura (basada en las órdenes de entrega)."
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Today Activities"
 msgstr "Actividades de Hoy"
@@ -1045,6 +1094,11 @@ msgstr "Monto total"
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Trading"
 msgstr ""
+
+#. module: purchase_extended
+#: model:ir.ui.menu,name:purchase_extended.menu_stock_picking
+msgid "Transfers"
+msgstr "Transferencias"
 
 #. module: purchase_extended
 #: model:ir.model.fields,help:purchase_extended.field_purchase_import__activity_exception_decoration

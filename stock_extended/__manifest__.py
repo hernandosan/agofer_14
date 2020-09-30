@@ -26,7 +26,10 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/res_partner_category_data.xml',
+        'views/delivery_carrier_view.xml',
         'views/product_template_view.xml',
+        'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',
         'views/templates.xml',
     ],

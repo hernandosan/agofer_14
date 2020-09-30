@@ -357,8 +357,6 @@
 
         <menuitem id="menu_parent_import" name="Imports" parent="purchase.menu_purchase_root" sequence="5" />
 
-        <menuitem id="purchase.menu_purchase_products" name="Products" parent="purchase.menu_purchase_root" sequence="10"/>
-
-        <menuitem action="action_purchase_import" id="menu_purchase_import" parent="menu_parent_import" sequence="5"/>
+        <menuitem action="action_purchase_import" id="menu_purchase_import" parent="menu_parent_import" sequence="1"/>
     </data>
 </odoo>

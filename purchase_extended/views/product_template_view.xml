@@ -23,5 +23,7 @@
                 </xpath>
             </field>
         </record>
+
+        <menuitem id="purchase.menu_purchase_products" name="Products" parent="purchase.menu_purchase_root" sequence="10"/>
     </data>
 </odoo>
