@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+from odoo.exceptions import ValidationError
 
 
 class PurchaseImport(models.Model):
@@ -48,6 +49,9 @@ class PurchaseImport(models.Model):
     # Moves
     move_lines = fields.One2many('stock.move', 'import_id', 'Stock Moves', copy=False)
     move_lines_done = fields.One2many('stock.move', 'import_done_id', 'Stock Moves Done', copy=False)
+    # Pickings
+    picking_ids = fields.One2many('stock.picking', 'import_id', 'Stock Pickings', copy=False)
+    picking_count = fields.Integer('Picking Count', compute="_compute_picking", store=True)
     # Journal Items
     account_count = fields.Integer('Journal Item Count', compute="_compute_account", copy=False, default=0, store=True)
     account_ids = fields.Many2many('account.move.line', 'import_move_line_rel', 'import_id', 'line_id', 'Journal Items', compute="_compute_account", copy=False, store=True)
@@ -105,7 +109,12 @@ class PurchaseImport(models.Model):
                 'account_count': account_count
             }
             purchase.update(lines_ids)
-    
+
+    @api.depends('picking_ids')
+    def _compute_picking(self):
+        for purchase in self:
+            purchase.picking_count = len(purchase.picking_ids)
+
     @api.depends('import_line.price_unit', 'amount_insurance_currency', 'amount_freight_currency')
     def _compute_amount(self):
         for purchase in self:
@@ -410,6 +419,16 @@ class PurchaseImport(models.Model):
             result = {'type': 'ir.actions.act_window_close'}
         return result
 
+    def action_view_picking(self):
+        action = self.env.ref('stock.action_picking_tree_all').sudo()
+        result = action.read()[0]
+        picking_ids = self.mapped('picking_ids')
+        if picking_ids:
+            result['domain'] = [('id', 'in', picking_ids.ids)]
+        else:
+            result = {'type': 'ir.picking.act_window_close'}
+        return result
+
 
 class PurchaseImportLine(models.Model):
     _name = 'purchase.import.line'
@@ -419,6 +438,9 @@ class PurchaseImportLine(models.Model):
     name = fields.Text(string='Description', required=True)
     sequence = fields.Integer(string='Sequence', default=10)
     product_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True)
+    product_available = fields.Float('Available Quantity', digits='Product Unit of Measure', compute="_compute_product_available")
+    product_received = fields.Float('Received Quantity', digits='Product Unit of Measure')
+    product_dispatch = fields.Float('Dispatch Quantity', digits='Product Unit of Measure', copy=False)
     product_uom_qty = fields.Float(string='Total Quantity', compute='_compute_product_uom_qty', store=True)
     date_planned = fields.Datetime(string='Scheduled Date', index=True)
     taxes_id = fields.Many2many('account.tax', string='Taxes')
@@ -485,3 +507,13 @@ class PurchaseImportLine(models.Model):
                 'price_subtotal': price_subtotal,
                 'price_total': price_total,
             })
+
+    @api.depends('product_qty', 'product_received')
+    def _compute_product_available(self):
+        for line in self:
+            line.product_available = line.product_qty - line.product_received
+
+    @api.onchange('product_dispatch')
+    def _onchange_product_dispatch(self):
+        if self.product_dispatch > self.product_available:
+            raise ValidationError(_("The amount entered is higher than the available amount"))

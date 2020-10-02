@@ -66,6 +66,7 @@
                         <button string="Validate" type="object" name="button_validate" states="progress" class="oe_highlight"/>
                         <button string="Create Invoice" type="object" name="action_invoice" class="oe_highlight" 
                             attrs="{'invisible': ['|',('invoice_cif','!=',False),('state','!=','done')]}"/>
+                        <button string="Transport" name="%(action_stock_picking_wizard)d" class="oe_highlight" type="action" states="done"/>
                         <button string="Draft" type="object" name="action_draft" states="cancel" />
                         <button string="Cancel" type="object" name="action_cancel" states="draft,purchase,progress" />
                         <field name="state" widget="statusbar" readonly="1"/>
@@ -75,6 +76,10 @@
                             <button type="object" name="action_view_account" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible':[('account_ids','=',[])]}">
                                 <field name="account_count" widget="statinfo" string="Journal Items"/>
                                 <field name="account_ids" invisible="1"/>
+                            </button>
+                            <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck" attrs="{'invisible':[('picking_ids','=',[])]}">
+                                <field name="picking_count" widget="statinfo" string="Receipt"/>
+                                <field name="picking_ids" invisible="1"/>
                             </button>
                         </div>
                         <div class="oe_title">
@@ -138,6 +143,7 @@
                                         <field name="product_id" />
                                         <field name="name" invisible="1"/>
                                         <field name="product_qty"/>
+                                        <field name="product_available" optional="hide"/>
                                         <field name="product_uom" string="UoM" groups="uom.group_uom" force_save="1" optional="show"/>
                                         <field name="weight" sum="Weight" optional="hide"/>
                                         <field name="price_unit_currency" optional="hide"/>

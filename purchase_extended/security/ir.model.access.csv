@@ -7,3 +7,4 @@ access_purchase_import_line_manager,access.purchase.import.line.manager,model_pu
 access_purchase_import_line_portal,access.purchase.import.line.portal,model_purchase_import_line,base.group_portal,1,0,0,0
 access_product_tariff_user,product.tariff.user,model_product_tariff,base.group_user,1,0,0,0
 access_product_tariff_manager,product.tariff.manager,model_product_tariff,base.group_system,1,1,1,1
+access_stock_picking_wizard_user,stock.picking.wizard.user,model_stock_picking_wizard,purchase.group_purchase_user,1,1,1,1

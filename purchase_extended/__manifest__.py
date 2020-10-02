@@ -31,6 +31,7 @@
         'views/purchase_order_view.xml',
         'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',
+        'wizard/stock_picking_wizard_view.xml',
         # 'views/stock_move_view.xml',
         'views/templates.xml',
     ],
