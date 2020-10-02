@@ -17,7 +17,10 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_stock', 'account_credit_control_extended'],
+    'depends': [
+        'sale_stock', 
+        # 'account_credit_control_extended'
+    ],
 
     # always loaded
     'data': [
@@ -25,7 +28,7 @@
         'security/res_group_security.xml',
         'data/account_incoterms_data.xml',
         'data/ir_cron_data.xml',
-        'views/account_payment_view.xml',
+        # 'views/account_payment_view.xml',
         'views/product_pricelist_view.xml',
         'views/product_template_view.xml',
         'views/res_partner_view.xml',
