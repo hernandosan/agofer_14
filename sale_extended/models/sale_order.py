@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
+    # credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
     shipping_bool = fields.Boolean('Shipping Bool', copy=False)
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
     pick_bool = fields.Boolean('Pick Bool')
@@ -19,6 +19,7 @@ class SaleOrder(models.Model):
     upload_date = fields.Date('Upload Date')
     upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
     delivery_bool = fields.Boolean('Delivery Bool')
+    delivery_assistant = fields.Boolean('Delivery Assistant')
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
@@ -48,14 +49,20 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         self.action_before_confirm()
-        return super(SaleOrder, self).action_confirm()
+        res = super(SaleOrder, self).action_confirm()
+        self.action_after_confirm()
+        return res
 
     def action_before_confirm(self):
         self.validate_price_discount()
         self.validate_standard_price()
         self.validate_product_qty()
         self.validate_delivery_date()
-        self.validate_credit_type()
+        # self.validate_credit_type()
+
+    def action_after_confirm(self):
+        # self.action_quotation_send()
+        self.send_shipping_date()
 
     def validate_price_discount(self):
         for sale in self:
@@ -219,6 +226,25 @@ class SaleOrder(models.Model):
     def action_sale_register_payment(self):
         return self.env['account.payment'].with_context(active_ids=self.ids, active_model='sale.order', active_id=self.id).action_register_payment()
 
+    def send_shipping_date(self):
+        for sale in self:
+            sale._send_shipping_date()
+
+    def _send_shipping_date(self):
+        self.ensure_one()
+        vals = {
+            'incoterm': self.incoterm.id if self.incoterm else False,
+            'shipping_type': self.shipping_type,
+            'pick_bool': self.pick_bool,
+            'pick_date': self.pick_date,
+            'upload_date': self.upload_date,
+            'delivery_bool': self.delivery_bool,
+            'delivery_assistant': self.delivery_assistant,
+            'delivery_date': self.delivery_date,
+        }
+        self.picking_ids.write(vals)
+
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -257,7 +283,7 @@ class SaleOrderLine(models.Model):
             freight = line.pricelist_id.discount_freight if line.pricelist_id else 100
             if line.discount > maximum + freight:
                 msg += line._msg_price_discount()
-            elif self.discount > maximum and self.discount <= maximum + freight:
+            elif line.discount > maximum and line.discount <= maximum + freight:
                 if line.shipping_type != 'pick':
                     msg += line._msg_price_discount()
         return msg
