@@ -18,9 +18,10 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'delivery', 
-        'sale_purchase_stock', 
+        'delivery',
+        'sale_purchase_stock',
         'stock_landed_costs',
+        'stock_account_extended',
     ],
 
     # always loaded
