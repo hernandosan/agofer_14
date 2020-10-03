@@ -16,6 +16,9 @@ class DeliveryGuide(models.Model):
     delivery_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
     parent_id = fields.Many2one('res.partner', 'Carrier', required=True)
     partner_id = fields.Many2one('res.partner', 'Driver')
+    partner_name = fields.Char(related='partner_id.name')
+    partner_mobile = fields.Char(related='partner_id.mobile')
+    partner_comment = fields.Text(related='partner_id.comment')
     carrier_id = fields.Many2one('delivery.carrier', 'Tariff', required=True)
     tolerance = fields.Float('Tolerance (%)', copy=False)
     analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account')
@@ -23,7 +26,7 @@ class DeliveryGuide(models.Model):
     scheduled_date = fields.Date('Scheduled Date', required=True)
     progress_date = fields.Date('Progress Date')
     delivered_date = fields.Date('Delivered Date')
-    done_date = fields.Date('Done Date')
+    checked_date = fields.Date('Checked Date')
     invoiced_date = fields.Date('Invoiced Date')
     price_kg = fields.Monetary('Carrier Price')
     price = fields.Monetary('Price (Kg)')
@@ -38,7 +41,7 @@ class DeliveryGuide(models.Model):
         ('confirm','Confirm'),
         ('progress','Progress'),
         ('delivered','Delivered'),
-        ('done','Done'),
+        ('checked','Checked'),
         ('invoiced','Invoiced'),
         ('cancel','Cancel')], 'State', default='draft', copy=False, tracking=True)
 
@@ -61,7 +64,7 @@ class DeliveryGuide(models.Model):
 
     @api.onchange('price')
     def _onchange_price(self):
-        if self.price and ((self.price - self.price_kg) / self.price_kg) * 100 > self.tolerance:
+        if self.price and ((self.price - self.price_kg) / self.price_kg) * 100 > self.tolerance and not self.user.has_group('stock.group_stock_manager'):
             raise ValidationError(_("The price exceeds the allowed tolerance"))
 
     @api.model
@@ -70,13 +73,16 @@ class DeliveryGuide(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('delivery.guide') or '/'
         return super(DeliveryGuide, self).create(vals)
 
+    def action_draft(self):
+        self.write({'state': 'draft'})
+
     def action_confirm(self):
         self._action_confirm()
         self.write({'state': 'confirm'})
 
     def _action_confirm(self):
         self.ensure_one()
-        self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.ids)]})
+        self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.move_lines.ids)]})
 
     def action_progress(self):
         self.invoices_ids.write({'delivery_state': 'progress'})
@@ -86,16 +92,20 @@ class DeliveryGuide(models.Model):
         })
 
     def action_delivered(self):
+        # self._action_delivered()
         self.write({
             'state': 'delivered',
             'delivered_date': fields.Date.today(),
         })
 
-    def action_done(self):
+    def _action_delivered(self):
+        self.ensure_one()
+        self.invoices_ids.write({'delivery_state': 'delivered'})
+
+    def action_checked(self):
         self.write({
-            'state': 'done',
-            'done_date': fields.Date.today(),
-        })
+            'state': 'checked',
+            'checked_date': fields.Date.today()})
 
     def action_invoiced(self):
         self.write({

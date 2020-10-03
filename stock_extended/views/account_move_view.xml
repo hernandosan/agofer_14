@@ -8,7 +8,6 @@
                 <xpath expr="//page[@name='other_info']/group[@id='other_tab_group']" position="inside">
                     <group string="Delivery" attrs="{'invisible': [('move_type','not in',('out_invoice', 'out_refund'))]}">
                         <field name="picking_id" readonly="True"/>
-                        <field name="guides_ids" invisible="False"/>
                         <field name="delivery_state" readonly="False"/>
                     </group>
                 </xpath>
