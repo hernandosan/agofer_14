@@ -12,7 +12,7 @@
                     <field name="partner_id" string="Driver"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
-                    <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                    <filter string="Done" name="done" domain="[('state', '=', 'invoiced')]"/>
                     <separator/>
                     <filter string="Scheduled Date" name="scheduled_date" date="scheduled_date"/>
                     <separator/>
@@ -34,7 +34,8 @@
             <field name="model">delivery.guide</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <tree string="Delivery Guides">
+                <tree string="Delivery Guides" 
+                    decoration-success="state == 'invoiced'" decoration-info="state == 'delivered'">
                     <field name="name" decoration-bf="1"/>
                     <field name="parent_id"/>
                     <field name="partner_id"/>
@@ -44,7 +45,7 @@
                     <field name="weight"/>
                     <field name="price_total"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
+                    <field name="state" widget="badge" decoration-success="state == 'invoiced'" decoration-info="state == 'draft'"/>
                     <field name="activity_exception_decoration" widget="activity_exception"/>
                 </tree>
             </field>
@@ -78,7 +79,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="delivery_type" invisible="True"/>
+                                <field name="guide_type" invisible="True"/>
+                                <field name="guide_bool" invisible="True"/>
                                 <field name="parent_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly':[('state','!=','draft')]}" />
                                 <field name="partner_id" domain="[('parent_id','=',parent_id)]" attrs="{'readonly':[('state','!=','draft')]}" />
                                 <field name="carrier_id" domain="[('partner_id','=',parent_id),('carrier_type','=','stock')]" attrs="{'readonly':[('state','!=','draft')]}" />
@@ -97,7 +99,7 @@
                         </group>
                         <notebook>
                             <page string="Invoices">
-                                <field name="invoices_ids" domain="[('state','=','posted'),('delivery_state','=','pending')]" 
+                                <field name="invoices_ids" domain="[('move_type','=','out_invoice'),('state','=','posted'),('delivery_state','=','pending')]" 
                                     attrs="{'readonly':[('state','!=','draft')]}">
                                     <tree string="Invoices" js_class="account_tree" sample="1" create="false">
                                         <field name="name" decoration-bf="1"/>
@@ -123,14 +125,48 @@
                                         <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-info="state == 'draft'" optional="show"/>
                                         <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')" decoration-success="payment_state in ('paid', 'reversed')" attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}" optional="hide"/>
                                         <field name="delivery_state" widget="badge" decoration-success="delivery_state == 'delivered'" decoration-info="delivery_state == 'progress'" optional="show"/>
-                                        <field name="move_type" invisible="context.get('default_move_type', True)"/>
+                                        <field name="move_type" invisible="True"/>
                                         <button name="action_delivery_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/>
-                                        <button name="action_delivery_cancel" string="Cancel" type="object" icon="fa-close text-danger" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/> 
+                                        <button name="action_delivery_return" string="Return" type="object" icon="fa-close text-danger" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/> 
                                     </tree>
                                 </field>
-                            </page>
-                            <page string="Moves">
+                                <separator string="Moves"/>
                                 <field name="moves_ids" readonly="True"/>
+                            </page>
+                            <page string="Credit Notes" attrs="{'invisible':[('guide_bool','=',False)]}">
+                                <field name="invoices_returns_ids" domain="[('move_type','=','out_refund'),('state','=','posted'),('delivery_state','=','pending')]" 
+                                    attrs="{'readonly':[('state','!=','progress')]}">
+                                    <tree string="Invoices" js_class="account_tree" sample="1" create="false">
+                                        <field name="name" decoration-bf="1"/>
+                                        <field name="partner_id" invisible="1"/>
+                                        <field name="invoice_source_email" invisible="1"/>
+                                        <field name="invoice_partner_display_name" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')" groups="base.group_user" string="Vendor"/>
+                                        <field name="invoice_partner_display_name" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')" groups="base.group_user" string="Customer"/>
+                                        <field name="invoice_date" optional="show" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')" string="Bill Date"/>
+                                        <field name="invoice_date" optional="show" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')" string="Invoice Date"/>
+                                        <field name="invoice_date_due" widget="remaining_days" optional="show" attrs="{'invisible': [['payment_state', '=', 'paid']]}"/>
+                                        <field name="invoice_origin" optional="hide" string="Source Document"/>
+                                        <field name="payment_reference" optional="hide" invisible="context.get('default_move_type') in ('out_invoice', 'out_refund','out_receipt')"/>
+                                        <field name="ref" optional="hide"/>
+                                        <field name="invoice_user_id" optional="hide" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')" string="Sales Person" widget="many2one_avatar_user"/>
+                                        <field name="activity_ids" widget="list_activity" optional="show"/>
+                                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" optional="show"/>
+                                        <field name="amount_untaxed_signed" string="Tax Excluded" sum="Total" optional="show"/>
+                                        <field name="amount_tax_signed" string="Tax" sum="Total" optional="hide"/>
+                                        <field name="amount_total_signed" string="Total" sum="Total" decoration-bf="1" optional="show"/>
+                                        <field name="amount_residual_signed" string="Amount Due" sum="Amount Due" optional="hide"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_currency_id" invisible="1"/>
+                                        <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-info="state == 'draft'" optional="show"/>
+                                        <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')" decoration-success="payment_state in ('paid', 'reversed')" attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}" optional="hide"/>
+                                        <field name="delivery_state" widget="badge" decoration-success="delivery_state == 'delivered'" decoration-info="delivery_state == 'progress'" optional="show"/>
+                                        <field name="move_type" invisible="True"/>
+                                        <button name="action_delivery_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'pending')]}"/>
+                                    </tree>
+                                </field>
+                                <separator string="Moves"/>
+                                <!--<button name="action_moves" type="object" string="Calculate" class="oe_highlight"/>-->
+                                <field name="moves_returns_ids" readonly="True"/>
                             </page>
                             <page string="Tracking" attrs="{'invisible':[('state','in',('draft','cancel'))]}">
                                 <group>
@@ -174,16 +210,16 @@
             <field name="name">Delivery Guides</field>
             <field name="res_model">delivery.guide</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('delivery_type', '=', 'customer')]</field>
-            <field name="context">{'default_delivery_type': 'customer'}</field>
+            <field name="domain">[('guide_type', '=', 'customer')]</field>
+            <field name="context">{'default_guide_type': 'customer'}</field>
         </record>
 
         <record model="ir.actions.act_window" id="action_delivery_guide_branch">
             <field name="name">Loading Orders</field>
             <field name="res_model">delivery.guide</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('delivery_type', '=', 'branch')]</field>
-            <field name="context">{'default_delivery_type': 'branch'}</field>
+            <field name="domain">[('guide_type', '=', 'branch')]</field>
+            <field name="context">{'default_guide_type': 'branch'}</field>
         </record>
 
         <menuitem id="menu_parent_stock" 
