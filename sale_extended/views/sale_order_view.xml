@@ -33,20 +33,32 @@
                 <xpath expr="//field[@name='team_id']" position="attributes">
                     <attribute name="attrs">{'readonly': [('state','=','done')]}</attribute>
                 </xpath>
+                <xpath expr="//group[@name='sale_shipping']/label[1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_shipping']/div[1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_shipping']" position="inside">
+                    <field name="shipping_type" required="True" attrs="{'readonly': [('state','not in',('draft','sent'))]}"/>
+                    <field name="delivery_assistant" 
+                        attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="after">
-                    <group string="Shipping Type">
+                    <group string="Shipping Date">
                         <field name="shipping_bool" invisible="True"/>
-                        <field name="shipping_type" required="True" attrs="{'readonly': [('state','=','done')]}"/>
-                        <field name="delivery_bool" attrs="{'invisible': [('shipping_type','!=','delivery')]}"/>
+                        <field name="delivery_bool" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="upload_delay" invisible="True"/>
                         <field name="upload_date" 
-                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="delivery_delay" invisible="True"/>
                         <field name="delivery_date" 
-                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
-                        <field name="pick_bool" attrs="{'invisible': [('shipping_type','!=','pick')]}"/>
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                        <field name="pick_bool" 
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="pick_date" 
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
                     </group>
                 </xpath>
                 <xpath expr="//page[@name='other_information']" position="before">

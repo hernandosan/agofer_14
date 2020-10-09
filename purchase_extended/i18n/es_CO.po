@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-30 17:43+0000\n"
-"PO-Revision-Date: 2020-09-30 17:43+0000\n"
+"POT-Creation-Date: 2020-10-03 17:01+0000\n"
+"PO-Revision-Date: 2020-10-03 17:01+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -74,6 +74,11 @@ msgid "Attachment Count"
 msgstr "Conteo de archivos adjuntos"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_available
+msgid "Available Quantity"
+msgstr "Cantidad Disponible"
+
+#. module: purchase_extended
 #: model:ir.model,name:purchase_extended.model_stock_backorder_confirmation
 msgid "Backorder Confirmation"
 msgstr "Confirmación de Entrega Pendiente"
@@ -106,6 +111,7 @@ msgstr "Calcular"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_stock_picking_wizard_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -113,6 +119,11 @@ msgstr "Cancelar"
 #: model:ir.model.fields.selection,name:purchase_extended.selection__purchase_import__state__cancel
 msgid "Cancelled"
 msgstr "Cancelado"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__carrier_id
+msgid "Carrier"
+msgstr "Transportador"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_uom_category_id
@@ -201,6 +212,7 @@ msgstr "Crear un nuevo coste en destino "
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__create_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__create_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__create_uid
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
@@ -208,6 +220,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__create_date
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__create_date
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__create_date
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__create_date
 msgid "Created on"
 msgstr "Creado el"
 
@@ -276,6 +289,16 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__warehouse_id
+msgid "Destination"
+msgstr "Destino"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_dispatch
+msgid "Dispatch Quantity"
+msgstr "Cantidad Despachada"
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:purchase_extended.field_product_product__display_name
@@ -287,6 +310,8 @@ msgstr "Descripción"
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_backorder_confirmation__display_name
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_immediate_transfer__display_name
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move__display_name
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__display_name
 msgid "Display Name"
 msgstr "Nombre Público"
 
@@ -305,13 +330,13 @@ msgstr "Borrador"
 #. module: purchase_extended
 #: model_terms:ir.actions.act_window,help:purchase_extended.action_delivery_carrier
 msgid ""
-"Cada transportador (por ejemplo UPS) puede tener múltiples métodos de reparto (por ejemplo,\n"
-"                UPS Express, UPS normal) con una serie de reglas de precio adjunto\n"
-"                a cada método."
-msgstr ""
 "Each carrier (e.g. UPS) can have several delivery methods (e.g.\n"
 "                UPS Express, UPS Standard) with a set of pricing rules attached\n"
 "                to each method."
+msgstr ""
+"Cada transportador (por ejemplo UPS) puede tener múltiples métodos de reparto (por ejemplo,\n"
+"                UPS Express, UPS normal) con una serie de reglas de precio adjunto\n"
+"                a cada método."
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__amount_expense
@@ -398,6 +423,8 @@ msgstr "Agrupar por"
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_backorder_confirmation__id
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_immediate_transfer__id
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move__id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking__id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__id
 msgid "ID"
 msgstr ""
 
@@ -433,6 +460,7 @@ msgstr "Transferencia Inmediata"
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_id
 #: model:ir.model.fields,field_description:purchase_extended.field_account_payment__import_id
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move__import_id
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking__import_id
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_account_move_form
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_product_template_form
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
@@ -621,6 +649,8 @@ msgstr "Costos en el Destino"
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_backorder_confirmation____last_update
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_immediate_transfer____last_update
 #: model:ir.model.fields,field_description:purchase_extended.field_stock_move____last_update
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking____last_update
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard____last_update
 msgid "Last Modified on"
 msgstr "Última Modificación el"
 
@@ -628,6 +658,7 @@ msgstr "Última Modificación el"
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__write_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__write_uid
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__write_uid
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
@@ -635,6 +666,7 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__write_date
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__write_date
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__write_date
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -687,6 +719,11 @@ msgstr "Resumen de la siguiente actividad"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_type_id
 msgid "Next Activity Type"
 msgstr "Siguiente tipo de actividad"
+
+#. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_picking
+msgid "No transfer found. Let's create one!"
+msgstr "Crea una nueva transferencia"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
@@ -770,10 +807,15 @@ msgid "Percentage"
 msgstr "Porcentaje"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__picking_count
+msgid "Picking Count"
+msgstr "Contador de Transferencias"
+
+#. module: purchase_extended
 #: code:addons/purchase_extended/models/purchase_import.py:0
 #, python-format
 msgid "Please add some items to move."
-msgstr "Por favor agregue algunos items para procesar movimiento."
+msgstr "Por favor agregue algunos items para procesar el movimiento."
 
 #. module: purchase_extended
 #: code:addons/purchase_extended/models/purchase_import.py:0
@@ -807,6 +849,11 @@ msgid "Price Type"
 msgstr "Tipo de precio"
 
 #. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_stock_picking_wizard_form
+msgid "Process"
+msgstr "Procesar"
+
+#. module: purchase_extended
 #: model:ir.model,name:purchase_extended.model_product_product
 #: model:ir.model.fields,field_description:purchase_extended.field_product_tariff__product_id
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_id
@@ -835,6 +882,7 @@ msgid "Product tariff"
 msgstr "Producto arancel"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_stock_picking_wizard__products_ids
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Products"
 msgstr "Productos"
@@ -882,6 +930,16 @@ msgstr "Cantidad"
 msgid "Ratio between the purchase order currency and the company currency"
 msgstr ""
 "Precisión decimal entre la moneda de la compañía y la del pedido de compra"
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Receipt"
+msgstr "Recepciones"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_received
+msgid "Received Quantity"
+msgstr "Cantidad Recibida"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__partner_ref
@@ -993,6 +1051,16 @@ msgid "Stock Moves Done"
 msgstr "Movimientos de existencias terminados"
 
 #. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_picking_wizard
+msgid "Stock Picking Wizard"
+msgstr "Wizard Transferencias"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__picking_ids
+msgid "Stock Pickings"
+msgstr "Transferencias"
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_subtotal
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Subtotal"
@@ -1052,6 +1120,12 @@ msgid "Terms and Conditions"
 msgstr "Terminos y condiciones"
 
 #. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid "The amount entered is higher than the available amount"
+msgstr "La cantidad ingresda es superior a la disponible"
+
+#. module: purchase_extended
 #: model_terms:ir.actions.act_window,help:purchase_extended.action_delivery_carrier
 msgid ""
 "These methods allow to automatically compute the delivery price\n"
@@ -1096,9 +1170,31 @@ msgid "Trading"
 msgstr ""
 
 #. module: purchase_extended
+#: model:ir.model,name:purchase_extended.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_stock_picking
 #: model:ir.ui.menu,name:purchase_extended.menu_stock_picking
 msgid "Transfers"
 msgstr "Transferencias"
+
+#. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_picking
+msgid "Transfers allow you to move products from one location to another."
+msgstr "Las transferencias le permiten mover productos de una ubicación a otra."
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Transport"
+msgstr "Transporte"
+
+#. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_stock_picking_wizard
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_stock_picking_wizard_form
+msgid "Transport Order"
+msgstr "Orden de Transporte"
 
 #. module: purchase_extended
 #: model:ir.model.fields,help:purchase_extended.field_purchase_import__activity_exception_decoration
@@ -1213,3 +1309,8 @@ msgstr ""
 #, python-format
 msgid "You need to supply a Lot/Serial number for product %s."
 msgstr "Debe proporcionar un lote/número de serie para %s."
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_stock_picking_wizard_form
+msgid "or"
+msgstr "ó"

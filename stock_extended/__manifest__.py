@@ -18,16 +18,20 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'delivery', 
-        'sale_purchase_stock', 
+        'delivery',
+        'sale_purchase_stock',
         'stock_landed_costs',
+        'stock_account_extended',
     ],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
         'data/res_partner_category_data.xml',
+        'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
+        'views/delivery_guide_view.xml',
         'views/product_template_view.xml',
         'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',

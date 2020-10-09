@@ -1,5 +1,94 @@
 <odoo>
     <data>
+        <record id="view_stock_picking_search" model="ir.ui.view">
+            <field name="name">view.stock.picking.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='backorder']" position="after">
+                    <separator/>
+                    <filter name="delivery_agofer" string="Delivery Agofer" domain="[('shipping_type','=','delivery')]"/>
+                    <filter name="customer_pick" string="Customer Pick" domain="[('shipping_type','=','pick')]"/>
+                    <filter name="upload_late" string="Upload Late" 
+                        domain="[('state','in',('assigned','waiting','confirmed')),('shipping_type','=','delivery'),('upload_date', '&lt;', current_date)]"/>
+                    <filter name="delivery_late" string="Delivery Late" 
+                        domain="[('state','in',('assigned','waiting','confirmed')),('shipping_type','=','delivery'),('delivery_date', '&lt;', current_date)]"/>
+                    <filter name="pick_late" string="Pick Late" 
+                        domain="[('state','in',('assigned','waiting','confirmed')),('shipping_type','=','pick'),('pick_date', '&lt;', current_date)]"/>
+                </xpath>
+                <xpath expr="//filter[@name='picking_type']" position="after">
+                    <filter name="warehouse" string="Warehouse" domain="[]" context="{'group_by': 'warehouse_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_stock_picking_tree_delivery">
+            <field name="name">view.stock.picking.delivery</field>
+            <field name="model">stock.picking</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Picking list" multi_edit="1" sample="1" 
+                    decoration-warning="state in ('assigned','waiting','confirmed') and shipping_type == 'delivery' and upload_date &lt; current_date" 
+                    decoration-danger="state in ('assigned','waiting','confirmed') and shipping_type == 'delivery' and delivery_date &lt; current_date">
+                    <header>
+                        <button name="do_unreserve" type="object" string="Unreserve"/>
+                    </header>
+                    <field name="priority" optional="show" widget="priority" nolabel="1"/>
+                    <field name="name" decoration-bf="1"/>
+                    <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show"/>
+                    <field name="location_dest_id" options="{'no_create': True}" string="To" groups="stock.group_stock_multi_locations" optional="show"/>
+                    <field name="partner_id" optional="show"/>
+                    <field name="signature" string="Signed" optional="hide" widget="boolean" groups="stock.group_stock_sign_delivery"/>
+                    <field name="user_id" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="shipping_type" invisible="True"/>
+                    <field name="delivery_bool" />
+                    <field name="delivery_assistant" optional="hide"/>
+                    <field name="upload_date" optional="show" widget="remaining_days" />
+                    <field name="delivery_date" optional="show" widget="remaining_days" />
+                    <field name="origin" optional="show"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id" optional="hide"/>
+                    <field name="picking_type_id" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                    <field name="state" optional="show" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')"/>
+                    <field name="activity_exception_decoration" widget="activity_exception"/>
+                    <field name="json_popover" nolabel="1" widget="stock_rescheduling_popover" attrs="{'invisible': [('json_popover', '=', False)]}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_stock_picking_tree_pick">
+            <field name="name">view.stock.picking.delivery</field>
+            <field name="model">stock.picking</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Picking list" multi_edit="1" sample="1" 
+                    decoration-danger="state in ('assigned','waiting','confirmed') and shipping_type == 'pick' and pick_date &lt; current_date">
+                    <header>
+                        <button name="do_unreserve" type="object" string="Unreserve"/>
+                    </header>
+                    <field name="priority" optional="show" widget="priority" nolabel="1"/>
+                    <field name="name" decoration-bf="1"/>
+                    <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show"/>
+                    <field name="location_dest_id" options="{'no_create': True}" string="To" groups="stock.group_stock_multi_locations" optional="show"/>
+                    <field name="partner_id" optional="show"/>
+                    <field name="signature" string="Signed" optional="hide" widget="boolean" groups="stock.group_stock_sign_delivery"/>
+                    <field name="user_id" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="shipping_type" invisible="True"/>
+                    <field name="pick_bool" />
+                    <field name="pick_date" optional="show" widget="remaining_days" />
+                    <field name="origin" optional="show"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id" optional="hide"/>
+                    <field name="picking_type_id" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                    <field name="state" optional="show" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')"/>
+                    <field name="activity_exception_decoration" widget="activity_exception"/>
+                    <field name="json_popover" nolabel="1" widget="stock_rescheduling_popover" attrs="{'invisible': [('json_popover', '=', False)]}"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="view_stock_picking_form" model="ir.ui.view">
             <field name="name">view.stock.picking.form</field>
             <field name="model">stock.picking</field>
@@ -14,7 +103,79 @@
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
+                <xpath expr="//header/field[@name='state']" position="before">
+                    <button name="action_invoice" type="object" string="Create Invoice" class="oe_highlight" 
+                        attrs="{'invisible': ['|',('state','!=','done'),('invoice_id','!=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="invoice_id" readonly="True"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='extra']/group" position="inside">
+                    <group string="Delivery Info" attrs="{'invisible': [('shipping_type','=',False)]}">
+                        <field name="shipping_type" />
+                        <field name="delivery_assistant" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')]}"/>
+                        <field name="delivery_bool" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')]}"/>
+                        <field name="upload_date" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
+                        <field name="delivery_date" 
+                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)]}"/>
+                        <field name="pick_bool" 
+                            attrs="{'invisible': [('shipping_type','!=','pick')]}"/>
+                        <field name="pick_date" 
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
+                    </group>
+                </xpath>
             </field>
         </record>
+
+        <record id="action_delivery_agofer" model="ir.actions.act_window">
+            <field name="name">Delivery Agofer</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="domain">[('shipping_type','=','delivery'),('state','not in',('done','cancel'))]</field>
+            <field name="context">{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}</field>
+            <field name="view_id" ref="view_stock_picking_tree_delivery"/>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No transfer found. Let's create one!
+                </p><p>
+                    Transfers allow you to move products from one location to another.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_customer_pick" model="ir.actions.act_window">
+            <field name="name">Customer Pick</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="domain">[('shipping_type','=','pick'),('state','not in',('done','cancel'))]</field>
+            <field name="context">{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}</field>
+            <field name="view_id" ref="view_stock_picking_tree_pick"/>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No transfer found. Let's create one!
+                </p><p>
+                    Transfers allow you to move products from one location to another.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_delivery_agofer" 
+            name="Delivery Agofer" 
+            parent="menu_parent_stock" 
+            action="action_delivery_agofer" 
+            sequence="1"/>
+
+        <menuitem id="menu_customer_pick" 
+            name="Customer Pick" 
+            parent="menu_parent_stock" 
+            action="action_customer_pick" 
+            sequence="5"/>
     </data>
 </odoo>

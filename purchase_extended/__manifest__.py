@@ -24,6 +24,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/product_template_data.xml',
+        'wizard/stock_picking_wizard_view.xml',
         'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         'views/product_template_view.xml',
