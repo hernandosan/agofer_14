@@ -22,6 +22,8 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/mail_template_data.xml',
+        'data/ir_cron_data.xml',
         'views/res_partner_view.xml',
         'views/account_payment_term_view.xml',
         'views/templates.xml',
