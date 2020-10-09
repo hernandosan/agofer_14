@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-09 20:04+0000\n"
-"PO-Revision-Date: 2020-10-09 20:04+0000\n"
+"POT-Creation-Date: 2020-10-09 22:01+0000\n"
+"PO-Revision-Date: 2020-10-09 22:01+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -270,11 +270,6 @@ msgid "Display Name"
 msgstr "Nombre Público"
 
 #. module: stock_extended
-#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
-msgid "Done"
-msgstr "Finalizado"
-
-#. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__draft
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
@@ -394,6 +389,7 @@ msgstr "Fecha de Factura"
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__invoiced
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Invoiced"
 msgstr "Facturado"
 
@@ -575,6 +571,12 @@ msgstr "Transferencia"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_pick
 msgid "Picking list"
 msgstr "Lista de Nota de Entrega"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__pickings_ids
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "Pickings"
+msgstr "Transferencias"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__price_kg

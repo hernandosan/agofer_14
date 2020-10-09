@@ -36,6 +36,7 @@ class DeliveryGuide(models.Model):
     price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
     notes = fields.Text('Terms and Conditions')
     invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices', copy=False)
+    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings', copy=False)
     moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves', copy=False)
     invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id', 'Credit Notes', copy=False)
     moves_returns_ids = fields.Many2many('stock.move', 'guide_move_return_rel', 'guide_id', 'move_id', 'Stock Moves Return', copy=False)
@@ -86,7 +87,8 @@ class DeliveryGuide(models.Model):
 
     def _action_confirm(self):
         self.ensure_one()
-        self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.move_lines.ids)]})
+        ids = self.invoices_ids.picking_id.move_lines.ids if self.guide_type == 'customer' else self.pickings_ids.move_lines.ids
+        self.write({'moves_ids': [(6, 0, ids)]})
 
     def action_moves(self):
         for guide in self:
