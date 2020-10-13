@@ -7,5 +7,6 @@ class HrDocumentType(models.Model):
     _name = 'hr.doc.type'
     _description = 'HR Documents Type'
 
-    active = fields.Boolean(string='Active', trim=True)
+    active = fields.Boolean('Active')
     name = fields.Char('Document Type')
+

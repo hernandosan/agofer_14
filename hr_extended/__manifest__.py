@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hr_extended",
+    'name': "Documents HR Agofer",
 
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    'summary': "HR Employee",
 
-    'description': """
-        Long description of module's purpose
-    """,
+    'description': "HR Employee",
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Agofer S.A.",
+    'contributors': ['Reyes Santana rhsantana@agofer.com.co'],
+    'website': "http://www.agofer.com.co",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '14.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'hr'],
@@ -27,6 +24,7 @@
         'security/ir.model.access.csv',
         'views/hr_doc_type_view.xml',
         'views/hr_document_view.xml',
+        'views/hr_employee_view.xml',
         'views/views.xml',
         'views/templates.xml',
     ],

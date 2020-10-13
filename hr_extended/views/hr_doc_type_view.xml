@@ -16,6 +16,7 @@
             <field name="name">Documents Type</field>
             <field name="res_model">hr.doc.type</field>
             <field name="view_mode">tree</field>
+            <field name="domain">['|',('active','=',False),('active','=',True)]</field>
         </record>
 
         <menuitem id="menu_hr_doc_type"
