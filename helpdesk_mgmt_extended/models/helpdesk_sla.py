@@ -10,7 +10,7 @@ class Helpdesksla(models.Model):
     name = fields.Char('Name', required=True)
     team_id = fields.Many2one('helpdesk.ticket.team', 'Team')
     category_id = fields.Many2one('helpdesk.ticket.category', 'Category')
-    type_id= fields.Many2one('helpdesk.ticket.type', 'Type')
+    type_id = fields.Many2one('helpdesk.ticket.type', 'Type')
     stage_id = fields.Many2one('helpdesk.ticket.stage', 'Stage')
     time_days = fields.Integer('Days')
     time_hours = fields.Integer('Hours')

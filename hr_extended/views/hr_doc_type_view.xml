@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_hr_documents_type_tree">
+            <field name="name">view.hr.documents.type.tree</field>
+            <field name="model">hr.doc.type</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Documents Type">
+                    <field name="active"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_doc_type">
+            <field name="name">Documents Type</field>
+            <field name="res_model">hr.doc.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_hr_doc_type"
+                  name="Documents Type"
+                  action="action_hr_doc_type"
+                  parent="hr.menu_human_resources_configuration_employee"
+                  sequence="2"/>
+    </data>
+</odoo>
