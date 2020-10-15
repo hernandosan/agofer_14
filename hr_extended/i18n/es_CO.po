@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 15:04+0000\n"
-"PO-Revision-Date: 2020-10-15 15:04+0000\n"
+"POT-Creation-Date: 2020-10-15 16:56+0000\n"
+"PO-Revision-Date: 2020-10-15 16:56+0000\n"
 "Last-Translator: Reyes Santana rhsantana@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,38 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: hr_extended
+#: model:mail.template,body_html:hr_extended.template_hr_birth
+msgid ""
+"\n"
+"                \n"
+"                    <p>Hello</p>\n"
+"                    <p>Employee Birthday List</p>\n"
+"                    <br/>\n"
+"                        ${object.table_hr_birth() | safe}\n"
+"                    <br/>\n"
+"                \n"
+"            "
+msgstr ""
+"\n"
+"                \n"
+"                    <p>Hola</p>\n"
+"                    <p>Listado Cumpleaños de Empleados</p>\n"
+"                    <br/>\n"
+"                        ${object.table_hr_birth() | safe}\n"
+"                    <br/>\n"
+"                \n"
+"            "
+
+#. module: hr_extended
 #: model:ir.model.fields,field_description:hr_extended.field_hr_doc_type__active
 msgid "Active"
 msgstr "Activo"
+
+#. module: hr_extended
+#: code:addons/hr_extended/models/hr_employee.py:0
+#, python-format
+msgid "Birthday"
+msgstr "Cumpleaños"
 
 #. module: hr_extended
 #: model:ir.model.fields,field_description:hr_extended.field_hr_doc_type__create_uid
@@ -68,11 +97,18 @@ msgid "Documents Type"
 msgstr "Tipo de Documento"
 
 #. module: hr_extended
+#: code:addons/hr_extended/models/hr_employee.py:0
 #: model:ir.model,name:hr_extended.model_hr_employee
 #: model:ir.model.fields,field_description:hr_extended.field_hr_document__employee_id
 #: model_terms:ir.ui.view,arch_db:hr_extended.view_hr_document_form
+#, python-format
 msgid "Employee"
 msgstr "Empleado"
+
+#. module: hr_extended
+#: model:mail.template,subject:hr_extended.template_hr_birth
+msgid "Employee Birthday ${object.month_hr_birth()}"
+msgstr "Cumpleaños Empleados ${object.month_hr_birth()}"
 
 #. module: hr_extended
 #: model:ir.model.fields,field_description:hr_extended.field_hr_document__file_data
@@ -87,7 +123,14 @@ msgstr "Nombre del archivo"
 #. module: hr_extended
 #: model:ir.model.fields.selection,name:hr_extended.selection__hr_document__type__hr
 msgid "HR"
-msgstr ""
+msgstr "TH"
+
+#. module: hr_extended
+#: model:ir.actions.server,name:hr_extended.cron_hr_birth_ir_actions_server
+#: model:ir.cron,cron_name:hr_extended.cron_hr_birth
+#: model:ir.cron,name:hr_extended.cron_hr_birth
+msgid "HR Birth Cron"
+msgstr "Cumpleaños TH"
 
 #. module: hr_extended
 #: model:ir.model,name:hr_extended.model_hr_document

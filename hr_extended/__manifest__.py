@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Documents HR Agofer",
+    'name': "HR Agofer",
 
     'summary': "HR Employee",
 
@@ -22,6 +22,8 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_cron_data.xml',
+        'data/mail_template_data.xml',
         'views/hr_doc_type_view.xml',
         'views/hr_document_view.xml',
         'views/hr_employee_view.xml',
