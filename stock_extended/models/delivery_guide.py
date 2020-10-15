@@ -13,7 +13,8 @@ class DeliveryGuide(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one(related='company_id.currency_id', store=True)
     name = fields.Char('Number', required=True, readonly=True, default='New', copy=False)
-    delivery_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
+    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
+    guide_bool = fields.Boolean('Has Return', default=False, copy=False)
     parent_id = fields.Many2one('res.partner', 'Carrier', required=True)
     partner_id = fields.Many2one('res.partner', 'Driver')
     partner_name = fields.Char(related='partner_id.name')
@@ -29,13 +30,16 @@ class DeliveryGuide(models.Model):
     checked_date = fields.Date('Checked Date')
     invoiced_date = fields.Date('Invoiced Date')
     price_kg = fields.Monetary('Carrier Price')
-    price = fields.Monetary('Price (Kg)')
+    price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
     weight = fields.Float('Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     # weight = fields.Float('Weight', digits='Stock Weight')
     price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
     notes = fields.Text('Terms and Conditions')
-    invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices')
-    moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves')
+    invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices', copy=False)
+    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings', copy=False)
+    moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves', copy=False)
+    invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id', 'Credit Notes', copy=False)
+    moves_returns_ids = fields.Many2many('stock.move', 'guide_move_return_rel', 'guide_id', 'move_id', 'Stock Moves Return', copy=False)
     state = fields.Selection([
         ('draft','Draft'),
         ('confirm','Confirm'),
@@ -77,12 +81,23 @@ class DeliveryGuide(models.Model):
         self.write({'state': 'draft'})
 
     def action_confirm(self):
-        self._action_confirm()
+        for guide in self:
+            guide._action_confirm()
         self.write({'state': 'confirm'})
 
     def _action_confirm(self):
         self.ensure_one()
+        ids = self.invoices_ids.picking_id.move_lines.ids if self.guide_type == 'customer' else self.pickings_ids.move_lines.ids
+        self.write({'moves_ids': [(6, 0, ids)]})
+
+    def action_moves(self):
+        for guide in self:
+            guide._action_moves()
+
+    def _action_moves(self):
+        self.ensure_one()
         self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.move_lines.ids)]})
+        self.write({'moves_returns_ids': [(6, 0, self.invoices_returns_ids.picking_id.move_lines.ids)]})
 
     def action_progress(self):
         self.invoices_ids.write({'delivery_state': 'progress'})
@@ -92,7 +107,7 @@ class DeliveryGuide(models.Model):
         })
 
     def action_delivered(self):
-        # self._action_delivered()
+        self._action_delivered()
         self.write({
             'state': 'delivered',
             'delivered_date': fields.Date.today(),
@@ -100,7 +115,8 @@ class DeliveryGuide(models.Model):
 
     def _action_delivered(self):
         self.ensure_one()
-        self.invoices_ids.write({'delivery_state': 'delivered'})
+        # self.invoices_ids.write({'delivery_state': 'delivered'})
+        self.write({'moves_returns_ids': [(6, 0, self.invoices_returns_ids.picking_id.move_lines.ids)]})
 
     def action_checked(self):
         self.write({
@@ -114,4 +130,6 @@ class DeliveryGuide(models.Model):
         })
 
     def action_cancel(self):
+        self.invoices_ids.write({'delivery_state': 'pending'})
+        self.invoices_returns_ids.write({'delivery_state': 'pending'})
         self.write({'state': 'cancel'})

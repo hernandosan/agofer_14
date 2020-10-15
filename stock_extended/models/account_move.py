@@ -7,20 +7,16 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     picking_id = fields.Many2one('stock.picking', readonly=True, copy=False)
+    guides_ids = fields.Many2many('delivery.guide', 'guide_invoice_rel', 'invoice_id', 'guide_id', 'Guides', copy=False)
     delivery_state = fields.Selection([
         ('pending','Pending'),
         ('progress','Progress'),
-        ('cancel','Cancel'),
+        ('return','Return'),
         ('delivered','Delivered')], 'Delivery state', copy=False)
 
     def action_delivery_confirm(self):
-        for move in self:
-            move._action_delivery('delivered')
+        self.write({'delivery_state': 'delivered'})
 
-    def action_delivery_cancel(self):
-        for move in self:
-            move._action_delivery('cancel')
-
-    def _action_delivery(self, state):
-        self.ensure_one()
-        self.write({'delivery_state': state})
+    def action_delivery_return(self):
+        self.guides_ids.write({'guide_bool': True})
+        self.write({'delivery_state': 'return'})
