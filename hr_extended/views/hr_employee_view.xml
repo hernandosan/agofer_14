@@ -7,9 +7,30 @@
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
                     <page string="Documents">
-                        <div>
-                                <field name="document_id"/>
-                        </div>
+                        <field name="document_ids">
+                            <tree string="Documents">
+                                <field name="type_id"/>
+                                <field name="type"/>
+                                <field name="file_name"/>
+                            </tree>
+                            <form string="Documents">
+                                <sheet>
+                                    <group>
+                                        <group>
+                                            <field name="type_id"/>
+                                            <field name="type"/>
+                                        </group>
+                                        <group>
+                                            <field name="file_data" filename="file_name"/>
+                                            <field name="file_name" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="description"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
                     </page>
                 </xpath>
             </field>

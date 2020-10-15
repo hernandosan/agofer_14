@@ -20,16 +20,27 @@
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
                 <form string="Documents">
-                    <group>
-                        <h1>
-                            <field name="type_id"/>
-                            <field name="type"/>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                               Employee
+                            </h1>
                             <field name="employee_id"/>
-                            <field name="file_data" filename="file_name"/>
-                            <field name="file_name" invisible="1"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="type_id"/>
+                                <field name="type"/>
+                            </group>
+                            <group>
+                                <field name="file_data" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
                             <field name="description"/>
-                        </h1>
-                    </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
