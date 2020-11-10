@@ -17,7 +17,8 @@ class Helpdesksla(models.Model):
     time_total = fields.Float('Time', compute='_compute_time_total', store=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     description = fields.Text('Description')
-    priority = fields.Selection([('0','Low'),('1','Medium'),('2','High'),('3','Very High')], 'Priority', default='0') 
+    priority = fields.Selection([('0', 'Low'), ('1', 'Medium'), ('2', 'High'), ('3', 'Very High')],
+                                'Priority', default='0')
 
     @api.depends('time_days', 'time_hours')
     def _compute_time_total(self):

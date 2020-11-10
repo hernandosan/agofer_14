@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_credit_interest_wizard_form" model="ir.ui.view">
+            <field name="name">view.account.credit.interest.wizard.form</field>
+            <field name="model">account.credit.interest.wizard</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="partner_id" placeholder="Title" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="annual_cash" string="annual_cash"/>
+                                    <div name="annual_cash_div" class="o_row">
+                                        <field name="annual_cash"/>
+                                        <span name="annual_cash_span" class="text-muted" > %</span>
+                                    </div>
+                                <label for="month_expired" string="month_expired"/>
+                                    <div name="month_expired_div" class="o_row">
+                                        <field name="month_expired" readonly="1"/>
+                                        <span name="month_expired_span" class="text-muted" > %</span>
+                                    </div>
+                            </group>
+                            <group>
+                                <field name="payment_date" required="True"/>
+                                <field name="attachment_id" invisible="True"/>
+                                <field name="file_data" filename="file_name" readonly="True"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <div string="Invoices">
+                                <field name="lines_ids"
+                                       domain="[('partner_id', '=', partner_id), ('full_reconcile_id', '=', False),
+                                                ('balance', '!=', 0), ('account_id.reconcile', '=', True),
+                                                ('move_id.move_type', '=', 'out_invoice')]">
+                                    <tree edit="false" create="false">
+                                        <field name="move_id"/>
+                                        <field name="date"/>
+                                        <field name="amount_currency"/>
+                                        <field name="date_maturity"/>
+                                        <field name="amount_residual"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                        <group>
+                            <div string="Lines Computed" attrs="{'invisible': [('line_ids', '=', [])]}">
+                                <field name="line_ids" readonly="1">
+                                    <tree>
+                                        <field name="invoice_id"/>
+                                        <field name="amount_total" invisible="True"/>
+                                        <field name="amount_residual" sum="Amount Invoice"/>
+                                        <field name="invoice_date"/>
+                                        <field name="date_maturity"/>
+                                        <field name="invoice_payment_term_id"/>
+                                        <field name="days_maturity"/>
+                                        <field name="amount_untaxed" sum="Amount Untaxed"/>
+                                        <field name="amount_taxed" sum="Amount Tax"/>
+                                        <field name="amount" sum="Amount Total"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_interest" type="object"
+                                string="Compute" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_credit_interest_wizard" model="ir.actions.act_window">
+            <field name="name">Credit Interest</field>
+            <field name="res_model">account.credit.interest.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+        </record>
+    </data>
+</odoo>

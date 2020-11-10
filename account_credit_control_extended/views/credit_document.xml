@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_credit_documents_tree">
+            <field name="name">view.credit.document.tree</field>
+            <field name="model">credit.document</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Documents">
+                    <field name="partner_id"/>
+                    <field name="type_id"/>
+                    <field name="file_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_credit_documents_form">
+            <field name="name">view.credit.documents.form</field>
+            <field name="model">credit.document</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <form string="Documents">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                               Partner
+                            </h1>
+                            <field name="partner_id"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="type_id"/>
+                            </group>
+                            <group>
+                                <field name="file_data" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_credit_documents">
+            <field name="name">Documents</field>
+            <field name="res_model">credit.document</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_credit_document"
+                  name="Documents"
+                  action="action_credit_documents"
+                  parent="contacts.res_partner_menu_contacts"
+                  sequence="3"/>
+    
+    </data>
+</odoo>

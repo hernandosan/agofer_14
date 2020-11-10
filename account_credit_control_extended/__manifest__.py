@@ -17,16 +17,21 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account_credit_control'],
+    'depends': ['account_credit_control', 'contacts'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
+        'data/credit_documents_type_data.xml',
+        'views/credit_document_type_view.xml',
+        'views/credit_document.xml',
         'views/res_partner_view.xml',
         'views/account_payment_term_view.xml',
         'views/templates.xml',
+        'wizard/account_credit_interest_wizard_view.xml',
+        'views/account_credit_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

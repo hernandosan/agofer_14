@@ -17,8 +17,10 @@ class HrEmployee(models.Model):
         if ids:
             self.notification_hr_birth()
 
-    def month_hr_birth(self):
-        return _(calendar.month_name[fields.Date.today().month]).capitalize()
+    def action_hr_birth_post(self):
+        employees = self.search([('birthday', '!=', False)])
+        ids = [employee.id for employee in employees if employee.birthday == fields.Date.today()]
+        self.post_hr_birth(ids)
 
     def mail_hr_birth(self):
         users = self.env.ref('hr.group_hr_manager').users
@@ -31,28 +33,23 @@ class HrEmployee(models.Model):
         # ids = (partner.id for partner in partners)
         return mails
 
+    def month_hr_birth(self):
+        return _(calendar.month_name[fields.Date.today().month]).capitalize()
+
     def lang_hr_birth(self):
         return self.env.user.lang
 
     def notification_hr_birth(self):
         self.env.ref("hr_extended.template_hr_birth").send_mail(self.env.ref('hr.employee_admin').id)
 
+    def post_hr_birth(self, ids):
+        for id in ids:
+            self.env.ref("hr_extended.template_hr_birth_post").send_mail(id)
+
     def table_hr_birth(self):
         month = fields.Date.today().month
         employees = self.search([('birthday', '!=', False)])
         ids = [employee.id for employee in employees if employee.birthday.month == month]
-        # <table>
-        #     <thead>
-        #         <th> Employee </th>
-        #         <th> Birthday </th>
-        #     </thead>
-        #     <tbody>
-        #         <tr>
-        #             <td> Employee </td>
-        #             <td> Birthday </td>
-        #         </tr>
-        #     </tbody>
-        # </table>
         table_hr_birth = ""
         if ids:
             table_hr_birth += """

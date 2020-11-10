@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    credit_control = fields.Boolean('Credit Control', default=True)
+    credit_control = fields.Boolean('Credit Control')
     credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
         ('insured','Insured Quota'),
@@ -14,6 +14,7 @@ class ResPartner(models.Model):
         ('committee','Committee Quota')], 'Quota Type', tracking=True)
     credit_maturity = fields.Monetary(compute='_compute_credit_maturity', string='Total Receivable Maturity')
     credit_quota = fields.Monetary(compute='_compute_credit_quota', string='Total Quota')
+    document_ids = fields.One2many('credit.document', 'partner_id', 'Documents')
 
     @api.depends_context('force_company')
     def _compute_credit_maturity(self):
@@ -45,3 +46,26 @@ class ResPartner(models.Model):
     def _compute_credit_quota(self):
         for partner in self:
             partner.credit_quota = partner.credit_limit - partner.credit
+
+    def action_credit_interest(self):
+        action = self.env.ref('account_credit_control_extended.action_account_credit_interest_wizard').sudo()
+        result = action.read()[0]
+        domain = [('partner_id', '=', self.id), ('full_reconcile_id', '=', False), ('balance', '!=', 0),
+                  ('account_id.reconcile', '=', True), ('date_maturity', '<', fields.Date.today()),
+                  ('move_id.move_type', '=', 'out_invoice')]
+        ids = self.env['account.move.line'].search(domain).ids
+        result['context'] = {
+            'default_partner_id': self.id,
+            'default_lines_ids': [(6, 0, ids)],
+        }
+        return result
+
+    def time_maturity(self):
+        action = self.env.ref('account_credit_control_extended.action_account_credit_interest_wizard').sudo()
+        result = action.read()[0]
+        domain = [('partner_id', '=', self.id), ('reconciled', '=', False), ('amount_residual', '!=', 0)]
+        ids = self.env['account.move.line'].search(domain).ids
+        result['context'] = {
+            'date_maturity': fields.Date.from_string(self.date_maturity) - fields.Date.from_string(fields.Date.context_today(self))
+        }
+        return result
