@@ -17,13 +17,19 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock_account'],
+    'depends': [
+        'stock_account',
+        'sale_purchase_stock',
+        'stock_landed_costs',
+    ],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/templates.xml',
+        'views/purchase_order_view.xml',
         'views/stock_kardex_view.xml',
+        'views/stock_landed_cost_view.xml',
+        # 'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

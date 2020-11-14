@@ -13,6 +13,16 @@ _logger = logging.getLogger(__name__)
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
+    standard_price = fields.Float('Cost', digits='Product Price')
+    cost_id = fields.Many2one('stock.landed.cost', 'Landed Cost')
+    additional_cost = fields.Float('Additional Landed Cost', digits='Account')
+
+    # @api.model
+    # def create(self, vals):
+    #     standard_price = self.env['product.product'].browse(vals['product_id']).standard_price
+    #     vals.update(price_unit=standard_price)
+    #     return super(StockMove, self).create(vals)
+
     @api.model
     def _get_valued_types(self):
         """Returns a list of `valued_type` as strings. During `action_done`, we'll call
@@ -23,6 +33,7 @@ class StockMove(models.Model):
         :rtype: list
         """
         res = super(StockMove, self)._get_valued_types()
+        res.append('int')
         res.append('in_returned')
         res.append('out_returned')
         return res
@@ -48,6 +59,61 @@ class StockMove(models.Model):
         """
         res = super(StockMove, self)._get_out_move_lines()
         return self.env['stock.move.line'] if self.origin_returned_move_id else res
+
+    def _create_int_svl(self, forced_quantity=None):
+        """Create a `stock.valuation.layer` from `self`.
+
+        :param forced_quantity: under some circunstances, the quantity to value is different than
+            the initial demand of the move (Default value = None)
+        """
+        svl_vals_list = []
+        for move in self:
+            move = move.with_company(move.company_id)
+            valued_move_lines = move._get_int_move_lines()
+            valued_quantity = 0
+            for valued_move_line in valued_move_lines:
+                valued_quantity += valued_move_line.product_uom_id._compute_quantity(valued_move_line.qty_done, move.product_id.uom_id)
+            # unit_cost = abs(move._get_price_unit())  # May be negative (i.e. decrease an out move).
+            unit_cost = move.additional_cost / valued_quantity
+            if move.product_id.cost_method == 'standard':
+                unit_cost = move.product_id.standard_price
+            svl_vals = move.product_id._prepare_int_svl_vals(forced_quantity or valued_quantity, unit_cost)
+            svl_vals.update(move._prepare_common_svl_vals())
+            if forced_quantity:
+                svl_vals['description'] = 'Correction of %s (modification of past move)' % move.picking_id.name or move.name
+            # Add stock landed cost
+            svl_vals.update(stock_landed_cost_id=move.cost_id.id)
+            svl_vals_list.append(svl_vals)
+        return self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
+
+    def _get_int_move_lines(self):
+        """ Returns the `stock.move.line` records of `self` considered as internal. It is done thanks
+        to the `_should_be_valued` method of their source and destionation location as well as their
+        owner.
+
+        :returns: a subset of `self` containing the incoming records
+        :rtype: recordset
+        """
+        self.ensure_one()
+        res = self.env['stock.move.line']
+        for move_line in self.filtered(lambda m: m.cost_id).move_line_ids:
+            if move_line.owner_id and move_line.owner_id != move_line.company_id.partner_id:
+                continue
+            if move_line.location_id._should_be_valued() and move_line.location_dest_id._should_be_valued():
+                res |= move_line
+        return res
+
+    def _is_int(self):
+        """Check if the move should be considered as entering the company so that the cost method
+        will be able to apply the correct logic.
+
+        :returns: True if the move is internal the company else False
+        :rtype: bool
+        """
+        self.ensure_one()
+        if self._get_int_move_lines():
+            return True
+        return False
 
     def _create_in_returned_svl(self, forced_quantity=None):
         """Create a `stock.valuation.layer` from `self`.
@@ -167,19 +233,28 @@ class StockMove(models.Model):
                     continue
 
         # AVCO application
-        valued_moves['in_returned'].product_price_update_before_done_returned()
-        valued_moves['out_returned'].product_price_update_before_done_returned()
-        return super(StockMove, self)._action_done(cancel_backorder=cancel_backorder)
+        valued_moves['int'].product_price_update_before_done_extended()
+        valued_moves['in_returned'].product_price_update_before_done_extended()
+        valued_moves['out_returned'].product_price_update_before_done_extended()
+        res = super(StockMove, self)._action_done(cancel_backorder=cancel_backorder)
+        self.standard_price_update_after_done_extended()
+        return res
 
-    def product_price_update_before_done_returned(self, forced_qty=None):
+    def product_price_update_before_done_extended(self, forced_qty=None):
         tmpl_dict = defaultdict(lambda: 0.0)
         # adapt standard price on incomming moves if the product cost_method is 'average'
         std_price_update = {}
-        for move in self.filtered(lambda move: move._is_in_returned() or move._is_out_returned() and move.with_context(force_company=move.company_id.id).product_id.cost_method == 'average'):
-            product_tot_qty_available = move.product_id.sudo().with_context(force_company=move.company_id.id).quantity_svl + tmpl_dict[move.product_id.id]
+        for move in self.filtered(lambda move: move._is_int() or move._is_in_returned() or move._is_out_returned() and move.with_company(move.company_id).product_id.cost_method == 'average'):
+            product_tot_qty_available = move.product_id.sudo().with_company(move.company_id).quantity_svl + tmpl_dict[move.product_id.id]
             rounding = move.product_id.uom_id.rounding
 
-            valued_move_lines = move._get_in_returned_move_lines()
+            if move._is_int():
+                valued_move_lines = move._get_int_move_lines()
+            elif move._is_in_returned():
+                valued_move_lines = move._get_in_returned_move_lines()
+            else:
+                valued_move_lines = move._get_out_returned_move_lines()
+
             qty_done = 0
             for valued_move_line in valued_move_lines:
                 qty_done += valued_move_line.product_uom_id._compute_quantity(valued_move_line.qty_done, move.product_id.uom_id)
@@ -192,19 +267,24 @@ class StockMove(models.Model):
                 new_std_price = move._get_price_unit()
             else:
                 # Get the standard price
-                amount_unit = std_price_update.get((move.company_id.id, move.product_id.id)) or move.product_id.with_context(force_company=move.company_id.id).standard_price
-                if move._is_in_returned():
+                amount_unit = std_price_update.get((move.company_id.id, move.product_id.id)) or move.product_id.with_company(move.company_id).standard_price
+                if move._is_int():
+                    new_std_price = ((amount_unit * (product_tot_qty_available - qty)) + (move._get_price_unit() * qty)) / (product_tot_qty_available)
+                elif move._is_in_returned():
                     new_std_price = ((amount_unit * product_tot_qty_available) - (move._get_price_unit() * qty)) / (product_tot_qty_available - qty)
                 else:
                     new_std_price = ((amount_unit * product_tot_qty_available) + (move._get_price_unit() * qty)) / (product_tot_qty_available + qty)
 
             tmpl_dict[move.product_id.id] += qty_done
             # Write the standard price, as SUPERUSER_ID because a warehouse manager may not have the right to write on products
-            move.product_id.with_context(force_company=move.company_id.id).sudo().write({'standard_price': new_std_price})
+            move.product_id.with_company(move.company_id.id).with_context(disable_auto_svl=True).sudo().write({'standard_price': new_std_price})
             std_price_update[move.company_id.id, move.product_id.id] = new_std_price
 
+    def standard_price_update_after_done_extended(self):
+        for move in self:
+            move.write({'standard_price': move.product_id.standard_price})
+
     def _account_entry_move(self, qty, description, svl_id, cost):
-        res =  super(StockMove, self)._account_entry_move(qty=qty, description=description, svl_id=svl_id, cost=cost)
         """ Accounting Valuation Entries """
         self.ensure_one()
         if self.product_id.type != 'product':
@@ -219,42 +299,22 @@ class StockMove(models.Model):
         company_from = self._is_in_returned() and self.mapped('move_line_ids.location_id.company_id') or False
         company_to = self._is_out_returned() and self.mapped('move_line_ids.location_dest_id.company_id') or False
 
+        journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation()
+
+        # Create Journal Entry for moves internal
+        if self._is_int():
+            company_to = self.mapped('move_line_ids.location_dest_id.company_id') or company_to
+            journal_id = self.cost_id.account_journal_id.id if self.cost_id and self.cost_id.account_journal_id else journal_id
+            self.with_company(company_to)._create_account_move_line(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost)
+
         # Create Journal Entry for products arriving in the company; in case of routes making the link between several
         # warehouse of the same company, the transit location belongs to this company, so we don't need to create accounting entries
         if self._is_out_returned():
-            journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation()
-            if location_from and location_from.usage == 'customer':  # goods returned from customer
-                self.with_context(force_company=company_to.id)._create_account_move_line(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost)
-            else:
-                self.with_context(force_company=company_to.id)._create_account_move_line(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost)
+            self.with_company(company_to)._create_account_move_line(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost)
 
         # Create Journal Entry for products leaving the company
         if self._is_in_returned():
             cost = -1 * cost
-            journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation()
-            if location_to and location_to.usage == 'supplier':  # goods returned to supplier
-                self.with_context(force_company=company_from.id)._create_account_move_line(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost)
-            else:
-                self.with_context(force_company=company_from.id)._create_account_move_line(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost)
+            self.with_company(company_from)._create_account_move_line(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost)
 
-        if self.company_id.anglo_saxon_accounting:
-            # Creates an account entry from stock_input to stock_output on a dropship move. https://github.com/odoo/odoo/issues/12687
-            journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation()
-            if self._is_dropshipped():
-                if cost > 0:
-                    self.with_context(force_company=self.company_id.id)._create_account_move_line(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost)
-                else:
-                    cost = -1 * cost
-                    self.with_context(force_company=self.company_id.id)._create_account_move_line(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost)
-            elif self._is_dropshipped_returned():
-                if cost > 0:
-                    self.with_context(force_company=self.company_id.id)._create_account_move_line(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost)
-                else:
-                    cost = -1 * cost
-                    self.with_context(force_company=self.company_id.id)._create_account_move_line(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost)
-
-        if self.company_id.anglo_saxon_accounting:
-            #eventually reconcile together the invoice and valuation accounting entries on the stock interim accounts
-            self._get_related_invoices()._stock_account_anglo_saxon_reconcile_valuation(product=self.product_id)
-
-        return res
+        return super(StockMove, self)._account_entry_move(qty=qty, description=description, svl_id=svl_id, cost=cost)
