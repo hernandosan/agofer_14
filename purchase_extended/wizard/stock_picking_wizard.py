@@ -8,7 +8,10 @@ class StockPickingWizard(models.TransientModel):
 
     def _default_products(self):
         import_id = self.env['purchase.import'].browse(self._context.get('active_ids'))
-        return import_id.import_line.filtered(lambda line: line.product_available)
+        lines = import_id.import_line.filtered(lambda line: line.product_available)
+        for line in lines:
+            line.write({'product_dispatch': line.product_available})
+        return lines
 
     carrier_id = fields.Many2one('delivery.carrier','Carrier')
     warehouse_id = fields.Many2one('stock.warehouse','Destination')
@@ -30,7 +33,7 @@ class StockPickingWizard(models.TransientModel):
             move_lines.append([0,0,dic])
             line.write({
                 'product_received': line.product_received + line.product_dispatch,
-                'product_dispatch': 0,
+                # 'product_dispatch': 0,
             })
         line = {
             'import_id': import_id.id,

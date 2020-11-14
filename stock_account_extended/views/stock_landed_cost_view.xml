@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="view_stock_landed_cost_form" model="ir.ui.view">
+            <field name="name">view.stock.landed.cost.form</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button string="Delivery" type="object" name="action_view_picking" 
+                        class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('picking_ids', '=', [])]}"/>
+                    <button string="Accounting Entries" type="object" name="action_view_line" 
+                        class="oe_stat_button" icon="fa-usd" attrs="{'invisible': [('lines_ids', '=', [])]}"/>
+                </xpath>
+                <xpath expr="//field[@name='vendor_bill_id']" position="before">
+                    <field name="lines_ids" invisible="1"/>
+                    <field name="order_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

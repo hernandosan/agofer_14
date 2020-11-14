@@ -44,6 +44,7 @@ class PurchaseImport(models.Model):
     date_stock = fields.Date(string='Stock Date', index=True)
     # Costs
     price_type = fields.Selection([('price','Price'), ('weight','Weight')], 'Price Type', copy=False, default='price')
+    allowed_order_ids = fields.Many2many('purchase.order', compute='_compute_allowed_order_ids')
     orders_ids = fields.Many2many('purchase.order', 'import_order_rel', 'import_id', 'order_id', 'Orders', states=READONLY_STATES, copy=False)
     moves_ids = fields.Many2many('account.move', 'import_move_rel', 'import_id', 'move_id', 'Invoices', copy=False)
     # Moves
@@ -174,6 +175,17 @@ class PurchaseImport(models.Model):
                 'amount_total': amount_untaxed + amount_tax,
             })
 
+    @api.depends('company_id')
+    def _compute_allowed_order_ids(self):
+        for purchase in self:
+            domain = [
+                ('state', '=', 'done'), 
+                ('picking_ids.state', '=', 'assigned'), 
+                ('company_id', '=', purchase.company_id.id),
+                ('currency_id', '=', purchase.currency_id.id)
+            ]
+            purchase.allowed_order_ids = self.env['purchase.order'].search(domain)
+
     def action_purchase(self):
         self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
 
@@ -260,7 +272,7 @@ class PurchaseImport(models.Model):
 
     def _action_validate(self):
         self.ensure_one()
-        self.action_purchase_order()
+        self.import_line.action_validate()
         self.move_lines.filtered(lambda m: m.state == 'done').write({'import_done_id': self.id})
         self.move_lines.write({'import_id': False})
         self.write({'state': 'done'})
@@ -309,9 +321,6 @@ class PurchaseImport(models.Model):
         pickings_to_backorder = self.move_lines.picking_id
         pickings_to_backorder.with_context(cancel_backorder=False, import_id=self.id)._action_done()
         return True
-
-    def action_purchase_order(self):
-        self.orders_ids.action_purchase_import()
 
     def action_invoice(self):
         for purchase in self:
@@ -455,22 +464,22 @@ class PurchaseImportLine(models.Model):
     categ_id = fields.Many2one(related='product_id.categ_id', store=True)
 
     currency_import_id = fields.Many2one(related='import_id.currency_id', store=True, string='Import Currency')
-    price_unit_currency = fields.Monetary('Unit Price Currency', digits='Product Price', currency_field='currency_import_id')
-    price_cost_currency = fields.Monetary('Cost Price Currency', digits='Product Price', currency_field='currency_import_id')
+    price_unit_currency = fields.Monetary('Unit Price Currency', currency_field='currency_import_id')
+    price_cost_currency = fields.Monetary('Cost Price Currency', currency_field='currency_import_id')
 
-    price_unit = fields.Monetary(string='Unit Price', required=True, digits='Product Price')
-    price_subtotal = fields.Monetary(compute='_compute_price', string='Subtotal', store=True,  digits='Product Price')
-    price_total = fields.Monetary(compute='_compute_price', string='Total', store=True,  digits='Product Price')
-    price_tax = fields.Monetary(compute='_compute_price', string='Tax', store=True,  digits='Product Price')
+    price_unit = fields.Monetary(string='Unit Price', required=True)
+    price_subtotal = fields.Monetary(compute='_compute_price', string='Subtotal', store=True)
+    price_total = fields.Monetary(compute='_compute_price', string='Total', store=True)
+    price_tax = fields.Monetary(compute='_compute_price', string='Tax', store=True)
 
-    price_cost = fields.Monetary('Cost Price', digits='Product Price')
-    price_insurance = fields.Monetary('Insurance Price', digits='Product Price')
-    price_freight = fields.Monetary('Freight Price', digits='Product Price')
-    price_cif= fields.Monetary('CIF Price', digits='Product Price')
+    price_cost = fields.Monetary('Cost Price')
+    price_insurance = fields.Monetary('Insurance Price')
+    price_freight = fields.Monetary('Freight Price')
+    price_cif= fields.Monetary('CIF Price')
 
-    price_expense = fields.Monetary('Expense Price', digits='Product Price', store=True)
-    price_customs = fields.Monetary('Customs Price', digits='Product Price')
-    price_tariff = fields.Monetary('Tariff Price', digits='Product Price', compute='_compute_price', store=True)
+    price_expense = fields.Monetary('Expense Price', store=True)
+    price_customs = fields.Monetary('Customs Price')
+    price_tariff = fields.Monetary('Tariff Price', compute='_compute_price', store=True)
 
     order_id = fields.Many2one('purchase.order', 'Order', ondelete='set null', index=True, readonly=True)
     line_id = fields.Many2one('purchase.order.line', 'Order Line', ondelete='set null', index=True, readonly=True)
@@ -483,7 +492,7 @@ class PurchaseImportLine(models.Model):
     company_id = fields.Many2one('res.company', related='import_id.company_id', string='Company', store=True, readonly=True)
     state = fields.Selection(related='import_id.state', store=True, readonly=False)
 
-    partner_id = fields.Many2one('res.partner', related='import_id.partner_id', string='Partner', readonly=True, store=True)
+    partner_id = fields.Many2one(related='import_id.partner_id', string='Partner', readonly=True, store=True)
     currency_id = fields.Many2one(related='import_id.currency_company_id', store=True, string='Currency', readonly=True)
     date_import = fields.Datetime(related='import_id.date_import', string='Import Date', readonly=True)
 
@@ -517,3 +526,12 @@ class PurchaseImportLine(models.Model):
     def _onchange_product_dispatch(self):
         if self.product_dispatch > self.product_available:
             raise ValidationError(_("The amount entered is higher than the available amount"))
+
+    def action_validate(self):
+        for line in self:
+            line._action_validate()
+
+    def _action_validate(self):
+        self.ensure_one()
+        price_unit = self.price_subtotal / self.product_qty
+        self.move_id.write({'price_unit': price_unit})

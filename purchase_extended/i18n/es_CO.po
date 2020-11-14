@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-03 17:01+0000\n"
-"PO-Revision-Date: 2020-10-03 17:01+0000\n"
+"POT-Creation-Date: 2020-11-13 17:39+0000\n"
+"PO-Revision-Date: 2020-11-13 17:39+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,6 +62,11 @@ msgstr "Estado de la actividad"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_type_icon
 msgid "Activity Type Icon"
 msgstr ""
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__allowed_order_ids
+msgid "Allowed Order"
+msgstr "Ordenes Permitidas"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
@@ -274,6 +279,7 @@ msgstr "Defina sus términos y condiciones ..."
 
 #. module: purchase_extended
 #: model:ir.ui.menu,name:purchase_extended.menu_delivery_carrier_parent
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Delivery"
 msgstr "Entrega"
 
@@ -472,7 +478,6 @@ msgstr "Importación"
 #: model:ir.model.fields,field_description:purchase_extended.field_account_bank_statement_line__import_bool
 #: model:ir.model.fields,field_description:purchase_extended.field_account_move__import_bool
 #: model:ir.model.fields,field_description:purchase_extended.field_account_payment__import_bool
-#: model:ir.model.fields,field_description:purchase_extended.field_purchase_order__import_bool
 msgid "Import Bool"
 msgstr "Boleano de Importación"
 
@@ -932,11 +937,6 @@ msgstr ""
 "Precisión decimal entre la moneda de la compañía y la del pedido de compra"
 
 #. module: purchase_extended
-#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
-msgid "Receipt"
-msgstr "Recepciones"
-
-#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_received
 msgid "Received Quantity"
 msgstr "Cantidad Recibida"
@@ -1183,7 +1183,8 @@ msgstr "Transferencias"
 #. module: purchase_extended
 #: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_picking
 msgid "Transfers allow you to move products from one location to another."
-msgstr "Las transferencias le permiten mover productos de una ubicación a otra."
+msgstr ""
+"Las transferencias le permiten mover productos de una ubicación a otra."
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form

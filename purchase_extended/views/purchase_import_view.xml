@@ -78,7 +78,7 @@
                                 <field name="account_ids" invisible="1"/>
                             </button>
                             <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck" attrs="{'invisible':[('picking_ids','=',[])]}">
-                                <field name="picking_count" widget="statinfo" string="Receipt"/>
+                                <field name="picking_count" widget="statinfo" string="Delivery"/>
                                 <field name="picking_ids" invisible="1"/>
                             </button>
                         </div>
@@ -91,7 +91,7 @@
                         <group>
                             <group>
                                 <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
-                                    placeholder="Name, TIN, Email, or Reference"
+                                    placeholder="Name, NIT, Email, or Reference"
                                 />
                                 <field name="origin" attrs="{'invisible': [('origin','=',False)]}"/>
                                 <field name="partner_ref" attrs="{'readonly': [('state','!=','draft')]}" />
@@ -202,7 +202,8 @@
                                 </group>
                             </page>
                             <page string="Orders">
-                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('state', '=', 'done'),('import_bool', '=', True)]"/>
+                                <field name="allowed_order_ids" invisible="True"/>
+                                <field name="orders_ids" attrs="{'readonly': [('state','!=','purchase')]}" domain="[('id', 'in', allowed_order_ids)]"/>
                             </page>
                             <page string="Operations" states="progress,done">
                                 <!-- <field name="move_lines" mode="tree,kanban" attrs="{'readonly': [('state', '!=', 'progress')]}"

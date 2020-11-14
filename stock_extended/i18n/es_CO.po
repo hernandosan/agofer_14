@@ -447,7 +447,7 @@ msgstr "Actividades tardías"
 #: model:ir.actions.act_window,name:stock_extended.action_delivery_guide_branch
 #: model:ir.ui.menu,name:stock_extended.menu_delivery_guide_branch
 msgid "Loading Orders"
-msgstr "Ordnes de Cargue"
+msgstr "Ordenes de Cargue"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_main_attachment_id

@@ -18,6 +18,8 @@ class ProductPriceHistory(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
+    standard_price = fields.Float(tracking=True)
+
     @api.model
     def create(self, vals):
         product = super(ProductProduct, self).create(vals)
@@ -35,6 +37,26 @@ class ProductProduct(models.Model):
                 'product_id': product.id,
                 'cost': value
             })
+    
+    def _prepare_int_svl_vals(self, quantity, unit_cost):
+        """Prepare the values for a stock valuation layer created by a receipt.
+
+        :param quantity: the quantity to value, expressed in `self.uom_id`
+        :param unit_cost: the unit cost to value `quantity`
+        :return: values to use in a call to create
+        :rtype: dict
+        """
+        self.ensure_one()
+        vals = {
+            'product_id': self.id,
+            'value': unit_cost * quantity,
+            'unit_cost': unit_cost,
+            'quantity': quantity,
+        }
+        if self.cost_method in ('average', 'fifo'):
+            vals['remaining_qty'] = quantity
+            vals['remaining_value'] = vals['value']
+        return vals
 
     def _prepare_in_returned_svl_vals(self, quantity, unit_cost, company):
         """Prepare the values for a stock valuation layer created by a delivery.
