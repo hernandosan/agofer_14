@@ -20,5 +20,106 @@
                 ]]>
             </field>
         </record>
+
+        <record id="template_hr_birth_post" model="mail.template">
+            <field name="name">Employee Birthday Post</field>
+            <field name="model_id" ref="hr.model_hr_employee" />
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="subject">Happy Birthday ${object.name}</field>
+            <field name="email_to">${object.user_id.email_formatted | safe}</field>
+<!--            <field name="partner_to">${object.mail_hr_birth() | safe}</field>-->
+            <field name="auto_delete" eval="False" />
+            <field name="lang">	${object.user_id.lang}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+        <body>
+            <div class="es-wrapper-color">
+                <table class="es-content-body" style="background-color: #ffffff;" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                    <tbody>
+                        <tr>
+                            <td class="esd-structure es-p30t es-p35b es-p40r es-p40l" align="left">
+                                <table width="100%" cellspacing="0" cellpadding="0" style="background-color:#000e66;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="esd-container-frame" width="520" valign="top" align="center">
+                                                <table width="100%" cellspacing="0" cellpadding="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="esd-block-text" align="center">
+                                                                <h1 style="color: #666666; font-size: 40px; font-family: lora, georgia, times\ new\ roman, serif;"><em>Happy Birthday!</em></h1>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="esd-block-text" align="center">
+                                                                <h1 style="color: #666666; font-size: 24px; font-family: lora, georgia, times\ new\ roman, serif;"><em>${object.name}</em></h1>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="esd-structure" esd-general-paddings-checked="false" align="left">
+                                <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="esd-container-frame" width="600" valign="top" align="center">
+                                                <table width="100%" cellspacing="0" cellpadding="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="esd-block-image" style="font-size: 0;" align="center"><a target="_blank"><img class="adapt-img" src="https://tlr.stripocdn.email/content/guids/CABINET_b54797fc68edcecf4f6b2835e7bcba32/images/36321522405737710.gif" style="display: block;" alt="Gift " title="Gift " width="300" /></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="esd-structure es-p30t es-p40b es-p40r es-p40l" align="left">
+                                <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="esd-container-frame" width="520" valign="top" align="center">
+                                                <table style="height: 82px; width: 100%; background-color:#000e66;" width="100%" cellspacing="0" cellpadding="0">
+                                                    <tbody>
+                                                        <tr style="height: 64px;">
+                                                            <td class="esd-block-text" style="height: 64px; width: 100%;" align="center">
+                                                                <p style="color: #999999;">Today, it&rsquo;s a special day, because the kindest and beautiful hearted person was born on this special day. Happy birthday, thanks for joining to our company.</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="height: 18px;">
+                                                            <td class="esd-block-text es-p15t" style="height: 18px; width: 100%;" align="center">
+                                                                <p style="color: #999999; font-size: 20px;">Happy Birthday wished you:</p>
+                                                                <p class="esd-block-image" style="font-size: 0;" align="center"><a target="_blank"><img class="adapt-img" src="https://erp.agofer.com/website/image/ir.attachment/955591_3a01552/datas" style="display: block;" alt="Gift " title="Gift " width="300" /></a></p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </body>
+</html>
+                ]]>
+            </field>
+        </record>
     </data>
 </odoo>

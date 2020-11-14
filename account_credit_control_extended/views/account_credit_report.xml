@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+            id="account_credit_interest"
+            model="account.credit.interest.wizard"
+            string="Credit Interest"
+            name="account_credit_control_extended.account_credit_report"
+            report_type="qweb-pdf"
+            attachment_use="False"
+            attachment="object.partner_id.name + '.pdf'"/>
+
+        <template id="account_credit_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="account_credit_control_extended.report_account_credit_interest" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="style_table">
+            <link rel="stylesheet" type="text/css" href="/account_credit_control_extended/static/src/css/report_style.css"/>
+        </template>
+
+        <template id="report_account_credit_interest">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+            <t t-call="web.external_layout" t-css="false" t-scss="false">
+                <p t-call="account_credit_control_extended.style_table"></p>
+                <div>
+                    <group>
+                        <div>
+                            <strong>Partner: </strong>
+                            <span t-field="doc.partner_id.name"/>
+                        </div>
+                        <div>
+                            <strong>Nit Partner: </strong>
+                            <span t-field="doc.partner_id.vat"/>
+                        </div>
+                    </group>
+                    <group>
+                        <div>
+                            <strong>Annual Cash: </strong>
+                            <span t-field="doc.annual_cash" />
+                        </div>
+                        <div>
+                            <strong>Month Expired: </strong>
+                            <t t-set="month_expired" t-value="doc.return_month_expired(doc.annual_cash)"/>
+                            <span t-esc="month_expired"/>
+                            <!-- <span t-field="doc.month_expired"/> -->
+                        </div>
+                    </group>
+                </div>
+<!--                <P t-call="account_credit_control_extended.style_table"></P>-->
+                <div>
+                    <table class="table">
+                        <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                        <thead>
+                            <tr>
+                                <th name="th_move_id">Invoice</th>
+                                <th name="th_amount">Amount</th>
+                                <th name="th_date">Date</th>
+                                <th name="th_date_maturity">Date Maturity</th>
+                                <th name="th_days_maturity">Days Maturity</th>
+                                <th name="th_amount_taxed">Amount Taxed</th>
+                                <th name="th_amount_untaxed" >Amount Untaxed</th>
+                                <th name="th_amount_total">Amount Total</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <t t-foreach="doc.line_ids" t-as="line">
+    <!--                            <tr t-att-class="'bg-200 font-weight-bold o_line_section' ">-->
+                                <tr>
+                                    <td name="td_move_id"><span t-field="line.invoice_id"/></td>
+                                    <td name="td_amount"><span t-field="line.amount_total"/></td>
+                                    <td name="td_date"><span t-field="line.invoice_date"/></td>
+                                    <td name="td_date_maturity"><span t-field="line.date_maturity"/></td>
+                                    <td name="td_days_maturity"><span t-field="line.days_maturity"/></td>
+                                    <td name="td_amount_taxed"><span t-field="line.amount_taxed"/></td>
+                                    <td name="td_amount_untaxed"><span t-field="line.amount_untaxed"/></td>
+                                    <td name="td_amount_total"><span t-field="line.amount"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <br></br>
+                <div>
+                    <table style="margin-left: auto">
+                        <tr>
+                            <td name="td_section_subtotal" colspan="99">
+                                <strong>Subtotal</strong>
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_untaxed"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td name="td_section_taxed" colspan="99">
+                                <strong>Taxed</strong>
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_taxed"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td name="td_section_total" colspan="99">
+                                <strong>Total</strong>
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_total"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <strong>Amount to Words: </strong>
+                            <t t-set="amount_word" t-value="doc.num2word()"/>
+                            <span t-esc="amount_word"/>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

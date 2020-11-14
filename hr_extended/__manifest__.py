@@ -23,6 +23,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',
+        'data/ir_cron_post.xml',
         'data/mail_template_data.xml',
         'views/hr_doc_type_view.xml',
         'views/hr_document_view.xml',

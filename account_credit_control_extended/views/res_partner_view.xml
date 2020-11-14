@@ -1,7 +1,46 @@
 <odoo>
     <data>
-        <record id="view_res_partner_view" model="ir.ui.view">
-            <field name="name">view.res.partner.view</field>
+        <record model="ir.ui.view" id="view_res_partner_view">
+            <field name="name">view.res.partner.credit.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Interest" type="object" name="action_credit_interest" class="oe_highlight" />
+                    </header>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Documents">
+                        <field name="document_ids">
+                            <tree string="Documents">
+                                <field name="type_id"/>
+                                <field name="file_name"/>
+                            </tree>
+                            <form string="Documents">
+                                <sheet>
+                                    <group>
+                                        <group>
+                                            <field name="type_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="file_data" filename="file_name"/>
+                                            <field name="file_name" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="description"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_credit_view" model="ir.ui.view">
+            <field name="name">view.res.partner.credit.view</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="account_credit_control.partner_followup_form_view"/>
             <field name="arch" type="xml">
