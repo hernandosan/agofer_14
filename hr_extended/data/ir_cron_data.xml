@@ -10,5 +10,15 @@
             <field name='interval_type'>months</field>
             <field name="numbercall">-1</field>
         </record>
+
+        <record id="cron_hr_birth_post" model="ir.cron">
+            <field name="name">HR Birth Post Cron</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.action_hr_birth_post()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+        </record>
     </data>
 </odoo>

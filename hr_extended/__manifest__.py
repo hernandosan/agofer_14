@@ -7,7 +7,10 @@
     'description': "HR Employee",
 
     'author': "Agofer S.A.",
-    'contributors': ['Reyes Santana rhsantana@agofer.com.co'],
+    'contributors': [
+        'Juan Arcos jparcos@agofer.com.co',
+        'Reyes Santana rhsantana@agofer.com.co'
+        ],
     'website': "http://www.agofer.com.co",
 
     # Categories can be used to filter modules in modules listing
@@ -23,13 +26,10 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',
-        'data/ir_cron_post.xml',
         'data/mail_template_data.xml',
         'views/hr_doc_type_view.xml',
         'views/hr_document_view.xml',
         'views/hr_employee_view.xml',
-        'views/views.xml',
-        'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

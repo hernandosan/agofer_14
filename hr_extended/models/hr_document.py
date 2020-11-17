@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class HrDocument(models.Model):
     _name = 'hr.document'
-    _description = 'HR Documents'
+    _description = 'HR Document'
 
     type = fields.Selection([('hr', 'HR'), ('sig', 'SIG')], required=True)
     type_id = fields.Many2one('hr.doc.type', 'Document Type', required=True)

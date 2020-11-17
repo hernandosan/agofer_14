@@ -1,17 +1,19 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="view_res_partner_view">
-            <field name="name">view.res.partner.credit.view</field>
+        <record model="ir.ui.view" id="view_res_partner_form">
+            <field name="name">view.res.partner.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//sheet" position="before">
                     <header>
-                        <button string="Interest" type="object" name="action_credit_interest" class="oe_highlight" />
+                        <button string="Interest for late payment" type="object" name="action_credit_interest" 
+                            class="oe_highlight" groups="account_credit_control.group_account_credit_control_user"/>
                     </header>
                 </xpath>
+
                 <xpath expr="//notebook" position="inside">
-                    <page string="Documents">
+                    <page string="Documents" groups="account_credit_control.group_account_credit_control_info">
                         <field name="document_ids">
                             <tree string="Documents">
                                 <field name="type_id"/>
@@ -39,8 +41,8 @@
             </field>
         </record>
 
-        <record id="view_res_partner_credit_view" model="ir.ui.view">
-            <field name="name">view.res.partner.credit.view</field>
+        <record id="view_res_partner_credit_form" model="ir.ui.view">
+            <field name="name">view.res.partner.credit.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="account_credit_control.partner_followup_form_view"/>
             <field name="arch" type="xml">

@@ -2,18 +2,16 @@
 <odoo>
     <data>
         <report
-            id="account_credit_interest"
-            model="account.credit.interest.wizard"
+            id="report_credit_interest_wizard"
+            model="credit.interest.wizard"
             string="Credit Interest"
-            name="account_credit_control_extended.account_credit_report"
-            report_type="qweb-pdf"
-            attachment_use="False"
-            attachment="object.partner_id.name + '.pdf'"/>
+            name="account_credit_control_extended.template_credit_interest_wizard"
+            report_type="qweb-pdf"/>
 
-        <template id="account_credit_report">
+        <template id="template_credit_interest_wizard">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="account_credit_control_extended.report_account_credit_interest" t-lang="doc.partner_id.lang"/>
+                    <t t-call="account_credit_control_extended.template_credit_interest_wizard_document" t-lang="doc.partner_id.lang"/>
                 </t>
             </t>
         </template>
@@ -22,7 +20,7 @@
             <link rel="stylesheet" type="text/css" href="/account_credit_control_extended/static/src/css/report_style.css"/>
         </template>
 
-        <template id="report_account_credit_interest">
+        <template id="template_credit_interest_wizard_document">
             <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
             <t t-call="web.external_layout" t-css="false" t-scss="false">
                 <p t-call="account_credit_control_extended.style_table"></p>
@@ -46,7 +44,6 @@
                             <strong>Month Expired: </strong>
                             <t t-set="month_expired" t-value="doc.return_month_expired(doc.annual_cash)"/>
                             <span t-esc="month_expired"/>
-                            <!-- <span t-field="doc.month_expired"/> -->
                         </div>
                     </group>
                 </div>

@@ -34,7 +34,6 @@
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
         'views/stock_warehouse_view.xml',
-        'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

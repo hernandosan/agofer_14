@@ -1,18 +1,18 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 import base64, num2words
 
 
-class AccountCreditInterestWizard(models.Model):
-    _name = 'account.credit.interest.wizard'
-    _description = 'Account Credit Interest Wizard'
+class CreditInterestWizard(models.Model):
+    _name = 'credit.interest.wizard'
+    _description = 'Credit Interest Wizard'
 
     partner_id = fields.Many2one('res.partner', 'Partner')
     annual_cash = fields.Float('Annual Cash', required=True, digits=(2, 2))
     month_expired = fields.Float('Month Expired', digits=(2, 2))
     payment_date = fields.Date('Payment Date', default=fields.Date.today())
     lines_ids = fields.Many2many('account.move.line', string='Invoices')
-    line_ids = fields.One2many('account.credit.interest.line.wizard', 'interest_id', 'Lines')
+    line_ids = fields.One2many('credit.interest.line.wizard', 'interest_id', 'Lines')
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related='company_id.currency_id')
     amount_untaxed = fields.Monetary('Amount Untaxed', compute='_compute_amount')
@@ -22,11 +22,9 @@ class AccountCreditInterestWizard(models.Model):
     file_data = fields.Binary('File')
     file_name = fields.Char('File Name')
 
-
     @api.onchange('annual_cash')
     def onchange_annual_cash(self):
-        ea = (self.annual_cash/100)
-        self.month_expired = (pow(1+ea, (1/12))-1)*100
+        self.month_expired = (pow(1 + (self.annual_cash/100), (1/12))-1)*100
 
     def return_month_expired(self, annual_cash):
         self.ensure_one()
@@ -66,7 +64,7 @@ class AccountCreditInterestWizard(models.Model):
         })
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'account.credit.interest.wizard',
+            'res_model': 'credit.interest.wizard',
             'view_mode': 'form',
             'res_id': this.id,
             'views': [(False, 'form')],
@@ -74,8 +72,9 @@ class AccountCreditInterestWizard(models.Model):
         }
 
     def _create_attachment(self):
+        self.ensure_one()
         report_name = self.partner_id.name
-        report = self.env.ref('account_credit_control_extended.account_credit_interest')
+        report = self.env.ref('account_credit_control_extended.report_credit_interest_wizard')
         res_id = self.id
         report_service = report.report_name
 
@@ -94,36 +93,29 @@ class AccountCreditInterestWizard(models.Model):
         if not report_name.endswith(ext):
             report_name += ext
 
-        # attachment_data = {
-        #     'name': report_name,
-        #     'datas': result,
-        #     'type': 'binary',
-        #     'res_model': 'account.credit.interest.wizard',
-        #     'res_id': res_id,
-        # }
-        # attachment_id = self.env['ir.attachment'].sudo().create(attachment_data)
         return report_name, result
 
     def num2word(self):
-        return num2words.num2words(self.amount_total, self.partner_id.lang)
+        self.ensure_one()
+        return num2words.num2words(self.amount_total, lang=self.partner_id.lang)
 
 
-class AccountCreditInterestLineWizard(models.Model):
-    _name = 'account.credit.interest.line.wizard'
-    _description = 'Account Credit Interest Line Wizard'
+class CreditInterestLineWizard(models.Model):
+    _name = 'credit.interest.line.wizard'
+    _description = 'Credit Interest Line Wizard'
 
-    interest_id = fields.Many2one('account.credit.interest.wizard', 'Interest', ondelete='cascade')
+    interest_id = fields.Many2one('credit.interest.wizard', 'Interest', ondelete='cascade')
     annual_cash = fields.Float(related='interest_id.annual_cash')
     payment_date = fields.Date(related='interest_id.payment_date')
     days_maturity = fields.Integer('Days of Arrears', compute='_compute_days_maturity')
     invoice_id = fields.Many2one('account.move', 'Invoice')
-    line_id = fields.Many2one('account.move.line', 'Line')
-    amount_total = fields.Monetary(related='invoice_id.amount_total')
-    amount_residual = fields.Monetary(related='invoice_id.amount_residual')
     invoice_date = fields.Date(related='invoice_id.invoice_date')
+    line_id = fields.Many2one('account.move.line', 'Line')
     date_maturity = fields.Date(related='line_id.date_maturity')
     invoice_payment_term_id = fields.Many2one(related='invoice_id.invoice_payment_term_id')
     currency_id = fields.Many2one(related='invoice_id.company_currency_id')
+    amount_total = fields.Monetary(related='invoice_id.amount_total')
+    amount_residual = fields.Monetary(related='invoice_id.amount_residual')
     amount_untaxed = fields.Monetary('Amount Untaxed', compute='_compute_amount')
     amount_taxed = fields.Monetary('Amount Taxed', compute='_compute_amount')
     amount = fields.Monetary('Amount Total', compute='_compute_amount')

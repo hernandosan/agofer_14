@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-10 20:56+0000\n"
-"PO-Revision-Date: 2020-11-10 20:56+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2020-11-17 17:29+0000\n"
+"PO-Revision-Date: 2020-11-17 17:29+0000\n"
+"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,58 +20,54 @@ msgstr ""
 msgid ""
 "<?xml version=\"1.0\"?>\n"
 "<data><p>Hello ${object.partner_id.user_id.name},</p>\n"
-"                <p>The partner ${object.partner_id.name} has been maturity.</p>\n"
+"                <p>The partner ${object.partner_id.name} has invoices overdue for more than one month.</p>\n"
+"                <p>Invoice with reference ${object.move_id.name}.</p>\n"
 "            </data>"
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<data><p>Hola ${object.partner_id.user_id.name},</p>\n"
+"                <p>El cliente ${object.partner_id.name} tiene facturas vencidas por mas de un mes.</p>\n"
+"                <p>Factura con referencia ${object.move_id.name}.</p>\n"
+"            </data>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Amount to Words: </strong>"
-msgstr ""
+msgstr "<strong>Monto en letras: </strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Annual Cash: </strong>"
-msgstr ""
+msgstr "<strong>Efectivo Anual: </strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Month Expired: </strong>"
-msgstr ""
+msgstr "<strong>Mes Vencido: </strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Nit Partner: </strong>"
-msgstr ""
+msgstr "<strong>Nit del Cliente: </strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Partner: </strong>"
-msgstr ""
+msgstr "<strong>Cliente: </strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Subtotal</strong>"
 msgstr ""
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Taxed</strong>"
-msgstr ""
+msgstr "<strong>Impuestos</strong>"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "<strong>Total</strong>"
-msgstr ""
-
-#. module: account_credit_control_extended
-#: model:ir.model,name:account_credit_control_extended.model_account_credit_interest_line_wizard
-msgid "Account Credit Interest Line Wizard"
-msgstr ""
-
-#. module: account_credit_control_extended
-#: model:ir.model,name:account_credit_control_extended.model_account_credit_interest_wizard
-msgid "Account Credit Interest Wizard"
 msgstr ""
 
 #. module: account_credit_control_extended
@@ -82,9 +78,9 @@ msgid "Account Move Line Cron"
 msgstr ""
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__active
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__active
 msgid "Active"
-msgstr ""
+msgstr "Activo"
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields.selection,name:account_credit_control_extended.selection__res_partner__credit_type__administrative
@@ -92,73 +88,74 @@ msgid "Administrative Quota"
 msgstr "Cupo Administrativo"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Amount"
-msgstr ""
+msgstr "Monto"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__amount_residual
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__amount_residual
 msgid "Amount Due"
-msgstr ""
+msgstr "Monto Vencido"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Amount Invoice"
-msgstr ""
+msgstr "Monto Facturado"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Amount Tax"
-msgstr ""
+msgstr "Impuestos"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__amount_taxed
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__amount_taxed
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__amount_taxed
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__amount_taxed
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Amount Taxed"
-msgstr ""
+msgstr "Monto con Impuestos"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__amount
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__amount_total
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__amount
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__amount_total
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Amount Total"
-msgstr "Total"
+msgstr "Monto Total"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__amount_untaxed
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__amount_untaxed
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__amount_untaxed
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__amount_untaxed
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Amount Untaxed"
-msgstr ""
+msgstr "Monto sin Impuestos"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__annual_cash
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__annual_cash
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__annual_cash
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__annual_cash
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Annual Cash"
-msgstr "Tasa de % E.A"
+msgstr "Efectivo Anual"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__attachment_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Adjunto"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields.selection,name:account_credit_control_extended.selection__account_payment_term__credit_type__cash
 msgid "Cash"
-msgstr "ContadoS"
+msgstr "Contado"
 
 #. module: account_credit_control_extended
 #: model:mail.template,subject:account_credit_control_extended.template_account_move_line
-msgid "Client Maturity (Ref ${object.partner_id.name or 'n/a' })"
-msgstr ""
+msgid "Client Maturity (Ref ${object.partner_id.name or 'n/a'})"
+msgstr "Cliente con Mora (Ref ${object.partner_id.name or 'n/a'})"
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields.selection,name:account_credit_control_extended.selection__res_partner__credit_type__committee
@@ -166,17 +163,17 @@ msgid "Committee Quota"
 msgstr "Cupo Comité"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__company_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__company_id
 msgid "Company"
 msgstr "Compañia"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__currency_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__currency_id
 msgid "Company Currency"
-msgstr "Moneda de la empresa"
+msgstr "Moneda de la Compañia"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Compute"
 msgstr "Calcular"
 
@@ -186,18 +183,18 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__create_uid
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__create_uid
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__create_uid
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__create_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__create_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__create_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__create_date
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__create_date
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__create_date
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__create_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__create_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__create_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__create_date
 msgid "Created on"
 msgstr "Creado en"
 
@@ -209,30 +206,41 @@ msgstr "Crédito"
 #. module: account_credit_control_extended
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_control
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_users__credit_control
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_view
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_form
 msgid "Credit Control"
 msgstr "Control de Crédito"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_view
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_form
 msgid "Credit Control Levels"
-msgstr "Niveles de control de crédito"
+msgstr "Niveles de Control de Crédito"
 
 #. module: account_credit_control_extended
 #: model:ir.model,name:account_credit_control_extended.model_credit_document
 msgid "Credit Document"
-msgstr "Documento de crédito"
+msgstr "Documento de Crédito"
 
 #. module: account_credit_control_extended
-#: model:ir.model,name:account_credit_control_extended.model_credit_documents_type
+#: model:ir.model,name:account_credit_control_extended.model_credit_document_type
 msgid "Credit Documents Type"
-msgstr "Tipo de Documento de crédito"
+msgstr "Tipos de Documentos de Crédito"
 
 #. module: account_credit_control_extended
-#: model:ir.actions.act_window,name:account_credit_control_extended.action_account_credit_interest_wizard
-#: model:ir.actions.report,name:account_credit_control_extended.account_credit_interest
+#: model:ir.actions.act_window,name:account_credit_control_extended.action_credit_interest_wizard
+#: model:ir.actions.report,name:account_credit_control_extended.report_credit_interest_wizard
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Credit Interest"
-msgstr "Liquidacion de Intereses"
+msgstr "Interes de Credito"
+
+#. module: account_credit_control_extended
+#: model:ir.model,name:account_credit_control_extended.model_credit_interest_line_wizard
+msgid "Credit Interest Line Wizard"
+msgstr ""
+
+#. module: account_credit_control_extended
+#: model:ir.model,name:account_credit_control_extended.model_credit_interest_wizard
+msgid "Credit Interest Wizard"
+msgstr ""
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__credit_limit
@@ -246,27 +254,27 @@ msgid "Credit Type"
 msgstr "Tipo de credito"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__currency_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Date"
 msgstr "Fecha"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Date Maturity"
 msgstr "Fecha de vencimiento"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Days Maturity"
-msgstr "Dias a Liquidar"
+msgstr "Días de vencimiento"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__days_maturity
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__days_maturity
 msgid "Days of Arrears"
 msgstr "Días de atraso"
 
@@ -276,20 +284,19 @@ msgid "Description"
 msgstr "Descripcion"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__display_name
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__display_name
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_payment_term__display_name
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__display_name
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__display_name
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_report_module_report_name__display_name
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__display_name
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__display_name
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__display_name
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__display_name
 msgid "Display Name"
 msgstr "Nombre Público"
 
 #. module: account_credit_control_extended
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__type_id
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__name
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__name
 msgid "Document Type"
 msgstr "Tipo de Documento"
 
@@ -300,7 +307,7 @@ msgstr "Tipo de Documento"
 #: model:ir.ui.menu,name:account_credit_control_extended.menu_credit_document
 #: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_documents_form
 #: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_documents_tree
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_view
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_form
 msgid "Documents"
 msgstr "Documentos"
 
@@ -312,35 +319,34 @@ msgid "Documents Type"
 msgstr "Tipo de Documentos"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__date_maturity
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__date_maturity
 msgid "Due Date"
-msgstr ""
+msgstr "Fecha de vencimiento"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__file_data
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__file_data
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__file_data
 msgid "File"
-msgstr ""
+msgstr "Archivo"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__file_name
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__file_name
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__file_name
 msgid "File Name"
-msgstr ""
+msgstr "Nombre del archivo"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_view
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_credit_form
 msgid "Followup"
 msgstr ""
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__id
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__id
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_payment_term__id
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__id
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__id
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_report_module_report_name__id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__id
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner__id
 msgid "ID"
 msgstr ""
@@ -351,25 +357,29 @@ msgid "Insured Quota"
 msgstr "Cupo Asegurado"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__interest_id
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_view
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__interest_id
 msgid "Interest"
-msgstr "Interes"
+msgstr "Intereses"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__invoice_id
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.report_account_credit_interest
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_res_partner_form
+msgid "Interest for late payment"
+msgstr "Intereses por mora"
+
+#. module: account_credit_control_extended
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__invoice_id
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.template_credit_interest_wizard_document
 msgid "Invoice"
-msgstr "Facturas"
+msgstr "Factura"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__invoice_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__invoice_date
 msgid "Invoice/Bill Date"
-msgstr ""
+msgstr "Fecha de Factura"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__lines_ids
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__lines_ids
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Invoices"
 msgstr "Facturas"
 
@@ -379,74 +389,70 @@ msgid "Journal Item"
 msgstr "Apunte contable"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard____last_update
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard____last_update
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_account_payment_term____last_update
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document____last_update
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type____last_update
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_report_module_report_name____last_update
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type____last_update
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard____last_update
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard____last_update
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr "Última Modificación el"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__write_uid
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__write_uid
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__write_uid
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__write_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__write_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__write_uid
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__write_date
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__write_date
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__write_date
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_documents_type__write_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document_type__write_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__write_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__write_date
 msgid "Last Updated on"
 msgstr "Ultima actualización en"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__line_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__line_id
 msgid "Line"
-msgstr ""
+msgstr "Linea"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__line_ids
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__line_ids
 msgid "Lines"
-msgstr ""
+msgstr "Lineas"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Lines Computed"
-msgstr ""
+msgstr "Lineas Calculadas"
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
-msgid "ModelTitle"
-msgstr ""
-
-#. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__month_expired
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__month_expired
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Month Expired"
-msgstr "Tasa M.V"
+msgstr "Mes Vencido"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__partner_id
 #: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_document__partner_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__partner_id
 #: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_documents_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "Partner"
 msgstr "Contacto"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__payment_date
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_wizard__payment_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__payment_date
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_wizard__payment_date
 msgid "Payment Date"
-msgstr ""
+msgstr "Fecha de Pago"
 
 #. module: account_credit_control_extended
 #: model:ir.model,name:account_credit_control_extended.model_account_payment_term
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__invoice_payment_term_id
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__invoice_payment_term_id
 msgid "Payment Terms"
 msgstr "Plazos de pago"
 
@@ -457,19 +463,16 @@ msgid "Quota Type"
 msgstr "Tipo de cupo"
 
 #. module: account_credit_control_extended
-#: model:ir.model.fields,help:account_credit_control_extended.field_account_credit_interest_line_wizard__date_maturity
+#: model:ir.model.fields,help:account_credit_control_extended.field_credit_interest_line_wizard__date_maturity
 msgid ""
 "This field is used for payable and receivable journal entries. You can put "
 "the limit date for the payment of this line."
 msgstr ""
+"Este campo se usa para asientos a pagar y a cobrar. Puede poner la fecha "
+"límite para el pago de esta línea."
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
-msgid "Title"
-msgstr ""
-
-#. module: account_credit_control_extended
-#: model:ir.model.fields,field_description:account_credit_control_extended.field_account_credit_interest_line_wizard__amount_total
+#: model:ir.model.fields,field_description:account_credit_control_extended.field_credit_interest_line_wizard__amount_total
 msgid "Total"
 msgstr ""
 
@@ -486,32 +489,12 @@ msgid "Total Receivable Maturity"
 msgstr "Total de cobrar vencido"
 
 #. module: account_credit_control_extended
-#: code:addons/account_credit_control_extended/wizard/account_credit_interest_wizard.py:0
+#: code:addons/account_credit_control_extended/wizard/credit_interest_wizard.py:0
 #, python-format
 msgid "Unsupported report type %s found."
-msgstr ""
+msgstr "Tipo de informe desconocido %s."
 
 #. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
-msgid "annual_cash"
-msgstr "Tasa de % E.A"
-
-#. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
-msgid "month_expired"
-msgstr "Tasa M.V"
-
-#. module: account_credit_control_extended
-#: model:ir.actions.report,print_report_name:account_credit_control_extended.account_credit_interest
-msgid "object._get_report_filename()"
-msgstr ""
-
-#. module: account_credit_control_extended
-#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_account_credit_interest_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_credit_control_extended.view_credit_interest_wizard_form
 msgid "or"
-msgstr "o"
-
-#. module: account_credit_control_extended
-#: model:ir.model,name:account_credit_control_extended.model_report_module_report_name
-msgid "report.module.report_name"
 msgstr ""

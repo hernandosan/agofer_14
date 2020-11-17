@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
-        <record id="view_account_credit_interest_wizard_form" model="ir.ui.view">
-            <field name="name">view.account.credit.interest.wizard.form</field>
-            <field name="model">account.credit.interest.wizard</field>
+        <record id="view_credit_interest_wizard_form" model="ir.ui.view">
+            <field name="name">view.credit.interest.wizard.form</field>
+            <field name="model">credit.interest.wizard</field>
             <field name="arch" type="xml">
-                <form string="ModelTitle">
+                <form string="Credit Interest">
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="partner_id" placeholder="Title" readonly="1"/>
+                                <field name="partner_id" placeholder="Partner" readonly="1"/>
                             </h1>
                         </div>
                         <group>
                             <group>
-                                <label for="annual_cash" string="annual_cash"/>
+                                <label for="annual_cash" string="Annual Cash"/>
                                     <div name="annual_cash_div" class="o_row">
                                         <field name="annual_cash"/>
                                         <span name="annual_cash_span" class="text-muted" > %</span>
                                     </div>
-                                <label for="month_expired" string="month_expired"/>
+                                <label for="month_expired" string="Month Expired"/>
                                     <div name="month_expired_div" class="o_row">
                                         <field name="month_expired" readonly="1"/>
                                         <span name="month_expired_span" class="text-muted" > %</span>
@@ -36,7 +35,8 @@
                         <group>
                             <div string="Invoices">
                                 <field name="lines_ids"
-                                       domain="[('partner_id', '=', partner_id), ('full_reconcile_id', '=', False),
+                                       domain="[('partner_id', '=', partner_id), 
+                                                ('full_reconcile_id', '=', False),
                                                 ('balance', '!=', 0), ('account_id.reconcile', '=', True),
                                                 ('move_id.move_type', '=', 'out_invoice')]">
                                     <tree edit="false" create="false">
@@ -78,9 +78,9 @@
             </field>
         </record>
 
-        <record id="action_account_credit_interest_wizard" model="ir.actions.act_window">
+        <record id="action_credit_interest_wizard" model="ir.actions.act_window">
             <field name="name">Credit Interest</field>
-            <field name="res_model">account.credit.interest.wizard</field>
+            <field name="res_model">credit.interest.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="binding_model_id" ref="base.model_res_partner"/>

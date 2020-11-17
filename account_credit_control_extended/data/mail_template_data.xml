@@ -5,14 +5,14 @@
             <field name="name">Partner Maturity</field>
             <field name="model_id" ref="account.model_account_move_line" />
             <field name="email_from">${object.company_id.partner_id.email}</field>
-            <field name="email_cc">${not object.partner_id and object.partner_email or ''|safe},</field>
-            <field name="subject">Client Maturity (Ref ${object.partner_id.name or 'n/a' })</field>
-            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="email_from">${object.partner_id.user_id.email}</field>
+            <field name="subject">Client Maturity (Ref ${object.partner_id.name or 'n/a'})</field>
             <field name="auto_delete" eval="False" />
             <field name="lang">${object.partner_id.lang}</field>
             <field name="body_html" type="xml">
                 <p>Hello ${object.partner_id.user_id.name},</p>
-                <p>The partner ${object.partner_id.name} has been maturity.</p>
+                <p>The partner ${object.partner_id.name} has invoices overdue for more than one month.</p>
+                <p>Invoice with reference ${object.move_id.name}.</p>
             </field>
         </record>
     </data>

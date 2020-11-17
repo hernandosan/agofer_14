@@ -5,7 +5,7 @@
             <field name="name">Account Move Line Cron</field>
             <field name="model_id" ref="account.model_account_move_line"/>
             <field name="state">code</field>
-            <field name="code">action_account_move_line()</field>
+            <field name="code">model.action_account_move_line()</field>
             <field name='interval_number'>1</field>
             <field name='interval_type'>days</field>
             <field name="numbercall">-1</field>

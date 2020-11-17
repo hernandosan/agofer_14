@@ -7,7 +7,6 @@
             <field name="email_from">${object.company_id.partner_id.email}</field>
             <field name="subject">Employee Birthday ${object.month_hr_birth()}</field>
             <field name="email_to">${object.mail_hr_birth() | safe}</field>
-<!--            <field name="partner_to">${object.mail_hr_birth() | safe}</field>-->
             <field name="auto_delete" eval="False" />
             <field name="lang">${object.lang_hr_birth() | safe}</field>
             <field name="body_html">
@@ -27,7 +26,6 @@
             <field name="email_from">${object.company_id.partner_id.email}</field>
             <field name="subject">Happy Birthday ${object.name}</field>
             <field name="email_to">${object.user_id.email_formatted | safe}</field>
-<!--            <field name="partner_to">${object.mail_hr_birth() | safe}</field>-->
             <field name="auto_delete" eval="False" />
             <field name="lang">	${object.user_id.lang}</field>
             <field name="body_html">

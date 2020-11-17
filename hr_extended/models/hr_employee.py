@@ -25,12 +25,9 @@ class HrEmployee(models.Model):
     def mail_hr_birth(self):
         users = self.env.ref('hr.group_hr_manager').users
         partners = users.partner_id
-        ids = ''
         mails = ''
         for partner in partners:
-            ids += str(partner.id) + ', '
             mails += partner.email + ', '
-        # ids = (partner.id for partner in partners)
         return mails
 
     def month_hr_birth(self):
