@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_upgrade_extended_upgrade_extended,upgrade_extended.upgrade_extended,model_upgrade_extended_upgrade_extended,base.group_user,1,1,1,1

@@ -5,9 +5,9 @@
             <field name="model">stock.warehouse</field>
             <field name="inherit_id" ref="stock.view_warehouse"/>
             <field name="arch" type="xml">
-                <xpath expr="//" position="attributes">
+                <!-- <xpath expr="//" position="attributes">
                     <attribute name="groups"></attribute>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//notebook/page[1]" position="attributes">
                     <attribute name="groups">stock.group_adv_location</attribute>
                 </xpath>
