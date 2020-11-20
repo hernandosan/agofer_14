@@ -29,7 +29,8 @@ insert into stock_warehouse (
 	buy_to_resupply, 
 	manufacture_pull_id, 
 	manufacture_to_resupply,
-	manufacture_steps
+	manufacture_steps,
+	active
 ) select 
 	agofer.id, 
 	--agofer.mto_pull_id, 
@@ -62,7 +63,10 @@ insert into stock_warehouse (
 	agofer.buy_to_resupply, 
 	agofer.manufacture_pull_id, 
 	agofer.manufacture_to_resupply,
-	'mrp_one_step'
+	--agofer.manufacture_steps
+	'mrp_one_step',
+	--agofer.active
+	TRUE
 from dblink('dbname=agofer_08', 'select 
 	id, 
 	mto_pull_id, 

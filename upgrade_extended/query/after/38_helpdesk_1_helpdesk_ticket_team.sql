@@ -5,7 +5,8 @@ insert into helpdesk_ticket_team (
 	name, 
 	write_uid, 
 	write_date,
-	alias_id
+	alias_id,
+	active
 	)
 select 
 	agofer.id, 
@@ -14,7 +15,10 @@ select
 	agofer.name, 
 	agofer.write_uid, 
 	agofer.write_date,
-	3
+	--agofer.alias_id
+	3,
+	--agofer.active
+	'True'
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	create_uid, 

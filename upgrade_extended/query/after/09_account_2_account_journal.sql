@@ -11,7 +11,8 @@ insert into account_journal (
 	profit_account_id, 
 	type,
 	invoice_reference_type,
-	invoice_reference_model
+	invoice_reference_model,
+	avtive
 ) select 
 	agofer.id, 
 	agofer.code, 
@@ -27,7 +28,9 @@ insert into account_journal (
 	--agofer.invoice_reference_type
 	'invoice',
 	--agofer.invoice_reference_model
-	'odoo'
+	'odoo',
+	--agofer.active
+	True
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	code, 

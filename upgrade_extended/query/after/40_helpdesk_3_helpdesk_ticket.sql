@@ -15,7 +15,8 @@ insert into helpdesk_ticket (
 	create_date, 
 	write_uid, 
 	write_date, 
-	type_id
+	type_id,
+	active
 	)
 select 
 	agofer.id, 
@@ -34,7 +35,9 @@ select
 	agofer.create_date,
 	agofer.write_uid, 
 	agofer.write_date, 
-	agofer.subcategory
+	agofer.subcategory,
+	--agofer.active
+	'True'
 from dblink('dbname=agofer_08','SELECT 
 	id,
 	name as number,

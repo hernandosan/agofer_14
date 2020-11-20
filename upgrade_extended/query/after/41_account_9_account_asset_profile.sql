@@ -18,7 +18,8 @@ insert into account_asset_profile (
 	open_asset, 
 	method_period, 
 	account_analytic_id, 
-	method
+	method,
+	active
 ) select 
 	agofer.id, 
 	agofer.method_number, 
@@ -40,7 +41,9 @@ insert into account_asset_profile (
 	--agofer.method_period,
 	'year',
 	agofer.account_analytic_id, 
-	agofer.method
+	agofer.method,
+	--agofer.active
+	TRUE
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	method_number, 

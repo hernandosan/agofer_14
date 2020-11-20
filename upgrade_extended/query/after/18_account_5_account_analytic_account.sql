@@ -7,7 +7,8 @@ insert into account_analytic_account (
 	partner_id, 
 	create_uid, 
 	name, 
-	company_id
+	company_id,
+	active
 )select 
 	agofer.id, 
 	agofer.code, 
@@ -17,7 +18,9 @@ insert into account_analytic_account (
 	agofer.partner_id, 
 	agofer.create_uid, 
 	agofer.name, 
-	agofer.company_id
+	agofer.company_id,
+	--agofer.active
+	TRUE
 from dblink('dbname=agofer_08','SELECT  
 	id, 
 	code, 
