@@ -13,22 +13,19 @@ directory = os.path.dirname(__file__)
 
 def pre_init_hook(cr):
     path = os.path.join(directory, 'query/before')
-    files = os.listdir(path)
-    for file in files:
-        path_query = os.path.join(path, file)
-        query = open(path_query, 'r').read()
-        cr.execute(query)
-        message = 'Insert into table: '
-        _logger.info(message + file)
-
+    for file in sorted(os.listdir(path)):
+        with open(os.path.join(path, file), 'r') as query_file:
+            query = query_file.read()
+            message = 'Insert into table: '
+            _logger.info(message + file)
+            cr.execute(query)
 
 def post_init_hook(cr, result):
     path = os.path.join(directory, 'query/after')
-    files = os.listdir(path)
-    sorted_files = sorted(files)
-    for file in sorted_files:
-        path_query = os.path.join(path, file)
-        query = open(path_query, 'r').read()
-        cr.execute(query)
-        message = 'Insert into table: '
-        _logger.warning(message + file)
+    for file in sorted(os.listdir(path)):
+        with open(os.path.join(path, file), 'r') as query_file:
+            query = query_file.read()
+            message = 'Insert into table: '
+            _logger.warning(message + file)
+            cr.execute(query)
+
