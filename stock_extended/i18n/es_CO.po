@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-09 22:01+0000\n"
-"PO-Revision-Date: 2020-10-09 22:01+0000\n"
+"POT-Creation-Date: 2020-11-23 14:57+0000\n"
+"PO-Revision-Date: 2020-11-23 14:57+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -368,6 +368,11 @@ msgid "Incoterm"
 msgstr ""
 
 #. module: stock_extended
+#: model:res.groups,name:stock_extended.group_stock_info
+msgid "Info"
+msgstr ""
+
+#. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_stock_picking__incoterm
 msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
@@ -560,13 +565,6 @@ msgid "Pick Late"
 msgstr "Recoge Tarde"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__picking_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_move__picking_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_payment__picking_id
-msgid "Picking"
-msgstr "Transferencia"
-
-#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_delivery
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_pick
 msgid "Picking list"
@@ -617,6 +615,13 @@ msgstr "Devolución"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "Error de entrega del SMS"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__sale_id
+#: model:ir.model.fields,field_description:stock_extended.field_account_move__sale_id
+#: model:ir.model.fields,field_description:stock_extended.field_account_payment__sale_id
+msgid "Sale Order"
+msgstr "Pedido de venta"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -706,6 +711,13 @@ msgstr "Movimientos de inventario"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__moves_returns_ids
 msgid "Stock Moves Return"
 msgstr "Movimientos de devolución"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__picking_id
+#: model:ir.model.fields,field_description:stock_extended.field_account_move__picking_id
+#: model:ir.model.fields,field_description:stock_extended.field_account_payment__picking_id
+msgid "Stock Picking"
+msgstr "Transferencia"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__carrier_id

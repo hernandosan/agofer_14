@@ -11,4 +11,5 @@ class AccountPayment(models.Model):
 
     @api.onchange('order_id')
     def _onchange_order_id(self):
-        self.amount = self.order_id.amount_total if self.order_id else self.amount
+        order_id = self.order_id
+        self.destination_account_id = order_id.payment_account_id if order_id else self.destination_account_id

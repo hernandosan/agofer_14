@@ -22,23 +22,25 @@ class ResPartner(models.Model):
         where_params = [tuple(self.ids)] + where_params
         if where_clause:
             where_clause = 'AND ' + where_clause
-        self._cr.execute("""SELECT account_move_line.partner_id, act.type, SUM(account_move_line.amount_residual)
-                      FROM """ + tables + """
-                      LEFT JOIN account_account a ON (account_move_line.account_id=a.id)
-                      LEFT JOIN account_account_type act ON (a.user_type_id=act.id)
-                      WHERE act.type IN ('receivable','payable')
-                      AND account_move_line.partner_id IN %s
-                      AND account_move_line.reconciled IS NOT TRUE
-                      """ + where_clause + """
-                      GROUP BY account_move_line.partner_id, act.type
-                      """, where_params)
+        if self.ids:
+            self._cr.execute("""SELECT account_move_line.partner_id, act.type, SUM(account_move_line.amount_residual)
+                        FROM """ + tables + """
+                        LEFT JOIN account_account a ON (account_move_line.account_id=a.id)
+                        LEFT JOIN account_account_type act ON (a.user_type_id=act.id)
+                        WHERE act.type IN ('receivable','payable')
+                        AND account_move_line.partner_id IN %s
+                        AND account_move_line.reconciled IS NOT TRUE
+                        """ + where_clause + """
+                        GROUP BY account_move_line.partner_id, act.type
+                        """, where_params)
         treated = self.browse()
-        for pid, type, val in self._cr.fetchall():
-            partner = self.browse(pid)
-            if type == 'receivable':
-                partner.credit_maturity = val
-                if partner not in treated:
-                    treated |= partner
+        if self.ids:
+            for pid, type, val in self._cr.fetchall():
+                partner = self.browse(pid)
+                if type == 'receivable':
+                    partner.credit_maturity = val
+                    if partner not in treated:
+                        treated |= partner
         remaining = (self - treated)
         remaining.credit_maturity = False
 

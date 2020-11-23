@@ -23,13 +23,13 @@
         'base_address_city',
         'hr_contract',
         'hr_recruitment',
+        'l10n_co',
         'mrp',
         # OCA 
         'account_asset_management',
         'account_payment_order',
         # Extended
-        'account_credit_control_extended',
-        # 'account_extended',
+        'account_extended',
         'helpdesk_mgmt_extended',
         'hr_extended',
         # 'mrp_extended',
@@ -50,7 +50,7 @@
         'demo/demo.xml',
     ],
 
-    'pre_init_hook': 'pre_init_hook',
+    # 'pre_init_hook': 'pre_init_hook',
 
-    'post_init_hook': 'post_init_hook',
+    # 'post_init_hook': 'post_init_hook',
 }

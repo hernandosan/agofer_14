@@ -6,7 +6,8 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    picking_id = fields.Many2one('stock.picking', readonly=True, copy=False)
+    sale_id = fields.Many2one('sale.order', 'Sale Order', readonly=True, copy=False)
+    picking_id = fields.Many2one('stock.picking', 'Stock Picking', readonly=True, copy=False)
     guides_ids = fields.Many2many('delivery.guide', 'guide_invoice_rel', 'invoice_id', 'guide_id', 'Guides', copy=False)
     delivery_state = fields.Selection([
         ('pending','Pending'),
