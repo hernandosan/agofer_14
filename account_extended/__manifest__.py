@@ -28,6 +28,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
         'views/account_consignment_view.xml',
+        'views/account_journal_view.xml',
         'views/account_payment_view.xml',
         'views/res_bank_view.xml',
     ],
