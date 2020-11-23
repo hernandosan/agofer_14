@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 14:52+0000\n"
-"PO-Revision-Date: 2020-11-23 14:52+0000\n"
+"POT-Creation-Date: 2020-11-23 19:19+0000\n"
+"PO-Revision-Date: 2020-11-23 19:19+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,19 +18,19 @@ msgstr ""
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Account"
-msgstr "Cuenta"
+msgstr ""
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_account_id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_account_id
 msgid "Advance Account"
-msgstr "Cuenta de Anticipo"
+msgstr ""
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_journal_id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_journal_id
 msgid "Advance Journal"
-msgstr "Diario de Anticipo"
+msgstr ""
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -462,15 +462,29 @@ msgid "Shipping Type"
 msgstr "Tipo de Entrega"
 
 #. module: sale_extended
-#: code:addons/sale_extended/models/account_move.py:0
+#: code:addons/sale_extended/models/crm_team.py:0
+#, python-format
+msgid "The CRM Team %s has not advance account"
+msgstr "El equipo de ventas %s no tiene cuenta de anticipos"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/crm_team.py:0
+#, python-format
+msgid "The CRM Team %s has not advance journal"
+msgstr "El equipo de ventas %s no tiene un diario de anticipos"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/crm_team.py:0
 #, python-format
 msgid "The CRM Team %s has not crossover journal"
 msgstr "El equipo de ventas %s no tiene un diario de cruces"
 
 #. module: sale_extended
-#: code:addons/sale_extended/models/account_move.py:0
+#: code:addons/sale_extended/models/res_partner.py:0
+#: code:addons/sale_extended/models/res_partner.py:0
+#: code:addons/sale_extended/models/res_partner.py:0
 #, python-format
-msgid "The Partner %s has not CRM Team"
+msgid "The Partner %s has not CRM team"
 msgstr "El cliente %s no tiene equipo de ventas"
 
 #. module: sale_extended
@@ -483,7 +497,7 @@ msgstr "El usuario interno a cargo de este contacto."
 #: code:addons/sale_extended/models/account_move.py:0
 #, python-format
 msgid "The payment %s has not sale order"
-msgstr "El pago %s no tiene orden de venta"
+msgstr "El pago %s no tiene un pedido de venta"
 
 #. module: sale_extended
 #: model:ir.model.fields,help:sale_extended.field_res_partner__property_payment_term_id
