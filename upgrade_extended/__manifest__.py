@@ -21,6 +21,7 @@
         # Odoo 
         'auth_oauth',
         'base_address_city',
+        'base_address_extended',
         'hr_contract',
         'hr_recruitment',
         'l10n_co',

@@ -10,11 +10,21 @@ _logger = logging.getLogger(__name__)
 
 directory = os.path.dirname(__file__)
 
-def pre_init_hook(cr):
-    # _logger.warning("Cannot use '%s' as email alias, fallback to '%s'", alias_name, safe_alias_name)
-    query = open(os.path.join(directory, '/querys/before'), '1_before.sql', 'rb')
-    cr.execute(query)
 
-def post_init_hook(cr, registry):
-    query = open(os.path.join(directory, '/querys/after'), '1_before.sql', 'rb').read()
-    cr.execute()
+def pre_init_hook(cr):
+    path = os.path.join(directory, 'query/before')
+    for file in sorted(os.listdir(path)):
+        with open(os.path.join(path, file), 'r') as query_file:
+            query = query_file.read()
+            message = 'Insert into table: '
+            _logger.info(message + file)
+            cr.execute(query)
+
+def post_init_hook(cr, result):
+    path = os.path.join(directory, 'query/after')
+    for file in sorted(os.listdir(path)):
+        with open(os.path.join(path, file), 'r') as query_file:
+            query = query_file.read()
+            message = 'Insert into table: '
+            _logger.warning(message + file)
+            cr.execute(query)
