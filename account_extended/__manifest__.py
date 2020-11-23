@@ -18,14 +18,18 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'account_asset_management'
+        'account_asset_management',
+        'sale_extended',
     ],
 
     # always loaded
     'data': [
         'security/res_group_security.xml',
         'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
+        'views/account_consignment_view.xml',
         'views/account_payment_view.xml',
+        'views/res_bank_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

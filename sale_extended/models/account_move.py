@@ -39,10 +39,7 @@ class AccountMove(models.Model):
         sale_id = self.sale_id
         if not sale_id:
             raise ValidationError(_("The payment %s has not sale order") % self.name)
-        journal_id = sale_id.team_id.crossover_journal_id or sale_id.partner_id.team_id.crossover_journal_id
-        if not journal_id:
-            message = _('The CRM Team %s has not crossover journal') % sale_id.team_id.name if sale_id.team_id else _('The Partner %s has not CRM Team') % order_id.partner_id.name
-            raise ValidationError(message)
+        journal_id = sale_id.team_id._team_crossover_journal() if sale_id.team_id else sale_id.partner_id._partner_crossover_journal()
         line_ids = self._prepare_crossover_move_line_values()
         if not line_ids:
             return False
