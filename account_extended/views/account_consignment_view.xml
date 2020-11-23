@@ -58,6 +58,7 @@
                                 <field name="bank_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
                                 <field name="date_consignment" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="amount_invoice" attrs="{'invisible': [('type', '!=', 'crossover')]}"/>
                             </group>
                             <group>
                                 <field name="team_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
@@ -65,9 +66,12 @@
                                 <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="reference" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="order_id" 
-                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'advance')]}"/>
+                                    domain="[('state','not in',('done','cancel'))]" 
+                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'advance')], 'required': [('type', '=', 'advance')]}"/>
                                 <field name="invoices_ids" widget="many2many_tags"
-                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'crossover')], 'required': [('type', '=', 'crossover')]}"/>
+                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'crossover')], 'required': [('type', '=', 'crossover')]}" 
+                                    domain="[('move_type', '=', 'out_invoice'),('state', 'not in', ('draft', 'cancel')),('payment_state', '!=', 'paid')]"/>
+                                <field name="consignment_bool" attrs="{'invisible': [('type', '!=', 'crossover')]}"/>
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>

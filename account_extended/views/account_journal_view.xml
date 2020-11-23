@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="view_account_journal_form" model="ir.ui.view">
+            <field name="name">view.account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_debit_account_id']" position="after">
+                    <field name="payment_income_account_id" 
+                        attrs="{'required': [('id','!=',False), ('type','in',('bank','cash'))], 'invisible': [('type','not in',('bank','cash'))]}" 
+                        groups="account.group_account_readonly"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_credit_account_id']" position="after">
+                    <field name="payment_expense_account_id" 
+                        attrs="{'required': [('id','!=',False), ('type','in',('bank','cash'))], 'invisible': [('type','not in',('bank','cash'))]}" 
+                        groups="account.group_account_readonly"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
