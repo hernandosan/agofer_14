@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 16:31+0000\n"
-"PO-Revision-Date: 2020-11-24 16:31+0000\n"
+"POT-Creation-Date: 2020-11-24 17:00+0000\n"
+"PO-Revision-Date: 2020-11-24 17:00+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_extended
+#: model:ir.model,name:account_extended.model_account_account
 #: model_terms:ir.ui.view,arch_db:account_extended.view_res_bank_form
 msgid "Account"
-msgstr "Contabilidad"
+msgstr "Cuenta"
 
 #. module: account_extended
 #: model:ir.model,name:account_extended.model_account_consignment
 msgid "Account Consignment"
 msgstr "Consignación"
+
+#. module: account_extended
+#: model:ir.model,name:account_extended.model_account_group
+msgid "Account Group"
+msgstr "Grupo de cuenta"
+
+#. module: account_extended
+#: model:ir.actions.act_window,name:account_extended.action_account_group
+#: model:ir.ui.menu,name:account_extended.menu_account_group
+msgid "Account Groups"
+msgstr "Grupo de cuentas"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__move_id
@@ -142,6 +154,11 @@ msgid "Consignments"
 msgstr "Consignaciones"
 
 #. module: account_extended
+#: model_terms:ir.actions.act_window,help:account_extended.action_account_group
+msgid "Create the first account group"
+msgstr "Crea el primer grupo de cuentas"
+
+#. module: account_extended
 #: model_terms:ir.actions.act_window,help:account_extended.action_account_consignment
 msgid "Create the first consignment"
 msgstr "Crea la primera consignación"
@@ -178,7 +195,9 @@ msgid "Date consignment"
 msgstr "Fecha de consignación"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__display_name
+#: model:ir.model.fields,field_description:account_extended.field_account_group__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__display_name
@@ -228,7 +247,9 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__id
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__id
+#: model:ir.model.fields,field_description:account_extended.field_account_group__id
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__id
 #: model:ir.model.fields,field_description:account_extended.field_account_move__id
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__id
@@ -275,6 +296,11 @@ msgid "Is Follower"
 msgstr "Es un seguidor"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_group__niif_bool
+msgid "Is NIIF"
+msgstr "Es NIIF"
+
+#. module: account_extended
 #: model:ir.model,name:account_extended.model_account_journal
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__journal_id
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__journal_id
@@ -292,7 +318,9 @@ msgid "Journal Item"
 msgstr "Apunte contable"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment____last_update
+#: model:ir.model.fields,field_description:account_extended.field_account_group____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_journal____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_move____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line____last_update
@@ -363,6 +391,11 @@ msgstr "Haber NIIF"
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_debit
 msgid "NIIF Debit"
 msgstr "Debe NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__niif_group_id
+msgid "NIIF Group"
+msgstr "Grupo NIIF"
 
 #. module: account_extended
 #: code:addons/account_extended/models/account_consignment.py:0
@@ -522,20 +555,20 @@ msgstr "Importe total NIIF"
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_line_tree
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_niif_form
 msgid "Total NIIF Credit"
-msgstr "Crébito total NIIF""
+msgstr "Crébito total NIIF"
 
 #. module: account_extended
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_line_tree
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_niif_form
 msgid "Total NIIF Debit"
-msgstr "Débito total NIIF""
+msgstr "Débito total NIIF"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_bank_statement_line__niif_amount_total_signed
 #: model:ir.model.fields,field_description:account_extended.field_account_move__niif_amount_total_signed
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__niif_amount_total_signed
 msgid "Total NIIF Signed"
-msgstr "Total NIIF con signo""
+msgstr "Total NIIF con signo"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__type
