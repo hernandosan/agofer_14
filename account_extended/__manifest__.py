@@ -29,6 +29,8 @@
         'data/ir_sequence.xml',
         'views/account_consignment_view.xml',
         'views/account_journal_view.xml',
+        'views/account_move_line_view.xml',
+        'views/account_move_view.xml',
         'views/account_payment_view.xml',
         'views/res_bank_view.xml',
     ],
