@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 17:00+0000\n"
-"PO-Revision-Date: 2020-11-24 17:00+0000\n"
+"POT-Creation-Date: 2020-11-24 22:23+0000\n"
+"PO-Revision-Date: 2020-11-24 22:23+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,11 @@ msgstr "Cuenta"
 #: model:ir.model,name:account_extended.model_account_consignment
 msgid "Account Consignment"
 msgstr "Consignación"
+
+#. module: account_extended
+#: model:ir.model,name:account_extended.model_account_consignment_wizard
+msgid "Account Consignment Wizard"
+msgstr ""
 
 #. module: account_extended
 #: model:ir.model,name:account_extended.model_account_group
@@ -89,6 +94,12 @@ msgid "Attachment Count"
 msgstr "Nº de archivos adjuntos"
 
 #. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__state__available
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
+msgid "Available"
+msgstr "Disponible"
+
+#. module: account_extended
 #: model:ir.model,name:account_extended.model_res_bank
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__bank_id
 msgid "Bank"
@@ -112,6 +123,7 @@ msgstr "Rquipo de ventas"
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__state__cancel
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_wizard_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -121,8 +133,19 @@ msgstr "Cancelar"
 msgid ""
 "Cannot create unbalanced journal entry. Ids: %s\n"
 "Differences NIIF debit - NIIF credit: %s"
-msgstr "No se puede crear una entrada de diario no balanceada.. Ids: %s\n"
+msgstr ""
+"No se puede crear una entrada de diario no balanceada.. Ids: %s\n"
 "Diferencias NIIF débito - crédito: %s"
+
+#. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__cash
+msgid "Cash"
+msgstr "Efectivo"
+
+#. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__cheque
+msgid "Cheque"
+msgstr "Cheque"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__company_id
@@ -130,7 +153,9 @@ msgid "Company"
 msgstr "Compañia"
 
 #. module: account_extended
+#: model:ir.actions.act_window,name:account_extended.action_account_consignment_wizard
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_wizard_form
 msgid "Confirm"
 msgstr "Confirmar"
 
@@ -147,6 +172,7 @@ msgstr "Consignación %s"
 
 #. module: account_extended
 #: model:ir.actions.act_window,name:account_extended.action_account_consignment
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__consignments_ids
 #: model:ir.ui.menu,name:account_extended.menu_account_consignment
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_search
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_tree
@@ -165,11 +191,13 @@ msgstr "Crea la primera consignación"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__create_uid
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__create_date
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__create_date
 msgid "Created on"
 msgstr "Creado el"
 
@@ -197,6 +225,7 @@ msgstr "Fecha de consignación"
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_account__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__display_name
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_group__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_move__display_name
@@ -213,8 +242,14 @@ msgstr "Publicado"
 
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__state__draft
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
 msgid "Draft"
 msgstr "Borrador"
+
+#. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__state__exchange
+msgid "Exchange"
+msgstr "Canje"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__payment_expense_account_id
@@ -249,6 +284,7 @@ msgstr "Agrupar por"
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_account__id
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__id
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__id
 #: model:ir.model.fields,field_description:account_extended.field_account_group__id
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__id
 #: model:ir.model.fields,field_description:account_extended.field_account_move__id
@@ -279,6 +315,11 @@ msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 #: model:ir.model.fields,help:account_extended.field_account_consignment__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
+
+#. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
+msgid "In Exchange"
+msgstr "En Canje"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__payment_income_account_id
@@ -320,6 +361,7 @@ msgstr "Apunte contable"
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_account____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment____last_update
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_group____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_journal____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_move____last_update
@@ -331,11 +373,13 @@ msgstr "Última Modificación el"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__write_uid
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__write_date
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment_wizard__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -451,6 +495,11 @@ msgid "Number of unread messages"
 msgstr "Número de mensajes no leidos"
 
 #. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__pse
+msgid "PSE"
+msgstr "PSE"
+
+#. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__partner_id
 msgid "Partner"
 msgstr "Cliente"
@@ -459,6 +508,16 @@ msgstr "Cliente"
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__type__normal
 msgid "Payment"
 msgstr "Pago"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment__payment_type
+msgid "Payment Type"
+msgstr "Tipo de pago"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_consignment__number
+msgid "Payment number"
+msgstr "Número de pago"
 
 #. module: account_extended
 #: model:ir.model,name:account_extended.model_account_payment
@@ -485,11 +544,6 @@ msgstr "Conciliar diferencia"
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__reference
 msgid "Reference"
 msgstr "Referencia"
-
-#. module: account_extended
-#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
-msgid "Reset to draft"
-msgstr "Reiniciar a borrador"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__activity_user_id
@@ -542,6 +596,11 @@ msgstr ""
 " Crea un pago y cincilia"
 
 #. module: account_extended
+#: model:ir.model.constraint,message:account_extended.constraint_account_consignment_number_unique
+msgid "The payment number must be unique"
+msgstr "El número de pago debe ser unico"
+
+#. module: account_extended
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_tree
 msgid "Total NIIF"
 msgstr "Total NIIF"
@@ -571,9 +630,14 @@ msgid "Total NIIF Signed"
 msgstr "Total NIIF con signo"
 
 #. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__trans
+msgid "Transference"
+msgstr "Transferencia"
+
+#. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__type
-msgid "Type consignment"
-msgstr "Tipo de consignación"
+msgid "Type"
+msgstr "Tipo"
 
 #. module: account_extended
 #: model:ir.model.fields,help:account_extended.field_account_consignment__activity_exception_decoration
@@ -612,3 +676,8 @@ msgstr "Historial de comunicaciones del sitio web"
 #, python-format
 msgid "Wrong NIIF debit or credit value in accounting entry !"
 msgstr "¡Valor incorrecto de crédito o débito en asiento contable NIIF!"
+
+#. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_wizard_form
+msgid "or"
+msgstr "ó"
