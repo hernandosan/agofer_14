@@ -9,6 +9,12 @@ class AccountConsignment(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name desc'
 
+    _sql_constraints = [
+        ('number_unique',
+         'UNIQUE(number)',
+         "The payment number must be unique"),
+    ]
+
     amount = fields.Monetary('Amount', tracking=True)
     amount_invoice = fields.Monetary('Amount Invoice', compute='_compute_amount_invoice')
     bank_id = fields.Many2one('res.bank', 'Bank', tracking=True)
@@ -22,32 +28,36 @@ class AccountConsignment(models.Model):
     journal_id = fields.Many2one(related='bank_id.journal_id')
     move_id = fields.Many2one('account.move', 'Account move', readonly=True, copy=False)
     name = fields.Char('Number', required=True, readonly=True, default=_('New'))
+    number = fields.Char('Payment number', required=True, copy=False)
     order_id = fields.Many2one('sale.order', 'Sale order')
     partner_id = fields.Many2one('res.partner', 'Partner', tracking=True)
+    payment_type = fields.Selection([('cash','Cash'),('trans','Transference'),('cheque','Cheque'),('pse','PSE')], 'Payment Type', default='trans')
     reference = fields.Char('Reference', tracking=True)
-    state = fields.Selection([('draft', 'Draft'), ('done', 'Done'), ('cancel', 'Cancel')], 'State', 
+    state = fields.Selection([('draft','Draft'),('exchange','Exchange'),('available','Available'),('done','Done'),('cancel','Cancel')], 'State', 
         required=True, default='draft', copy=False, tracking=True)
     team_id = fields.Many2one('crm.team', 'CRM Team')
-    type = fields.Selection([('normal','Payment'),('advance','Advance'),('crossover','Crossover')], 'Type consignment', 
-        copy=False, default='normal')
+    type = fields.Selection([('normal','Payment'),('advance','Advance'),('crossover','Crossover')], 'Type', copy=False, default='normal')
     user_id = fields.Many2one('res.users', 'User', default=lambda self: self.env.user, readonly=True)
 
     @api.depends('invoices_ids')
     def _compute_amount_invoice(self):
         for consignment in self:
-            if consignment.invoices_ids:
-                consignment.amount_invoice = sum(invoice.currency_id.with_context(date=invoice.invoice_date).compute(invoice.amount_residual, self.currency_id) for invoice in self.invoices_ids) or 0.0
-            else:
-                consignment.amount_invoice = 0.0
+            consignment.amount_invoice = sum(invoice.currency_id.with_context(date=invoice.invoice_date).compute(invoice.amount_residual, self.currency_id) for invoice in self.invoices_ids) or 0.0
 
     @api.model
     def create(self, vals):
         vals.update(name=self.env['ir.sequence'].next_by_code('account.consignment') or _('New'))
         return super(AccountConsignment, self).create(vals)
 
-    def action_confirm(self):
+    def action_exchange(self):
+        self.write({'state': 'exchange'})
+
+    def action_available(self):
+        self.write({'state': 'available'})
+
+    def action_done(self):
         for consignment in self:
-            consignment._action_confirm()
+            consignment._action_done()
         self.write({'state': 'done'})
 
     def action_cancel(self):
@@ -56,7 +66,7 @@ class AccountConsignment(models.Model):
     def action_draft(self):
         self.write({'state': 'draft'})
 
-    def _action_confirm(self):
+    def _action_done(self):
         self.ensure_one()
         move_id = self._action_payment()
         self.write({'move_id': move_id})

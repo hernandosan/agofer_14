@@ -37,7 +37,8 @@ from dblink('dbname=agofer_08','SELECT
 	name, 
 	company_id, 
 	note
-	FROM account_account;'
+	FROM account_account 
+	where niif is False;'
 ) as agofer(
 	id integer, 
 	code character varying, 
@@ -50,4 +51,5 @@ from dblink('dbname=agofer_08','SELECT
 	name character varying, 
 	company_id integer, 
 	note text
-);
+)
+where agofer.id not in (select id from account_account);

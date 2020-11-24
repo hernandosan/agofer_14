@@ -8,7 +8,9 @@
             <field name="arch" type="xml">
                 <search string="Consignments">
                     <field name="name"/>
+                    <field name="number"/>
                     <field name="reference"/>
+                    <field name="bank_id"/>
                     <field name="partner_id"/>
                     <group string="Group By">
                         <filter name="by_state" string="State" context="{'group_by': 'state'}"/>
@@ -24,10 +26,13 @@
             <field name="arch" type="xml">
                 <tree string="Consignments">
                     <field name="name"/>
-                    <field name="reference"/>
+                    <field name="number"/>
+                    <field name="payment_type"/>
                     <field name="bank_id"/>
+                    <field name="date_consignment"/>
                     <field name="partner_id"/>
                     <field name="amount" sum="Amount"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -39,12 +44,12 @@
             <field name="arch" type="xml">
                 <form string="Consignment">
                     <header>
-                        <button string="Confirm" type="object" name="action_confirm"
-                                states="draft" class="oe_highlight" />
-                        <button string="Cancel" type="object" name="action_cancel"
-                                states="draft" />
-                        <button string="Reset to draft" type="object" name="action_draft"
-                                states="cancel" />
+                        <button string="In Exchange" type="object" name="action_exchange" 
+                            attrs="{'invisible': ['|',('state','!=','draft'),('payment_type','!=','cheque')]}" class="oe_highlight"/>
+                        <button string="Available" type="object" name="action_available" states="draft,exchange" class="oe_highlight" />
+                        <button string="Confirm" type="object" name="action_done" states="available" class="oe_highlight" />
+                        <button string="Cancel" type="object" name="action_cancel" states="draft" />
+                        <button string="Draft" type="object" name="action_draft" states="cancel" />
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -54,13 +59,15 @@
                         </div>
                         <group>
                             <group>
-                                <field name="type" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
+                                <field name="number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="payment_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="bank_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
                                 <field name="date_consignment" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="amount_invoice" attrs="{'invisible': [('type', '!=', 'crossover')]}"/>
                             </group>
                             <group>
+                                <field name="type" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
                                 <field name="team_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
                                 <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
                                 <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

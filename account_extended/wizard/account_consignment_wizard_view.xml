@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_account_consignment_wizard_form">
+            <field name="name">view.account.consignment.wizard.form</field>
+            <field name="model">account.consignment.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Confirm">
+                    <group>
+                        <field name="consignments_ids" widget="many2many_tags" readonly="True"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_consignment_wizard" model="ir.actions.act_window">
+            <field name="name">Confirm</field>
+            <field name="res_model">account.consignment.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_account_consignment"/>
+        </record>
+    </data>
+</odoo>
