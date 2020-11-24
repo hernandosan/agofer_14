@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 22:54+0000\n"
-"PO-Revision-Date: 2020-11-23 22:54+0000\n"
+"POT-Creation-Date: 2020-11-24 17:00+0000\n"
+"PO-Revision-Date: 2020-11-24 17:00+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_extended
+#: model:ir.model,name:account_extended.model_account_account
 #: model_terms:ir.ui.view,arch_db:account_extended.view_res_bank_form
 msgid "Account"
-msgstr "Contabilidad"
+msgstr "Cuenta"
 
 #. module: account_extended
 #: model:ir.model,name:account_extended.model_account_consignment
 msgid "Account Consignment"
 msgstr "Consignación"
+
+#. module: account_extended
+#: model:ir.model,name:account_extended.model_account_group
+msgid "Account Group"
+msgstr "Grupo de cuenta"
+
+#. module: account_extended
+#: model:ir.actions.act_window,name:account_extended.action_account_group
+#: model:ir.ui.menu,name:account_extended.menu_account_group
+msgid "Account Groups"
+msgstr "Grupo de cuentas"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__move_id
@@ -88,6 +100,11 @@ msgid "Banks"
 msgstr "Bancos"
 
 #. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_move__niif_bool__both
+msgid "Both"
+msgstr "Ambos"
+
+#. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__team_id
 msgid "CRM Team"
 msgstr "Rquipo de ventas"
@@ -97,6 +114,15 @@ msgstr "Rquipo de ventas"
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_form
 msgid "Cancel"
 msgstr "Cancelar"
+
+#. module: account_extended
+#: code:addons/account_extended/models/account_move.py:0
+#, python-format
+msgid ""
+"Cannot create unbalanced journal entry. Ids: %s\n"
+"Differences NIIF debit - NIIF credit: %s"
+msgstr "No se puede crear una entrada de diario no balanceada.. Ids: %s\n"
+"Diferencias NIIF débito - crédito: %s"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__company_id
@@ -126,6 +152,11 @@ msgstr "Consignación %s"
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_consignment_tree
 msgid "Consignments"
 msgstr "Consignaciones"
+
+#. module: account_extended
+#: model_terms:ir.actions.act_window,help:account_extended.action_account_group
+msgid "Create the first account group"
+msgstr "Crea el primer grupo de cuentas"
 
 #. module: account_extended
 #: model_terms:ir.actions.act_window,help:account_extended.action_account_consignment
@@ -164,8 +195,12 @@ msgid "Date consignment"
 msgstr "Fecha de consignación"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__display_name
+#: model:ir.model.fields,field_description:account_extended.field_account_group__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__display_name
+#: model:ir.model.fields,field_description:account_extended.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__display_name
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__display_name
 msgid "Display Name"
@@ -212,8 +247,12 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__id
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__id
+#: model:ir.model.fields,field_description:account_extended.field_account_group__id
 #: model:ir.model.fields,field_description:account_extended.field_account_journal__id
+#: model:ir.model.fields,field_description:account_extended.field_account_move__id
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__id
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__id
 msgid "ID"
@@ -257,6 +296,11 @@ msgid "Is Follower"
 msgstr "Es un seguidor"
 
 #. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_group__niif_bool
+msgid "Is NIIF"
+msgstr "Es NIIF"
+
+#. module: account_extended
 #: model:ir.model,name:account_extended.model_account_journal
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__journal_id
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__journal_id
@@ -264,8 +308,22 @@ msgid "Journal"
 msgstr "Diario"
 
 #. module: account_extended
+#: model:ir.model,name:account_extended.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento del Libro"
+
+#. module: account_extended
+#: model:ir.model,name:account_extended.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment____last_update
+#: model:ir.model.fields,field_description:account_extended.field_account_group____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_journal____last_update
+#: model:ir.model.fields,field_description:account_extended.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_payment____last_update
 #: model:ir.model.fields,field_description:account_extended.field_res_bank____last_update
 msgid "Last Modified on"
@@ -282,6 +340,19 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_move__niif_bool__local
+msgid "Local"
+msgstr "Local"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_bank_statement_line__niif_bool
+#: model:ir.model.fields,field_description:account_extended.field_account_move__niif_bool
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_bool
+#: model:ir.model.fields,field_description:account_extended.field_account_payment__niif_bool
+msgid "Local / NIIF"
+msgstr "Local / NIIF"
+
+#. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Adjuntos principales"
@@ -295,6 +366,36 @@ msgstr "Error de Envío de Mensaje"
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__message_ids
 msgid "Messages"
 msgstr "Mensajes"
+
+#. module: account_extended
+#: model:ir.model.fields.selection,name:account_extended.selection__account_move__niif_bool__niif
+msgid "NIIF"
+msgstr "NIIF"
+
+#. module: account_extended
+#: model:res.groups,name:account_extended.group_account_niif
+msgid "NIIF Account"
+msgstr "Contabilidad NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_balance
+msgid "NIIF Balance"
+msgstr "Saldo NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_credit
+msgid "NIIF Credit"
+msgstr "Haber NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_debit
+msgid "NIIF Debit"
+msgstr "Debe NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_account__niif_group_id
+msgid "NIIF Group"
+msgstr "Grupo NIIF"
 
 #. module: account_extended
 #: code:addons/account_extended/models/account_consignment.py:0
@@ -441,6 +542,35 @@ msgstr ""
 " Crea un pago y cincilia"
 
 #. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_tree
+msgid "Total NIIF"
+msgstr "Total NIIF"
+
+#. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_tree
+msgid "Total NIIF Amount"
+msgstr "Importe total NIIF"
+
+#. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_line_tree
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_niif_form
+msgid "Total NIIF Credit"
+msgstr "Crébito total NIIF"
+
+#. module: account_extended
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_line_tree
+#: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_niif_form
+msgid "Total NIIF Debit"
+msgstr "Débito total NIIF"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_account_bank_statement_line__niif_amount_total_signed
+#: model:ir.model.fields,field_description:account_extended.field_account_move__niif_amount_total_signed
+#: model:ir.model.fields,field_description:account_extended.field_account_payment__niif_amount_total_signed
+msgid "Total NIIF Signed"
+msgstr "Total NIIF con signo"
+
+#. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__type
 msgid "Type consignment"
 msgstr "Tipo de consignación"
@@ -475,3 +605,10 @@ msgstr "Mensajes del sitio web"
 #: model:ir.model.fields,help:account_extended.field_account_consignment__website_message_ids
 msgid "Website communication history"
 msgstr "Historial de comunicaciones del sitio web"
+
+#. module: account_extended
+#: code:addons/account_extended/models/account_move.py:0
+#: model:ir.model.constraint,message:account_extended.constraint_account_move_line_check_niif_debit_credit
+#, python-format
+msgid "Wrong NIIF debit or credit value in accounting entry !"
+msgstr "¡Valor incorrecto de crédito o débito en asiento contable NIIF!"
