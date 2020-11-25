@@ -5,30 +5,60 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='open_produce_product'][2]" position="after">
-                    <button name="open_produce_product" 
-                        attrs="{'invisible': ['|', '|', ('state', '=', 'to_close'), ('is_locked', '=', False), ('reservation_state', '!=', 'assigned')]}" 
-                        string="Produce" type="object" class="oe_highlight"/>
+                <xpath expr="//button[@name='button_scrap']" position="attributes">
+                    <attribute name="invisible">True</attribute>
                 </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page string="Work Orders" attrs="{'invisible': [('workorder_ids', '=', [])]}">
-                        <button name="action_compute_workorders" string="Compute Work Orders" type="object"/>
-                        <field name="workorders_ids" nolabel="1">
-                            <tree editable="bottom" delete="0" create="0">
-                                <field name="name" readonly="1"/>
-                                <field name="workcenter_id" widget="selection" readonly="1"/>
-                                <field name="date_planned_start" invisible="1"/>
-                                <field name="date_finished" invisible="1"/>
-                                <field name="workcenter_costs_hour" readonly="1"/>
-                                <field name="duration_expected" widget="float_time" readonly="1"/>
-                                <field name="duration_real" widget="float_time" readonly="0"/>
-                                <field name="state" invisible="1"/>
-                                <field name="company_id" groups="base.group_multi_company"/>
-                            </tree>
-                        </field>
-                    </page>
+                <xpath expr="//field[@name='is_planned']" position="after">
+                    <field name="production_type" invisible="1"/>
                 </xpath>
             </field>
         </record>
+
+        <record id="action_mrp_production_manufacturing" model="ir.actions.act_window">
+            <field name="name">Manufacturing Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="context">{'search_default_todo': True, 'default_company_id': allowed_company_ids[0], 'default_production_type': 'manufacturing'}</field>
+            <field name="domain">[('picking_type_id.active', '=', True),('production_type', '=', 'manufacturing')]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No manufacturing order found. Let's create one.
+              </p><p>
+                Consume <a name="%(product.product_template_action)d" type='action' tabindex="-1">components</a> and build finished products using <a name="%(mrp.mrp_bom_form_action)d" type='action' tabindex="-1">bills of materials</a>
+              </p>
+            </field>
+        </record>
+
+        <record id="action_mrp_production_production" model="ir.actions.act_window">
+            <field name="name">Manufacturing Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="context">{'search_default_todo': True, 'default_company_id': allowed_company_ids[0], 'default_production_type': 'manufacturing'}</field>
+            <field name="domain">[('picking_type_id.active', '=', True),('production_type', '=', 'production')]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No manufacturing order found. Let's create one.
+              </p><p>
+                Consume <a name="%(product.product_template_action)d" type='action' tabindex="-1">components</a> and build finished products using <a name="%(mrp.mrp_bom_form_action)d" type='action' tabindex="-1">bills of materials</a>
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="mrp.menu_mrp_production_action"
+            name="Reclassification"
+            action="action_mrp_production_manufacturing"
+            parent="mrp.menu_mrp_manufacturing"
+            sequence="2"/>
+
+        <menuitem id="menu_mrp_production_production"
+            action="action_mrp_production_production"
+            parent="mrp.menu_mrp_manufacturing"
+            sequence="3"/>
     </data>
 </odoo>

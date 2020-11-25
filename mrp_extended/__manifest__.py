@@ -21,12 +21,10 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'data/account_journal.xml',
+        # 'security/ir.model.access.csv',
+        # 'data/account_journal.xml',
         'views/mrp_workcenter_view.xml',
         'views/mrp_production_view.xml',
-        'views/templates.xml',
-        'wizard/mrp_product_produce_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

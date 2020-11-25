@@ -25,7 +25,7 @@
         'hr_contract',
         'hr_recruitment',
         'l10n_co',
-        'mrp',
+        'web',
         # OCA 
         'account_asset_management',
         'account_payment_order',
