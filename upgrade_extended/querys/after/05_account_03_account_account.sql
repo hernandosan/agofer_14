@@ -36,9 +36,10 @@ from dblink('dbname=agofer_08','SELECT
 	write_date, 
 	name, 
 	company_id, 
-	note
+	note,
+	type
 	FROM account_account 
-	where niif is False;'
+	where niif != True;'
 ) as agofer(
 	id integer, 
 	code character varying, 
@@ -50,6 +51,8 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	name character varying, 
 	company_id integer, 
-	note text
+	note text,
+	type character varying
 )
-where agofer.id not in (select id from account_account);
+where agofer.type != 'view' 
+and agofer.id not in (select id from account_account);
