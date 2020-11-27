@@ -21,6 +21,7 @@
 
     # always loaded
     'data': [
+        'security/res_group_security.xml',
         # 'security/ir.model.access.csv',
         # 'data/account_journal.xml',
         'views/mrp_workcenter_view.xml',

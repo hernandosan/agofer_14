@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-08 22:10+0000\n"
-"PO-Revision-Date: 2020-08-08 22:10+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2020-11-27 16:19+0000\n"
+"PO-Revision-Date: 2020-11-27 16:19+0000\n"
+"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,110 +16,95 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__account_id
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__account_id
-msgid "Account"
-msgstr "Cuenta contable"
-
-#. module: mrp_extended
 #: code:addons/mrp_extended/models/mrp_workorder.py:0
 #, python-format
-msgid "Account has not been set up in product: %s"
-msgstr "La cuenta contable no ha sido configurada en el producto: %s"
+msgid ""
+"Configuration error. Please configure the price difference account on the "
+"product or its category to process this operation."
+msgstr ""
 
 #. module: mrp_extended
-#: code:addons/mrp_extended/models/mrp_workorder.py:0
-#, python-format
-msgid "Account has not been set up in work center: %s"
-msgstr "La cuenta contable no ha sido configurada en el centro de prducción: %s"
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_manufacturing
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_production
+msgid "Consume"
+msgstr ""
 
 #. module: mrp_extended
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_production_form
-msgid "Compute Work Orders"
-msgstr "Calcular ordenes de trabajo"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__costs_hour
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workorder__workcenter_costs_hour
-msgid "Cost per hour"
-msgstr "Costo por hora"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__costs_hour_line
-msgid "Cost per hour line"
-msgstr "Costo por linea"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__costs_hour_workcenter
-msgid "Cost per hour worcenter"
-msgstr "Costo por centro de producción"
-
-#. module: mrp_extended
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_workcenter_form
-msgid "Costing Information"
-msgstr "Información de costos"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__create_uid
-msgid "Created by"
-msgstr "Creado por"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__create_date
-msgid "Created on"
-msgstr "Creado el"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__display_name
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production__display_name
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__display_name
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workorder__display_name
+#: model:ir.model.fields,field_description:mrp_extended.field_stock_move__display_name
 msgid "Display Name"
-msgstr "Nombre"
+msgstr "Nombre Público"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_product_produce__production_workorder_bool
-msgid "Have Work Orders"
-msgstr "Tiene ordenes de trabajo"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__id
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production__id
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__id
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workorder__id
+#: model:ir.model.fields,field_description:mrp_extended.field_stock_move__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__line_ids
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_workcenter_form
-msgid "Indirect costs"
-msgstr "Costos indirectos"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line____last_update
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production____last_update
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter____last_update
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workorder____last_update
+#: model:ir.model.fields,field_description:mrp_extended.field_stock_move____last_update
 msgid "Last Modified on"
-msgstr "Ultima modificación el"
+msgstr "Última Modificación el"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__write_uid
-msgid "Last Updated by"
-msgstr "Ultima mdificación por"
+#: model:ir.model.fields.selection,name:mrp_extended.selection__mrp_production__production_type__manufacturing
+msgid "Manufacturing"
+msgstr "Manufactura"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__write_date
-msgid "Last Updated on"
-msgstr "Ultima modificación el"
+#: model:ir.actions.act_window,name:mrp_extended.action_mrp_production_manufacturing
+#: model:ir.actions.act_window,name:mrp_extended.action_mrp_production_production
+#: model:ir.ui.menu,name:mrp_extended.menu_mrp_production_production
+msgid "Manufacturing Orders"
+msgstr "Órdenes de Manufactura"
 
 #. module: mrp_extended
-#: code:addons/mrp_extended/wizard/mrp_product_produce.py:0
-#, python-format
-msgid "Please enter a lot or serial number for %s !"
-msgstr "Introduzca un lote o número de seria para %s"
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production__production_type
+msgid "Manufacturing type"
+msgstr "Tipo de Manufactura"
+
+#. module: mrp_extended
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_manufacturing
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_production
+msgid "No manufacturing order found. Let's create one."
+msgstr ""
 
 #. module: mrp_extended
 #: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_production_form
-msgid "Produce"
+msgid "Non-Conforming"
+msgstr "No Conformes"
+
+#. module: mrp_extended
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production__move_noproduct_ids
+msgid "Nonconforming Products"
+msgstr "Productos no conformes"
+
+#. module: mrp_extended
+#: model:res.groups,name:mrp_extended.group_mrp_nonproducts
+msgid "Produce nonconforming products"
+msgstr ""
+
+#. module: mrp_extended
+#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_production_form
+msgid "Produced"
 msgstr "Producir"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__product_id
+#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter__product_id
 msgid "Product"
 msgstr "Producto"
+
+#. module: mrp_extended
+#: model:ir.model.fields.selection,name:mrp_extended.selection__mrp_production__production_type__production
+msgid "Production"
+msgstr "Producción"
 
 #. module: mrp_extended
 #: model:ir.model,name:mrp_extended.model_mrp_production
@@ -127,39 +112,19 @@ msgid "Production Order"
 msgstr "Orden de producción"
 
 #. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workorder__duration_real
-msgid "Real Duration"
-msgstr "Duración real"
+#: model:ir.model.fields,field_description:mrp_extended.field_stock_move__non_conforming_production_id
+msgid "Production Order for non conforming"
+msgstr "Orde de Produccuón para no conformidades"
 
 #. module: mrp_extended
-#: model:ir.model.fields,help:mrp_extended.field_mrp_workorder__duration_real
-msgid "Real duration (in minutes)"
-msgstr "Duración real (en minutos)"
+#: model:ir.model,name:mrp_extended.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Existencias"
 
 #. module: mrp_extended
-#: model:ir.model,name:mrp_extended.model_mrp_product_produce
-msgid "Record Production"
-msgstr "Registrar Producción"
-
-#. module: mrp_extended
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_product_produce_form
-msgid "Save"
-msgstr "Guardar"
-
-#. module: mrp_extended
-#: model:ir.model.fields,help:mrp_extended.field_mrp_workorder__workcenter_costs_hour
-msgid "Specify cost of work center per hour."
-msgstr "Especifica el costo por hora."
-
-#. module: mrp_extended
-#: model:ir.model.fields,help:mrp_extended.field_mrp_workcenter_line__costs_hour
-msgid "Specify cost per hour."
-msgstr "Especifica el costo por hora."
-
-#. module: mrp_extended
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_workcenter_form
-msgid "Total"
-msgstr "Total"
+#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_production_form
+msgid "To Produce"
+msgstr "Fabricar"
 
 #. module: mrp_extended
 #: model:ir.model,name:mrp_extended.model_mrp_workcenter
@@ -167,36 +132,24 @@ msgid "Work Center"
 msgstr "Centro de producción"
 
 #. module: mrp_extended
-#: model:ir.model,name:mrp_extended.model_mrp_workcenter_line
-msgid "Work Center Line"
-msgstr "Linea de centro de producción"
-
-#. module: mrp_extended
 #: model:ir.model,name:mrp_extended.model_mrp_workorder
 msgid "Work Order"
 msgstr "Orden de trabajo"
 
 #. module: mrp_extended
-#: model_terms:ir.ui.view,arch_db:mrp_extended.view_mrp_production_form
-msgid "Work Orders"
-msgstr "Ordenes de trabajo"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_workcenter_line__workcenter_id
-msgid "Workcenter"
-msgstr "Centro de producción"
-
-#. module: mrp_extended
-#: model:ir.model.fields,field_description:mrp_extended.field_mrp_production__workorders_ids
-msgid "Works Orders"
-msgstr "Ordenes de trabajo"
-
-#. module: mrp_extended
-#: code:addons/mrp_extended/wizard/mrp_product_produce.py:0
-#, python-format
-msgid ""
-"You cannot consume the same serial number twice. Please correct the serial "
-"numbers encoded."
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_manufacturing
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_production
+msgid "and build finished products using"
 msgstr ""
-"No puede consumir el mismo número de serie dos veces. Corrija los números de"
-" serie codificados."
+
+#. module: mrp_extended
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_manufacturing
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_production
+msgid "bills of materials"
+msgstr "Lista de materiales"
+
+#. module: mrp_extended
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_manufacturing
+#: model_terms:ir.actions.act_window,help:mrp_extended.action_mrp_production_production
+msgid "components"
+msgstr "Componentes"
