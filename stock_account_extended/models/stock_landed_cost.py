@@ -47,7 +47,7 @@ class StockLandedCost(models.Model):
                 line.move_id.write({
                     'cost_id': cost.id,
                     'price_unit': line.final_cost / line.quantity,
-                    'additional_cost': line.additional_landed_cost,
+                    'additional_cost': line.additional_landed_cost / line.quantity,
                 })
 
             cost.picking_ids.write({'carrier_id': cost.carrier_id.id})
