@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="view_crm_team_form" model="ir.ui.view">
+            <field name="name">view.crm.team.form</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='members']" position="after">
+                    <page string="Other info">
+                        <group>
+                            <group string='Account' groups="account.group_account_invoice">
+                                <field name="crossover_journal_id" required="True"/>
+                                <field name="advance_journal_id" required="True"/>
+                                <field name="advance_account_id" required="True"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

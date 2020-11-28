@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_account_account_form" model="ir.ui.view">
+            <field name="name">view.account.account.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='group_id']" position="attributes">
+                    <attribute name="domain">[('niif_bool','=',False)]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='group_id']" position="after">
+                    <field name="niif_group_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

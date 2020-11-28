@@ -1,3 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-acces_account_payment_user,acces.account.payment.user,account.model_account_payment,group_account_user,1,0,1,0
+acces_account_payment_user,acces.account.payment.user,account.model_account_payment,group_account_user,1,1,1,0
 acces_account_payment_method_user,acces.account.payment.method.user,account.model_account_payment_method,group_account_user,1,0,0,0
+acces_account_move_user,acces.account.move.user,account.model_account_move,group_account_user,1,1,1,0
+acces_account_move_line_user,acces.account.move.line.user,account.model_account_move_line,group_account_user,1,1,1,0
+acces_account_asset_line_user,acces.account.asset.line.user,account_asset_management.model_account_asset_line,group_account_user,1,0,0,0
+acces_account_consignment_user,acces.account.consignment.user,model_account_consignment,group_account_user,1,0,0,0
+acces_account_consignment_invoice,acces.account.consignment.invoice,model_account_consignment,account.group_account_invoice,1,1,1,0
+acces_account_consignment_manager,acces.account.consignment.manager,model_account_consignment,account.group_account_manager,1,1,1,1

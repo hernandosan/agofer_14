@@ -9,5 +9,10 @@
         <record id="account.group_account_invoice" model="res.groups">
             <field name="implied_ids" eval="[(4, ref('group_account_user'))]"/>
         </record>
+
+        <record model="res.groups" id="group_account_niif">
+            <field name="name">NIIF Account</field>
+            <field name="category_id" ref="base.module_category_usability"/>
+        </record>
     </data>
 </odoo>

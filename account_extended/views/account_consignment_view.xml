@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_account_consignment_search">
+            <field name="name">view.account.consignment.search</field>
+            <field name="model">account.consignment</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <search string="Consignments">
+                    <field name="name"/>
+                    <field name="number"/>
+                    <field name="reference"/>
+                    <field name="bank_id"/>
+                    <field name="partner_id"/>
+                    <group string="Group By">
+                        <filter name="by_state" string="State" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_account_consignment_tree">
+            <field name="name">view.account.consignment.tree</field>
+            <field name="model">account.consignment</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Consignments">
+                    <field name="name"/>
+                    <field name="number"/>
+                    <field name="payment_type"/>
+                    <field name="bank_id"/>
+                    <field name="date_consignment"/>
+                    <field name="partner_id"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_account_consignment_form">
+            <field name="name">view.account.consignment.form</field>
+            <field name="model">account.consignment</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <form string="Consignment">
+                    <header>
+                        <button string="In Exchange" type="object" name="action_exchange" 
+                            attrs="{'invisible': ['|',('state','!=','draft'),('payment_type','!=','cheque')]}" class="oe_highlight"/>
+                        <button string="Available" type="object" name="action_available" states="draft,exchange" class="oe_highlight" />
+                        <button string="Confirm" type="object" name="action_done" states="available" class="oe_highlight" />
+                        <button string="Cancel" type="object" name="action_cancel" states="draft" />
+                        <button string="Draft" type="object" name="action_draft" states="cancel" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Number" />
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="payment_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="bank_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
+                                <field name="date_consignment" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="amount_invoice" attrs="{'invisible': [('type', '!=', 'crossover')]}"/>
+                            </group>
+                            <group>
+                                <field name="type" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
+                                <field name="team_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
+                                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="True"/>
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="reference" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="order_id" 
+                                    domain="[('state','not in',('done','cancel'))]" 
+                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'advance')], 'required': [('type', '=', 'advance')]}"/>
+                                <field name="invoices_ids" widget="many2many_tags"
+                                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('type', '!=', 'crossover')], 'required': [('type', '=', 'crossover')]}" 
+                                    domain="[('move_type', '=', 'out_invoice'),('state', 'not in', ('draft', 'cancel')),('payment_state', '!=', 'paid')]"/>
+                                <field name="consignment_bool" attrs="{'invisible': [('type', '!=', 'crossover')]}"/>
+                            </group>
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="currency_id" groups="base.group_multi_currency"/>
+                                <field name="user_id" />
+                                <field name="move_id" attrs="{'invisible': [('move_id', '=', False)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_consignment">
+            <field name="name">Consignments</field>
+            <field name="res_model">account.consignment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first consignment
+                </p>
+            </field>
+        </record>
+
+        <menuitem 
+            id="menu_account_consignment" 
+            action="action_account_consignment"
+            sequence="20"
+            parent="account.menu_finance_receivables"/>
+    </data>
+</odoo>

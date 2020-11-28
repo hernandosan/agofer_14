@@ -1,14 +1,32 @@
 <odoo>
     <data>
-        <record id="view_product_product_form" model="ir.ui.view">
-            <field name="name">view.product.product.form</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+        <record model="ir.ui.view" id="stock.product_template_form_view_procurement_button">
+            <field name="groups_id" eval="[(4, ref('stock.group_stock_user')),(4, ref('group_stock_info'))]"/>
+        </record>
+
+        <record id="view_product_template_tree" model="ir.ui.view">
+            <field name="name">view.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="groups">stock.group_stock_user</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_product_template_form" model="ir.ui.view">
+            <field name="name">view.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                    <attribute name="groups">stock.group_stock_user</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_open_product_lot']" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
             </field>

@@ -24,12 +24,14 @@
 
     # always loaded
     'data': [
+        'security/res_groups_security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/res_partner_category_data.xml',
         'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         'views/delivery_guide_view.xml',
+        'views/product_product_view.xml',
         'views/product_template_view.xml',
         'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',

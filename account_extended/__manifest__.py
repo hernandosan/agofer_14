@@ -14,17 +14,28 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Accounting/Accounting',
-    'version': '13.1',
+    'version': '14.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account'],
+    'depends': [
+        'account_asset_management',
+        'sale_extended',
+    ],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'security/res_group_security.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
+        'views/account_account_view.xml',
+        'views/account_consignment_view.xml',
+        'views/account_group_view.xml',
+        'views/account_journal_view.xml',
+        'views/account_move_line_view.xml',
+        'views/account_move_view.xml',
         'views/account_payment_view.xml',
-        'views/templates.xml',
+        'views/res_bank_view.xml',
+        'wizard/account_consignment_wizard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

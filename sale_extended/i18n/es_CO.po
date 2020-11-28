@@ -6,14 +6,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-02 20:35+0000\n"
-"PO-Revision-Date: 2020-10-02 20:35+0000\n"
+"POT-Creation-Date: 2020-11-23 19:19+0000\n"
+"PO-Revision-Date: 2020-11-23 19:19+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+msgid "Account"
+msgstr ""
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_account_id
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_account_id
+msgid "Advance Account"
+msgstr ""
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_journal_id
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_journal_id
+msgid "Advance Journal"
+msgstr ""
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -27,6 +44,11 @@ msgid "Company"
 msgstr "Compañia"
 
 #. module: sale_extended
+#: model:ir.model,name:sale_extended.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__create_uid
 msgid "Created by"
 msgstr "Creado por"
@@ -35,6 +57,22 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__create_date
 msgid "Created on"
 msgstr "Creado"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__credit_type
+msgid "Credit Type"
+msgstr "Tipo de crédito"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__crossover_journal_id
+msgid "Crossover Journal"
+msgstr "Diario de Cruce"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/account_move.py:0
+#, python-format
+msgid "Crossover invoice %s"
+msgstr "Cruce de factura %s"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_product_product__delivery_delay
@@ -49,6 +87,12 @@ msgstr "Plazo de entrega del cliente"
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__sale_delay
 msgid "Customer Lead Time"
 msgstr "Plazo de Entrega del Cliente"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_res_partner__property_payment_term_id
+#: model:ir.model.fields,field_description:sale_extended.field_res_users__property_payment_term_id
+msgid "Customer Payment Terms"
+msgstr "Plazo de pago de cliente"
 
 #. module: sale_extended
 #: model:ir.model.fields.selection,name:sale_extended.selection__sale_order__shipping_type__pick
@@ -94,11 +138,14 @@ msgstr ""
 "desde la confirmación del pedido de venta hasta la entrega"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__display_name
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__display_name
+#: model:ir.model.fields,field_description:sale_extended.field_res_partner__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse__display_name
@@ -121,11 +168,14 @@ msgid "Historized Price"
 msgstr "Precio Historico"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_move__id
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__id
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__id
+#: model:ir.model.fields,field_description:sale_extended.field_res_partner__id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__id
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse__id
@@ -145,11 +195,19 @@ msgid "Item"
 msgstr ""
 
 #. module: sale_extended
+#: model:ir.model,name:sale_extended.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento del Libro"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_move____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment____last_update
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_template____last_update
+#: model:ir.model.fields,field_description:sale_extended.field_res_partner____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse____last_update
@@ -279,6 +337,11 @@ msgid "Order reserved for more than 15 days. Confirm or Cancel"
 msgstr "Pedido reservado por mas de 15 días. Confirmar o Cancelar"
 
 #. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+msgid "Other info"
+msgstr "Otra información"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_account_payment
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payments_id
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
@@ -367,9 +430,20 @@ msgstr "Orden de Venta"
 msgid "Sales Order Line"
 msgstr ""
 "#-#-#-#-#  es_CO.po (Odoo 9.0)  #-#-#-#-#\n"
-"Línea de Orden de Ventas\n"
+"Línea Orden de Venta\n"
 "#-#-#-#-#  es_CO.po (Odoo 9.0)  #-#-#-#-#\n"
-"Línea de Órdenes de Venta"
+"Línea de Pedido de Venta"
+
+#. module: sale_extended
+#: model:ir.model,name:sale_extended.model_crm_team
+msgid "Sales Team"
+msgstr "Equipo de Ventas"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_res_partner__user_id
+#: model:ir.model.fields,field_description:sale_extended.field_res_users__user_id
+msgid "Salesperson"
+msgstr "Vendedor"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_bool
@@ -386,6 +460,54 @@ msgstr "Fecha de Entrega"
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__shipping_type
 msgid "Shipping Type"
 msgstr "Tipo de Entrega"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/crm_team.py:0
+#, python-format
+msgid "The CRM Team %s has not advance account"
+msgstr "El equipo de ventas %s no tiene cuenta de anticipos"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/crm_team.py:0
+#, python-format
+msgid "The CRM Team %s has not advance journal"
+msgstr "El equipo de ventas %s no tiene un diario de anticipos"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/crm_team.py:0
+#, python-format
+msgid "The CRM Team %s has not crossover journal"
+msgstr "El equipo de ventas %s no tiene un diario de cruces"
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/res_partner.py:0
+#: code:addons/sale_extended/models/res_partner.py:0
+#: code:addons/sale_extended/models/res_partner.py:0
+#, python-format
+msgid "The Partner %s has not CRM team"
+msgstr "El cliente %s no tiene equipo de ventas"
+
+#. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_res_partner__user_id
+#: model:ir.model.fields,help:sale_extended.field_res_users__user_id
+msgid "The internal user in charge of this contact."
+msgstr "El usuario interno a cargo de este contacto."
+
+#. module: sale_extended
+#: code:addons/sale_extended/models/account_move.py:0
+#, python-format
+msgid "The payment %s has not sale order"
+msgstr "El pago %s no tiene un pedido de venta"
+
+#. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_res_partner__property_payment_term_id
+#: model:ir.model.fields,help:sale_extended.field_res_users__property_payment_term_id
+msgid ""
+"This payment term will be used instead of the default one for sales orders "
+"and customer invoices"
+msgstr ""
+"Este plazo de pago se utilizará en lugar del predeterminado para pedidos de "
+"cliente y facturas de clientes"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_unit

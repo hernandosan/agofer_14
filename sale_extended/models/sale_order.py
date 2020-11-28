@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    # credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
+    credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
     shipping_bool = fields.Boolean('Shipping Bool', copy=False)
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
     pick_bool = fields.Boolean('Pick Bool')
@@ -23,6 +23,8 @@ class SaleOrder(models.Model):
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
+    payment_journal_id = fields.Many2one(related='team_id.advance_journal_id')
+    payment_account_id = fields.Many2one(related='team_id.advance_account_id')
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):
@@ -44,7 +46,9 @@ class SaleOrder(models.Model):
     def copy(self, default=None):
         if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
             default = dict(default or {})
-            default.update(pricelist_id=self.warehouse_id.pricelists_ids[0].id)
+            pricelist_id = self.warehouse_id.pricelists_ids[0].id if self.warehouse_id.pricelists_ids else False
+            if pricelist_id:
+                default.update(pricelist_id=self.warehouse_id.pricelists_ids[0].id)
         return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
@@ -58,7 +62,7 @@ class SaleOrder(models.Model):
         self.validate_standard_price()
         self.validate_product_qty()
         self.validate_delivery_date()
-        # self.validate_credit_type()
+        self.validate_credit_type()
 
     def action_after_confirm(self):
         # self.action_quotation_send()
@@ -151,7 +155,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         decimal_places = self.currency_id.decimal_places
         amount_total = self.amount_total
-        amount_payment = sum(payment.currency_id.with_context(date=payment.payment_date).compute(payment.amount, self.currency_id) for payment in self.payments_id) if self.payments_id else 0.0
+        amount_payment = sum(payment.currency_id.with_context(date=payment.date).compute(payment.amount, self.currency_id) for payment in self._sale_payments_id()) or 0.0
         if amount_payment < amount_total:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
                 user = self.env.user.login
@@ -243,6 +247,10 @@ class SaleOrder(models.Model):
             'delivery_date': self.delivery_date,
         }
         self.picking_ids.write(vals)
+
+    def _sale_payments_id(self):
+        self.ensure_one()
+        return self.payments_id.filtered(lambda p: p.state == 'posted')
 
 
 class SaleOrderLine(models.Model):

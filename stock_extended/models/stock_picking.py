@@ -24,7 +24,11 @@ class StockPicking(models.Model):
     def _create_invoice(self):
         self.ensure_one()
         if self.sale_id:
-            moves = self.sale_id._create_invoices(final=True)
-            move = moves[-1]
-            move.write({'picking_id': self.id, 'delivery_state': 'pending'})
-            self.write({'invoice_id': move.id})
+            move = self.sale_id._create_invoices(final=True)[-1]
+            if move:
+                move.write({
+                    'sale_id': self.sale_id.id if self.sale_id else False, 
+                    'picking_id': self.id, 
+                    'delivery_state': 'pending'
+                })
+                self.write({'invoice_id': move.id})

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_stock_info" model="res.groups">
+            <field name="name">Info</field>
+            <field name="category_id" ref="base.module_category_inventory_inventory"/>
+        </record>
+
+        <record id="stock.group_stock_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_stock_info'))]"/>
+        </record>
+    </data>
+</odoo>

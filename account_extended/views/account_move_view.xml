@@ -1,0 +1,83 @@
+<odoo>
+    <data>
+        <record id="view_account_move_tree" model="ir.ui.view">
+            <field name="name">view.account.move.tree</field>
+            <field name="model">account.move</field>
+            <field name="groups_id" eval="[(4, ref('account_extended.group_account_niif'))]"/>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="niif_bool" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_total_signed']" position="after">
+                    <field name="niif_amount_total_signed" sum="Total NIIF Amount" string="Total NIIF" decoration-bf="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_form" model="ir.ui.view">
+            <field name="name">view.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref'][2]" position="after">
+                    <field name="niif_bool" required="True" widget="radio" groups="account_extended.group_account_niif"
+                        attrs="{'invisible':[('move_type', '!=', 'entry')], 'readonly': [('state','!=','draft')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_niif_form" model="ir.ui.view">
+            <field name="name">view.account.move.niif.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="groups_id" eval="[(4, ref('account_extended.group_account_niif'))]"/>
+            <field name="arch" type="xml">
+                <!-- Tree -->
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="before">
+                    <field name="niif_bool" invisible="True"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='debit']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': ['|',('display_type','in',('line_section','line_note')),('niif_bool','=','niif')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='debit']" position="after">
+                    <field name="niif_debit" sum="Total NIIF Debit" 
+                        attrs="{'invisible': ['|',('display_type','in',('line_section','line_note')),('niif_bool','!=','niif')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='credit']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': ['|',('display_type','in',('line_section','line_note')),('niif_bool','=','niif')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='credit']" position="after">
+                    <field name="niif_credit" sum="Total NIIF Credit" 
+                        attrs="{'invisible': ['|',('display_type','in',('line_section','line_note')),('niif_bool','!=','niif')]}"/>
+                </xpath>
+                <!-- Form -->
+                <xpath expr="//field[@name='line_ids']/form/group/field[@name='account_id']" position="before">
+                    <field name="niif_bool" invisible="True"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/form/group/field[@name='debit']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': [('niif_bool','=','niif')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/form/group/field[@name='debit']" position="after">
+                    <field name="niif_debit" sum="Total NIIF Debit" 
+                        attrs="{'invisible': [('niif_bool','!=','niif')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/form/group/field[@name='credit']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': [('niif_bool','=','niif')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/form/group/field[@name='credit']" position="after">
+                    <field name="niif_credit" sum="Total NIIF Credit" 
+                        attrs="{'invisible': [('niif_bool','!=','niif')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
