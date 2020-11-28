@@ -60,5 +60,14 @@ SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update
 		account_asset_category
 		set name = left(name, 64)
+		where length(name) > 64
+		returning id;'
+) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink('dbname=agofer_08','update
+		resource_resource
+		set calendar_id = (select id from resource_calendar order by id limit 1)
+		where calendar_id is null
 		returning id;'
 ) AS agofer (id INTEGER);

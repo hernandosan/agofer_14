@@ -47,4 +47,3 @@ from dblink('dbname=agofer_08','SELECT
 	create_date timestamp without time zone,
 	mode integer
 );
-

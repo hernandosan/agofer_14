@@ -29,7 +29,7 @@
         'views/helpdesk_ticket_category_view.xml',
         'views/helpdesk_ticket_team_view.xml',
         'views/helpdesk_ticket_type_view.xml',
-        'views/helpdesk_ticket_view.xml',
+        # 'views/helpdesk_ticket_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -42,5 +42,4 @@ from dblink('dbname=agofer_08','SELECT
 	create_uid integer, 
 	name character varying, 
 	company_id integer
-);
-
+) where agofer.id not in (select id from account_analytic_account);

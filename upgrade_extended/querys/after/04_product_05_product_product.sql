@@ -34,5 +34,3 @@ write_date timestamp without time zone,
 active boolean, 
 product_tmpl_id integer)
 where agofer.id not in (select id from product_product);
-
-select setval('product_product_id_seq', (select max(id) from product_product));

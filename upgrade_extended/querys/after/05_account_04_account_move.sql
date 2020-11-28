@@ -72,4 +72,3 @@ from dblink('dbname=agofer_08','SELECT
 	partner_id integer, 
 	to_check boolean
 ) WHERE cast(agofer.date as date) >= '2019-01-01';
-

@@ -77,4 +77,3 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	subcategory integer
 );
-

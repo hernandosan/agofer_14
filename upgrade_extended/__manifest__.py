@@ -33,7 +33,7 @@
         'account_extended',
         'helpdesk_mgmt_extended',
         'hr_extended',
-        # 'mrp_extended',
+        'mrp_extended',
         'sale_extended',
         'stock_account_extended',
         'stock_extended',
@@ -51,7 +51,7 @@
         'demo/demo.xml',
     ],
 
-    # 'pre_init_hook': 'pre_init_hook',
+    'pre_init_hook': 'pre_init_hook',
 
-    # 'post_init_hook': 'post_init_hook',
+    'post_init_hook': 'post_init_hook',
 }

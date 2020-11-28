@@ -37,7 +37,8 @@ insert into hr_job (
 	agofer.department_id, 
 	agofer.address_id, 
 	agofer.color, 
-	agofer.alias_id, 
+	--agofer.alias_id,
+	1,
 	agofer.user_id, 
 	--agofer.manager_id
 	1

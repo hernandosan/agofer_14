@@ -58,4 +58,3 @@ from dblink('dbname=agofer_08','SELECT
 )
 INNER JOIN account_asset AA ON AA.id = agofer.asset_id
 INNER JOIN account_move AM ON AM.id = agofer.move_id;
-

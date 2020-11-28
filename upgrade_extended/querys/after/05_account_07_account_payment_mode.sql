@@ -40,4 +40,4 @@ from dblink('dbname=agofer_08','SELECT
 	company_id integer, 
 	write_date timestamp without time zone, 
 	write_uid integer
-);
+) where agofer.id not in (select id from account_payment_mode);

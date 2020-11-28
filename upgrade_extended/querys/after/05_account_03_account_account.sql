@@ -55,4 +55,5 @@ from dblink('dbname=agofer_08','SELECT
 	type character varying
 )
 where agofer.type != 'view' 
-and agofer.id not in (select id from account_account);
+and agofer.id not in (select id from account_account) 
+and agofer.code not in (select code from account_account);

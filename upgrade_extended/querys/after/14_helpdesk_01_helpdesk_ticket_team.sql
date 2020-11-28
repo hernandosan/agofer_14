@@ -35,4 +35,3 @@ from dblink('dbname=agofer_08','SELECT
 	write_uid integer, 
 	write_date timestamp without time zone
 );
-

@@ -60,3 +60,21 @@ from account_group ag
 inner join account_account aa on aa.group_id = ag.id 
 group by ag.id) as aa 
 where aa.id = ag.id;
+
+update mail_alias ma 
+set alias_name = agofer.alias_name
+from dblink('dbname=agofer_08','SELECT id, alias_name FROM mail_alias;') as agofer (id integer, alias_name character varying)
+where agofer.id = ma.id 
+and ma.alias_name != agofer.alias_name;
+
+update hr_job hj 
+set alias_id = agofer.alias_id
+from dblink('dbname=agofer_08','SELECT id, alias_id FROM hr_job;') as agofer (id integer, alias_id integer) 
+inner join mail_alias ma on ma.id = agofer.alias_id
+where agofer.id = hj.id and hj.alias_id != agofer.alias_id;
+
+update hr_employee he 
+set resource_id = agofer.resource_id
+from dblink('dbname=agofer_08','SELECT id, resource_id FROM hr_employee;') as agofer (id integer, resource_id integer) 
+inner join resource_resource rr on rr.id = agofer.resource_id
+where agofer.id = he.id and he.resource_id != agofer.resource_id;

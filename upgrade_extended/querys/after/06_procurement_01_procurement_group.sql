@@ -33,4 +33,3 @@ move_type character varying,
 write_uid integer, 
 write_date timestamp without time zone, 
 partner_id integer);
-

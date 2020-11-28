@@ -25,7 +25,8 @@ insert into mail_alias (
 	agofer.alias_model_id, 
 	agofer.write_date, 
 	agofer.create_date, 
-	agofer.alias_name
+	--agofer.alias_name,
+	cast(agofer.id as character varying)
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	create_uid, 
@@ -55,4 +56,6 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	create_date timestamp without time zone, 
 	alias_name character varying
-)where agofer.id not in (select id from mail_alias);
+)inner join ir_model im1 on im1.id = agofer.alias_model_id 
+inner join ir_model im2 on im2.id = agofer.alias_parent_model_id
+where agofer.id not in (select id from mail_alias);

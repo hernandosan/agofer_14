@@ -56,4 +56,3 @@ from dblink('dbname=agofer_08','SELECT
 	owner_id integer,
 	qty double precision
 );
-

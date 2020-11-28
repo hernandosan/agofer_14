@@ -10,7 +10,8 @@ insert into resource_resource (
 	write_date, 
 	active, 
 	calendar_id, 
-	resource_type
+	resource_type,
+	tz
 ) select 
 	agofer.id, 
 	agofer.create_uid, 
@@ -23,7 +24,8 @@ insert into resource_resource (
 	agofer.write_date, 
 	agofer.active, 
 	agofer.calendar_id, 
-	agofer.resource_type
+	agofer.resource_type,
+	'America/Bogota'
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	create_uid, 
@@ -51,4 +53,4 @@ from dblink('dbname=agofer_08','SELECT
 	active boolean, 
 	calendar_id integer, 
 	resource_type character varying
-);
+)where agofer.id not in (select id from resource_resource);

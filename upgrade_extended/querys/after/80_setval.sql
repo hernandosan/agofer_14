@@ -52,7 +52,7 @@ select setval('account_asset_id_seq', (select max(id) from account_asset));
 
 select setval('account_asset_line_id_seq', (select max(id) from account_asset_line));
 
-select setval('account_tax_id_seq', (select max(id) from account_asset_tax));
+select setval('account_tax_id_seq', (select max(id) from account_tax));
 
 select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));
 

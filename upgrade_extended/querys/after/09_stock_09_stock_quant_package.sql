@@ -40,4 +40,3 @@ from dblink('dbname=agofer_08','SELECT
 	packaging_id integer, 
 	location_id integer
 );
-

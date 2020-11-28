@@ -66,4 +66,3 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	price_include boolean
 );
-
