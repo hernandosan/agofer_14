@@ -40,8 +40,7 @@ from dblink('dbname=agofer_08','SELECT
 	write_date, 
 	create_date, 
 	alias_name
-	FROM mail_alias
-	WHERE id > 4;'
+	FROM mail_alias;'
 ) as agofer(
 	id integer, 
 	create_uid integer, 
@@ -56,5 +55,4 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	create_date timestamp without time zone, 
 	alias_name character varying
-)INNER JOIN ir_model IR ON IR.id = agofer.alias_model_id
-AND IR.id = agofer.alias_parent_model_id;
+)where agofer.id not in (select id from mail_alias);

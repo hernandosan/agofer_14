@@ -59,16 +59,6 @@ SELECT COUNT(agofer.id)
 SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update
 		account_asset_category
-		set name = ''Gastos de Mantenimiento Maquinaria y Equipos - Suc.Villavicencio''
-		where id = 195
+		set name = left(name, 64)
 		returning id;'
 ) AS agofer (id INTEGER);
-
-SELECT COUNT(agofer.id)
-    FROM dblink('dbname=agofer_08','update
-		account_asset_category
-		set name = ''Seguro Crédito Cartera - Suc.(Estudios Iniciales Jul - Dic)''
-		where id = 359
-		returning id;'
-) AS agofer (id INTEGER);
-
