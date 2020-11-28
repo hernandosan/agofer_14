@@ -44,5 +44,3 @@ from dblink('dbname=agofer_08','SELECT
 	company_id integer
 );
 
---select setval('account_move_line_id_seq', (select max(id) from account_move_line));
-

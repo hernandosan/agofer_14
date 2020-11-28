@@ -12,7 +12,7 @@ insert into account_journal (
 	type,
 	invoice_reference_type,
 	invoice_reference_model,
-	avtive
+	active
 ) select 
 	agofer.id, 
 	agofer.code, 

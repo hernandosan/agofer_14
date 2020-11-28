@@ -34,4 +34,3 @@ write_uid integer,
 write_date timestamp without time zone, 
 partner_id integer);
 
-select setval('procurement_group_id_seq', (select max(id) from procurement_group));

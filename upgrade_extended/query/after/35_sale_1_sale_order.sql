@@ -125,4 +125,4 @@ from dblink('dbname=agofer_08', 'select
 	campaign_id integer, 
 	source_id integer
 ) 
-where cast(agofer.date_order as date) >= '2020-01-01';
+where cast(agofer.date_order as date) >= '2019-01-01';

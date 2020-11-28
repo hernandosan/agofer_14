@@ -104,5 +104,6 @@ from dblink('dbname=agofer_08','SELECT
 	amount_currency numeric, 
 	quantity numeric, 
 	statement_line_id integer
-) INNER JOIN account_move am ON am.id = agofer.move_id;
+) INNER JOIN account_move am ON am.id = agofer.move_id
+INNER JOIN account_bank_statement_line ABSL ON ABSL.id = agofer.statement_line_id;
 

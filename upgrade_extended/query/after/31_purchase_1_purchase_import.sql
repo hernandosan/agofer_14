@@ -60,4 +60,4 @@ from dblink('dbname=agofer_08', 'select
 	name character varying, 
 	incoterm_id integer
 ) 
-where agofer.date_origin >= '2020-01-01';
+where agofer.date_origin >= '2019-01-01';

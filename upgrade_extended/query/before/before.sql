@@ -71,3 +71,4 @@ SELECT COUNT(agofer.id)
 		where id = 359
 		returning id;'
 ) AS agofer (id INTEGER);
+
