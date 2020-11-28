@@ -6,9 +6,17 @@ select setval('res_partner_id_seq', (select max(id) from res_partner));
 
 select setval('res_users_id_seq', (select max(id) from res_users));
 
+select setval('res_bank_id_seq', (select max(id) from res_bank));
+
+select setval('res_partner_bank_id_seq', (select max(id) from res_partner_bank));
+
 select setval('ir_sequence_id_seq', (select max(id) from ir_sequence));
 
+select setval('mail_message_subtype_id_seq', (select max(id) from mail_message_subtype));
+
 select setval('mail_message_id_seq', (select max(id) from mail_message));
+
+select setval('mail_alias_id_seq', (select max(id) from mail_alias));
 
 select setval('product_category_id_seq', (select max(id) from product_category));
 
@@ -46,7 +54,13 @@ select setval('account_asset_line_id_seq', (select max(id) from account_asset_li
 
 select setval('account_tax_id_seq', (select max(id) from account_asset_tax));
 
+select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));
+
+select setval('account_bank_statement_line_id_seq', (select max(id) from account_bank_statement_line));
+
 select setval('procurement_group_id_seq', (select max(id) from procurement_group));
+
+select setval('crm_team_id_seq', (select max(id) from crm_team));
 
 select setval('delivery_carrier_id_seq', (select max(id) from delivery_carrier));
 
@@ -63,6 +77,10 @@ select setval('stock_warehouse_id_seq', (select max(id) from stock_warehouse));
 select setval('stock_picking_id_seq', (select max(id) from stock_picking));
 
 select setval('stock_inventory_id_seq', (select max(id) from stock_inventory));
+
+select setval('stock_quant_package_id_seq', (select max(id) from stock_quant_package));
+
+select setval('stock_quant_id_seq', (select max(id) from stock_quant));
 
 select setval('mrp_bom_id_seq', (select max(id) from mrp_bom));
 
@@ -85,3 +103,15 @@ select setval('helpdesk_ticket_team_id_seq', (select max(id) from helpdesk_ticke
 select setval('helpdesk_ticket_category_id_seq', (select max(id) from helpdesk_ticket_category));
 
 select setval('helpdesk_ticket_id_seq', (select max(id) from helpdesk_ticket));
+
+select setval('resource_calendar_id_seq', (select max(id) from resource_calendar));
+
+select setval('resource_resource_id_seq', (select max(id) from resource_resource));
+
+select setval('hr_department_id_seq', (select max(id) from hr_department));
+
+select setval('hr_job_id_seq', (select max(id) from hr_job));
+
+select setval('hr_employee_id_seq', (select max(id) from hr_employee));
+
+select setval('hr_contract_id_seq', (select max(id) from hr_contract));
