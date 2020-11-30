@@ -7,9 +7,14 @@ from odoo.exceptions import ValidationError
 class CrmTeam(models.Model):
     _inherit = 'crm.team'
 
+    # Account
     crossover_journal_id = fields.Many2one('account.journal', 'Crossover Journal', domain=[('type','in',('bank','cash'))])
     advance_journal_id = fields.Many2one('account.journal', 'Advance Journal', domain=[('type','in',('bank','cash'))])
     advance_account_id = fields.Many2one('account.account', 'Advance Account', domain=[('user_type_id.type','=','payable')])
+    # Pricelist
+    pricelists_ids = fields.Many2many('product.pricelist', string='Pricelists')
+    # Stock
+    warehouses_ids = fields.Many2many('stock.warehouse', string='Warehouses')
 
     def _team_crossover_journal(self):
         self.ensure_one()

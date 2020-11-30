@@ -1,58 +1,50 @@
-insert into resource_resource (
+insert into crm_team (
 	id, 
-	create_uid, 
-	time_efficiency, 
-	user_id, 
-	name, 
-	company_id, 
+	color, 
 	write_uid, 
-	create_date, 
 	write_date, 
 	active, 
-	calendar_id, 
-	resource_type,
-	tz
+	create_date, 
+	create_uid, 
+	user_id, 
+	name, 
+	use_quotations, 
+	invoiced_target
 ) select 
 	agofer.id, 
-	agofer.create_uid, 
-	agofer.time_efficiency, 
-	agofer.user_id, 
-	agofer.name, 
-	agofer.company_id, 
+	agofer.color, 
 	agofer.write_uid, 
-	agofer.create_date, 
 	agofer.write_date, 
 	agofer.active, 
-	--agofer.calendar_id,
-	1,
-	agofer.resource_type,
-	--agofer.tz
-	'America/Bogota'
+	agofer.create_date, 
+	agofer.create_uid, 
+	agofer.user_id, 
+	agofer.name, 
+	agofer.use_quotations, 
+	agofer.invoiced_target
 from dblink('dbname=agofer_08','SELECT 
 	id, 
-	create_uid, 
-	time_efficiency, 
-	user_id, 
-	name, 
-	company_id, 
+	color, 
 	write_uid, 
-	create_date, 
 	write_date, 
 	active, 
-	calendar_id, 
-	resource_type
-	FROM resource_resource;'
+	create_date, 
+	create_uid, 
+	user_id, 
+	name, 
+	use_quotations, 
+	invoiced_target
+	FROM crm_case_section;'
 ) as agofer(
 	id integer, 
-	create_uid integer, 
-	time_efficiency double precision, 
-	user_id integer, 
-	name character varying, 
-	company_id integer, 
+	color integer, 
 	write_uid integer, 
-	create_date timestamp without time zone, 
 	write_date timestamp without time zone, 
 	active boolean, 
-	calendar_id integer, 
-	resource_type character varying
-);
+	create_date timestamp without time zone, 
+	create_uid integer, 
+	user_id integer, 
+	name character varying, 
+	use_quotations boolean, 
+	invoiced_target integer
+) where agofer.id not in (select id from crm_team);

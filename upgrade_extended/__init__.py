@@ -2,10 +2,11 @@
 
 import logging
 import os
+from datetime import date, datetime
+from odoo.api import Environment, SUPERUSER_ID
 
 from . import controllers
 from . import models
-from datetime import date, datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ def pre_init_hook(cr):
             cr.execute(query_file.read())
 
 def post_init_hook(cr, result):
+    # PSQL
     path = os.path.join(directory, 'querys/after')
     total = len(os.listdir(path))
     start = datetime.now()

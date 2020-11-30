@@ -15,13 +15,11 @@
             </field>
         </record>
 
-        <!-- <menuitem 
-            id="sale.menu_product_pricelist_main" 
-            name="Pricelists" 
-            parent="sale.product_menu_catalog" 
-            action="product.product_pricelist_action2"
-            groups="sales_team.group_sale_manager" 
+        <menuitem id="sale.menu_product_pricelist_main" 
+            name="Pricelists" parent="sale.product_menu_catalog" 
+            action="product.product_pricelist_action2" 
+            groups="sales_team.group_sale_salesman" 
             sequence="3" 
-            active="False"/> -->
+            active="True"/>
     </data>
 </odoo>

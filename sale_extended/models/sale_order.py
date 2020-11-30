@@ -22,9 +22,14 @@ class SaleOrder(models.Model):
     delivery_assistant = fields.Boolean('Delivery Assistant')
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
+    # Payment
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
     payment_journal_id = fields.Many2one(related='team_id.advance_journal_id')
     payment_account_id = fields.Many2one(related='team_id.advance_account_id')
+    # Pricelist
+    pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
+    # Stock
+    warehouses_ids = fields.Many2many(related='team_id.warehouses_ids')
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):

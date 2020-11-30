@@ -78,3 +78,21 @@ set resource_id = agofer.resource_id
 from dblink('dbname=agofer_08','SELECT id, resource_id FROM hr_employee;') as agofer (id integer, resource_id integer) 
 inner join resource_resource rr on rr.id = agofer.resource_id
 where agofer.id = he.id and he.resource_id != agofer.resource_id;
+
+update ir_sequence ise 
+set prefix = agofer.prefix,
+suffix = agofer.suffix,
+padding = agofer.padding,
+number_next = agofer.number_next
+from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number_next FROM ir_sequence;') as agofer 
+(id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer) 
+--where agofer.id = ise.id  
+where agofer.code = ise.code;
+
+update stock_location set parent_path = '' where parent_path is null;
+
+update stock_quant as sq 
+set quantity = agofer.qty,
+reserved_quantity = 0.0
+from dblink('dbname=agofer_08','select id, qty from stock_quant;') AS agofer (id integer, qty double precision)
+where agofer.id = sq.id;

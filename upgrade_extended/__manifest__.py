@@ -31,6 +31,7 @@
         'account_payment_order',
         # Extended
         'account_extended',
+        'base_user_role_extended',
         'helpdesk_mgmt_extended',
         'hr_extended',
         'mrp_extended',

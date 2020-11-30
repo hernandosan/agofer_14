@@ -13,7 +13,11 @@
                                 <field name="advance_journal_id" required="True"/>
                                 <field name="advance_account_id" required="True"/>
                             </group>
-                            <group>
+                            <group string='Stock' groups="stock.group_stock_user">
+                                <field name="warehouses_ids" required="True" widget="many2many_tags"/>
+                            </group>
+                            <group string='Pricelist' groups="sales_team.group_sale_manager">
+                                <field name="pricelists_ids" required="True" widget="many2many_tags"/>
                             </group>
                         </group>
                     </page>
