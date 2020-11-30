@@ -1,3 +1,5 @@
+update account_account set code = code || '.';
+
 insert into account_account (
 	id, 
 	code, 

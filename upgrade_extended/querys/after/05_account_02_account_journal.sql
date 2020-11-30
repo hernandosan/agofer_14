@@ -46,7 +46,7 @@ from dblink('dbname=agofer_08','SELECT
 	name,
 	name
 	FROM account_journal
-	WHERE niif = False;'
+	WHERE niif != True;'
 ) as agofer(
 	id integer, 
 	code character varying, 
