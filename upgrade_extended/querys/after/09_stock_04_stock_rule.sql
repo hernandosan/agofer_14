@@ -95,7 +95,4 @@ from dblink('dbname=agofer_08', 'select
 	route_id integer, 
 	propagate_warehouse_id integer
 )
-where agofer.location_id is not null 
-	and agofer.picking_type_id is not null 
-	and agofer.route_id is not null 
-	and agofer.id not in (select id from stock_rule);
+where agofer.id not in (select id from stock_rule);

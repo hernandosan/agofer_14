@@ -1,3 +1,5 @@
+update stock_warehouse set code = code || '.';
+
 insert into stock_warehouse (
 	id, 
 	mto_pull_id, 
@@ -131,5 +133,4 @@ from dblink('dbname=agofer_08', 'select
 	manufacture_pull_id integer, 
 	manufacture_to_resupply boolean
 ) 
-where agofer.id not in (select id from stock_warehouse) 
-	and agofer.code not in (select code from stock_warehouse);
+where agofer.id not in (select id from stock_warehouse);

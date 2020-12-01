@@ -250,6 +250,7 @@ class SaleOrder(models.Model):
             'delivery_bool': self.delivery_bool,
             'delivery_assistant': self.delivery_assistant,
             'delivery_date': self.delivery_date,
+            'note': self.note,
         }
         self.picking_ids.write(vals)
 

@@ -22,7 +22,11 @@ insert into stock_picking (
 	carrier_id, 
 	weight, 
 	location_id,
-	location_dest_id
+	location_dest_id,
+	shipping_type,
+	upload_date,
+	delivery_date,
+	pick_date
 ) select 
 	agofer.id, 
 	agofer.origin, 
@@ -47,8 +51,14 @@ insert into stock_picking (
 	agofer.carrier_tracking_ref, 
 	agofer.carrier_id, 
 	agofer.weight,
+	--location_id,
+	--location_dest_id,
 	1,
-	1
+	1,
+	agofer.op_condition,
+	agofer.upload_date,
+	agofer.delivery_date,
+	agofer.pick_date
 from dblink('dbname=agofer_08', 'select 
 	id, 
 	origin, 
@@ -71,7 +81,11 @@ from dblink('dbname=agofer_08', 'select
 	state, 
 	carrier_tracking_ref, 
 	carrier_id, 
-	weight 
+	weight,
+	op_condition,
+	upload_date,
+	delivery_date,
+	pick_date
 	from stock_picking;'
 ) as agofer (
 	id integer, 
@@ -95,5 +109,9 @@ from dblink('dbname=agofer_08', 'select
 	state character varying, 
 	carrier_tracking_ref character varying, 
 	carrier_id integer, 
-	weight numeric
+	weight numeric,
+	op_condition character varying,
+	upload_date date,
+	delivery_date date,
+	pick_date date
 );

@@ -35,7 +35,7 @@ select
 	--agofer.move_type
 	'entry',
 	--agofer.currency_id
-	45,
+	8,
 	--agofer.reference_type
 	'none'
 from dblink('dbname=agofer_08','SELECT 

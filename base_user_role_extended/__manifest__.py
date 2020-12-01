@@ -18,7 +18,8 @@
     # any module necessary for this one to work correctly
     'depends': [
         'base_user_role',
-        'sales_team'
+        'sales_team',
+        'purchase'
     ],
 
     # always loaded
