@@ -9,9 +9,6 @@
                     <field name="landed_type" invisible="True"/>
                     <field name="carrier_id" required="True" domain="[('carrier_type','=',landed_type)]"/>
                 </xpath>
-                <xpath expr="//field[@name='picking_ids']" position="attributes">
-                    <attribute name="domain">[('id','in',allowed_picking_ids),('carrier_id','=',carrier_id)]</attribute>
-                </xpath>
             </field>
         </record>
 

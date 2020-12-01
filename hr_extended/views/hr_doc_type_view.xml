@@ -5,7 +5,7 @@
             <field name="model">hr.doc.type</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <tree string="Documents Type">
+                <tree string="Documents Type" editable="bottom">
                     <field name="active"/>
                     <field name="name"/>
                 </tree>

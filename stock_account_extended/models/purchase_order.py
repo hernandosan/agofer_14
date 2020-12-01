@@ -30,8 +30,8 @@ class PurchaseOrder(models.Model):
 
         landed_costs = self.env['stock.landed.cost'].create({
             'order_id': self.id,
+            'carrier_id': carrier_id.id if carrier_id else False,
             'cost_lines': [(0, 0, {
-                'carrier_id': carrier_id.id,
                 'product_id': l.product_id.id,
                 'name': l.product_id.name,
                 'account_id': l.product_id.product_tmpl_id.get_product_accounts()['stock_input'].id,

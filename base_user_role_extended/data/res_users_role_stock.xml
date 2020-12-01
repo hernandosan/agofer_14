@@ -1,5 +1,6 @@
 <odoo>
     <data>
+<<<<<<< HEAD
         <record id="role_stock_operational_manager" model="res.users.role">
             <field name="name">Operational Manager</field>
             <field name="implied_ids" 
@@ -58,6 +59,46 @@
                 eval="[
                     (4, ref('stock.group_stock_user')),
                     (4, ref('base.group_user'))
+=======
+        <record id="role_sale_asesor_comercial" model="res.users.role">
+            <field name="name">Asesor Comercial</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman'))
+                ]"/>
+        </record>
+        <record id="role_sale_asesor_comercial" model="res.users.role">
+            <field name="name">Asesor Comercial</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman'))
+                ]"/>
+        </record>
+        <record id="role_sale_asesor_comercial" model="res.users.role">
+            <field name="name">Asesor Comercial</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman'))
+                ]"/>
+        </record>
+        <record id="role_sale_asesor_comercial" model="res.users.role">
+            <field name="name">Asesor Comercial</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman'))
+                ]"/>
+        </record>
+        <record id="role_sale_asesor_comercial" model="res.users.role">
+            <field name="name">Asesor Comercial</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman'))
+>>>>>>> 351e0d0b517d469904ff7c248c35ce996645436f
                 ]"/>
         </record>
     </data>

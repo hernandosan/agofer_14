@@ -125,14 +125,52 @@ from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_l
 inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
 where agofer.id = aml.id;
 
+<<<<<<< HEAD
+update stock_picking as sp 
+set sale_id = so.id
+from procurement_group pg
+inner join sale_order so on so.name = pg.name 
+where pg.id = sp.group_id;
+
+insert into stock_move_line (
+	company_id, 
+	product_id,
+	product_uom_id, 
+	product_uom_qty,
+	move_id, 
+	date,
+	location_id,
+	location_dest_id,
+	state,
+	product_qty,
+	qty_done
+)
+select 
+	company_id, 
+	product_id,
+	product_uom,
+	product_uom_qty,
+	id ,
+	date,
+	location_id,
+	location_dest_id,
+	state,
+	product_qty,
+	product_qty
+from stock_move 
+where state = done;
+
+update stock_picking as sp 
+set location_id = sm.location_id,
+location_dest_id = sm.location_dest_id
+from stock_move sm 
+where sm.picking_id = sp.id;
+
+update sale_order set pick_date = cast(date_order as date)
+where shipping_type = 'pick' and pick_date is null;
+
 update res_partner rp
 set write_uid = agofer.write_uid,
 create_uid = agofer.create_uid
 from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
 where agofer.id = rp.id;
-
-update stock_quant as sq
-set quantity = agofer.qty,
-reserved_quantity = 0.0
-from dblink('dbname=agofer_08','select id, qty from stock_quant;') AS agofer (id integer, qty double precision)
-where agofer.id = sq.id;

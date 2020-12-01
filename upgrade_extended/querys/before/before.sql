@@ -11,36 +11,6 @@ SELECT COUNT(agofer.id)
 ) AS agofer (id INTEGER);
 
 SELECT COUNT(agofer.id)
-    FROM dblink('dbname=agofer_08', 'update
-		procurement_rule pr
-		set warehouse_id = sw.id
-		from stock_warehouse sw
-		where sw.code = split_part(pr.name, '':'', 1)
-		and pr.warehouse_id is null
-		returning pr.id;'
-) as agofer (id integer);
-
-SELECT COUNT(agofer.id)
-    FROM dblink('dbname=agofer_08', 'update
-		procurement_rule pr
-		set location_id = sw.lot_stock_id
-		from stock_warehouse sw
-		where sw.id = pr.warehouse_id
-		and pr.location_id is null
-		returning pr.id;'
-) as agofer (id integer);
-
-SELECT COUNT(agofer.id)
-    FROM dblink('dbname=agofer_08','update
-		procurement_rule pr
-		set picking_type_id = sw.out_type_id
-		from stock_warehouse sw
-		where sw.id = pr.warehouse_id
-		and pr.picking_type_id is null
-		returning pr.id;'
-) as agofer (id integer);
-
-SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update
 		purchase_order
 		set incoterm_id = null
@@ -69,5 +39,20 @@ SELECT COUNT(agofer.id)
 		resource_resource
 		set calendar_id = (select id from resource_calendar order by id limit 1)
 		where calendar_id is null
+		returning id;'
+) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink('dbname=agofer_08','update procurement_rule set location_id = 1 where location_id is null
+		returning id;'
+) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink('dbname=agofer_08','update procurement_rule set picking_type_id = (select id from stock_picking_type limit 1) where picking_type_id is null
+		returning id;'
+) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink('dbname=agofer_08','update procurement_rule set route_id = 1 where route_id is null
 		returning id;'
 ) AS agofer (id INTEGER);

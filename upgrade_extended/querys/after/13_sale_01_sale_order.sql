@@ -28,7 +28,11 @@ insert into sale_order (
 	access_token, 
 	medium_id, 
 	campaign_id, 
-	source_id
+	source_id,
+	shipping_type,
+	upload_date,
+	delivery_date,
+	pick_date
 ) select 
 	agofer.id, 
 	agofer.origin, 
@@ -60,7 +64,11 @@ insert into sale_order (
 	agofer.access_token, 
 	agofer.medium_id, 
 	agofer.campaign_id, 
-	agofer.source_id 
+	agofer.source_id,
+	agofer.op_condition,
+	agofer.upload_date,
+	agofer.delivery_date,
+	agofer.pick_date
 from dblink('dbname=agofer_08', 'select 
 	id, 
 	origin, 
@@ -91,7 +99,11 @@ from dblink('dbname=agofer_08', 'select
 	access_token, 
 	medium_id, 
 	campaign_id, 
-	source_id
+	source_id,
+	op_condition,
+	upload_date,
+	delivery_date,
+	pick_date
 	from sale_order;'
 ) as agofer (
 	id integer, 
@@ -123,6 +135,10 @@ from dblink('dbname=agofer_08', 'select
 	access_token character varying, 
 	medium_id integer, 
 	campaign_id integer, 
-	source_id integer
+	source_id integer,
+	op_condition character varying,
+	upload_date date,
+	delivery_date date,
+	pick_date date
 ) 
 where cast(agofer.date_order as date) >= '2019-01-01';

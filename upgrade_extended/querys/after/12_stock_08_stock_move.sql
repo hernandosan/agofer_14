@@ -31,7 +31,8 @@ insert into stock_move (
 	purchase_line_id, 
 	weight, 
 	raw_material_production_id, 
-	production_id
+	production_id,
+	standard_price
 ) select 
 	agofer.id, 
 	agofer.origin, 
@@ -68,7 +69,8 @@ insert into stock_move (
 	agofer.purchase_line_id, 
 	agofer.weight, 
 	agofer.raw_material_production_id, 
-	agofer.production_id 
+	agofer.production_id,
+	agofer.costo_promedio
 from dblink('dbname=agofer_08', 'select 
 	id, 
 	origin, 
@@ -102,7 +104,8 @@ from dblink('dbname=agofer_08', 'select
 	purchase_line_id, 
 	weight, 
 	raw_material_production_id, 
-	production_id
+	production_id,
+	costo_promedio
 	from stock_move;'
 ) as agofer (
 	id integer, 
@@ -137,6 +140,7 @@ from dblink('dbname=agofer_08', 'select
 	purchase_line_id integer, 
 	weight numeric, 
 	raw_material_production_id integer, 
-	production_id integer
+	production_id integer,
+	costo_promedio double precision
 ) 
 where cast(agofer.date as date) >= '2019-01-01';

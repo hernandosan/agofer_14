@@ -225,7 +225,7 @@ msgstr "Información de Entrega"
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_search
 msgid "Delivery Late"
-msgstr "Entrage Retrasada"
+msgstr "Entrega Retrasada"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__name
@@ -835,7 +835,7 @@ msgstr "Proveedor"
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__warehouse_id
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_search
 msgid "Warehouse"
-msgstr "Alamcen"
+msgstr "Almacén"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__website_message_ids

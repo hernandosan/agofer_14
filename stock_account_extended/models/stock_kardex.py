@@ -22,13 +22,17 @@ class StockKardex(models.Model):
         self.ensure_one()
         self.kardex_ids.sudo().unlink()
 
-        # Avco
+        # Before
         domain = [
+            '|',
+            ('location_id','=',self.location_id.id),
+            ('location_dest_id','=',self.location_id.id),
+            ('state','=','done'),
             ('product_id','=',self.product_id.id),
-            ('datetime','<',self.date_from),
+            ('date','<=',self.date_to)
         ]
-        history = self.env['product.price.history'].sudo().search(domain, order='datetime desc', limit=1)
-        standard_price = history.cost if history else 0.0
+        move = self.env['stock.move'].sudo().search(domain, order='date asc', limit=1)
+        standard_price = move.standard_price or 0.0
         quantity = self.product_id.sudo().with_context(to_date=self.date_from).qty_available
 
         # Moves
@@ -46,15 +50,14 @@ class StockKardex(models.Model):
         kardex_ids = []
         for move in moves:
              # Compute
-            qty_done = - move.quantity_done if move._is_out() or move._is_in_returned() else move.quantity_done
+            qty_done = - move.quantity_done if move._is_out() else move.quantity_done
             qty_init = quantity
             qty_out = quantity + qty_done
             price_unit = move._get_price_unit()
             price_total = price_unit * qty_done
             # AVCO
             move_type = self._get_valued_types(move)
-            if move_type != 'out':
-                standard_price = ((qty_init * standard_price) + (qty_done * price_unit)) / (qty_init + qty_done)
+            standard_price = move.standard_price
             quantity = qty_out
             standard_total = standard_price * quantity
             quantity = qty_out
@@ -77,30 +80,26 @@ class StockKardex(models.Model):
         self.write({'kardex_ids': kardex_ids})
 
     def _get_valued_types(self, move_id):
-        value = 'none'
         if move_id._is_in():
-            value = 'in'
-            # return 'in',
+            if move_id._is_returned('in'):
+                return 'in_returned'
+            else:
+                return 'in'
         elif move_id._is_out():
-            value = 'out'
-            # return 'out'
-        elif move_id._is_in_returned():
-            value = 'in_returned'
-            # return 'in_returned' 
-        elif move_id._is_out_returned():
-            value = 'in_returned'
-            # return 'in_returned' 
-        return value
-    
-    def action_kardex_line(self):
-        self.ensure_one()
-        action_ref = self.env.ref('stock_account_extended.action_stock_kardex_line')
-        if not action_ref:
-            return False
-        action_data = action_ref.read()[0]
-        action_data['domain'] = [('kardex_id', '=', self.id)]
-        return action_data
+            if move_id._is_returned('out'):
+                return 'out_returned'
+            else:
+                return 'out'
+        elif move_id._is_int():
+            return 'int' 
+        else:
+            return 'none'
 
+    def action_kardex_line(self):
+        action = self.env.ref('stock_account_extended.action_stock_kardex_line').sudo()
+        result = action.read()[0]
+        result['domain'] = [('kardex_id', 'in', self.id)]
+        return result
 
 class StockKardexLine(models.Model):
     _name = 'stock.kardex.line'
