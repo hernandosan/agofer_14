@@ -88,13 +88,13 @@ from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number
 (id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer) 
 where agofer.id = ise.id;
 
-update ir_sequence ise 
+update ir_sequence ise
 set prefix = agofer.prefix,
 suffix = agofer.suffix,
 padding = agofer.padding,
 number_next = agofer.number_next
-from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number_next FROM ir_sequence;') as agofer 
-(id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer) 
+from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number_next FROM ir_sequence;') as agofer
+(id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer)
 where agofer.code = ise.code;
 
 update product_category set parent_path = '' where parent_path is null;
@@ -105,26 +105,27 @@ update stock_location set parent_path = '' where parent_path is null;
 
 update stock_location set parent_path = cast(id as character varying) || '/' where parent_path = '' and location_id is null;
 
-update account_account aa 
-set code = agofer.code 
-from dblink('dbname=agofer_08','SELECT id, code FROM account_account;') as agofer 
-(id integer, code character varying) 
+update account_account aa
+set code = agofer.code
+from dblink('dbname=agofer_08','SELECT id, code FROM account_account;') as agofer
+(id integer, code character varying)
 where agofer.id = aa.id;
 
-update account_move_line aml 
-set statement_id = agofer.statement_id 
-from dblink('dbname=agofer_08','SELECT id, statement_id FROM account_move_line;') as agofer 
-(id integer, statement_id integer) 
+update account_move_line aml
+set statement_id = agofer.statement_id
+from dblink('dbname=agofer_08','SELECT id, statement_id FROM account_move_line;') as agofer
+(id integer, statement_id integer)
 inner join account_bank_statement abs on agofer.statement_id = abs.id
 where agofer.id = aml.id;
 
-update account_move_line aml 
-set statement_line_id = agofer.statement_line_id 
-from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_line;') as agofer 
-(id integer, statement_id integer) 
+update account_move_line aml
+set statement_line_id = agofer.statement_line_id
+from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_line;') as agofer
+(id integer, statement_id integer)
 inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
 where agofer.id = aml.id;
 
+<<<<<<< HEAD
 update stock_picking as sp 
 set sale_id = so.id
 from procurement_group pg
@@ -167,3 +168,9 @@ where sm.picking_id = sp.id;
 
 update sale_order set pick_date = cast(date_order as date)
 where shipping_type = 'pick' and pick_date is null;
+
+update res_partner rp
+set write_uid = agofer.write_uid,
+create_uid = agofer.create_uid
+from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
+where agofer.id = rp.id;
