@@ -1,4 +1,4 @@
-insert into res_city (
+INSERT INTO res_city (
 	id, 
 	name, 
 	zipcode, 
@@ -7,30 +7,33 @@ insert into res_city (
 	create_uid, 
 	create_date, 
 	write_uid, 
-	write_date) 
-	select agofer.id, 
+	write_date
+) SELECT
+    agofer.id,
 	agofer.name, 
 	agofer.zipcode, 
 	agofer.country_id, 
 	agofer.state_id,
-	2, 
+	--agofer.create_uid
+	2,
 	agofer.create_date,
-	2, 
+	--agofer.write_uid
+	2,
 	agofer.write_date 
-from dblink('dbname=agofer_08', 'select 
-	city.id as id,
-	city.name as name,
-	city.code as zipcode,
-	country.id as country_id,
-	state.id as state_id,
+FROM dblink('dbname=agofer_08', 'select
+	city.id AS id,
+	city.name AS name,
+	city.code AS zipcode,
+	country.id AS country_id,
+	state.id AS state_id,
 	city.create_uid,
 	city.create_date,
 	city.write_uid,
 	city.write_date
-	from res_city city
-	inner join res_country_state state on state.id = city.provincia_id
-	inner join res_country country on country.id = state.country_id 
-	order by city.id,
+	FROM res_city city
+	INNER JOIN res_country_state state ON state.id = city.provincia_id
+	INNER JOIN res_country country ON country.id = state.country_id
+	ORDER BY city.id,
 	city.name,
 	city.code,
 	country.id,
@@ -39,7 +42,7 @@ from dblink('dbname=agofer_08', 'select
 	city.create_date,
 	city.write_uid,
 	city.write_date;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	name character varying, 
 	zipcode character varying, 
@@ -49,4 +52,5 @@ from dblink('dbname=agofer_08', 'select
 	create_date timestamp without time zone, 
 	write_uid integer, 
 	write_date timestamp without time zone
-)where agofer.id NOT IN (SELECT id FROM res_city);
+)
+WHERE agofer.id NOT IN (SELECT id FROM res_city);

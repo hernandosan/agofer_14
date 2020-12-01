@@ -1,25 +1,29 @@
-insert into res_country (
+INSERT INTO res_country (
 	id, 
-	--code, 
+	code,
 	create_date, 
 	write_uid, 
 	currency_id, 
 	write_date, 
 	create_uid, 
 	name, 
-	--address_format,
+	address_format,
 	street_format
-)select agofer.id, 
-	--agofer.code, 
-	agofer.create_date, 
+) SELECT
+    agofer.id,
+	agofer.code,
+	agofer.create_date,
+	--agofer.write_uid
 	2, 
 	agofer.currency_id, 
-	agofer.write_date, 
+	agofer.write_date,
+    --agofer.create_uid
 	2, 
-	agofer.name || '.', 
-	--'%(street)s',
-	agofer.address_format
-from dblink('dbname=agofer_08', 'select 
+	agofer.name || '.',
+	agofer.address_format,
+	--agofer.street_format
+	'%(street_number)s/%(street_number2)s %(street_name)s'
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	code, 
 	create_date, 
@@ -30,7 +34,7 @@ from dblink('dbname=agofer_08', 'select
 	name, 
 	address_format
 	from res_country;'
-)as agofer(
+)AS agofer(
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 
@@ -40,4 +44,5 @@ from dblink('dbname=agofer_08', 'select
 	create_uid integer, 
 	name character varying, 
 	address_format text
-)where agofer.id not in (select id from res_country);
+)
+WHERE agofer.id NOT IN (SELECT id FROM res_country);

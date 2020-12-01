@@ -18,13 +18,19 @@
     # any module necessary for this one to work correctly
     'depends': [
         'base_user_role',
-        'sales_team'
+        'sales_team',
+        'purchase',
+        'product',
+        'mrp',
+        'account_extended',
+        'account_credit_control'
     ],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'data/res_users_role_data.xml',
+        'data/res_users_role_sale.xml',
+        'data/res_users_role_stock.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
