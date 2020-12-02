@@ -114,4 +114,6 @@ from dblink('dbname=agofer_08', 'select
 	upload_date date,
 	delivery_date date,
 	pick_date date
-);
+)
+INNER JOIN delivery_carrier DC ON DC.id = agofer.carrier_id
+INNER JOIN stock_picking SP ON SP.id = agofer.backorder_id;

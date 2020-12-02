@@ -125,7 +125,6 @@ from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_l
 inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
 where agofer.id = aml.id;
 
-<<<<<<< HEAD
 update stock_picking as sp 
 set sale_id = so.id
 from procurement_group pg

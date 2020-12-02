@@ -1,28 +1,25 @@
 INSERT INTO res_country (
 	id, 
-	code,
+	--code, 
 	create_date, 
 	write_uid, 
 	currency_id, 
 	write_date, 
 	create_uid, 
 	name, 
-	address_format,
+	--address_format,
 	street_format
 ) SELECT
     agofer.id,
-	agofer.code,
-	agofer.create_date,
-	--agofer.write_uid
+	--agofer.code, 
+	agofer.create_date, 
 	2, 
 	agofer.currency_id, 
-	agofer.write_date,
-    --agofer.create_uid
+	agofer.write_date, 
 	2, 
-	agofer.name || '.',
-	agofer.address_format,
-	--agofer.street_format
-	'%(street_number)s/%(street_number2)s %(street_name)s'
+	agofer.name || '.', 
+	--'%(street)s',
+	agofer.address_format
 FROM dblink('dbname=agofer_08', 'select
 	id, 
 	code, 
@@ -34,7 +31,7 @@ FROM dblink('dbname=agofer_08', 'select
 	name, 
 	address_format
 	from res_country;'
-)AS agofer(
+)AS agofer (
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 

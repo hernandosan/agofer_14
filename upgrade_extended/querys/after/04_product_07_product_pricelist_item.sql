@@ -1,4 +1,4 @@
-insert into product_pricelist_item (
+INSERT INTO product_pricelist_item (
 	id, 
 	create_uid, 
 	price_round, 
@@ -15,8 +15,11 @@ insert into product_pricelist_item (
 	min_quantity, 
 	price_min_margin, 
 	categ_id, 
-	price_surcharge
-)select 
+	price_surcharge,
+	pricelist_id,
+	applied_on,
+	compute_price
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.price_round, 
@@ -33,8 +36,13 @@ insert into product_pricelist_item (
 	agofer.min_quantity, 
 	agofer.price_min_margin, 
 	agofer.categ_id, 
-	agofer.price_surcharge
-from dblink('dbname=agofer_08','SELECT  
+	agofer.price_surcharge,
+	agofer.price_version_id,
+	--agofer.applied_on
+	'3_global',
+	--agofer.compute_price
+	'fixed'
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_uid, 
 	price_round, 
@@ -51,9 +59,10 @@ from dblink('dbname=agofer_08','SELECT
 	min_quantity, 
 	price_min_margin, 
 	categ_id, 
-	price_surcharge
-	FROM product_pricelist_item;'
-) as agofer(
+	price_surcharge,
+	price_version_id
+	from product_pricelist_item;'
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	price_round numeric, 
@@ -70,8 +79,10 @@ from dblink('dbname=agofer_08','SELECT
 	min_quantity integer, 
 	price_min_margin numeric, 
 	categ_id integer, 
-	price_surcharge numeric
-);
+	price_surcharge numeric,
+	price_version_id integer
+)
+INNER JOIN product_pricelist PP ON PP.id = agofer.price_version_id;
 
 
 

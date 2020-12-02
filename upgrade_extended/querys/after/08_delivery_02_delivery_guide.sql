@@ -73,3 +73,4 @@ FROM dblink('dbname=agofer_08','select
 	scheduled_date date,
 	delivered_date date
 )
+INNER JOIN delivery_carrier DC ON DC.id = agofer.carrier_id;
