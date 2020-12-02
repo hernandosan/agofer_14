@@ -19,15 +19,12 @@
     'depends': [
         'base_user_role',
         'sales_team',
-<<<<<<< HEAD
         'purchase',
         'product',
         'mrp',
         'account_extended',
-        'account_credit_control'
-=======
+        'account_credit_control',
         'purchase'
->>>>>>> 351e0d0b517d469904ff7c248c35ce996645436f
     ],
 
     # always loaded
