@@ -1,11 +1,43 @@
 <odoo>
     <data>
-        <record id="role_credit_" model="res.users.role">
-            <field name="name">Asesor Comercial</field>
+        <record id="role_credit_manager_credit" model="res.users.role">
+            <field name="name">Manager Credit</field>
             <field name="implied_ids" 
                 eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_manager')),
+                    (4, ref('account_extended.group_account_user')),
                     (4, ref('base.group_user')),
-                    (4, ref('sales_team.group_sale_salesman'))
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
+                ]"/>
+        </record>
+        <record id="role_credit_collections_coordinator" model="res.users.role">
+            <field name="name">Collections Coordinator</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
+                ]"/>
+        </record>
+        <record id="role_credit_credit_assistant" model="res.users.role">
+            <field name="name">Credit Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
+                ]"/>
+        </record>
+        <record id="role_credit_portfolio_assistant" model="res.users.role">
+            <field name="name">Portfolio Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
                 ]"/>
         </record>
     </data>

@@ -137,3 +137,4 @@ class CreditInterestLineWizard(models.Model):
             record.amount_untaxed = amount_untaxed
             record.amount_taxed = amount_taxed
             record.amount = amount_total
+
