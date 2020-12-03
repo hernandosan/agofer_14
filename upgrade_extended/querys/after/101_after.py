@@ -1,13 +1,13 @@
 import xmlrpc.client
 
-url = 'http://localhost:8014/'
-db = 'agofer_14'
-username = 'reyes@reyes'
-password = 'hernando'
-common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-uid = common.authenticate(db, username, password, {})
-models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+url = 'http://localhost:8069'
+db = 'agofer'
+username = 'admin'
+password = 'admin'
 
+common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+uid = common.authenticate(db, username, password, {})
 
 # Sentence generation
 
