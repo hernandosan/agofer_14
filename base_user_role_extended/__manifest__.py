@@ -23,7 +23,8 @@
         'product',
         'mrp',
         'account_extended',
-        'account_credit_control'
+        'account_credit_control',
+        'purchase'
     ],
 
     # always loaded

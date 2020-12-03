@@ -48,75 +48,75 @@
                     </table>
                 </div>
 <!--                <P t-call="account_credit_control_extended.style_table"></P>-->
-                <div>
-                    <table class="table">
-                        <!-- In case we want to repeat the header, remove "display: table-row-group" -->
-                        <thead>
-                            <tr>
-                                <th name="th_move_id">Invoice</th>
-                                <th name="th_amount">Amount</th>
-                                <th name="th_date">Date</th>
-                                <th name="th_date_maturity">Date Maturity</th>
-                                <th name="th_days_maturity">Days Maturity</th>
-                                <th name="th_amount_taxed">Amount Taxed</th>
-                                <th name="th_amount_untaxed" >Amount Untaxed</th>
-                                <th name="th_amount_total">Amount Total</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            <t t-foreach="doc.line_ids" t-as="line">
-    <!--                            <tr t-att-class="'bg-200 font-weight-bold o_line_section' ">-->
-                                <tr>
-                                    <td name="td_move_id"><span t-field="line.invoice_id"/></td>
-                                    <td name="td_amount"><span t-field="line.amount_total"/></td>
-                                    <td name="td_date"><span t-field="line.invoice_date"/></td>
-                                    <td name="td_date_maturity"><span t-field="line.date_maturity"/></td>
-                                    <td name="td_days_maturity"><span t-field="line.days_maturity"/></td>
-                                    <td name="td_amount_taxed"><span t-field="line.amount_taxed"/></td>
-                                    <td name="td_amount_untaxed"><span t-field="line.amount_untaxed"/></td>
-                                    <td name="td_amount_total"><span t-field="line.amount"/></td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                </div>
-                <br></br>
-                <div>
-                    <table style="margin-left: auto">
-                        <tr>
-                            <td name="td_section_subtotal" colspan="99">
-                                <strong>Subtotal</strong>
-                            </td>
-                            <td>
-                                <span t-field="doc.amount_untaxed"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td name="td_section_taxed" colspan="99">
-                                <strong>Taxed</strong>
-                            </td>
-                            <td>
-                                <span t-field="doc.amount_taxed"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td name="td_section_total" colspan="99">
-                                <strong>Total</strong>
-                            </td>
-                            <td>
-                                <span t-field="doc.amount_total"/>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <table>
-                        <tr>
+<!--                <div>-->
+<!--                    <table class="table">-->
+<!--                        &lt;!&ndash; In case we want to repeat the header, remove "display: table-row-group" &ndash;&gt;-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th name="th_move_id">Invoice</th>-->
+<!--                                <th name="th_amount">Amount</th>-->
+<!--                                <th name="th_date">Date</th>-->
+<!--                                <th name="th_date_maturity">Date Maturity</th>-->
+<!--                                <th name="th_days_maturity">Days Maturity</th>-->
+<!--                                <th name="th_amount_taxed">Amount Taxed</th>-->
+<!--                                <th name="th_amount_untaxed" >Amount Untaxed</th>-->
+<!--                                <th name="th_amount_total">Amount Total</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody >-->
+<!--                            <t t-foreach="doc.line_ids" t-as="line">-->
+<!--    &lt;!&ndash;                            <tr t-att-class="'bg-200 font-weight-bold o_line_section' ">&ndash;&gt;-->
+<!--                                <tr>-->
+<!--                                    <td name="td_move_id"><span t-field="line.invoice_id"/></td>-->
+<!--                                    <td name="td_amount"><span t-field="line.amount_total"/></td>-->
+<!--                                    <td name="td_date"><span t-field="line.invoice_date"/></td>-->
+<!--                                    <td name="td_date_maturity"><span t-field="line.date_maturity"/></td>-->
+<!--                                    <td name="td_days_maturity"><span t-field="line.days_maturity"/></td>-->
+<!--                                    <td name="td_amount_taxed"><span t-field="line.amount_taxed"/></td>-->
+<!--                                    <td name="td_amount_untaxed"><span t-field="line.amount_untaxed"/></td>-->
+<!--                                    <td name="td_amount_total"><span t-field="line.amount"/></td>-->
+<!--                                </tr>-->
+<!--                            </t>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <br></br>-->
+<!--                <div>-->
+<!--                    <table style="margin-left: auto">-->
+<!--                        <tr>-->
+<!--                            <td name="td_section_subtotal" colspan="99">-->
+<!--                                <strong>Subtotal</strong>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-field="doc.amount_untaxed"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td name="td_section_taxed" colspan="99">-->
+<!--                                <strong>Taxed</strong>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-field="doc.amount_taxed"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td name="td_section_total" colspan="99">-->
+<!--                                <strong>Total</strong>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-field="doc.amount_total"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <table>-->
+<!--                        <tr>-->
 
-                        </tr>
+<!--                        </tr>-->
 
-                    </table>
-                </div>
+<!--                    </table>-->
+<!--                </div>-->
             </t>
         </template>
     </data>

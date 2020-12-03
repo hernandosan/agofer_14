@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_credit_interest_wizard_form" model="ir.ui.view">
-            <field name="name">view.credit.interest.wizard.form</field>
-            <field name="model">credit.interest.wizard</field>
+        <record id="view_credit_customer_wizard_form" model="ir.ui.view">
+            <field name="name">view.credit.customer.wizard.form</field>
+            <field name="model">credit.customer.wizard</field>
             <field name="arch" type="xml">
                 <form string="Credit Interest">
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="partner_id" placeholder="Partner" readonly="1"/>
+                                <field name="partner_id"/>
                             </h1>
                         </div>
                     </sheet>
                     <footer>
-                        <button name="action_credit_customer" type="object"
-                                string="Compute" class="oe_highlight"/>
+<!--                        <button name="action_credit_customer" type="object"-->
+<!--                                string="Compute" class="oe_highlight"/>-->
                         or
                         <button special="cancel" string="Cancel"/>
                     </footer>
@@ -25,7 +25,7 @@
 
         <record id="action_credit_customer_wizard" model="ir.actions.act_window">
             <field name="name">Credit Customer</field>
-            <field name="res_model">credit.interest.wizard</field>
+            <field name="res_model">credit.customer.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="binding_model_id" ref="base.model_res_partner"/>

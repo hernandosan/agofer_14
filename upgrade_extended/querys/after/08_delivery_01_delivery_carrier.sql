@@ -63,4 +63,5 @@ FROM dblink('dbname=agofer_08','select
 	product_id integer,
 	zip_from character varying,
 	zip_to character varying
-);
+)
+WHERE agofer.id NOT IN (SELECT id FROM delivery_carrier);;

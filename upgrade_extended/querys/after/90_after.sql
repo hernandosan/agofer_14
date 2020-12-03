@@ -131,7 +131,7 @@ from procurement_group pg
 inner join sale_order so on so.name = pg.name 
 where pg.id = sp.group_id;
 
-insert into stock_move_line (
+INSERT INTO stock_move_line (
 	company_id, 
 	product_id,
 	product_uom_id, 
@@ -144,7 +144,7 @@ insert into stock_move_line (
 	product_qty,
 	qty_done
 )
-select 
+SELECT 
 	company_id, 
 	product_id,
 	product_uom,
@@ -156,8 +156,8 @@ select
 	state,
 	product_qty,
 	product_qty
-from stock_move 
-where state = done;
+FROM stock_move 
+WHERE state = done;
 
 update stock_picking as sp 
 set location_id = sm.location_id,
@@ -173,3 +173,14 @@ set write_uid = agofer.write_uid,
 create_uid = agofer.create_uid
 from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
 where agofer.id = rp.id;
+
+update res_city as rc 
+set state_id = rcs.id, country_id = rco.id
+from dblink('dbname=agofer_08','select rc.id as id, rc.name as name, rcs.id as id2, rcs.name as name2, rco.code
+from res_city rc 
+inner join res_country_state rcs on rcs.id = rc.provincia_id
+inner join res_country rco on rco.id = rcs.country_id 
+order by rc.id, rcs.id;') as agofer (id integer, name character varying, id2 integer, name2 character varying, code character varying)
+inner join res_country_state rcs on rcs.name = agofer.name2
+inner join res_country rco on rco.code = agofer.code
+where agofer.id = rc.id;

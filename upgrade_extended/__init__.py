@@ -3,14 +3,13 @@
 import logging
 import os
 from datetime import date, datetime
-from odoo.api import Environment, SUPERUSER_ID
 
 from . import controllers
 from . import models
 
 _logger = logging.getLogger(__name__)
-
 directory = os.path.dirname(__file__)
+
 
 def pre_init_hook(cr):
     _logger.warning('Query before')
@@ -18,6 +17,7 @@ def pre_init_hook(cr):
     for file in sorted(os.listdir(path)):
         with open(os.path.join(path, file), 'r') as query_file:
             cr.execute(query_file.read())
+
 
 def post_init_hook(cr, result):
     # PSQL
