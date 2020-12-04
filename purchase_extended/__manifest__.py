@@ -24,14 +24,14 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/product_template_data.xml',
+        'wizard/stock_picking_wizard_view.xml',
         'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         'views/product_template_view.xml',
         'views/purchase_import_view.xml',
         'views/purchase_order_view.xml',
         'views/stock_landed_cost_view.xml',
-        'views/stock_picking_view.xml',
-        'wizard/stock_picking_wizard_view.xml',
+        'views/stock_picking_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
