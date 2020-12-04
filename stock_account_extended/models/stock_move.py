@@ -117,7 +117,7 @@ class StockMove(models.Model):
                     new_std_price = ((amount_unit * product_tot_qty_available) - (move._get_price_unit() * qty)) / (product_tot_qty_available - qty)
 
                 elif move._is_int():
-                    new_std_price = ((amount_unit * (product_tot_qty_available - qty)) - (move._get_price_unit() * qty)) / (product_tot_qty_available)
+                    new_std_price = ((amount_unit * (product_tot_qty_available - qty)) + (move._get_price_unit() * qty)) / (product_tot_qty_available)
 
                 else:
                     continue
