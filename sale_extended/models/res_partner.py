@@ -7,7 +7,6 @@ from odoo.exceptions import ValidationError
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    user_id = fields.Many2one(default=lambda self: self.env.user)
     property_payment_term_id = fields.Many2one(default=lambda self: self.env.ref('account.account_payment_term_immediate'))
 
     @api.onchange('user_id')

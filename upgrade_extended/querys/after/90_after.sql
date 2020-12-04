@@ -184,3 +184,43 @@ order by rc.id, rcs.id;') as agofer (id integer, name character varying, id2 int
 inner join res_country_state rcs on rcs.name = agofer.name2
 inner join res_country rco on rco.code = agofer.code
 where agofer.id = rc.id;
+
+insert into stock_valuation_layer (company_id, product_id, create_date, quantity, unit_cost, value, stock_move_id, description)
+select sm.company_id,
+sm.product_id,
+sm.date,
+sm.product_uom_qty,
+sm.price_unit,
+sm.price_unit * sm.product_uom_qty,
+sm.id,
+sp.name
+from stock_move sm 
+inner join product_product pp on pp.id = sm.product_id 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join stock_location sls on sls.id = sm.location_id 
+inner join stock_location sld on sld.id = sm.location_dest_id 
+left join stock_picking sp on sp.id = sm.picking_id
+where sm.state = 'done' 
+and pt.type = 'product' 
+and not (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
+and (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));
+
+insert into stock_valuation_layer (company_id, product_id, create_date, quantity, unit_cost, value, stock_move_id, description)
+select sm.company_id,
+sm.product_id,
+sm.date,
+-sm.product_uom_qty,
+sm.price_unit,
+sm.price_unit * -sm.product_uom_qty,
+sm.id,
+sp.name
+from stock_move sm 
+inner join product_product pp on pp.id = sm.product_id 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join stock_location sls on sls.id = sm.location_id 
+inner join stock_location sld on sld.id = sm.location_dest_id 
+left join stock_picking sp on sp.id = sm.picking_id
+where sm.state = 'done' 
+and pt.type = 'product' 
+and (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
+and not (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));

@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 19:19+0000\n"
-"PO-Revision-Date: 2020-11-23 19:19+0000\n"
-"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
+"POT-Creation-Date: 2020-12-04 15:49+0000\n"
+"PO-Revision-Date: 2020-12-04 15:49+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,18 +18,23 @@ msgstr ""
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Account"
-msgstr ""
+msgstr "Contabilidad"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_account_id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_account_id
 msgid "Advance Account"
-msgstr ""
+msgstr "Cuenta de Anticipo"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__advance_journal_id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_journal_id
 msgid "Advance Journal"
+msgstr "Diario de Anticipo"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+msgid "Avatar"
 msgstr ""
 
 #. module: sale_extended
@@ -138,6 +143,7 @@ msgstr ""
 "desde la confirmación del pedido de venta hasta la entrega"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__display_name
@@ -146,6 +152,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_res_partner__display_name
+#: model:ir.model.fields,field_description:sale_extended.field_res_users__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse__display_name
@@ -168,6 +175,7 @@ msgid "Historized Price"
 msgstr "Precio Historico"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report__id
 #: model:ir.model.fields,field_description:sale_extended.field_account_move__id
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__id
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__id
@@ -176,6 +184,7 @@ msgstr "Precio Historico"
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__id
 #: model:ir.model.fields,field_description:sale_extended.field_res_partner__id
+#: model:ir.model.fields,field_description:sale_extended.field_res_users__id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__id
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__id
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse__id
@@ -190,6 +199,16 @@ msgstr ""
 "agregadas."
 
 #. module: sale_extended
+#: model:res.groups,name:sale_extended.group_sale_info
+msgid "Info"
+msgstr "Información"
+
+#. module: sale_extended
+#: model:ir.model,name:sale_extended.model_account_invoice_report
+msgid "Invoices Statistics"
+msgstr "Estadísticas de Facturas"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__item_id
 msgid "Item"
 msgstr ""
@@ -200,6 +219,37 @@ msgid "Journal Entry"
 msgstr "Asiento del Libro"
 
 #. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_sale_form
+msgid "Kg"
+msgstr ""
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_kg
+msgid "Kg Price"
+msgstr "Precio Kg"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report__kilogram
+msgid "Kilogram"
+msgstr "Kilogramos"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__kilogram
+msgid "Kilogram Invoiced This Month"
+msgstr "Kilogramos Facturados este mes"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_kanban
+msgid "Kilogram Invoicing"
+msgstr "Kilogramos Facturados"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__kilogram_target
+msgid "Kilogram Target"
+msgstr "Meta de Kilogramos"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_account_move____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team____last_update
@@ -208,6 +258,7 @@ msgstr "Asiento del Libro"
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_template____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_res_partner____last_update
+#: model:ir.model.fields,field_description:sale_extended.field_res_users____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse____last_update
@@ -238,6 +289,13 @@ msgstr "Descuento máximo permitido cuando el cliente recoge"
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__discount_maximum
 msgid "Maximum percentage"
 msgstr "Porcentaje máximo"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__members_ids
+#: model:ir.model.fields,field_description:sale_extended.field_res_users__teams_ids
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__teams_ids
+msgid "Members"
+msgstr "Miembros"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__order_id
@@ -359,8 +417,14 @@ msgid "Pick Date"
 msgstr "Fecha de Recogida"
 
 #. module: sale_extended
+#: model:res.groups,name:sale_extended.group_sale_point
+msgid "Point Asesor"
+msgstr "Asesor de Mostrador"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__pricelist_id
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Pricelist"
 msgstr "Lista de Precios"
 
@@ -370,6 +434,8 @@ msgid "Pricelist Rule"
 msgstr "Regla de Tarifa"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__pricelists_ids
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pricelists_ids
 #: model:ir.model.fields,field_description:sale_extended.field_stock_warehouse__pricelists_ids
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_stock_warehouse_form
 msgid "Pricelists"
@@ -440,12 +506,6 @@ msgid "Sales Team"
 msgstr "Equipo de Ventas"
 
 #. module: sale_extended
-#: model:ir.model.fields,field_description:sale_extended.field_res_partner__user_id
-#: model:ir.model.fields,field_description:sale_extended.field_res_users__user_id
-msgid "Salesperson"
-msgstr "Vendedor"
-
-#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_bool
 msgid "Shipping Bool"
 msgstr "Boleano de Entrega"
@@ -460,6 +520,21 @@ msgstr "Fecha de Entrega"
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__shipping_type
 msgid "Shipping Type"
 msgstr "Tipo de Entrega"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+msgid "Stock"
+msgstr "Almacén"
+
+#. module: sale_extended
+#: model:res.groups,name:sale_extended.group_sale_support
+msgid "Support Asesor"
+msgstr "Asesor de soporte"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+msgid "Team Members"
+msgstr "Miembros del Equipo"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/crm_team.py:0
@@ -488,12 +563,6 @@ msgid "The Partner %s has not CRM team"
 msgstr "El cliente %s no tiene equipo de ventas"
 
 #. module: sale_extended
-#: model:ir.model.fields,help:sale_extended.field_res_partner__user_id
-#: model:ir.model.fields,help:sale_extended.field_res_users__user_id
-msgid "The internal user in charge of this contact."
-msgstr "El usuario interno a cargo de este contacto."
-
-#. module: sale_extended
 #: code:addons/sale_extended/models/account_move.py:0
 #, python-format
 msgid "The payment %s has not sale order"
@@ -520,9 +589,20 @@ msgid "Upload Date"
 msgstr "Fecha de Cargue"
 
 #. module: sale_extended
+#: model:ir.model,name:sale_extended.model_res_users
+msgid "Users"
+msgstr "Usuarios"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_stock_warehouse
 msgid "Warehouse"
 msgstr "Almacén"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_crm_team__warehouses_ids
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__warehouses_ids
+msgid "Warehouses"
+msgstr "Almacenes"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_product_template_form_stock

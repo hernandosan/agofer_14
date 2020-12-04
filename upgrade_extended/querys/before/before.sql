@@ -56,3 +56,13 @@ SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update procurement_rule set route_id = 1 where route_id is null
 		returning id;'
 ) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink("dbname=agofer_08','update stocK_move set price_unit = cost where price_unit = 0 and state = 'done'
+		returning id;"
+) AS agofer (id INTEGER);
+
+SELECT COUNT(agofer.id)
+    FROM dblink("dbname=agofer_08','update stocK_move set cost = price_unit where cost = 0 and state = 'done'
+		returning id;"
+) AS agofer (id INTEGER);
