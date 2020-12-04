@@ -1,4 +1,4 @@
-insert into res_users (
+INSERT INTO res_users (
 	id, 
 	active, 
 	login, 
@@ -16,7 +16,7 @@ insert into res_users (
 	oauth_uid, 
 	oauth_provider_id, 
 	notification_type
-) select 
+) SELECT
 	agofer.id, 
 	agofer.active, 
 	agofer.login, 
@@ -34,7 +34,7 @@ insert into res_users (
 	agofer.oauth_uid, 
 	agofer.oauth_provider_id,
 	'email'
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	active, 
 	login, 
@@ -52,7 +52,7 @@ from dblink('dbname=agofer_08', 'select
 	oauth_uid, 
 	oauth_provider_id 
 	from res_users where id >= 6;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	active boolean, 
 	login character varying, 
@@ -69,9 +69,10 @@ from dblink('dbname=agofer_08', 'select
 	oauth_access_token character varying, 
 	oauth_uid character varying, 
 	oauth_provider_id integer
-)inner join res_partner rp 
-	on rp.id = agofer.partner_id 
-	group by agofer.id, 
+)
+INNER JOIN res_partner rp
+	ON rp.id = agofer.partner_id
+	GROUP BY agofer.id,
 	agofer.active, 
 	agofer.login, 
 	agofer.password, 

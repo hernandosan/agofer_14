@@ -8,22 +8,16 @@ class CreditCustomerWizard(models.Model):
     _description = 'Credit Customer Wizard'
 
     partner_id = fields.Many2one('res.partner', 'Partner')
-    # annual_cash = fields.Float('Annual Cash', required=True, digits=(2, 2))
-    # month_expired = fields.Float('Month Expired', digits=(2, 2))
     payment_date = fields.Date('Payment Date', default=fields.Date.today())
     lines_ids = fields.Many2many('account.move.line', string='Invoices')
     line_ids = fields.One2many('credit.customer.line.wizard', 'interest_id', 'Lines')
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related='company_id.currency_id')
-    # amount_untaxed = fields.Monetary('Amount Untaxed', compute='_compute_amount')
-    # amount_taxed = fields.Monetary('Amount Taxed', compute='_compute_amount')
-    # amount_total = fields.Monetary('Amount Total', compute='_compute_amount')
     attachment_id = fields.Many2one('ir.attachment', 'Attachment')
     file_data = fields.Binary('File')
     file_name = fields.Char('File Name')
 
     def action_credit_customer(self):
-        print(self.partner_id.name)
         this = self[0]
         self.line_ids.unlink()
         line_ids = []

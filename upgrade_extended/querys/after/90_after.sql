@@ -1,4 +1,45 @@
-insert into account_group (name, company_id, niif_bool) 
+--Update res_city
+update res_city as rc
+set state_id = rcs.id, country_id = rco.id
+from dblink('dbname=agofer_08','select rc.id as id, rc.name as name, rcs.id as id2, rcs.name as name2, rco.code
+from res_city rc
+inner join res_country_state rcs on rcs.id = rc.provincia_id
+inner join res_country rco on rco.id = rcs.country_id
+order by rc.id, rcs.id;') as agofer (id integer, name character varying, id2 integer, name2 character varying, code character varying)
+inner join res_country_state rcs on rcs.name = agofer.name2
+inner join res_country rco on rco.code = agofer.code
+where agofer.id = rc.id;
+
+--Update res_partner
+update res_partner rp
+set write_uid = agofer.write_uid,
+create_uid = agofer.create_uid
+from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
+where agofer.id = rp.id;
+
+update res_partner
+set country_id = 49
+where country_id = 50;
+
+--Update res_bank
+update res_bank rb
+	set name = agofer.name,	street = agofer.street,	street2 = agofer.street2, zip = agofer.zip,	city = agofer.city, state = agofer.state,
+	country = agofer.country, email = agofer.email,	phone = agofer.phone, active = agofer.active, bic = agofer.bic,	create_uid = agofer.create_uid,
+	create_date = agofer.create_date, write_uid = agofer.write_uid,	write_date= agofer.write_date
+from dblink('dbname=agofer_08','SELECT
+	id, name, street, street2, zip,	city, state, country, email, phone,	active,	bic, create_uid, create_date, write_uid, write_date,
+	FROM res_bank where id = 1;'
+) as agofer (
+	id integer, city character varying,	fax character varying, create_date timestamp without time zone, name character varying,
+	zip character varying, create_uid integer, country integer, street2 character varying, bic character varying, phone character varying,
+	state integer, street character varying, write_date timestamp without time zone, active boolean, write_uid integer,	email character varying
+)
+where agofer.id = rb.id;
+
+--Update mail_message_subtype
+
+
+insert into account_group (name, company_id, niif_bool)
 select left(code, -2), 1, False from account_account group by left(code, -2);
 
 insert into account_group (name, company_id, niif_bool) 
@@ -168,19 +209,3 @@ where sm.picking_id = sp.id;
 update sale_order set pick_date = cast(date_order as date)
 where shipping_type = 'pick' and pick_date is null;
 
-update res_partner rp
-set write_uid = agofer.write_uid,
-create_uid = agofer.create_uid
-from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
-where agofer.id = rp.id;
-
-update res_city as rc 
-set state_id = rcs.id, country_id = rco.id
-from dblink('dbname=agofer_08','select rc.id as id, rc.name as name, rcs.id as id2, rcs.name as name2, rco.code
-from res_city rc 
-inner join res_country_state rcs on rcs.id = rc.provincia_id
-inner join res_country rco on rco.id = rcs.country_id 
-order by rc.id, rcs.id;') as agofer (id integer, name character varying, id2 integer, name2 character varying, code character varying)
-inner join res_country_state rcs on rcs.name = agofer.name2
-inner join res_country rco on rco.code = agofer.code
-where agofer.id = rc.id;

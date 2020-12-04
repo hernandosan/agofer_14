@@ -1,4 +1,4 @@
-insert into res_bank (
+INSERT INTO res_bank (
 	id, 
 	city, 
 	create_date, 
@@ -14,8 +14,9 @@ insert into res_bank (
 	write_date, 
 	active, 
 	write_uid, 
-	email
-) select 
+	email,
+	journal_id
+) SELECT
 	agofer.id, 
 	agofer.city, 
 	agofer.create_date, 
@@ -31,8 +32,10 @@ insert into res_bank (
 	agofer.write_date, 
 	agofer.active, 
 	agofer.write_uid, 
-	agofer.email
-from dblink('dbname=agofer_08','SELECT 
+	agofer.email,
+	--agofer.journal_id
+	1
+FROM dblink('dbname=agofer_08','select
 	id, 
 	city, 
 	create_date, 
@@ -49,8 +52,8 @@ from dblink('dbname=agofer_08','SELECT
 	active, 
 	write_uid, 
 	email
-	FROM res_bank;'
-) as agofer(
+	from res_bank;'
+) AS agofer(
 	id integer, 
 	city character varying, 
 	create_date timestamp without time zone, 
@@ -67,4 +70,5 @@ from dblink('dbname=agofer_08','SELECT
 	active boolean, 
 	write_uid integer, 
 	email character varying
-) where agofer.id not in (select id from res_bank);
+)
+WHERE agofer.id NOT IN (SELECT id FROM res_bank);
