@@ -137,10 +137,10 @@ class PurchaseImport(models.Model):
     @api.depends('moves_ids.amount_total_signed')
     def _compute_expense(self):
         for purchase in self:
-            expense_cost = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'cost')))
-            expense_insurance = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
-            expense_freight = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'freight')))
-            expense_other = abs(sum(move.amount_total_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'other')))
+            expense_cost = abs(sum(move.amount_untaxed_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'cost')))
+            expense_insurance = abs(sum(move.amount_untaxed_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'insurance')))
+            expense_freight = abs(sum(move.amount_untaxed_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'freight')))
+            expense_other = abs(sum(move.amount_untaxed_signed for move in purchase.moves_ids.filtered(lambda m: m.import_type == 'other')))
             amount_expense = expense_cost + expense_insurance + expense_freight + expense_other
             purchase.update({
                 'expense_cost': expense_cost,
@@ -272,7 +272,6 @@ class PurchaseImport(models.Model):
 
     def _action_validate(self):
         self.ensure_one()
-        self.import_line.action_validate()
         self.move_lines.filtered(lambda m: m.state == 'done').write({'import_done_id': self.id})
         self.move_lines.write({'import_id': False})
         self.write({'state': 'done'})
@@ -292,6 +291,8 @@ class PurchaseImport(models.Model):
 
         if not self.move_lines:
             raise UserError(_('Please add some items to move.'))
+
+        self.import_line.action_validate()
 
         return self.with_context(import_id=self.id).move_lines.picking_id.button_validate()
 
@@ -378,7 +379,7 @@ class PurchaseImport(models.Model):
                 invoice_line_ids.append((0,0,line))
         if invoice_line_ids:
             move = {
-                'type': 'in_invoice',
+                'move_type': 'in_invoice',
                 'company_id': self.company_id.id,
                 'invoice_origin': self.name,
                 'ref': self.partner_ref,
@@ -420,9 +421,6 @@ class PurchaseImportLine(models.Model):
     name = fields.Text(string='Description', required=True)
     sequence = fields.Integer(string='Sequence', default=10)
     product_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True)
-    product_available = fields.Float('Available Quantity', digits='Product Unit of Measure', compute="_compute_product_available")
-    product_received = fields.Float('Received Quantity', digits='Product Unit of Measure')
-    product_dispatch = fields.Float('Dispatch Quantity', digits='Product Unit of Measure', copy=False)
     product_uom_qty = fields.Float(string='Total Quantity', compute='_compute_product_uom_qty', store=True)
     date_planned = fields.Datetime(string='Scheduled Date', index=True)
     taxes_id = fields.Many2many('account.tax', string='Taxes')
@@ -489,16 +487,6 @@ class PurchaseImportLine(models.Model):
                 'price_subtotal': price_subtotal,
                 'price_total': price_total,
             })
-
-    @api.depends('product_qty', 'product_received')
-    def _compute_product_available(self):
-        for line in self:
-            line.product_available = line.product_qty - line.product_received
-
-    @api.onchange('product_dispatch')
-    def _onchange_product_dispatch(self):
-        if self.product_dispatch > self.product_available:
-            raise ValidationError(_("The amount entered is higher than the available amount"))
 
     def action_validate(self):
         for line in self:

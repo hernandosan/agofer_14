@@ -16,13 +16,9 @@ class StockMove(models.Model):
     def _get_price_unit(self):
         """ Returns the unit price for the move"""
         self.ensure_one()
-        if self.purchase_line_id and self.product_id.id == self.purchase_line_id.product_id.id:
-            """ Returns the unit price to value this stock move """
+        if self.import_id and self.import_line_id and self.purchase_line_id and self.product_id.id == self.purchase_line_id.product_id.id:
             price_unit = self.price_unit
-            # If the move is a return, use the original move's price unit.
-            if self.origin_returned_move_id and self.origin_returned_move_id.sudo().stock_valuation_layer_ids:
-                price_unit = self.origin_returned_move_id.stock_valuation_layer_ids[-1].unit_cost
-            return not self.company_id.currency_id.is_zero(price_unit) and price_unit or self.product_id.standard_price
+            return price_unit
         return super(StockMove, self)._get_price_unit()
 
     def _generate_valuation_lines_data(self, partner_id, qty, debit_value, credit_value, debit_account_id, credit_account_id, description):

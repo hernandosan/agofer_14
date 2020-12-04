@@ -26,6 +26,8 @@ class SaleOrder(models.Model):
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
     payment_journal_id = fields.Many2one(related='team_id.advance_journal_id')
     payment_account_id = fields.Many2one(related='team_id.advance_account_id')
+    # Team
+    teams_ids = fields.Many2many(related='user_id.teams_ids')
     # Pricelist
     pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
     # Stock
@@ -250,6 +252,7 @@ class SaleOrder(models.Model):
             'delivery_bool': self.delivery_bool,
             'delivery_assistant': self.delivery_assistant,
             'delivery_date': self.delivery_date,
+            # 'commitment_date': self.delivery_date,
             'note': self.note,
         }
         self.picking_ids.write(vals)
@@ -263,6 +266,7 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     price_unit = fields.Float(copy=False)
+    price_kg = fields.Float('Kg Price', digits='Product Price', compute='_compute_price_kg')
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
     shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
     upload_delay = fields.Float(related='product_id.upload_delay', store=True)
@@ -275,6 +279,11 @@ class SaleOrderLine(models.Model):
             if message:
                 msg = _('Order blocked by discount. \n') + message
                 raise ValidationError(msg)
+
+    @api.depends('product_uom', 'price_unit', 'product_id')
+    def _compute_price_kg(self):
+        for line in self:
+            line.price_kg = line.product_uom._compute_price(line.price_unit, line.product_id.uom_id) / line.product_id.weight if line.product_uom and line.price_unit and line.product_id and line.product_id.weight else 0.0
 
     def msg_standard_price(self):
         msg = ""
