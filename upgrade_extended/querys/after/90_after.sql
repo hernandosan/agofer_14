@@ -279,3 +279,48 @@ where agofer.state = 'done'
 and agofer.type = 'product' 
 and (agofer.sls_usage = 'internal' or (agofer.sls_usage = 'transit' and agofer.sls_company_id is not null))  
 and not (agofer.sld_usage = 'internal' or (agofer.sld_usage = 'transit' and agofer.sld_company_id is not null));
+
+insert into ir_property (name, res_id, company_id, fields_id, value_text, type)
+select 'property_cost_method',
+'product.category,' || cast(pc.id as character varying),
+1,
+8419,
+'average',
+'selection'
+from product_product pp 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join product_category pc on pc.id = pt.categ_id 
+where pt.type = 'product' 
+and pp.active = True 
+group by pc.id 
+order by pc.id;
+
+insert into ir_property (name, res_id, company_id, fields_id, value_text, type)
+select 'property_valuation',
+'product.category,' || cast(pc.id as character varying),
+1,
+8418,
+'real_time',
+'selection'
+from product_product pp 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join product_category pc on pc.id = pt.categ_id 
+where pt.type = 'product' 
+and pp.active = True 
+group by pc.id
+order by pc.id;
+
+update stock_picking set scheduled_date = date where scheduled_date is null;
+
+update stock_picking set shipping_type = null where sale_id is null;
+
+update stock_picking as sp 
+set shipping_type = null 
+from stock_picking_type spt 
+where spt.id = sp.picking_type_id 
+and spt.code != 'outgoing' 
+and sp.shipping_type is not null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;

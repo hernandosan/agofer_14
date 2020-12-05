@@ -16,7 +16,8 @@ INSERT INTO delivery_guide (
 	delivered_date,
 	company_id,
 	currency_id,
-	parent_id
+	parent_id,
+	delivery_guide
 ) SELECT
 	agofer.id,
 	agofer.create_date,
@@ -38,7 +39,8 @@ INSERT INTO delivery_guide (
 	--agofer.currency_id
 	8,
 	--agofer.parent_id
-	1
+	1,
+	'customer'
 FROM dblink('dbname=agofer_08','select
 	SPWE.id,
 	SPWE.create_date,

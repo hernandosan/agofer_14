@@ -14,7 +14,9 @@ INSERT INTO delivery_carrier (
 	delivery_type,
 	zip_from,
 	zip_to,
-	company_id
+	company_id,
+	active,
+	carrier_type
 ) SELECT
 	agofer.id,
 	agofer.tolerance,
@@ -35,7 +37,9 @@ INSERT INTO delivery_carrier (
 	agofer.zip_from,
 	agofer.zip_to,
 	--agofer.company_id
-	1
+	1,
+	True,
+	'stock'
 FROM dblink('dbname=agofer_08','select
 	SPWT.id,
 	SPWT.tolerancia AS tolerance,
