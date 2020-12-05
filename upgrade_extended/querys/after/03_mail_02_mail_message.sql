@@ -32,7 +32,8 @@ insert into mail_message (
 	agofer.subject, 
 	agofer.create_uid, 
 	agofer.message_id, 
-	agofer.parent_id, 
+	--agofer.parent_id, 
+	null,
 	agofer.res_id, 
 	agofer.subtype_id, 
 	agofer.reply_to, 
@@ -84,6 +85,6 @@ from dblink('dbname=agofer_08', 'select
 	email_from character varying
 ) inner join ir_model im on im.model = agofer.model 
 where agofer.id not in (select id from mail_message)
-AND cast(agofer.create_date as date) >= '2019-01-01';
+AND cast(agofer.date as date) >= '2020-12-01';
 
 select setval('mail_message_id_seq', (select max(id) from mail_message));

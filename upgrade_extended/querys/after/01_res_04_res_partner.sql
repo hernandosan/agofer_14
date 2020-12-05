@@ -108,7 +108,8 @@ INSERT INTO res_partner (
 	agofer.payment_next_action_date,
     agofer.payment_next_action,
     agofer.payment_note,
-    agofer.payment_responsible_id
+    --agofer.payment_responsible_id
+	3
 FROM dblink('dbname=agofer_08','select
 	id, 
 	name, 
