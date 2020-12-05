@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="role_supply_supply_manager" model="res.users.role">
+            <field name="name">Supply Director</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('mrp.group_mrp_user')),
+                    (4, ref('purchase.group_purchase_manager')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('stock.group_stock_manager'))
+                ]"/>
+        </record>
+        <record id="role_supply_procurement_assistant" model="res.users.role">
+            <field name="name">Procurement Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('mrp.group_mrp_user')),
+                    (4, ref('purchase.group_purchase_manager')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('stock.group_stock_manager'))
+                ]"/>
+        </record>
+        <record id="role_supply_supply_assistant" model="res.users.role">
+            <field name="name">Supply Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('mrp.group_mrp_user')),
+                    (4, ref('purchase.group_purchase_manager')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('stock.group_stock_manager'))
+                ]"/>
+        </record>
+        <record id="role_supply_transportation_assistant" model="res.users.role">
+            <field name="name">Transportation Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('mrp.group_mrp_user')),
+                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('stock_extended.group_stock_info'))
+                ]"/>
+        </record>
+    </data>
+</odoo>

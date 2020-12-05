@@ -1,4 +1,4 @@
-insert into res_partner_bank (
+INSERT INTO res_partner_bank (
 	id, 
 	create_date, 
 	sequence, 
@@ -12,7 +12,7 @@ insert into res_partner_bank (
 	bank_id,
 	acc_holder_name,
 	active
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.sequence, 
@@ -27,7 +27,7 @@ insert into res_partner_bank (
 	agofer.owner_name,
 	--agofer.active
 	TRUE
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 
 	sequence, 
@@ -40,8 +40,8 @@ from dblink('dbname=agofer_08','SELECT
 	currency_id,
 	bank,
 	owner_name
-	FROM res_partner_bank;'
-) as agofer(
+	from res_partner_bank;'
+) AS agofer(
 	id integer, 
 	create_date timestamp without time zone, 
 	sequence integer, 

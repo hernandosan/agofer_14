@@ -1,4 +1,4 @@
-insert into res_partner (
+INSERT INTO res_partner (
 	id, 
 	name,
 	company_id,
@@ -47,8 +47,12 @@ insert into res_partner (
 	picking_warn_msg,
 	invoice_warn,
 	purchase_warn_msg,
-	sale_warn_msg
-)select 
+	sale_warn_msg,
+    payment_next_action_date,
+    payment_next_action,
+    payment_note,
+    payment_responsible_id
+) SELECT
 	agofer.id, 
 	agofer.name, 
 	agofer.company_id, 
@@ -100,8 +104,12 @@ insert into res_partner (
 	agofer.picking_warn_msg, 
 	agofer.invoice_warn, 
 	agofer.purchase_warn_msg, 
-	agofer.sale_warn_msg  
-from dblink('dbname=agofer_08','select 
+	agofer.sale_warn_msg,
+	agofer.payment_next_action_date,
+    agofer.payment_next_action,
+    agofer.payment_note,
+    agofer.payment_responsible_id
+FROM dblink('dbname=agofer_08','select
 	id, 
 	name, 
 	company_id, 
@@ -150,9 +158,13 @@ from dblink('dbname=agofer_08','select
 	picking_warn_msg, 
 	invoice_warn, 
 	purchase_warn_msg, 
-	sale_warn_msg
+	sale_warn_msg,
+	payment_next_action_date,
+    payment_next_action,
+    payment_note,
+    payment_responsible_id
 	from res_partner;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	name character varying, 
 	company_id integer, 
@@ -200,8 +212,13 @@ from dblink('dbname=agofer_08','select
 	invoice_warn_msg text, 
 	picking_warn_msg text, 
 	invoice_warn character varying, 
-	purchase_warn_msg text, 
-	sale_warn_msg text
-)where agofer.id not in (select id from res_partner);
+	purchase_warn_msg text,
+	sale_warn_msg text,
+	payment_next_action_date date,
+    payment_next_action text,
+    payment_note text,
+    payment_responsible_id integer
+)
+WHERE agofer.id NOT IN (SELECT id FROM res_partner);
 
 select setval('res_partner_id_seq', (select max(id) from res_partner));
