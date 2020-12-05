@@ -193,17 +193,36 @@ sm.product_uom_qty,
 sm.price_unit,
 sm.price_unit * sm.product_uom_qty,
 sm.id,
-sp.name
+agofer.name
+from stock_move sm 
+inner join dblink('dbname=agofer_08','select sm.id,
+sm.company_id,
+sm.state,
+pt.type,
+sls.usage as sls_usage,
+sls.company_id as sls_company_id,
+sld.usage as sld_usage,
+sld.company_id as sld_company_id,
+sp.name 
 from stock_move sm 
 inner join product_product pp on pp.id = sm.product_id 
 inner join product_template pt on pt.id = pp.product_tmpl_id 
 inner join stock_location sls on sls.id = sm.location_id 
 inner join stock_location sld on sld.id = sm.location_dest_id 
-left join stock_picking sp on sp.id = sm.picking_id
-where sm.state = 'done' 
-and pt.type = 'product' 
-and not (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
-and (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));
+left join stock_picking sp on sp.id = sm.picking_id;') as agofer 
+(id integer,
+ company_id integer,
+ state character varying, 
+ type character varying,
+ sls_usage character varying,
+ sls_company_id integer,
+ sld_usage character varying, 
+ sld_company_id integer,
+ name character varying) on sm.id = agofer.id
+where agofer.state = 'done' 
+and agofer.type = 'product' 
+and not (agofer.sls_usage = 'internal' or (agofer.sls_usage = 'transit' and agofer.sls_company_id is not null))  
+and (agofer.sld_usage = 'internal' or (agofer.sld_usage = 'transit' and agofer.sld_company_id is not null));
 
 insert into stock_valuation_layer (company_id, product_id, create_date, quantity, unit_cost, value, stock_move_id, description)
 select sm.company_id,
@@ -213,14 +232,73 @@ sm.date,
 sm.price_unit,
 sm.price_unit * -sm.product_uom_qty,
 sm.id,
-sp.name
+agofer.name
+from stock_move sm 
+inner join dblink('dbname=agofer_08','select sm.id,
+sm.company_id,
+sm.state,
+pt.type,
+sls.usage as sls_usage,
+sls.company_id as sls_company_id,
+sld.usage as sld_usage,
+sld.company_id as sld_company_id,
+sp.name 
 from stock_move sm 
 inner join product_product pp on pp.id = sm.product_id 
 inner join product_template pt on pt.id = pp.product_tmpl_id 
 inner join stock_location sls on sls.id = sm.location_id 
 inner join stock_location sld on sld.id = sm.location_dest_id 
-left join stock_picking sp on sp.id = sm.picking_id
-where sm.state = 'done' 
-and pt.type = 'product' 
-and (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
-and not (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));
+left join stock_picking sp on sp.id = sm.picking_id;') as agofer 
+(id integer,
+ company_id integer,
+ state character varying, 
+ type character varying,
+ sls_usage character varying,
+ sls_company_id integer,
+ sld_usage character varying, 
+ sld_company_id integer,
+ name character varying) on sm.id = agofer.id
+where agofer.state = 'done' 
+and agofer.type = 'product' 
+and (agofer.sls_usage = 'internal' or (agofer.sls_usage = 'transit' and agofer.sls_company_id is not null))  
+and not (agofer.sld_usage = 'internal' or (agofer.sld_usage = 'transit' and agofer.sld_company_id is not null));
+
+UPDATE resource_calendar 
+SET create_uid = agofer.create_uid,
+	create_date = agofer.create_date, 
+	name = agofer.name,
+	company_id = agofer.company_id,
+	write_uid = agofer.write_uid,
+	write_date = agofer.write_date, 
+	tz = agofer.tz
+FROM
+	(select 
+		agofer.id, 
+		agofer.create_uid, 
+		agofer.create_date, 
+		agofer.name, 
+		agofer.company_id, 
+		agofer.write_uid, 
+		agofer.write_date, 
+		agofer.tz
+		from dblink('dbname=agofer_08','SELECT 
+			id, 
+			create_uid, 
+			create_date, 
+			name, 
+			company_id, 
+			write_uid, 
+			write_date, 
+			tz
+			FROM resource_calendar;'
+		) as agofer(
+			id integer, 
+			create_uid integer, 
+			create_date timestamp without time zone, 
+			name character varying, 
+			company_id integer, 
+			write_uid integer, 
+			write_date timestamp without time zone, 
+			tz character varying
+	))as agofer 
+WHERE resource_calendar.id = agofer.id;

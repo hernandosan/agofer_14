@@ -43,3 +43,5 @@ FROM dblink('dbname=agofer_08', 'select
 	address_format text
 )
 WHERE agofer.id NOT IN (SELECT id FROM res_country);
+
+select setval('res_country_id_seq', (select max(id) from res_country));

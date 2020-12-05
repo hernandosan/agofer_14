@@ -68,3 +68,5 @@ from dblink('dbname=agofer_08','SELECT
 	write_uid integer, 
 	email character varying
 ) where agofer.id not in (select id from res_bank);
+
+select setval('res_bank_id_seq', (select max(id) from res_bank));

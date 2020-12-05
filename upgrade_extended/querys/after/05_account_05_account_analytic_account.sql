@@ -43,3 +43,5 @@ from dblink('dbname=agofer_08','SELECT
 	name character varying, 
 	company_id integer
 ) where agofer.id not in (select id from account_analytic_account);
+
+select setval('account_analytic_account_id_seq', (select max(id) from account_analytic_account));

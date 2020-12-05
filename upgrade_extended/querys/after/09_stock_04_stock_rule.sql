@@ -96,3 +96,5 @@ from dblink('dbname=agofer_08', 'select
 	propagate_warehouse_id integer
 )
 where agofer.id not in (select id from stock_rule);
+
+select setval('stock_rule_id_seq', (select max(id) from stock_rule));

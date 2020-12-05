@@ -47,3 +47,5 @@ FROM dblink('dbname=agofer_08','select
 	product_id integer,
 	product_uom integer
 );
+
+select setval('mrp_bom_line_id_seq', (select max(id) from mrp_bom_line));

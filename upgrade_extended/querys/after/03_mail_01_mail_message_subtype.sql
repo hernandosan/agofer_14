@@ -53,3 +53,5 @@ from dblink('dbname=agofer_08','SELECT
 	description text,
 	sequence double precision
 );
+
+select setval('mail_message_subtype_id_seq', (select max(id) from mail_message_subtype));

@@ -40,3 +40,5 @@ from dblink('dbname=agofer_08', 'select
 	date timestamp without time zone, 
 	name character varying
 );
+
+select setval('stock_inventory_id_seq', (select max(id) from stock_inventory));

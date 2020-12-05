@@ -82,6 +82,8 @@ from dblink('dbname=agofer_08', 'select
 	author_id integer,
 	model character varying,
 	email_from character varying
-) where agofer.id not in (select id from mail_message)
-AND agofer.parent_id IN (select parent_id from mail_message)
+) inner join ir_model im on im.model = agofer.model 
+where agofer.id not in (select id from mail_message)
 AND cast(agofer.create_date as date) >= '2019-01-01';
+
+select setval('mail_message_id_seq', (select max(id) from mail_message));

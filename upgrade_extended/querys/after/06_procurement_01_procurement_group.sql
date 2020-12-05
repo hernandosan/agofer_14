@@ -1,5 +1,3 @@
---SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'procurement_group';
-
 insert into procurement_group (id, 
 create_uid, 
 create_date, 
@@ -33,3 +31,5 @@ move_type character varying,
 write_uid integer, 
 write_date timestamp without time zone, 
 partner_id integer);
+
+select setval('procurement_group_id_seq', (select max(id) from procurement_group));

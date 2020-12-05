@@ -64,4 +64,6 @@ FROM dblink('dbname=agofer_08','select
 	zip_from character varying,
 	zip_to character varying
 )
-WHERE agofer.id NOT IN (SELECT id FROM delivery_carrier);;
+WHERE agofer.id NOT IN (SELECT id FROM delivery_carrier);
+
+select setval('delivery_carrier_id_seq', (select max(id) from delivery_carrier));

@@ -60,3 +60,5 @@ from dblink('dbname=agofer_08','SELECT
 	amount_currency numeric
 )INNER JOIN account_bank_statement ABS ON ABS.id = agofer.statement_id
 where cast(agofer.create_date as date) >= '2019-01-01';
+
+select setval('account_bank_statement_line_id_seq', (select max(id) from account_bank_statement_line));

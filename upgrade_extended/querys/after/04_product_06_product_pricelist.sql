@@ -43,3 +43,5 @@ from dblink('dbname=agofer_08', 'select
 	name character varying, 
 	company_id integer
 ) where agofer.id not in (select id from product_pricelist);
+
+select setval('product_pricelist_id_seq', (select max(id) from product_pricelist));

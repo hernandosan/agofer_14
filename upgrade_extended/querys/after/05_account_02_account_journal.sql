@@ -62,3 +62,5 @@ from dblink('dbname=agofer_08','SELECT
 	invoice_reference_type character varying,
 	invoice_reference_model character varying
 );
+
+select setval('account_journal_id_seq', (select max(id) from account_journal));

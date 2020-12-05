@@ -56,3 +56,5 @@ from dblink('dbname=agofer_08','SELECT
 	owner_id integer,
 	qty double precision
 );
+
+select setval('stock_quant_id_seq', (select max(id) from stock_quant));

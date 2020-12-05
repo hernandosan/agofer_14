@@ -74,3 +74,5 @@ FROM dblink('dbname=agofer_08','select
 	delivered_date date
 )
 INNER JOIN delivery_carrier DC ON DC.id = agofer.carrier_id;
+
+select setval('delivery_guide_id_seq', (select max(id) from delivery_guide));

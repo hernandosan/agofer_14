@@ -47,3 +47,5 @@ from dblink('dbname=agofer_08','SELECT
 	create_date timestamp without time zone,
 	mode integer
 );
+
+select setval('account_payment_order_id_seq', (select max(id) from account_payment_order));

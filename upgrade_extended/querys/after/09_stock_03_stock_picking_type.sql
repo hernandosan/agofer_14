@@ -69,3 +69,5 @@ from dblink('dbname=agofer_08', 'select
 	return_picking_type_id integer, 
 	default_location_src_id integer
 );
+
+select setval('stock_picking_type_id_seq', (select max(id) from stock_picking_type));

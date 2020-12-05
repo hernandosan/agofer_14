@@ -58,7 +58,7 @@ SELECT COUNT(agofer.id)
 ) AS agofer (id INTEGER);
 
 SELECT COUNT(agofer.id)
-    FROM dblink("dbname=agofer_08','update stocK_move set price_unit = cost where price_unit = 0 and state = 'done'
+    FROM dblink("dbname=agofer_08','update stocK_move set price_unit = cost where price_unit = 0 or price_unit is null and state = 'done'
 		returning id;"
 ) AS agofer (id INTEGER);
 

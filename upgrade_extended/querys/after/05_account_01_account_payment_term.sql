@@ -36,3 +36,5 @@ from dblink('dbname=agofer_08', 'select
 	write_date timestamp without time zone, 
 	active boolean) 
 where agofer.id not in (select id from account_payment_term);
+
+select setval('account_payment_term_id_seq', (select max(id) from account_payment_term));

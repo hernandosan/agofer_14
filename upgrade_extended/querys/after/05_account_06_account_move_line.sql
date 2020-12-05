@@ -109,3 +109,5 @@ from dblink('dbname=agofer_08','SELECT
 ) INNER JOIN account_move am ON am.id = agofer.move_id
 INNER JOIN account_journal aj ON aj.id = agofer.journal_id
 INNER JOIN account_account aa ON aa.id = agofer.account_id;
+
+select setval('account_move_line_id_seq', (select max(id) from account_move_line));

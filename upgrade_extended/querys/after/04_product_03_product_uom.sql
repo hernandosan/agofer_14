@@ -48,3 +48,5 @@ from dblink('dbname=agofer_08', 'select
 	factor numeric, 
 	category_id integer
 ) where agofer.id not in (select id from uom_uom);
+
+select setval('uom_uom_id_seq', (select max(id) from uom_uom));

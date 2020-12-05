@@ -120,3 +120,5 @@ from dblink('dbname=agofer_08','SELECT
 	vehicle character varying, 
 	place_of_birth character varying
 );
+
+select setval('hr_employee_id_seq', (select max(id) from hr_employee));

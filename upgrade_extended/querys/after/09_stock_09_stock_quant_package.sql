@@ -40,3 +40,5 @@ from dblink('dbname=agofer_08','SELECT
 	packaging_id integer, 
 	location_id integer
 );
+
+select setval('stock_quant_package_id_seq', (select max(id) from stock_quant_package));

@@ -100,3 +100,5 @@ from dblink('dbname=agofer_08','SELECT
 	category_id integer,
 	purchase_date date
 )INNER JOIN account_asset_profile AAP ON AAP.id = agofer.category_id;
+
+select setval('account_asset_id_seq', (select max(id) from account_asset));

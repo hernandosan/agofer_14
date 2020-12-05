@@ -87,3 +87,5 @@ from dblink('dbname=agofer_08', 'select
 	agofer.oauth_access_token, 
 	agofer.oauth_uid, 
 	agofer.oauth_provider_id;
+
+select setval('res_users_id_seq', (select max(id) from res_users));

@@ -142,6 +142,6 @@ from dblink('dbname=agofer_08', 'select
 	raw_material_production_id integer, 
 	production_id integer,
 	costo_promedio double precision
-)
-inner join stock_picking SP ON SP.id = agofer.picking_id
-where cast(agofer.date as date) >= '2019-01-01';
+) where cast(agofer.date as date) >= '2019-01-01';
+
+select setval('stock_move_id_seq', (select max(id) from stock_move));

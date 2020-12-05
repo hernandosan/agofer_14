@@ -203,3 +203,5 @@ from dblink('dbname=agofer_08','select
 	purchase_warn_msg text, 
 	sale_warn_msg text
 )where agofer.id not in (select id from res_partner);
+
+select setval('res_partner_id_seq', (select max(id) from res_partner));

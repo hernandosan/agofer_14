@@ -37,3 +37,5 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	category_id integer
 );
+
+select setval('helpdesk_ticket_category_id_seq', (select max(id) from helpdesk_ticket_category));
