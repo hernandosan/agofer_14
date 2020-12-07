@@ -11,11 +11,59 @@ inner join res_country rco on rco.code = agofer.code
 where agofer.id = rc.id;
 
 --Update res_partner
-update res_partner rp
-set write_uid = agofer.write_uid,
-create_uid = agofer.create_uid
-from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
-where agofer.id = rp.id;
+update res_bank rb
+	set name = agofer.name,
+	street = agofer.street,
+	street2 = agofer.street2,
+	zip = agofer.zip,
+	city = agofer.city,
+	state = agofer.state,
+	country = agofer.country,
+	email = agofer.email,
+	phone = agofer.phone,
+	active = agofer.active,
+	bic = agofer.bic,
+	create_uid = agofer.create_uid,
+	create_date = agofer.create_date,
+	write_uid = agofer.write_uid,
+	write_date = agofer.write_date
+FROM dblink('dbname=agofer_08','SELECT
+	id,
+	name,
+	street,
+	street2,
+	zip,
+	city,
+	state,
+	country,
+	email, phone,
+	active,
+	bic,
+	create_uid,
+	create_date,
+	write_uid,
+	write_date
+	from res_bank
+	where id = 1;'
+) AS agofer (
+	id integer,
+	name character varying,
+	street character varying,
+	street2 character varying,
+	zip character varying,
+	city character varying,
+	state integer,
+	country integer,
+	email character varying,
+	phone character varying,
+	active boolean,
+	bic character varying,
+	create_uid integer,
+	create_date timestamp without time zone,
+	write_uid integer,
+	write_date timestamp without time zone
+)
+where agofer.id = rb.id;
 
 update res_partner
 set country_id = 49
