@@ -371,3 +371,9 @@ update stock_picking set delivery_bool = True where shipping_type = 'delivery' a
 update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;
 
 update res_users set active = False where login not like '%agofer%';
+
+update hr_employee as he 
+set active = True 
+from hr_contract hc 
+where hc.employee_id = he.id 
+and hc.date_end is null;
