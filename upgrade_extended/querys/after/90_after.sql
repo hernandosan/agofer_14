@@ -307,6 +307,17 @@ inner join res_country_state rcs on rcs.name = agofer.name2
 inner join res_country rco on rco.code = agofer.code
 where agofer.id = rc.id;
 
+update res_partner as rp 
+set state_id = rcs.id, country_id = rcc.id
+from dblink('dbname=agofer_08','select rp.id, rc.name as rc_name, rcs.name as rcs_name, rcc.code as rcc_code
+from res_partner rp
+left join res_city rc on rc.id = rp.city_id 
+left join res_country_state rcs on rcs.id = rp.state_id
+left join res_country rcc on rcc.id = rp.country_id;') as agofer (id integer, rc_name character varying, rcs_name character varying, rcc_code character varying)
+inner join res_country_state rcs on rcs.name = agofer.rcs_name 
+inner join res_country rcc on rcc.code = agofer.rcc_code 
+where agofer.id = rp.id;
+
 insert into stock_valuation_layer (company_id, product_id, create_date, quantity, unit_cost, value, stock_move_id, description)
 select sm.company_id,
 sm.product_id,
