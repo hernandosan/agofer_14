@@ -64,3 +64,5 @@ from dblink('dbname=agofer_08', 'select
 	write_date timestamp without time zone, 
 	name character varying
 ) where agofer.id not in (select id from ir_sequence);
+
+select setval('ir_sequence_id_seq', (select max(id) from ir_sequence));

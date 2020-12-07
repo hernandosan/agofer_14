@@ -86,3 +86,5 @@ from dblink('dbname=agofer_08','SELECT
 	user_id integer, 
 	manager_id integer
 );
+
+select setval('hr_job_id_seq', (select max(id) from hr_job));

@@ -99,3 +99,5 @@ from dblink('dbname=agofer_08','SELECT
 	delay double precision
 )
 INNER JOIN sale_order SO ON SO.id = order_id;
+
+select setval('sale_order_line_id_seq', (select max(id) from sale_order_line));

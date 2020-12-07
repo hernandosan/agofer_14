@@ -69,24 +69,6 @@ update res_partner
 set country_id = 49
 where country_id = 50;
 
---Update res_bank
-update res_bank rb
-	set name = agofer.name,	street = agofer.street,	street2 = agofer.street2, zip = agofer.zip,	city = agofer.city, state = agofer.state,
-	country = agofer.country, email = agofer.email,	phone = agofer.phone, active = agofer.active, bic = agofer.bic,	create_uid = agofer.create_uid,
-	create_date = agofer.create_date, write_uid = agofer.write_uid,	write_date= agofer.write_date
-from dblink('dbname=agofer_08','SELECT
-	id, name, street, street2, zip,	city, state, country, email, phone,	active,	bic, create_uid, create_date, write_uid, write_date,
-	FROM res_bank where id = 1;'
-) as agofer (
-	id integer, city character varying,	fax character varying, create_date timestamp without time zone, name character varying,
-	zip character varying, create_uid integer, country integer, street2 character varying, bic character varying, phone character varying,
-	state integer, street character varying, write_date timestamp without time zone, active boolean, write_uid integer,	email character varying
-)
-where agofer.id = rb.id;
-
---Update mail_message_subtype
-
-
 insert into account_group (name, company_id, niif_bool)
 select left(code, -2), 1, False from account_account group by left(code, -2);
 
@@ -210,7 +192,7 @@ where agofer.id = aml.id;
 update account_move_line aml
 set statement_line_id = agofer.statement_line_id
 from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_line;') as agofer
-(id integer, statement_id integer)
+(id integer, statement_line_id integer)
 inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
 where agofer.id = aml.id;
 
@@ -246,7 +228,7 @@ SELECT
 	product_qty,
 	product_qty
 FROM stock_move 
-WHERE state = done;
+WHERE state = 'done';
 
 update stock_picking as sp 
 set location_id = sm.location_id,
@@ -256,12 +238,6 @@ where sm.picking_id = sp.id;
 
 update sale_order set pick_date = cast(date_order as date)
 where shipping_type = 'pick' and pick_date is null;
-
-update res_partner rp
-set write_uid = agofer.write_uid,
-create_uid = agofer.create_uid
-from dblink('dbname=agofer_08','SELECT id, write_uid, create_uid FROM res_partner;') as agofer (id integer, write_uid integer, create_uid integer)
-where agofer.id = rp.id;
 
 update res_city as rc 
 set state_id = rcs.id, country_id = rco.id
@@ -282,17 +258,36 @@ sm.product_uom_qty,
 sm.price_unit,
 sm.price_unit * sm.product_uom_qty,
 sm.id,
-sp.name
+agofer.name
+from stock_move sm 
+inner join dblink('dbname=agofer_08','select sm.id,
+sm.company_id,
+sm.state,
+pt.type,
+sls.usage as sls_usage,
+sls.company_id as sls_company_id,
+sld.usage as sld_usage,
+sld.company_id as sld_company_id,
+sp.name 
 from stock_move sm 
 inner join product_product pp on pp.id = sm.product_id 
 inner join product_template pt on pt.id = pp.product_tmpl_id 
 inner join stock_location sls on sls.id = sm.location_id 
 inner join stock_location sld on sld.id = sm.location_dest_id 
-left join stock_picking sp on sp.id = sm.picking_id
-where sm.state = 'done' 
-and pt.type = 'product' 
-and not (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
-and (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));
+left join stock_picking sp on sp.id = sm.picking_id;') as agofer 
+(id integer,
+ company_id integer,
+ state character varying, 
+ type character varying,
+ sls_usage character varying,
+ sls_company_id integer,
+ sld_usage character varying, 
+ sld_company_id integer,
+ name character varying) on sm.id = agofer.id
+where agofer.state = 'done' 
+and agofer.type = 'product' 
+and not (agofer.sls_usage = 'internal' or (agofer.sls_usage = 'transit' and agofer.sls_company_id is not null))  
+and (agofer.sld_usage = 'internal' or (agofer.sld_usage = 'transit' and agofer.sld_company_id is not null));
 
 insert into stock_valuation_layer (company_id, product_id, create_date, quantity, unit_cost, value, stock_move_id, description)
 select sm.company_id,
@@ -302,14 +297,78 @@ sm.date,
 sm.price_unit,
 sm.price_unit * -sm.product_uom_qty,
 sm.id,
-sp.name
+agofer.name
+from stock_move sm 
+inner join dblink('dbname=agofer_08','select sm.id,
+sm.company_id,
+sm.state,
+pt.type,
+sls.usage as sls_usage,
+sls.company_id as sls_company_id,
+sld.usage as sld_usage,
+sld.company_id as sld_company_id,
+sp.name 
 from stock_move sm 
 inner join product_product pp on pp.id = sm.product_id 
 inner join product_template pt on pt.id = pp.product_tmpl_id 
 inner join stock_location sls on sls.id = sm.location_id 
 inner join stock_location sld on sld.id = sm.location_dest_id 
-left join stock_picking sp on sp.id = sm.picking_id
-where sm.state = 'done' 
-and pt.type = 'product' 
-and (sls.usage = 'internal' or (sls.usage = 'transit' and sls.company_id is not null))  
-and not (sld.usage = 'internal' or (sld.usage = 'transit' and sld.company_id is not null));
+left join stock_picking sp on sp.id = sm.picking_id;') as agofer 
+(id integer,
+ company_id integer,
+ state character varying, 
+ type character varying,
+ sls_usage character varying,
+ sls_company_id integer,
+ sld_usage character varying, 
+ sld_company_id integer,
+ name character varying) on sm.id = agofer.id
+where agofer.state = 'done' 
+and agofer.type = 'product' 
+and (agofer.sls_usage = 'internal' or (agofer.sls_usage = 'transit' and agofer.sls_company_id is not null))  
+and not (agofer.sld_usage = 'internal' or (agofer.sld_usage = 'transit' and agofer.sld_company_id is not null));
+
+insert into ir_property (name, res_id, company_id, fields_id, value_text, type)
+select 'property_cost_method',
+'product.category,' || cast(pc.id as character varying),
+1,
+8419,
+'average',
+'selection'
+from product_product pp 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join product_category pc on pc.id = pt.categ_id 
+where pt.type = 'product' 
+and pp.active = True 
+group by pc.id 
+order by pc.id;
+
+insert into ir_property (name, res_id, company_id, fields_id, value_text, type)
+select 'property_valuation',
+'product.category,' || cast(pc.id as character varying),
+1,
+8418,
+'real_time',
+'selection'
+from product_product pp 
+inner join product_template pt on pt.id = pp.product_tmpl_id 
+inner join product_category pc on pc.id = pt.categ_id 
+where pt.type = 'product' 
+and pp.active = True 
+group by pc.id
+order by pc.id;
+
+update stock_picking set scheduled_date = date where scheduled_date is null;
+
+update stock_picking set shipping_type = null where sale_id is null;
+
+update stock_picking as sp 
+set shipping_type = null 
+from stock_picking_type spt 
+where spt.id = sp.picking_type_id 
+and spt.code != 'outgoing' 
+and sp.shipping_type is not null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;

@@ -48,3 +48,5 @@ from dblink('dbname=agofer_08','SELECT
 	use_quotations boolean, 
 	invoiced_target integer
 ) where agofer.id not in (select id from crm_team);
+
+select setval('crm_team_id_seq', (select max(id) from crm_team));

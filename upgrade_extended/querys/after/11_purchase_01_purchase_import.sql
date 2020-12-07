@@ -61,3 +61,5 @@ from dblink('dbname=agofer_08', 'select
 	incoterm_id integer
 ) 
 where agofer.date_origin >= '2019-01-01';
+
+select setval('purchase_import_id_seq', (select max(id) from purchase_import));

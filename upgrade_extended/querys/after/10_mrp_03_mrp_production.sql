@@ -88,3 +88,5 @@ from dblink('dbname=agofer_08', 'select
 	product_uom integer,
 	date_planned timestamp without time zone
 );
+
+select setval('mrp_production_id_seq', (select max(id) from mrp_production));

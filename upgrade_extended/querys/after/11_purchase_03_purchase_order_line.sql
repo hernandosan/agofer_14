@@ -68,3 +68,5 @@ from dblink('dbname=agofer_08', 'select
 	state character varying, 
 	account_analytic_id integer
 );
+
+select setval('purchase_order_line_id_seq', (select max(id) from purchase_order_line));

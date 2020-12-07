@@ -134,3 +134,5 @@ from dblink('dbname=agofer_08', 'select
 	manufacture_to_resupply boolean
 ) 
 where agofer.id not in (select id from stock_warehouse);
+
+select setval('stock_warehouse_id_seq', (select max(id) from stock_warehouse));

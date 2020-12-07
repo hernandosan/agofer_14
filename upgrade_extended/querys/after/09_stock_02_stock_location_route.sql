@@ -64,3 +64,5 @@ from dblink('dbname=agofer_08', 'select
 	write_uid integer, 
 	sale_selectable boolean
 )where agofer.id not in (select id from stock_location_route);
+
+select setval('stock_location_route_id_seq', (select max(id) from stock_location_route));

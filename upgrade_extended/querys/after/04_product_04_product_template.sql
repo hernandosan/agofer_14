@@ -118,3 +118,5 @@ from dblink('dbname=agofer_08', 'select
 	sale_line_warn character varying, 
 	landed_cost_ok boolean
 ) where agofer.id not in (select id from product_template);
+
+select setval('product_template_id_seq', (select max(id) from product_template));

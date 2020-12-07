@@ -48,3 +48,5 @@ from dblink('dbname=agofer_08','SELECT
 	manager_id integer, 
 	write_date timestamp without time zone
 )where agofer.id not in (select id from hr_department);
+
+select setval('hr_department_id_seq', (select max(id) from hr_department));

@@ -80,3 +80,5 @@ from dblink('dbname=agofer_08', 'select
 	valuation_in_account_id integer, 
 	valuation_out_account_id integer
 )where agofer.id not in (select id from stock_location);
+
+select setval('stock_location_id_seq', (select max(id) from stock_location));

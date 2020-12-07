@@ -108,7 +108,8 @@ INSERT INTO res_partner (
 	agofer.payment_next_action_date,
     agofer.payment_next_action,
     agofer.payment_note,
-    agofer.payment_responsible_id
+    --agofer.payment_responsible_id
+	3
 FROM dblink('dbname=agofer_08','select
 	id, 
 	name, 
@@ -212,7 +213,7 @@ FROM dblink('dbname=agofer_08','select
 	invoice_warn_msg text, 
 	picking_warn_msg text, 
 	invoice_warn character varying, 
-	purchase_warn_msg text, 
+	purchase_warn_msg text,
 	sale_warn_msg text,
 	payment_next_action_date date,
     payment_next_action text,
@@ -220,3 +221,5 @@ FROM dblink('dbname=agofer_08','select
     payment_responsible_id integer
 )
 WHERE agofer.id NOT IN (SELECT id FROM res_partner);
+
+select setval('res_partner_id_seq', (select max(id) from res_partner));

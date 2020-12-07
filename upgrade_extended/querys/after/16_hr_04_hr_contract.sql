@@ -67,3 +67,5 @@ from dblink('dbname=agofer_08','SELECT
 	company_id integer, 
 	state character varying
 );
+
+select setval('hr_contract_id_seq', (select max(id) from hr_contract));

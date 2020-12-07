@@ -59,3 +59,5 @@ from dblink('dbname=agofer_08','SELECT
 )inner join ir_model im1 on im1.id = agofer.alias_model_id 
 inner join ir_model im2 on im2.id = agofer.alias_parent_model_id
 where agofer.id not in (select id from mail_alias);
+
+select setval('mail_alias_id_seq', (select max(id) from mail_alias));

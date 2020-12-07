@@ -64,3 +64,5 @@ from dblink('dbname=agofer_08','SELECT
 	state character varying, 
 	balance_end_real numeric
 )INNER JOIN account_journal AJ ON AJ.id = agofer.journal_id;
+
+select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));

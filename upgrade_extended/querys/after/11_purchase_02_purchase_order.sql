@@ -92,3 +92,5 @@ from dblink('dbname=agofer_08', 'select
 	name character varying, 
 	notes text
 );
+
+select setval('purchase_order_id_seq', (select max(id) from purchase_order));

@@ -27,3 +27,5 @@ from dblink('dbname=agofer_08', 'select
 	write_uid integer, 
 	write_date timestamp without time zone) 
 	where agofer.id not in (select id from uom_category);
+
+select setval('uom_category_id_seq', (select max(id) from uom_category));

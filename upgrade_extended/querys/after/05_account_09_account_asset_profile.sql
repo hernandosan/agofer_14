@@ -86,3 +86,5 @@ from dblink('dbname=agofer_08','SELECT
 	account_analytic_id integer,
 	method character varying
 )INNER JOIN account_journal aj ON agofer.journal_id = aj.id;
+
+select setval('account_asset_profile_id_seq', (select max(id) from account_asset_profile));

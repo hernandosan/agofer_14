@@ -55,3 +55,5 @@ FROM dblink('dbname=agofer_08','select
 	bank integer,
 	owner_name character varying
 );
+
+select setval('res_partner_bank_id_seq', (select max(id) from res_partner_bank));

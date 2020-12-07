@@ -142,3 +142,5 @@ from dblink('dbname=agofer_08', 'select
 	pick_date date
 ) 
 where cast(agofer.date_order as date) >= '2019-01-01';
+
+select setval('sale_order_id_seq', (select max(id) from sale_order));

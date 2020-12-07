@@ -54,3 +54,5 @@ from dblink('dbname=agofer_08','SELECT
 	calendar_id integer, 
 	resource_type character varying
 )where agofer.id not in (select id from resource_resource);
+
+select setval('resource_resource_id_seq', (select max(id) from resource_resource));

@@ -35,3 +35,5 @@ from dblink('dbname=agofer_08','select
 	write_date timestamp without time zone, 
 	removal_strategy_id integer
 )where agofer.id not in (select id from product_category);
+
+select setval('product_category_id_seq', (select max(id) from product_category));

@@ -66,3 +66,5 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	price_include boolean
 );
+
+select setval('account_tax_id_seq', (select max(id) from account_tax));

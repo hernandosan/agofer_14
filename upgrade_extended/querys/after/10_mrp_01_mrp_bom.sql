@@ -64,3 +64,5 @@ from dblink('dbname=agofer_08', 'select
 	type character varying,
 	product_uom integer
 );
+
+select setval('mrp_bom_id_seq', (select max(id) from mrp_bom));
