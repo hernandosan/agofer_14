@@ -1,4 +1,4 @@
-insert into ir_sequence (
+INSERT INTO ir_sequence (
 	id, 
 	create_uid, 
 	code, 
@@ -14,7 +14,7 @@ insert into ir_sequence (
 	prefix, 
 	write_date, 
 	name
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.code, 
@@ -30,7 +30,7 @@ insert into ir_sequence (
 	agofer.prefix, 
 	agofer.write_date, 
 	agofer.name 
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_uid, 
 	code, 
@@ -47,7 +47,7 @@ from dblink('dbname=agofer_08', 'select
 	write_date, 
 	name
 	from ir_sequence;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	code character varying, 
@@ -63,6 +63,7 @@ from dblink('dbname=agofer_08', 'select
 	prefix character varying, 
 	write_date timestamp without time zone, 
 	name character varying
-) where agofer.id not in (select id from ir_sequence);
+)
+WHERE agofer.id NOT IN (SELECT id FROM ir_sequence);
 
 select setval('ir_sequence_id_seq', (select max(id) from ir_sequence));

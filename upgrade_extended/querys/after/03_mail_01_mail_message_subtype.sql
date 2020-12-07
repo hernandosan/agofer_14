@@ -1,4 +1,4 @@
-insert into mail_message_subtype (
+INSERT INTO mail_message_subtype (
 	id,
 	create_uid,
 	create_date,
@@ -11,7 +11,7 @@ insert into mail_message_subtype (
 	hidden,
 	description,
 	sequence
-)select
+)SELECT
 	agofer.id,
 	agofer.create_uid,
 	agofer.create_date,
@@ -24,7 +24,7 @@ insert into mail_message_subtype (
 	agofer.hidden,
 	agofer.description,
 	agofer.sequence
-from dblink('dbname=agofer_08','SELECT
+FROM dblink('dbname=agofer_08','SELECT
 	id,
 	create_uid,
 	create_date,
@@ -39,7 +39,7 @@ from dblink('dbname=agofer_08','SELECT
 	sequence
 	FROM mail_message_subtype
 	WHERE id > 27;'
-) as agofer(
+) AS agofer(
 	id integer,
 	create_uid integer,
 	create_date timestamp without time zone,

@@ -69,6 +69,63 @@ update res_partner
 set country_id = 49
 where country_id = 50;
 
+--Update res_bank
+UPDATE res_bank rb
+	set name = agofer.name,
+	street = agofer.street,
+	street2 = agofer.street2,
+	zip = agofer.zip,
+	city = agofer.city,
+	state = agofer.state,
+	country = agofer.country,
+	email = agofer.email,
+	phone = agofer.phone,
+	active = agofer.active,
+	bic = agofer.bic,
+	create_uid = agofer.create_uid,
+	create_date = agofer.create_date,
+	write_uid = agofer.write_uid,
+	write_date = agofer.write_date
+FROM dblink('dbname=agofer_08','SELECT
+	id,
+	name,
+	street,
+	street2,
+	zip,
+	city,
+	state,
+	country,
+	email, phone,
+	active,
+	bic,
+	create_uid,
+	create_date,
+	write_uid,
+	write_date
+	from res_bank
+	where id = 1;'
+) AS agofer (
+	id integer,
+	name character varying,
+	street character varying,
+	street2 character varying,
+	zip character varying,
+	city character varying,
+	state integer,
+	country integer,
+	email character varying,
+	phone character varying,
+	active boolean,
+	bic character varying,
+	create_uid integer,
+	create_date timestamp without time zone,
+	write_uid integer,
+	write_date timestamp without time zone
+)
+WHERE agofer.id = rb.id;
+
+
+
 insert into account_group (name, company_id, niif_bool)
 select left(code, -2), 1, False from account_account group by left(code, -2);
 

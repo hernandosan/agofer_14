@@ -22,8 +22,11 @@
         'auth_oauth',
         'base_address_city',
         'base_address_extended',
+        'crm',
         'hr_contract',
+        'hr_gamification',
         'hr_recruitment',
+        'mass_mailing'
         'l10n_co',
         'web',
         # OCA 
