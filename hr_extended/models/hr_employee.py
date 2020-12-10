@@ -2,7 +2,6 @@
 
 from odoo import models, fields, api, _
 import calendar
-import datetime
 
 
 class HrEmployee(models.Model):

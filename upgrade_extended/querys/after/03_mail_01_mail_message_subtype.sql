@@ -37,8 +37,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	hidden,
 	description,
 	sequence
-	FROM mail_message_subtype
-	WHERE id > 27;'
+	FROM mail_message_subtype;'
 ) AS agofer(
 	id integer,
 	create_uid integer,

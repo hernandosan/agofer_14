@@ -40,8 +40,8 @@ insert into mail_message (
 	agofer.author_id, 
 	agofer.model, 
 	agofer.email_from,
-    --agofer.message_type
-	'comment'
+    agofer.message_type
+	--'comment'
 from dblink('dbname=agofer_08', 'select
 	id,
 	body,
