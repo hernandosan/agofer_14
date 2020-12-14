@@ -51,7 +51,7 @@ FROM dblink('dbname=agofer_08', 'select
 	oauth_access_token, 
 	oauth_uid, 
 	oauth_provider_id 
-	from res_users where id >= 6;'
+	from res_users;'
 ) AS agofer(
 	id integer, 
 	active boolean, 
@@ -70,23 +70,6 @@ FROM dblink('dbname=agofer_08', 'select
 	oauth_uid character varying, 
 	oauth_provider_id integer
 )
-INNER JOIN res_partner rp
-	ON rp.id = agofer.partner_id
-	GROUP BY agofer.id,
-	agofer.active, 
-	agofer.login, 
-	agofer.password, 
-	agofer.company_id, 
-	agofer.partner_id, 
-	agofer.create_date, 
-	agofer.create_uid, 
-	agofer.write_uid, 
-	agofer.write_date, 
-	agofer.signature, 
-	agofer.action_id, 
-	agofer.share, 
-	agofer.oauth_access_token, 
-	agofer.oauth_uid, 
-	agofer.oauth_provider_id;
+WHERE agofer.id NOT IN (select id from res_users);
 
 select setval('res_users_id_seq', (select max(id) from res_users));

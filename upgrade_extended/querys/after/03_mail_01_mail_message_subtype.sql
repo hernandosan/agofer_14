@@ -51,6 +51,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	hidden boolean,
 	description text,
 	sequence double precision
-);
+) 
+WHERE agofer.id NOT IN (SELECT id FROM mail_message_subtype);
 
 select setval('mail_message_subtype_id_seq', (select max(id) from mail_message_subtype));

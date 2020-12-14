@@ -18,20 +18,11 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        # Odoo 
-        'auth_oauth',
-        'base_address_city',
-        'base_address_extended',
-        'crm',
-        'hr_contract',
-        'hr_gamification',
-        'hr_recruitment',
-        'mass_mailing'
-        'l10n_co',
-        'web',
+        # Avancys
+        'account_avancys',
+        'hr_avancys',
         # OCA 
         'account_asset_management',
-        'account_payment_order',
         # Extended
         'account_extended',
         'base_user_role_extended',
@@ -42,6 +33,18 @@
         'stock_account_extended',
         'stock_extended',
         'purchase_extended',
+        # Odoo 
+        'auth_oauth',
+        'base_address_city',
+        'base_address_extended',
+        'board',
+        'crm',
+        'hr_contract',
+        'hr_gamification',
+        'hr_recruitment',
+        'mass_mailing',
+        'l10n_co',
+        'website',
     ],
 
     # always loaded

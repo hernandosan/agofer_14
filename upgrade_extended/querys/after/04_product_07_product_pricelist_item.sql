@@ -82,6 +82,6 @@ FROM dblink('dbname=agofer_08','select
 	price_surcharge numeric,
 	price_version_id integer
 )
-INNER JOIN product_pricelist PP ON PP.id = agofer.price_version_id;
+INNER JOIN product_pricelist PP ON PP.id = agofer.pricelist_id;
 
 select setval('product_pricelist_item_id_seq', (select max(id) from product_pricelist_item));

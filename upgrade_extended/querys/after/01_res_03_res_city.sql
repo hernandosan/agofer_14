@@ -56,3 +56,14 @@ FROM dblink('dbname=agofer_08', 'select
 WHERE agofer.id NOT IN (SELECT id FROM res_city);
 
 select setval('res_city_id_seq', (select max(id) from res_city));
+
+update res_city as rc
+set state_id = rcs.id, country_id = rco.id
+from dblink('dbname=agofer_08','select rc.id as id, rc.name as name, rcs.id as id2, rcs.name as name2, rco.code
+from res_city rc
+inner join res_country_state rcs on rcs.id = rc.provincia_id
+inner join res_country rco on rco.id = rcs.country_id
+order by rc.id, rcs.id;') as agofer (id integer, name character varying, id2 integer, name2 character varying, code character varying)
+inner join res_country_state rcs on rcs.name = agofer.name2
+inner join res_country rco on rco.code = agofer.code
+where agofer.id = rc.id;
