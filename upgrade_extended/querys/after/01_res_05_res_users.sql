@@ -73,3 +73,5 @@ FROM dblink('dbname=agofer_08', 'select
 WHERE agofer.id NOT IN (select id from res_users);
 
 select setval('res_users_id_seq', (select max(id) from res_users));
+
+update res_users set active = False where login not like '%agofer%' and login != 'admin';

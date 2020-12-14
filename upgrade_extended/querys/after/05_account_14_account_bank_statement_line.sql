@@ -62,3 +62,10 @@ from dblink('dbname=agofer_08','SELECT
 where cast(agofer.create_date as date) >= '2019-01-01';
 
 select setval('account_bank_statement_line_id_seq', (select max(id) from account_bank_statement_line));
+
+update account_move_line aml
+set statement_line_id = agofer.statement_line_id
+from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_line;') as agofer
+(id integer, statement_line_id integer)
+inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
+where agofer.id = aml.id;

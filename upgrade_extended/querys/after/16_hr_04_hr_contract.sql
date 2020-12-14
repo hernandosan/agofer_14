@@ -14,7 +14,8 @@ insert into hr_contract (
 	date_start, 
 	company_id, 
 	state,
-	active
+	active,
+	schedule_pay
 ) select 
 	agofer.id, 
 	agofer.date_end, 
@@ -32,7 +33,8 @@ insert into hr_contract (
 	agofer.company_id, 
 	agofer.state,
 	--agofer.active
-	TRUE
+	TRUE,
+	'MONTHLY'
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	date_end, 

@@ -10,6 +10,7 @@ insert into crm_team (
 	name, 
 	use_quotations, 
 	invoiced_target
+	alias_id
 ) select 
 	agofer.id, 
 	agofer.color, 
@@ -21,7 +22,8 @@ insert into crm_team (
 	agofer.user_id, 
 	agofer.name, 
 	agofer.use_quotations, 
-	agofer.invoiced_target
+	agofer.invoiced_target,
+	1
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	color, 

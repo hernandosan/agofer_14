@@ -122,3 +122,15 @@ from dblink('dbname=agofer_08','SELECT
 );
 
 select setval('hr_employee_id_seq', (select max(id) from hr_employee));
+
+update hr_employee he 
+set resource_id = agofer.resource_id
+from dblink('dbname=agofer_08','SELECT id, resource_id FROM hr_employee;') as agofer (id integer, resource_id integer) 
+inner join resource_resource rr on rr.id = agofer.resource_id
+where agofer.id = he.id and he.resource_id != agofer.resource_id;
+
+update hr_employee as he 
+set active = True 
+from hr_contract hc 
+where hc.employee_id = he.id 
+and hc.date_end is null;

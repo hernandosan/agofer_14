@@ -118,3 +118,30 @@ from dblink('dbname=agofer_08', 'select
 );
 
 select setval('stock_picking_id_seq', (select max(id) from stock_picking));
+
+update stock_picking as sp 
+set sale_id = so.id
+from procurement_group pg
+inner join sale_order so on so.name = pg.name 
+where pg.id = sp.group_id;
+
+update stock_picking as sp 
+set location_id = sm.location_id,
+location_dest_id = sm.location_dest_id
+from stock_move sm 
+where sm.picking_id = sp.id;
+
+update stock_picking set scheduled_date = date where scheduled_date is null;
+
+update stock_picking set shipping_type = null where sale_id is null;
+
+update stock_picking as sp 
+set shipping_type = null 
+from stock_picking_type spt 
+where spt.id = sp.picking_type_id 
+and spt.code != 'outgoing' 
+and sp.shipping_type is not null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null;
+
+update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;

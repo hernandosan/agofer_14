@@ -17,7 +17,7 @@ INSERT INTO delivery_guide (
 	company_id,
 	currency_id,
 	parent_id,
-	delivery_guide
+	guide_type
 ) SELECT
 	agofer.id,
 	agofer.create_date,

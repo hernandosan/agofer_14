@@ -14,9 +14,8 @@ insert into account_move (
 	partner_id, 
 	to_check,
 	move_type,
-	currency_id,
-	reference_type
-	)
+	currency_id
+)
 select 
 	agofer.id, 
 	agofer.create_uid, 
@@ -35,9 +34,7 @@ select
 	--agofer.move_type
 	'entry',
 	--agofer.currency_id
-	8,
-	--agofer.reference_type
-	'none'
+	8
 from dblink('dbname=agofer_08','SELECT 
 	am.id, 
 	am.create_uid, 

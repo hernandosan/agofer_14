@@ -66,3 +66,10 @@ from dblink('dbname=agofer_08','SELECT
 )INNER JOIN account_journal AJ ON AJ.id = agofer.journal_id;
 
 select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));
+
+update account_move_line aml
+set statement_id = agofer.statement_id
+from dblink('dbname=agofer_08','SELECT id, statement_id FROM account_move_line;') as agofer
+(id integer, statement_id integer)
+inner join account_bank_statement abs on agofer.statement_id = abs.id
+where agofer.id = aml.id;

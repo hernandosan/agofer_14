@@ -82,3 +82,7 @@ from dblink('dbname=agofer_08', 'select
 )where agofer.id not in (select id from stock_location);
 
 select setval('stock_location_id_seq', (select max(id) from stock_location));
+
+update stock_location set parent_path = '' where parent_path is null;
+
+update stock_location set parent_path = cast(id as character varying) || '/' where parent_path = '' and location_id is null;

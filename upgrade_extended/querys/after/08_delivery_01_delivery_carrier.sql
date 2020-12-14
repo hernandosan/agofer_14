@@ -15,7 +15,6 @@ INSERT INTO delivery_carrier (
 	zip_from,
 	zip_to,
 	company_id,
-	active,
 	carrier_type
 ) SELECT
 	agofer.id,
@@ -38,7 +37,6 @@ INSERT INTO delivery_carrier (
 	agofer.zip_to,
 	--agofer.company_id
 	1,
-	True,
 	'stock'
 FROM dblink('dbname=agofer_08','select
 	SPWT.id,

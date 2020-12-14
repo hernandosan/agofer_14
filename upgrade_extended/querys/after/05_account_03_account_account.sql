@@ -61,3 +61,9 @@ and agofer.id not in (select id from account_account)
 and agofer.code not in (select code from account_account);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
+
+update account_account aa
+set code = agofer.code
+from dblink('dbname=agofer_08','SELECT id, code FROM account_account;') as agofer
+(id integer, code character varying)
+where agofer.id = aa.id;
