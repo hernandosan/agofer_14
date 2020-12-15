@@ -43,7 +43,7 @@ class StockPickingWizard(models.TransientModel):
         return sum(move.should_consume_qty for move in moves) or 0
 
     def process(self):
-        type_id = self.env['stock.picking.type'].search([('warehouse_id','=',self.warehouse_id.id),('code','=','incoming')], limit=1)
+        type_id = self.env['stock.picking.type'].search([('warehouse_id','=',self.warehouse_id.id),('code','=','internal')], limit=1)
         location_id = self.line_ids.move_id.location_dest_id[0]
         move_lines = []
         for line in self.line_ids.filtered(lambda l: l.qty_done):

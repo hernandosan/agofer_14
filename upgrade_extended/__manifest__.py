@@ -19,10 +19,11 @@
     # any module necessary for this one to work correctly
     'depends': [
         # Avancys
-        # 'account_avancys',
-        # 'hr_avancys',
+        'account_avancys',
+        'hr_avancys',
         # OCA 
         'account_asset_management',
+        'auth_oauth_multi_token',
         # Extended
         'account_extended',
         'base_user_role_extended',
@@ -58,7 +59,7 @@
         'demo/demo.xml',
     ],
 
-    # 'pre_init_hook': 'pre_init_hook',
+    'pre_init_hook': 'pre_init_hook',
 
-    # 'post_init_hook': 'post_init_hook',
+    'post_init_hook': 'post_init_hook',
 }

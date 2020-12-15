@@ -105,7 +105,7 @@
                 </xpath>
                 <xpath expr="//header/field[@name='state']" position="before">
                     <button name="action_invoice" type="object" string="Create Invoice" class="oe_highlight" 
-                        attrs="{'invisible': ['|',('state','!=','done'),('invoice_id','!=',False)]}"/>
+                        attrs="{'invisible': ['|','|',('state','!=','done'),('invoice_id','!=',False),('picking_type_id.code','!=','outgoing')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="sale_id" readonly="True"/>

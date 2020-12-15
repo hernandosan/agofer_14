@@ -7,3 +7,4 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     imports_ids = fields.Many2many('purchase.import', 'import_order_rel', 'order_id', 'import_id', 'Imports', copy=False)
+    purchase_type = fields.Selection([('product','Product'),('consu','Consumible'),('service','Service')], 'Purchase Type', default='product')

@@ -15,7 +15,8 @@ insert into stock_picking_type (
 	return_picking_type_id, 
 	default_location_src_id, 
 	sequence_code,
-	company_id
+	company_id,
+	active
 ) select 
 	agofer.id, 
 	agofer.code, 
@@ -33,8 +34,9 @@ insert into stock_picking_type (
 	agofer.name, 
 	agofer.return_picking_type_id, 
 	agofer.default_location_src_id, 
-	'UNK',
-	1
+	agofer.code,
+	1,
+	True
 from dblink('dbname=agofer_08', 'select
 	id, 
 	code, 

@@ -58,7 +58,8 @@ FROM dblink('dbname=agofer_08','select
 	ppi.price_min_margin, 
 	ppi.categ_id, 
 	ppi.price_surcharge,
-	pp.id as pricelist_id
+	pp.id as pricelist_id,
+	pp.type 
 from product_pricelist_item ppi
 inner join product_pricelist_version ppv on ppv.id = ppi.price_version_id 
 inner join product_pricelist pp on pp.id = ppv.pricelist_id
@@ -81,8 +82,10 @@ where ppv.date_end is null;'
 	price_min_margin numeric, 
 	categ_id integer, 
 	price_surcharge numeric,
-	pricelist_id integer
+	pricelist_id integer,
+	type character varying
 )
-INNER JOIN product_pricelist PP ON PP.id = agofer.pricelist_id;
+INNER JOIN product_pricelist PP ON PP.id = agofer.pricelist_id 
+where agofer.type = 'sale';
 
 select setval('product_pricelist_item_id_seq', (select max(id) from product_pricelist_item));

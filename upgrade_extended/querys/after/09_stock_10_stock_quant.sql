@@ -11,7 +11,7 @@ insert into stock_quant (
 	product_id, 
 	in_date, 
 	owner_id,
-	reserved_quantity
+	quantity
 ) select 
 	agofer.id, 
 	agofer.create_date, 
