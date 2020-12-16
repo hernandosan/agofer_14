@@ -18,7 +18,8 @@ INSERT INTO product_pricelist_item (
 	price_surcharge,
 	pricelist_id,
 	applied_on,
-	compute_price
+	compute_price,
+	active
 ) SELECT
 	agofer.id, 
 	agofer.create_uid, 
@@ -39,7 +40,8 @@ INSERT INTO product_pricelist_item (
 	agofer.price_surcharge,
 	agofer.pricelist_id,
 	'3_global',
-	'fixed'
+	'fixed',
+	True
 FROM dblink('dbname=agofer_08','select
 	ppi.id, 
 	ppi.create_uid, 

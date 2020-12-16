@@ -11,21 +11,23 @@ class CrmTeam(models.Model):
     kilogram_target = fields.Float('Kilogram Target')
     kilogram = fields.Float('Kilogram Invoiced This Month', compute='_compute_kilogram', readonly=True)
     members_ids = fields.Many2many('res.users', 'team_user_rel', 'team_id', 'user_id', 'Members', 
-        check_company=True, domain=[('share', '=', False)])
+        check_company=True, domain=[('share', '=', False)], 
+        help="Add members to assign parameterization in orders.")
     # Account
-    crossover_journal_id = fields.Many2one('account.journal', 'Crossover Journal', domain=[('type','in',('bank','cash'))])
-    advance_journal_id = fields.Many2one('account.journal', 'Advance Journal', domain=[('type','in',('bank','cash'))])
     advance_account_id = fields.Many2one('account.account', 'Advance Account', domain=[('user_type_id.type','=','payable')])
+    advance_journal_id = fields.Many2one('account.journal', 'Advance Journal', domain=[('type','in',('bank','cash'))])
+    crossover_journal_id = fields.Many2one('account.journal', 'Crossover Journal', domain=[('type','not in',('bank','cash'))])
+    invoice_journal_id = fields.Many2one('account.journal', 'Invoice Journal', domain=[('type','=','sale')])
     # Pricelist
     pricelists_ids = fields.Many2many('product.pricelist', string='Pricelists')
     # Stock
     warehouses_ids = fields.Many2many('stock.warehouse', string='Warehouses')
 
-    def _team_crossover_journal(self):
+    def _team_advance_account(self):
         self.ensure_one()
-        if not self.crossover_journal_id:
-            raise ValidationError(_("The CRM Team %s has not crossover journal") % self.name)
-        return self.crossover_journal_id
+        if not self.advance_account_id:
+            raise ValidationError(_("The CRM Team %s has not advance account") % self.name)
+        return self.advance_account_id
 
     def _team_advance_journal(self):
         self.ensure_one()
@@ -33,11 +35,17 @@ class CrmTeam(models.Model):
             raise ValidationError(_("The CRM Team %s has not advance journal") % self.name)
         return self.crossover_journal_id
 
-    def _team_advance_account(self):
+    def _team_crossover_journal(self):
         self.ensure_one()
-        if not self.advance_account_id:
-            raise ValidationError(_("The CRM Team %s has not advance account") % self.name)
-        return self.advance_account_id
+        if not self.crossover_journal_id:
+            raise ValidationError(_("The CRM Team %s has not crossover journal") % self.name)
+        return self.crossover_journal_id
+
+    def _team_invoice_journal_id(self):
+        self.ensure_one()
+        if not self.invoice_journal_id:
+            raise ValidationError(_("The CRM Team %s has not invoice journal") % self.name)
+        return self.invoice_journal_id
 
     def _compute_kilogram(self):
         if not self:

@@ -234,3 +234,5 @@ left join res_country rcc on rcc.id = rp.country_id;') as agofer (id integer, rc
 inner join res_country_state rcs on rcs.name = agofer.rcs_name 
 inner join res_country rcc on rcc.code = agofer.rcc_code 
 where agofer.id = rp.id;
+
+update res_partner set credit_control = True, credit_type = 'insured' where credit_limit > 0 and parent_id is null;

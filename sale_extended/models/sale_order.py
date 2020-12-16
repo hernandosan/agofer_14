@@ -261,6 +261,12 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return self.payments_id.filtered(lambda p: p.state == 'posted')
 
+    def _prepare_invoice(self):
+        invoice_vals = super(SaleOrder, self)._prepare_invoice()
+        journal_id = self.team_id._team_invoice_journal_id()
+        invoice_vals.update(journal_id=journal_id.id)
+        return invoice_vals
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'

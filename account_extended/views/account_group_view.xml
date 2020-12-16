@@ -25,7 +25,7 @@
         <menuitem 
             id="menu_account_group" 
             action="action_account_group"
-            sequence="6"
+            sequence="7"
             parent="account.account_account_menu"/>
     </data>
 </odoo>

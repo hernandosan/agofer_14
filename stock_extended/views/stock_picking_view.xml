@@ -103,14 +103,14 @@
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
-                <xpath expr="//header/field[@name='state']" position="before">
+                <!-- <xpath expr="//header/field[@name='state']" position="before">
                     <button name="action_invoice" type="object" string="Create Invoice" class="oe_highlight" 
                         attrs="{'invisible': ['|','|',('state','!=','done'),('invoice_id','!=',False),('picking_type_id.code','!=','outgoing')]}"/>
-                </xpath>
-                <xpath expr="//field[@name='origin']" position="after">
+                </xpath> -->
+                <!-- <xpath expr="//field[@name='origin']" position="after">
                     <field name="sale_id" readonly="True"/>
                     <field name="invoice_id" readonly="True"/>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//notebook/page[@name='extra']/group" position="inside">
                     <group string="Delivery Info" attrs="{'invisible': [('shipping_type','=',False)]}">
                         <field name="shipping_type" />

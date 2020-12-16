@@ -147,3 +147,10 @@ select setval('sale_order_id_seq', (select max(id) from sale_order));
 
 update sale_order set pick_date = cast(date_order as date)
 where shipping_type = 'pick' and pick_date is null;
+
+update sale_order as so
+set team_id = rp.team_id
+from res_partner rp 
+where rp.id = so.partner_id 
+and so.team_id is null 
+and rp.team_id is not null;

@@ -5,8 +5,8 @@
             <field name="model">crm.team</field>
             <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//notebook/page[@name='members']" position="before">
-                    <page name="members_many2many" string="Team Members">
+                <xpath expr="//notebook" position="inside">
+                    <page name="members_many2many" string="Sale Members">
                         <field name="members_ids" widget="many2many" options="{'not_delete': True}">
                             <kanban quick_create="false" create="true" delete="true">
                                 <field name="id"/>
@@ -26,17 +26,13 @@
                             </kanban>
                         </field>
                     </page>
-                </xpath>
-                <xpath expr="//notebook/page[@name='members']" position="attributes">
-                    <attribute name="invisible">True</attribute>
-                </xpath>
-                <xpath expr="//notebook/page[@name='members']" position="after">
                     <page string="Other info">
                         <group>
                             <group string='Account' groups="account.group_account_invoice">
-                                <field name="crossover_journal_id" required="True"/>
-                                <field name="advance_journal_id" required="True"/>
-                                <field name="advance_account_id" required="True"/>
+                                <field name="advance_account_id"/>
+                                <field name="advance_journal_id"/>
+                                <field name="crossover_journal_id"/>
+                                <field name="invoice_journal_id"/>
                             </group>
                             <group string='Stock' groups="stock.group_stock_user">
                                 <field name="warehouses_ids" required="True" widget="many2many_tags"/>
