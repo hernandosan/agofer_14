@@ -1,17 +1,18 @@
-insert into uom_category (
+INSERT INTO uom_category (
 	id, 
 	create_uid, 
 	create_date, 
 	name, 
 	write_uid, 
-	write_date)
-	select agofer.id, 
+	write_date
+) SELECT
+    agofer.id,
 	agofer.create_uid, 
 	agofer.create_date, 
 	agofer.name, 
 	agofer.write_uid, 
 	agofer.write_date
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_uid, 
 	create_date, 
@@ -19,13 +20,14 @@ from dblink('dbname=agofer_08', 'select
 	write_uid, 
 	write_date
 	from product_uom_categ;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	create_date timestamp without time zone, 
 	name character varying, 
 	write_uid integer, 
-	write_date timestamp without time zone) 
-	where agofer.id not in (select id from uom_category);
+	write_date timestamp without time zone
+)
+WHERE agofer.id NOT IN (SELECT id FROM uom_category);
 
 select setval('uom_category_id_seq', (select max(id) from uom_category));

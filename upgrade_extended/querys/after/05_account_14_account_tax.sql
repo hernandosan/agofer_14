@@ -1,4 +1,4 @@
-insert into account_tax (
+INSERT INTO account_tax (
 	id, 
 	create_date, 
 	description, 
@@ -15,7 +15,7 @@ insert into account_tax (
 	price_include,
 	amount_type,
 	tax_group_id
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.description, 
@@ -34,7 +34,7 @@ insert into account_tax (
 	'percent',
 	--agofer.tax_group_id
 	1
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 
 	description, 
@@ -49,8 +49,8 @@ from dblink('dbname=agofer_08','SELECT
 	amount, 
 	write_date, 
 	price_include
-	FROM account_tax;'
-) as agofer(
+	from account_tax;'
+) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 
 	description character varying, 

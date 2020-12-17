@@ -1,4 +1,4 @@
-insert into mrp_bom (
+INSERT INTO mrp_bom (
 	id, 
 	code, 
 	create_date, 
@@ -15,7 +15,7 @@ insert into mrp_bom (
 	product_uom_id,
 	ready_to_produce,
 	consumption
-) select 
+) SELECT
 	agofer.id, 
 	agofer.code, 
 	agofer.create_date, 
@@ -32,7 +32,7 @@ insert into mrp_bom (
 	agofer.product_uom,
 	'asap',
 	'warning'
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	code, 
 	create_date, 
@@ -48,7 +48,7 @@ from dblink('dbname=agofer_08', 'select
 	type,
 	product_uom
 	from mrp_bom;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 

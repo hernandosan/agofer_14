@@ -1,4 +1,4 @@
-insert into stock_inventory (
+INSERT INTO stock_inventory (
 	id, 
 	create_uid, 
 	create_date, 
@@ -8,7 +8,7 @@ insert into stock_inventory (
 	write_date, 
 	date, 
 	name
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.create_date, 
@@ -18,7 +18,7 @@ insert into stock_inventory (
 	agofer.write_date, 
 	agofer.date, 
 	agofer.name 
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_uid, 
 	create_date, 
@@ -29,7 +29,7 @@ from dblink('dbname=agofer_08', 'select
 	date, 
 	name
 	from stock_inventory;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	create_uid integer, 
 	create_date timestamp without time zone, 

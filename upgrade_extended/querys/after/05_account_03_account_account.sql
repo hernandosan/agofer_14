@@ -1,6 +1,6 @@
-update account_account set code = code || '.';
+UPDATE account_account SET code = code || '.';
 
-insert into account_account (
+INSERT INTO account_account (
 	id, 
 	code, 
 	create_date, 
@@ -13,7 +13,7 @@ insert into account_account (
 	company_id, 
 	note,
 	user_type_id
-)select 
+) SELECT
 	agofer.id, 
 	agofer.code, 
 	agofer.create_date, 
@@ -25,9 +25,8 @@ insert into account_account (
 	agofer.name, 
 	agofer.company_id, 
 	agofer.note,
-	--agofer.user_type_id
-	1
-from dblink('dbname=agofer_08','SELECT 
+	agofer.user_type_id
+FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	code, 
 	create_date, 
@@ -39,10 +38,11 @@ from dblink('dbname=agofer_08','SELECT
 	name, 
 	company_id, 
 	note,
-	type
+	type,
+	user_type
 	FROM account_account 
 	where niif != True;'
-) as agofer(
+) AS agofer (
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 
@@ -54,16 +54,11 @@ from dblink('dbname=agofer_08','SELECT
 	name character varying, 
 	company_id integer, 
 	note text,
-	type character varying
+	type character varying,
+	user_type integer
 )
-where agofer.type != 'view' 
-and agofer.id not in (select id from account_account) 
-and agofer.code not in (select code from account_account);
+WHERE agofer.type != 'view'
+AND agofer.id NOT IN (SELECT id FROM account_account)
+AND agofer.code NOT IN (SELECT code FROM account_account);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
-
-update account_account aa
-set code = agofer.code
-from dblink('dbname=agofer_08','SELECT id, code FROM account_account;') as agofer
-(id integer, code character varying)
-where agofer.id = aa.id;

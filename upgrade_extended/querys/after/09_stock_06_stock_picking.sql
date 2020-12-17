@@ -1,4 +1,4 @@
-insert into stock_picking (
+INSERT INTO stock_picking (
 	id, 
 	origin, 
 	owner_id, 
@@ -17,17 +17,22 @@ insert into stock_picking (
 	move_type, 
 	name, 
 	priority, 
-	state, 
+	state,
+	warehouse_id,
 	carrier_tracking_ref, 
 	carrier_id, 
-	weight, 
-	location_id,
-	location_dest_id,
-	shipping_type,
+	weight,
+	incoterm,
+	sale_id,
+	printed,
 	upload_date,
+	delivery_bool,
+	pick_bool,
+	pick_date,
 	delivery_date,
-	pick_date
-) select 
+	location_id,
+    location_dest_id
+) SELECT
 	agofer.id, 
 	agofer.origin, 
 	agofer.owner_id, 
@@ -38,8 +43,7 @@ insert into stock_picking (
 	agofer.company_id, 
 	agofer.write_date, 
 	agofer.date, 
-	--agofer.write_uid, 
-	2,
+	agofer.write_uid,
 	agofer.note, 
 	agofer.group_id, 
 	agofer.picking_type_id, 
@@ -47,20 +51,25 @@ insert into stock_picking (
 	agofer.move_type, 
 	agofer.name, 
 	agofer.priority, 
-	agofer.state, 
+	agofer.state,
+	agofer.warehouse_id,
 	agofer.carrier_tracking_ref, 
 	--agofer.carrier_id, 
 	null,
 	agofer.weight,
-	--location_id,
-	--location_dest_id,
-	1,
-	1,
-	agofer.op_condition,
+	agofer.incoterm,
+	agofer.sale_id,
+	agofer.printed,
 	agofer.upload_date,
-	agofer.delivery_date,
-	agofer.pick_date
-from dblink('dbname=agofer_08', 'select 
+    agofer.delivery_bool,
+    agofer.pick_bool,
+    agofer.pick_date,
+    agofer.delivery_date,
+    --agofer.location_id,
+    1,
+    --agofer.location_dest_id
+    1
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	origin, 
 	owner_id, 
@@ -79,16 +88,21 @@ from dblink('dbname=agofer_08', 'select
 	move_type, 
 	name, 
 	priority, 
-	state, 
+	state,
+	warehouse_id,
 	carrier_tracking_ref, 
 	carrier_id, 
 	weight,
-	op_condition,
+	incoterm,
+	sale_id,
+	printed,
 	upload_date,
-	delivery_date,
-	pick_date
+    delivery_bool,
+    pick_bool,
+    pick_date,
+    delivery_date
 	from stock_picking;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	origin character varying, 
 	owner_id integer, 
@@ -107,41 +121,23 @@ from dblink('dbname=agofer_08', 'select
 	move_type character varying, 
 	name character varying, 
 	priority character varying, 
-	state character varying, 
+	state character varying,
+	warehouse_id integer,
 	carrier_tracking_ref character varying, 
 	carrier_id integer, 
 	weight numeric,
+	incoterm integer,
+	sale_id integer,
+	printed boolean,
 	op_condition character varying,
 	upload_date date,
 	delivery_date date,
-	pick_date date
+	pick_date date,
+	upload_date date,
+    delivery_bool boolean,
+    pick_bool boolean,
+    pick_date date,
+    delivery_date date
 );
 
 select setval('stock_picking_id_seq', (select max(id) from stock_picking));
-
-update stock_picking as sp 
-set sale_id = so.id
-from procurement_group pg
-inner join sale_order so on so.name = pg.name 
-where pg.id = sp.group_id;
-
-update stock_picking as sp 
-set location_id = sm.location_id,
-location_dest_id = sm.location_dest_id
-from stock_move sm 
-where sm.picking_id = sp.id;
-
-update stock_picking set scheduled_date = date where scheduled_date is null;
-
-update stock_picking set shipping_type = null where sale_id is null;
-
-update stock_picking as sp 
-set shipping_type = null 
-from stock_picking_type spt 
-where spt.id = sp.picking_type_id 
-and spt.code != 'outgoing' 
-and sp.shipping_type is not null;
-
-update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null;
-
-update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;

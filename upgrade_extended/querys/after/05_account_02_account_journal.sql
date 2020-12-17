@@ -1,4 +1,4 @@
-insert into account_journal (
+INSERT INTO account_journal (
 	id, 
 	code, 
 	create_date, 
@@ -10,10 +10,12 @@ insert into account_journal (
 	company_id, 
 	profit_account_id, 
 	type,
+	sequence,
+	currency_id,
 	invoice_reference_type,
 	invoice_reference_model,
 	active
-) select 
+) SELECT
 	agofer.id, 
 	agofer.code, 
 	agofer.create_date, 
@@ -25,13 +27,15 @@ insert into account_journal (
 	agofer.company_id, 
 	agofer.profit_account_id, 
 	agofer.type,
+	agofer.sequence_id,
+	agofer.currency,
 	--agofer.invoice_reference_type
 	'invoice',
 	--agofer.invoice_reference_model
 	'odoo',
 	--agofer.active
 	True
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	code, 
 	create_date, 
@@ -43,11 +47,11 @@ from dblink('dbname=agofer_08','SELECT
 	company_id, 
 	profit_account_id, 
 	type,
-	name,
-	name
-	FROM account_journal
-	WHERE niif != True;'
-) as agofer(
+	sequence_id,
+	currency
+	from account_journal
+	where niif != True;'
+) AS agofer(
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 
@@ -59,8 +63,8 @@ from dblink('dbname=agofer_08','SELECT
 	company_id integer, 
 	profit_account_id integer, 
 	type character varying,
-	invoice_reference_type character varying,
-	invoice_reference_model character varying
+	sequence_id integer,
+	currency integer
 );
 
 select setval('account_journal_id_seq', (select max(id) from account_journal));

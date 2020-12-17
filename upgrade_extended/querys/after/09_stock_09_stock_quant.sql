@@ -1,4 +1,4 @@
-insert into stock_quant (
+INSERT INTO stock_quant (
 	id, 
 	create_date, 
 	write_uid, 
@@ -12,7 +12,7 @@ insert into stock_quant (
 	in_date, 
 	owner_id,
 	quantity
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.write_uid, 
@@ -26,7 +26,7 @@ insert into stock_quant (
 	agofer.in_date, 
 	agofer.owner_id,
 	agofer.qty
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 
 	write_uid, 
@@ -40,8 +40,8 @@ from dblink('dbname=agofer_08','SELECT
 	in_date, 
 	owner_id,
 	qty
-	FROM stock_quant;'
-) as agofer(
+	from stock_quant;'
+) AS agofer(
 	id integer, 
 	create_date timestamp without time zone, 
 	write_uid integer, 

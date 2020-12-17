@@ -1,4 +1,4 @@
-insert into stock_rule (
+INSERT INTO stock_rule (
 	id, 
 	create_date, 
 	sequence, 
@@ -21,8 +21,9 @@ insert into stock_rule (
 	delay, 
 	route_id, 
 	propagate_warehouse_id,
+	propagate_cancel,
 	auto
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.sequence, 
@@ -46,8 +47,10 @@ insert into stock_rule (
 	agofer.delay, 
 	agofer.route_id, 
 	agofer.propagate_warehouse_id,
+	agofer.propagate,
+	--agofer.auto
 	'manual'
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_date, 
 	sequence, 
@@ -69,9 +72,10 @@ from dblink('dbname=agofer_08', 'select
 	picking_type_id, 
 	delay, 
 	route_id, 
-	propagate_warehouse_id
+	propagate_warehouse_id,
+	propagate
 	from procurement_rule;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 
 	sequence integer, 
@@ -93,8 +97,9 @@ from dblink('dbname=agofer_08', 'select
 	picking_type_id integer, 
 	delay integer, 
 	route_id integer, 
-	propagate_warehouse_id integer
+	propagate_warehouse_id integer,
+	propagate boolean
 )
-where agofer.id not in (select id from stock_rule);
+WHERE agofer.id NOT IN (SELECT id FROM stock_rule);
 
 select setval('stock_rule_id_seq', (select max(id) from stock_rule));

@@ -40,6 +40,7 @@ INSERT INTO delivery_guide (
 	8,
 	--agofer.parent_id
 	1,
+	--agofer.guide_type
 	'customer'
 FROM dblink('dbname=agofer_08','select
 	SPWE.id,
@@ -74,7 +75,6 @@ FROM dblink('dbname=agofer_08','select
 	price numeric,
 	scheduled_date date,
 	delivered_date date
-)
-INNER JOIN delivery_carrier DC ON DC.id = agofer.carrier_id;
+);
 
 select setval('delivery_guide_id_seq', (select max(id) from delivery_guide));

@@ -1,4 +1,4 @@
-insert into account_asset (
+INSERT INTO account_asset (
 	id, 
 	method_number, 
 	code, 
@@ -23,7 +23,7 @@ insert into account_asset (
 	value_residual,
 	profile_id,
 	date_start
-) select 
+) SELECT
 	agofer.id, 
 	agofer.method_number, 
 	agofer.code, 
@@ -48,9 +48,9 @@ insert into account_asset (
 	agofer.value_residual,
 	agofer.category_id,
 	agofer.purchase_date
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
-	method_number, 
+	method_number,
 	code, 
 	create_date, 
 	method_end, 
@@ -73,8 +73,8 @@ from dblink('dbname=agofer_08','SELECT
 	value_residual,
 	category_id,
 	purchase_date
-	FROM account_asset_asset;'
-) as agofer(
+	from account_asset_asset;'
+) AS agofer (
 	id integer, 
 	method_number integer, 
 	code character varying, 
@@ -99,6 +99,7 @@ from dblink('dbname=agofer_08','SELECT
 	value_residual numeric,
 	category_id integer,
 	purchase_date date
-)INNER JOIN account_asset_profile AAP ON AAP.id = agofer.category_id;
+)
+INNER JOIN account_asset_profile AAP ON AAP.id = agofer.category_id;
 
 select setval('account_asset_id_seq', (select max(id) from account_asset));

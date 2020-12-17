@@ -1,4 +1,4 @@
-insert into account_move (
+INSERT INTO account_move (
 	id, 
 	create_uid, 
 	create_date, 
@@ -13,10 +13,12 @@ insert into account_move (
 	date, 
 	partner_id, 
 	to_check,
+    statement_line_id,
 	move_type,
-	currency_id
-)
-select 
+	currency_id,
+	reference_type
+	)
+SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.create_date, 
@@ -31,11 +33,14 @@ select
 	agofer.date, 
 	agofer.partner_id, 
 	agofer.to_check,
+	agofer.statement_id,
 	--agofer.move_type
 	'entry',
 	--agofer.currency_id
-	8
-from dblink('dbname=agofer_08','SELECT 
+	8,
+	--agofer.reference_type
+	'none'
+FROM dblink('dbname=agofer_08','select
 	am.id, 
 	am.create_uid, 
 	am.create_date, 
@@ -49,11 +54,11 @@ from dblink('dbname=agofer_08','SELECT
 	am.narration, 
 	am.date, 
 	am.partner_id, 
-	am.to_check
-	FROM account_move am
-	INNER JOIN account_journal aj ON aj.id = am.journal_id
-	WHERE aj.niif = False;'
-) as agofer(
+	am.to_check,
+	am.statement_id
+	from account_move am
+	inner join account_journal aj on aj.id = am.journal_id;'
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	create_date timestamp without time zone, 
@@ -68,6 +73,7 @@ from dblink('dbname=agofer_08','SELECT
 	date date, 
 	partner_id integer, 
 	to_check boolean
-) WHERE cast(agofer.date as date) >= '2019-01-01';
+)
+WHERE agofer.date >= '2019-01-01';
 
 select setval('account_move_id_seq', (select max(id) from account_move));

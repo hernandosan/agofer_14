@@ -41,7 +41,7 @@ INSERT INTO account_analytic_line (
 	agofer.product_uom_id,
 	agofer.ref,
 	agofer.partner_id
-FROM dblink('dbname=agofer_08','SELECT
+FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
 	account_id,
@@ -62,7 +62,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	product_uom_id,
 	ref,
 	partner_id
-	FROM account_analytic_line;'
+	from account_analytic_line;'
 ) AS agofer(
 	id integer,
 	create_date timestamp without time zone,
@@ -84,6 +84,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	product_uom_id integer,
 	ref character varying,
 	partner_id integer
-)INNER JOIN account_move_line AML ON AML.id = agofer.move_id;
+)
+INNER JOIN account_move_line AML ON AML.id = agofer.move_id;
 
 select setval('account_analytic_line_id_seq', (select max(id) from account_analytic_line));

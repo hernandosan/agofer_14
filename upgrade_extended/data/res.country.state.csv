@@ -1,0 +1,42 @@
+"id","country_id:id","name","code"
+state_ec_1,base.ec,“Azuay“,“1“
+state_ec_2,base.ec,“Bolivar“,“2“
+state_ec_3,base.ec,“Cañar“,“3“
+state_ec_4,base.ec,“Carchi“,“4“
+state_ec_5,base.ec,“Cotopaxi“,“5“
+state_ec_6,base.ec,“Chimborazo“,“6“
+state_ec_7,base.ec,“El Oro“,“7“
+state_ec_8,base.ec,“Esmeraldas“,“8“
+state_ec_9,base.ec,“Guayas“,“9“
+state_ec_10,base.ec,“Imbabura“,“10“
+state_ec_11,base.ec,“Loja“,“11“
+state_ec_12,base.ec,“Manabi“,“13“
+state_ec_13,base.ec,“Sucumbios“,“21“
+state_ec_14,base.ec,“Los Rios“,“12“
+state_ec_15,base.ec,“Morona Santiago“,“14“
+state_ec_16,base.ec,“Napo“,“15“
+state_ec_17,base.ec,“Zamora Chinchipe“,“19“
+state_ec_18,base.ec,“Pastaza“,“16“
+state_ec_19,base.ec,“Pichincha“,“17“
+state_ec_20,base.ec,“Galapagos“,“20“
+state_ec_21,base.ec,“Tungurahua“,“18“
+state_ec_22,base.ec,“Santo Domingo De Los Tsachilas“,“23“
+state_ec_23,base.ec,“Orellana“,“22“
+state_ec_24,base.ec,“Santa Elena“,“24“
+state_ec_25,base.ec,“Zonas No Delimitadas“,“90“
+state_ch_1,base.ch,“Ticino“,“TI“
+state_ua_1,base.ua,“Kiev Oblast“,“UA-32“
+state_tr_1,base.tr,“Provincia de Estambul“,“TR-34“
+state_kr_1,base.kr,“Special City“,“KR-11“
+state_cn_1,base.cn,“Municipalidad de Shanghai“,“CN-31“
+state_tt_1,base.tt,“Port of Spain City Corporation“,“TT-POS“
+state_es_1,base.es,“Cataluña“,“ES-CT“
+state_nl_1,base.nl,“Güeldres“,“GU“
+state_de_1,base.de,“ Bergstraße“,“BER“
+state_lu_1,base.lu,“Luxemburgo“,“445“
+state_ve_1,base.ve,“Lara“,“1“
+state_pa_1,base.pa,“Panamá“,“PA“
+state_it_1,base.it,“Lombardia“,“LOM“
+state_by_1,base.by,“Provincia de Gómel“,“BY-HO“
+state_ec_26,base.ec,“Quito“,“EC170150“
+state_uy_1,base.uy,“Montevideo“,“MO“

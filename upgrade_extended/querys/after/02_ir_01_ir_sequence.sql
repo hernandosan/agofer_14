@@ -67,21 +67,3 @@ FROM dblink('dbname=agofer_08', 'select
 WHERE agofer.id NOT IN (SELECT id FROM ir_sequence);
 
 select setval('ir_sequence_id_seq', (select max(id) from ir_sequence));
-
-update ir_sequence ise 
-set prefix = agofer.prefix,
-suffix = agofer.suffix,
-padding = agofer.padding,
-number_next = agofer.number_next
-from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number_next FROM ir_sequence;') as agofer 
-(id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer) 
-where agofer.id = ise.id;
-
-update ir_sequence ise
-set prefix = agofer.prefix,
-suffix = agofer.suffix,
-padding = agofer.padding,
-number_next = agofer.number_next
-from dblink('dbname=agofer_08','SELECT id, code, prefix, suffix, padding, number_next FROM ir_sequence;') as agofer
-(id integer, code character varying, prefix character varying, suffix character varying, padding integer, number_next integer)
-where agofer.code = ise.code;

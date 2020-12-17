@@ -1,4 +1,4 @@
-insert into stock_picking_type (
+INSERT INTO stock_picking_type (
 	id, 
 	code, 
 	create_date, 
@@ -34,8 +34,10 @@ insert into stock_picking_type (
 	agofer.default_location_dest_id, 
 	agofer.name, 
 	agofer.return_picking_type_id, 
-	agofer.default_location_src_id, 
-	agofer.code,
+	agofer.default_location_src_id,
+	--agofer.sequence_code
+	'UNK',
+	--agofer.company_id
 	1,
 	True,
 	True
@@ -56,7 +58,7 @@ from dblink('dbname=agofer_08', 'select
 	return_picking_type_id, 
 	default_location_src_id
 	from stock_picking_type;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 

@@ -222,8 +222,6 @@ FROM dblink('dbname=agofer_08','select
 )
 WHERE agofer.id NOT IN (SELECT id FROM res_partner);
 
-select setval('res_partner_id_seq', (select max(id) from res_partner));
-
 update res_partner as rp 
 set state_id = rcs.id, country_id = rcc.id
 from dblink('dbname=agofer_08','select rp.id, rc.name as rc_name, rcs.name as rcs_name, rcc.code as rcc_code

@@ -34,7 +34,8 @@ insert into hr_contract (
 	agofer.state,
 	--agofer.active
 	TRUE,
-	'MONTHLY'
+	--agofer.schedule_pay
+    'MONTHLY'
 from dblink('dbname=agofer_08','SELECT 
 	id, 
 	date_end, 

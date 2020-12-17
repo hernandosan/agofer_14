@@ -1,4 +1,4 @@
-insert into account_bank_statement(
+INSERT INTO account_bank_statement(
 	id, 
 	create_date, 
 	write_uid, 
@@ -14,7 +14,7 @@ insert into account_bank_statement(
 	journal_id, 
 	state, 
 	balance_end_real
-)select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.write_uid, 
@@ -27,10 +27,11 @@ insert into account_bank_statement(
 	agofer.user_id, 
 	agofer.name, 
 	agofer.balance_end, 
-	agofer.journal_id, 
+	--agofer.journal_id,
+	1,
 	agofer.state, 
 	agofer.balance_end_real
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 
 	write_uid, 
@@ -47,7 +48,7 @@ from dblink('dbname=agofer_08','SELECT
 	state, 
 	balance_end_real
 	FROM account_bank_statement;'
-) as agofer(
+) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 
 	write_uid integer, 
@@ -63,13 +64,7 @@ from dblink('dbname=agofer_08','SELECT
 	journal_id integer, 
 	state character varying, 
 	balance_end_real numeric
-)INNER JOIN account_journal AJ ON AJ.id = agofer.journal_id;
+)
+INNER JOIN account_journal AJ ON AJ.id = agofer.journal_id;
 
 select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));
-
-update account_move_line aml
-set statement_id = agofer.statement_id
-from dblink('dbname=agofer_08','SELECT id, statement_id FROM account_move_line;') as agofer
-(id integer, statement_id integer)
-inner join account_bank_statement abs on agofer.statement_id = abs.id
-where agofer.id = aml.id;

@@ -1,4 +1,4 @@
-insert into account_bank_statement_line (
+INSERT INTO account_bank_statement_line (
 	id, 
 	statement_id, 
 	sequence, 
@@ -13,7 +13,7 @@ insert into account_bank_statement_line (
 	amount_currency,
 	move_id,
 	payment_ref
-)select 
+) SELECT
 	agofer.id, 
 	agofer.statement_id, 
 	agofer.sequence, 
@@ -26,11 +26,10 @@ insert into account_bank_statement_line (
 	agofer.partner_name, 
 	agofer.amount, 
 	agofer.amount_currency,
-	--agofer.move_id,
-	'1921155',
+	agofer.move_id,
 	--agofer.payment_ref
 	'False'
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	statement_id, 
 	sequence, 
@@ -43,9 +42,9 @@ from dblink('dbname=agofer_08','SELECT
 	partner_name, 
 	amount, 
 	amount_currency	
-	FROM account_bank_statement_line
-	WHERE statement_id IS NOT null;'
-) as agofer(
+	from account_bank_statement_line
+	where statement_id is not null;'
+) AS agofer(
 	id integer, 
 	statement_id integer, 
 	sequence integer, 
@@ -58,14 +57,7 @@ from dblink('dbname=agofer_08','SELECT
 	partner_name character varying, 
 	amount numeric, 
 	amount_currency numeric
-)INNER JOIN account_bank_statement ABS ON ABS.id = agofer.statement_id
-where cast(agofer.create_date as date) >= '2019-01-01';
+)
+INNER JOIN account_bank_statement ABS ON ABS.id = agofer.statement_id;
 
 select setval('account_bank_statement_line_id_seq', (select max(id) from account_bank_statement_line));
-
-update account_move_line aml
-set statement_line_id = agofer.statement_line_id
-from dblink('dbname=agofer_08','SELECT id, statement_line_id FROM account_move_line;') as agofer
-(id integer, statement_line_id integer)
-inner join account_bank_statement_line abs on agofer.statement_line_id = abs.id
-where agofer.id = aml.id;
