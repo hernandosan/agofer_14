@@ -146,3 +146,25 @@ from dblink('dbname=agofer_08', 'select
 where cast(agofer.date as date) >= '2020-01-01';
 
 select setval('stock_move_id_seq', (select max(id) from stock_move));
+
+update stock_move sm 
+set location_id = 
+case
+	when agofer.location_id = 5 then 14 
+	when agofer.location_id = 7 then 15 
+	else 5 
+end
+from dblink('dbname=agofer_08','select id, location_id, location_dest_id from stock_move where location_id in (5, 7, 9);') as agofer 
+(id integer, location_id integer, location_dest_id integer) 
+where agofer.id = sm.id;
+
+update stock_move sm 
+set location_dest_id = 
+case
+	when agofer.location_dest_id = 5 then 14 
+	when agofer.location_dest_id = 7 then 15 
+	else 5 
+end
+from dblink('dbname=agofer_08','select id, location_id, location_dest_id from stock_move where location_dest_id in (5, 7, 9);') as agofer 
+(id integer, location_id integer, location_dest_id integer) 
+where agofer.id = sm.id;

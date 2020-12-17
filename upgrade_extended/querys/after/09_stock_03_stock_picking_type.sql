@@ -16,7 +16,8 @@ insert into stock_picking_type (
 	default_location_src_id, 
 	sequence_code,
 	company_id,
-	active
+	active,
+	show_entire_packs
 ) select 
 	agofer.id, 
 	agofer.code, 
@@ -36,6 +37,7 @@ insert into stock_picking_type (
 	agofer.default_location_src_id, 
 	agofer.code,
 	1,
+	True,
 	True
 from dblink('dbname=agofer_08', 'select
 	id, 

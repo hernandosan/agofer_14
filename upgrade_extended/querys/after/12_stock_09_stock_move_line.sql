@@ -87,3 +87,25 @@ from stock_pack_operation spo
 inner join stock_move sm on sm.picking_id = spo.picking_id and sm.product_id = spo.product_id;') as agofer (id integer, move_id integer) 
 inner join stock_move sm on sm.id = agofer.move_id
 where agofer.id = sml.id;
+
+update stock_move_line sml 
+set location_id = 
+case
+	when agofer.location_id = 5 then 14 
+	when agofer.location_id = 7 then 15 
+	else 5 
+end
+from dblink('dbname=agofer_08','select id, location_id, location_dest_id from stock_pack_operation where location_id in (5, 7, 9);') as agofer 
+(id integer, location_id integer, location_dest_id integer) 
+where agofer.id = sml.id;
+
+update stock_move_line sml 
+set location_dest_id = 
+case
+	when agofer.location_dest_id = 5 then 14 
+	when agofer.location_dest_id = 7 then 15 
+	else 5 
+end
+from dblink('dbname=agofer_08','select id, location_id, location_dest_id from stock_pack_operation where location_dest_id in (5, 7, 9);') as agofer 
+(id integer, location_id integer, location_dest_id integer) 
+where agofer.id = sml.id;

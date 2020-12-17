@@ -21,18 +21,18 @@ class DeliveryCarrier(models.Model):
         if vals.get('carrier_type') and vals.get('carrier_type') == 'stock':
             warehouse_id = self.env['stock.warehouse'].browse(vals.get('warehouse_id')).name or ''
             destination = vals.get('destination') or ''
-            price = str(vals.get('fixed_price') or '')
-            name = warehouse_id + ' -> ' + destination + ' $ ' + price
+            price = str(vals.get('price_kg') or '')
+            name = '%s -> %s $ %s' % (warehouse_id, destination, price)
             vals.update(name=name)
         return super(DeliveryCarrier, self).create(vals)
-    
+
     def write(self, vals):
-        if vals.get('carrier_type') or vals.get('warehouse_id') or vals.get('destination') or vals.get('fixed_price'):
+        if vals.get('carrier_type') or vals.get('warehouse_id') or vals.get('destination') or vals.get('price_kg'):
             for carrier in self:
                 if vals.get('carrier_type') == 'stock' or carrier.carrier_type == 'stock':
                     warehouse_id = self.env['stock.warehouse'].browse(vals.get('warehouse_id')).name or carrier.warehouse_id.id
                     destination = vals.get('destination') or carrier.destination
-                    price = str(vals.get('fixed_price') or carrier.fixed_price)
-                    name = warehouse_id + ' -> ' + destination + ' $ ' + price
+                    price = str(vals.get('price_kg') or carrier.fixed_price)
+                    name = '%s -> %s $ %s' % (warehouse_id, destination, price)
                     carrier.write({'name': name})
         return super(DeliveryCarrier, self).write(vals)

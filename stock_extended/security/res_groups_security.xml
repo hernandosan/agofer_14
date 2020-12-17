@@ -9,5 +9,10 @@
         <record id="stock.group_stock_user" model="res.groups">
             <field name="implied_ids" eval="[(4, ref('group_stock_info'))]"/>
         </record>
+
+        <record id="group_stock_hide" model="res.groups">
+            <field name="name">Stock Hide</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
     </data>
 </odoo>

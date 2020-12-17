@@ -52,7 +52,8 @@
                                         <field name="stock_move_id"/>
                                         <field name="date"/>
                                         <field name="product_id" invisible="True"/>
-                                        <field name="kardex_type"/>
+                                        <field name="move_type" invisible="True"/>
+                                        <field name="move_subtype"/>
                                         <field name="location_id"/>
                                         <field name="location_dest_id"/>
                                         <field name="qty_init"/>
@@ -116,7 +117,8 @@
                     <field name="stock_move_id"/>
                     <field name="date"/>
                     <field name="product_id" invisible="True"/>
-                    <field name="kardex_type"/>
+                    <field name="move_type" invisible="True"/>
+                    <field name="move_subtype"/>
                     <field name="location_id"/>
                     <field name="location_dest_id"/>
                     <field name="qty_init"/>
@@ -133,8 +135,10 @@
 
         <record model="ir.actions.act_window" id="action_stock_kardex_line">
             <field name="name">Report Kardex Line</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">stock.kardex.line</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_kardex_line_tree"/>
         </record>
     </data>
 </odoo>
