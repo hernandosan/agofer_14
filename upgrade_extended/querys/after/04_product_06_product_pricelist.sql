@@ -1,4 +1,4 @@
-insert into product_pricelist (
+INSERT INTO product_pricelist (
 	id, 
 	create_date, 
 	write_uid, 
@@ -9,7 +9,7 @@ insert into product_pricelist (
 	name, 
 	company_id,
 	discount_policy
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.write_uid, 
@@ -20,8 +20,9 @@ insert into product_pricelist (
 	agofer.create_uid, 
 	agofer.name, 
 	agofer.company_id,
+	--agofer.discount_policy
 	'with_discount'
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_date, 
 	write_uid, 
@@ -32,7 +33,7 @@ from dblink('dbname=agofer_08', 'select
 	name, 
 	company_id
 	from product_pricelist;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 
 	write_uid integer, 
@@ -42,6 +43,7 @@ from dblink('dbname=agofer_08', 'select
 	create_uid integer, 
 	name character varying, 
 	company_id integer
-) where agofer.id not in (select id from product_pricelist);
+)
+WHERE agofer.id NOT IN (SELECT id FROM product_pricelist);
 
 select setval('product_pricelist_id_seq', (select max(id) from product_pricelist));

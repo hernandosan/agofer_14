@@ -1,24 +1,23 @@
 INSERT INTO mail_message_subtype (
-	id,
+    id
 	create_uid,
 	create_date,
 	name,
 	res_model,
 	write_uid,
-	parent_id,
+	--parent_id,
 	write_date,
 	relation_field,
 	hidden,
 	description,
 	sequence
 )SELECT
-	agofer.id,
 	agofer.create_uid,
 	agofer.create_date,
 	agofer.name,
 	agofer.res_model,
 	agofer.write_uid,
-	agofer.parent_id,
+	--agofer.parent_id,
 	agofer.write_date,
 	agofer.relation_field,
 	agofer.hidden,
@@ -51,7 +50,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	hidden boolean,
 	description text,
 	sequence double precision
-) 
+)
 WHERE agofer.id NOT IN (SELECT id FROM mail_message_subtype);
 
 select setval('mail_message_subtype_id_seq', (select max(id) from mail_message_subtype));

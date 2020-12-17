@@ -1,4 +1,4 @@
-insert into mail_message (
+INSERT INTO mail_message (
 	id, 
 	body, 
 	record_name, 
@@ -19,7 +19,7 @@ insert into mail_message (
 	model, 
 	email_from,
 	message_type
-) select 
+) SELECT
 	agofer.id, 
 	agofer.body, 
 	agofer.record_name, 
@@ -32,17 +32,15 @@ insert into mail_message (
 	agofer.subject, 
 	agofer.create_uid, 
 	agofer.message_id, 
-	--agofer.parent_id, 
-	null,
+	agofer.parent_id,
 	agofer.res_id, 
 	agofer.subtype_id, 
 	agofer.reply_to, 
 	agofer.author_id, 
 	agofer.model, 
 	agofer.email_from,
-    --agofer.message_type
-	'comment'
-from dblink('dbname=agofer_08', 'select
+    agofer.type
+FROM dblink('dbname=agofer_08', 'select
 	id,
 	body,
 	record_name,
@@ -61,9 +59,10 @@ from dblink('dbname=agofer_08', 'select
 	reply_to,
 	author_id,
 	model,
-	email_from
+	email_from,
+	type
 	from mail_message;'
-) as agofer(
+) AS agofer(
 	id integer,
 	body text,
 	record_name character varying,
@@ -82,9 +81,11 @@ from dblink('dbname=agofer_08', 'select
 	reply_to character varying,
 	author_id integer,
 	model character varying,
-	email_from character varying
-) inner join ir_model im on im.model = agofer.model 
-where agofer.id not in (select id from mail_message)
-AND cast(agofer.date as date) >= '2020-12-01';
+	email_from character varying,
+	type character varying
+)
+INNER JOIN ir_model im ON im.model = agofer.model
+WHERE agofer.id NOT IN (SELECT id FROM mail_message)
+AND CAST(agofer.date as date) >= '2020-01-01';
 
 select setval('mail_message_id_seq', (select max(id) from mail_message));

@@ -1,6 +1,4 @@
-update stock_warehouse set code = code || '.';
-
-insert into stock_warehouse (
+INSERT INTO stock_warehouse (
 	id, 
 	mto_pull_id, 
 	code, 
@@ -33,7 +31,7 @@ insert into stock_warehouse (
 	manufacture_to_resupply,
 	manufacture_steps,
 	active
-) select 
+) SELECT
 	agofer.id, 
 	--agofer.mto_pull_id, 
 	null,
@@ -69,7 +67,7 @@ insert into stock_warehouse (
 	'mrp_one_step',
 	--agofer.active
 	TRUE
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	mto_pull_id, 
 	code, 
@@ -101,7 +99,7 @@ from dblink('dbname=agofer_08', 'select
 	manufacture_pull_id, 
 	manufacture_to_resupply
 	from stock_warehouse;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	mto_pull_id integer, 
 	code character varying, 
@@ -133,6 +131,6 @@ from dblink('dbname=agofer_08', 'select
 	manufacture_pull_id integer, 
 	manufacture_to_resupply boolean
 ) 
-where agofer.id not in (select id from stock_warehouse);
+WHERE agofer.id NOT IN (SELECT id FROM stock_warehouse);
 
 select setval('stock_warehouse_id_seq', (select max(id) from stock_warehouse));

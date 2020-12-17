@@ -1,4 +1,4 @@
-insert into stock_quant_package (
+INSERT INTO stock_quant_package (
 	id, 
 	create_uid, 
 	create_date, 
@@ -8,7 +8,7 @@ insert into stock_quant_package (
 	write_date, 
 	packaging_id, 
 	location_id
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.create_date, 
@@ -18,7 +18,7 @@ insert into stock_quant_package (
 	agofer.write_date, 
 	agofer.packaging_id, 
 	agofer.location_id
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	create_uid, 
 	create_date, 
@@ -29,7 +29,7 @@ from dblink('dbname=agofer_08','SELECT
 	packaging_id, 
 	location_id
 	FROM stock_quant_package;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	create_date timestamp without time zone, 

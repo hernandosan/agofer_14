@@ -1,4 +1,4 @@
-insert into crm_team (
+INSERT INTO crm_team (
 	id, 
 	color, 
 	write_uid, 
@@ -9,9 +9,12 @@ insert into crm_team (
 	user_id, 
 	name, 
 	use_quotations, 
-	invoiced_target
-	alias_id
-) select 
+	invoiced_target,
+	alias_id,
+    use_leads,
+    use_opportunities,
+	company_id
+) SELECT
 	agofer.id, 
 	agofer.color, 
 	agofer.write_uid, 
@@ -23,8 +26,12 @@ insert into crm_team (
 	agofer.name, 
 	agofer.use_quotations, 
 	agofer.invoiced_target,
+	agofer.alias_id,
+    agofer.use_leads,
+    agofer.use_opportunities,
+	--agofer.company_id
 	1
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	color, 
 	write_uid, 
@@ -35,9 +42,12 @@ from dblink('dbname=agofer_08','SELECT
 	user_id, 
 	name, 
 	use_quotations, 
-	invoiced_target
-	FROM crm_case_section;'
-) as agofer(
+	invoiced_target,
+	alias_id,
+    use_leads,
+    use_opportunities
+	from crm_case_section;'
+) AS agofer(
 	id integer, 
 	color integer, 
 	write_uid integer, 
@@ -48,7 +58,11 @@ from dblink('dbname=agofer_08','SELECT
 	user_id integer, 
 	name character varying, 
 	use_quotations boolean, 
-	invoiced_target integer
-) where agofer.id not in (select id from crm_team);
+	invoiced_target integer,
+	alias_id integer,
+    use_leads boolean,
+    use_opportunities boolean
+)
+WHERE agofer.id NOT IN (SELECT id FROM crm_team);
 
 select setval('crm_team_id_seq', (select max(id) from crm_team));

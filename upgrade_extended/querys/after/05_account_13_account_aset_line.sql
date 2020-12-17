@@ -1,4 +1,4 @@
-insert into account_asset_line (
+INSERT INTO account_asset_line (
 	id, 
 	asset_id, 
 	create_uid, 
@@ -12,7 +12,7 @@ insert into account_asset_line (
 	move_id, 
 	depreciated_value,
 	line_date
-) select 
+) SELECT
 	agofer.id, 
 	agofer.asset_id, 
 	agofer.create_uid, 
@@ -26,7 +26,7 @@ insert into account_asset_line (
 	agofer.move_id, 
 	agofer.depreciated_value,
 	agofer.depreciation_date
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	asset_id, 
 	create_uid, 
@@ -40,8 +40,8 @@ from dblink('dbname=agofer_08','SELECT
 	move_id, 
 	depreciated_value,
 	depreciation_date
-	FROM account_asset_depreciation_line;'
-) as agofer(
+	from account_asset_depreciation_line;'
+) AS agofer(
 	id integer, 
 	asset_id integer, 
 	create_uid integer, 

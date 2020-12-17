@@ -70,8 +70,6 @@ FROM dblink('dbname=agofer_08', 'select
 	oauth_uid character varying, 
 	oauth_provider_id integer
 )
-WHERE agofer.id NOT IN (select id from res_users);
+WHERE agofer.id NOT IN (SELECT id FROM res_users);
 
 select setval('res_users_id_seq', (select max(id) from res_users));
-
-update res_users set active = False where login not like '%agofer%' and login != 'admin';

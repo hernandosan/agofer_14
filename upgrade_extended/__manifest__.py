@@ -21,19 +21,9 @@
         # Avancys
         'account_avancys',
         'hr_avancys',
-        # OCA 
+        # OCA
         'account_asset_management',
         'auth_oauth_multi_token',
-        # Extended
-        'account_extended',
-        'base_user_role_extended',
-        'helpdesk_mgmt_extended',
-        'hr_extended',
-        'mrp_extended',
-        'sale_extended',
-        'stock_account_extended',
-        'stock_extended',
-        'purchase_extended',
         # Odoo 
         'auth_oauth',
         'base_address_city',
@@ -46,6 +36,16 @@
         'mass_mailing',
         'l10n_co',
         'website',
+        # Extended
+        'account_extended',
+        'base_user_role_extended',
+        'helpdesk_mgmt_extended',
+        'hr_extended',
+        'mrp_extended',
+        'sale_extended',
+        'stock_account_extended',
+        'stock_extended',
+        'purchase_extended',
     ],
 
     # always loaded

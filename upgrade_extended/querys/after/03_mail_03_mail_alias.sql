@@ -1,4 +1,4 @@
-insert into mail_alias (
+INSERT INTO mail_alias (
 	id, 
 	create_uid, 
 	alias_parent_thread_id, 
@@ -12,7 +12,7 @@ insert into mail_alias (
 	write_date, 
 	create_date, 
 	alias_name
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.alias_parent_thread_id, 
@@ -27,7 +27,7 @@ insert into mail_alias (
 	agofer.create_date, 
 	--agofer.alias_name,
 	cast(agofer.id as character varying)
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	create_uid, 
 	alias_parent_thread_id, 
@@ -42,7 +42,7 @@ from dblink('dbname=agofer_08','SELECT
 	create_date, 
 	alias_name
 	FROM mail_alias;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	create_uid integer, 
 	alias_parent_thread_id integer, 
@@ -56,8 +56,9 @@ from dblink('dbname=agofer_08','SELECT
 	write_date timestamp without time zone, 
 	create_date timestamp without time zone, 
 	alias_name character varying
-)inner join ir_model im1 on im1.id = agofer.alias_model_id 
-inner join ir_model im2 on im2.id = agofer.alias_parent_model_id
-where agofer.id not in (select id from mail_alias);
+)
+INNER JOIN ir_model im1 ON im1.id = agofer.alias_model_id
+INNER JOIN ir_model im2 ON im2.id = agofer.alias_parent_model_id
+WHERE agofer.id NOT IN (SELECT id FROM mail_alias);
 
 select setval('mail_alias_id_seq', (select max(id) from mail_alias));

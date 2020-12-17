@@ -1,4 +1,4 @@
-insert into account_move_line (
+INSERT INTO account_move_line (
 	id, 
 	create_date, 
 	statement_id, 
@@ -24,7 +24,7 @@ insert into account_move_line (
 	amount_currency, 
 	quantity, 
 	statement_line_id
-)select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	--agofer.statement_id,
@@ -53,7 +53,7 @@ insert into account_move_line (
 	agofer.quantity,
 	--agofer.statement_line_id,
 	null
-from dblink('dbname=agofer_08','SELECT
+FROM dblink('dbname=agofer_08','SELECT
 	id,
 	create_date,
 	statement_id,
@@ -80,7 +80,7 @@ from dblink('dbname=agofer_08','SELECT
 	quantity,
 	statement_line_id
 	FROM account_move_line;'
-) as agofer(
+) AS agofer(
 	id integer,
 	create_date timestamp without time zone,
 	statement_id integer,
@@ -106,7 +106,8 @@ from dblink('dbname=agofer_08','SELECT
 	amount_currency numeric,
 	quantity numeric,
 	statement_line_id integer
-) INNER JOIN account_move am ON am.id = agofer.move_id
+)
+INNER JOIN account_move am ON am.id = agofer.move_id
 INNER JOIN account_journal aj ON aj.id = agofer.journal_id
 INNER JOIN account_account aa ON aa.id = agofer.account_id;
 

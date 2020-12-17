@@ -1,4 +1,4 @@
-insert into account_asset_profile (
+INSERT INTO account_asset_profile (
 	id, 
 	method_number, 
 	create_date, 
@@ -20,7 +20,7 @@ insert into account_asset_profile (
 	account_analytic_id, 
 	method,
 	active
-) select 
+) SELECT
 	agofer.id, 
 	agofer.method_number, 
 	agofer.create_date, 
@@ -44,7 +44,7 @@ insert into account_asset_profile (
 	agofer.method,
 	--agofer.active
 	TRUE
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	method_number, 
 	create_date, 
@@ -64,8 +64,8 @@ from dblink('dbname=agofer_08','SELECT
 	open_asset,
 	account_analytic_id, 
 	method
-	FROM account_asset_category;'
-) as agofer(
+	from account_asset_category;'
+) AS agofer(
 	id integer, 
 	method_number integer, 
 	create_date timestamp without time zone, 
@@ -85,6 +85,7 @@ from dblink('dbname=agofer_08','SELECT
 	open_asset boolean, 
 	account_analytic_id integer,
 	method character varying
-)INNER JOIN account_journal aj ON agofer.journal_id = aj.id;
+)
+INNER JOIN account_journal aj ON agofer.journal_id = aj.id;
 
 select setval('account_asset_profile_id_seq', (select max(id) from account_asset_profile));

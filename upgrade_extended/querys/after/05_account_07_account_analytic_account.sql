@@ -1,4 +1,4 @@
-insert into account_analytic_account (
+INSERT INTO account_analytic_account (
 	id, 
 	code, 
 	create_date, 
@@ -9,7 +9,7 @@ insert into account_analytic_account (
 	name, 
 	company_id,
 	active
-)select 
+) SELECT
 	agofer.id, 
 	agofer.code, 
 	agofer.create_date, 
@@ -21,7 +21,7 @@ insert into account_analytic_account (
 	agofer.company_id,
 	--agofer.active
 	TRUE
-from dblink('dbname=agofer_08','SELECT  
+FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	code, 
 	create_date, 
@@ -32,7 +32,7 @@ from dblink('dbname=agofer_08','SELECT
 	name, 
 	company_id
 	FROM account_analytic_account;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	code character varying, 
 	create_date timestamp without time zone, 
@@ -42,6 +42,6 @@ from dblink('dbname=agofer_08','SELECT
 	create_uid integer, 
 	name character varying, 
 	company_id integer
-) where agofer.id not in (select id from account_analytic_account);
+);
 
 select setval('account_analytic_account_id_seq', (select max(id) from account_analytic_account));
