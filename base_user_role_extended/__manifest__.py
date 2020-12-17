@@ -30,8 +30,11 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/res_users_role_credit.xml',
         'data/res_users_role_sale.xml',
         'data/res_users_role_stock.xml',
+        'data/res_users_role_supply.xml',
+        'data/res_users_role_treasury.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
