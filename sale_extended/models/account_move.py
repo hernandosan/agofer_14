@@ -7,6 +7,14 @@ from odoo.exceptions import UserError, ValidationError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    delivery_state = fields.Selection([
+        ('pending','Pending'),
+        ('progress','Progress'),
+        ('partial','Partial'),
+        ('delivered', 'Delivered')
+    ], 'Delivery State')
+    order_id = fields.Many2one('sale.order', 'Sale Order', copy=False)
+
     def action_post(self):
         res = super(AccountMove, self).action_post()
         self.action_after_post()
@@ -19,8 +27,8 @@ class AccountMove(models.Model):
     def _action_account_corssover(self):
         # Create crossover
         self.ensure_one()
-        sale_id = self.sale_id
-        if not sale_id:
+        order_id = self.order_id
+        if not order_id:
             return False
         move_vals = self._prepare_crossover_move_values()
         if not move_vals:
@@ -30,16 +38,16 @@ class AccountMove(models.Model):
         for line in move_id.line_ids:
             line_one = line
             line_two = self.env['account.move.line'].browse(int(line.ref))
-            lines = line_one + line_two
+            lines = line_one | line_two
             lines.reconcile()
         return True
 
     def _prepare_crossover_move_values(self):
         self.ensure_one()
-        sale_id = self.sale_id
-        if not sale_id:
+        order_id = self.order_id
+        if not order_id:
             raise ValidationError(_("The payment %s has not sale order") % self.name)
-        journal_id = sale_id.team_id._team_crossover_journal() if sale_id.team_id else sale_id.partner_id._partner_crossover_journal()
+        journal_id = order_id.team_id._team_crossover_journal() if order_id.team_id else order_id.partner_id._partner_crossover_journal()
         line_ids = self._prepare_crossover_move_line_values()
         if not line_ids:
             return False
@@ -55,7 +63,7 @@ class AccountMove(models.Model):
     def _prepare_crossover_move_line_values(self):
         self.ensure_one()
         line_ids = []
-        reconciled_pays = self.sale_id._sale_payments_id().move_id.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+        reconciled_pays = self.order_id._sale_payments_id().move_id.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
         amount_pay = abs(sum(line.currency_id.with_context(date=line.date).compute(line.amount_residual, self.currency_id) for line in reconciled_pays)) or 0.0
         reconciled_lines = self.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
         amount_line = abs(sum(line.currency_id.with_context(date=line.date).compute(line.amount_residual, self.currency_id) for line in reconciled_lines)) or 0.0

@@ -10,36 +10,38 @@ class DeliveryGuide(models.Model):
     _order = 'id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True, default=lambda self: self.env.company)
-    currency_id = fields.Many2one(related='company_id.currency_id', store=True)
-    name = fields.Char('Number', required=True, readonly=True, default='New', copy=False)
-    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
-    guide_bool = fields.Boolean('Has Return', default=False, copy=False)
-    parent_id = fields.Many2one('res.partner', 'Carrier', required=True)
-    partner_id = fields.Many2one('res.partner', 'Driver')
-    partner_name = fields.Char(related='partner_id.name')
-    partner_mobile = fields.Char(related='partner_id.mobile')
-    partner_comment = fields.Text(related='partner_id.comment')
-    carrier_id = fields.Many2one('delivery.carrier', 'Tariff', required=True)
-    tolerance = fields.Float('Tolerance (%)', copy=False)
     analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
-    scheduled_date = fields.Date('Scheduled Date', required=True)
-    progress_date = fields.Date('Progress Date')
-    delivered_date = fields.Date('Delivered Date')
-    checked_date = fields.Date('Checked Date')
-    invoiced_date = fields.Date('Invoiced Date')
-    price_kg = fields.Monetary('Carrier Price')
-    price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
-    weight = fields.Float('Weight', compute='_compute_weight', digits='Stock Weight', store=True)
-    # weight = fields.Float('Weight', digits='Stock Weight')
-    price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
-    notes = fields.Text('Terms and Conditions')
+    carrier_id = fields.Many2one('delivery.carrier', 'Tariff', required=True)
+    company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True, default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related='company_id.currency_id', store=True)
+    date_progress = fields.Date('Progress Date')
+    date_delivered = fields.Date('Delivered Date')
+    date_checked = fields.Date('Checked Date')
+    date_invoiced = fields.Date('Invoiced Date')
+    driver_comment = fields.Text(related='partner_id.comment')
+    driver_id = fields.Many2one('res.partner', 'Driver')
+    driver_mobile = fields.Char(related='partner_id.mobile')
+    driver_name = fields.Char(related='partner_id.name')
+    guide_bool = fields.Boolean('Has Return', default=False, copy=False)
+    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
     invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices', copy=False)
-    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings', copy=False)
-    moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves', copy=False)
     invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id', 'Credit Notes', copy=False)
+    moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves', copy=False)
     moves_returns_ids = fields.Many2many('stock.move', 'guide_move_return_rel', 'guide_id', 'move_id', 'Stock Moves Return', copy=False)
+    name = fields.Char('Number', required=True, readonly=True, default='New', copy=False)    
+    notes = fields.Text('Terms and Conditions')
+    partner_id = fields.Many2one('res.partner', 'Carrier', required=True)
+    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings', copy=False)
+    price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
+    price_kg = fields.Monetary('Carrier Price')
+    price_standby = fields.Monetary('Stand By')
+    price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
+    scheduled_date = fields.Date('Scheduled Date', required=True)
+    tolerance = fields.Float('Tolerance (%)', copy=False)
+    weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
+    weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
+    weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     state = fields.Selection([
         ('draft','Draft'),
         ('confirm','Confirm'),
@@ -49,15 +51,22 @@ class DeliveryGuide(models.Model):
         ('invoiced','Invoiced'),
         ('cancel','Cancel')], 'State', default='draft', copy=False, tracking=True)
 
-    @api.depends('moves_ids')
+    @api.depends('moves_ids', 'moves_returns_ids')
     def _compute_weight(self):
         for guide in self:
-            guide.weight = sum(move.weight for move in guide.moves_ids if move.state != 'cancel')
+            weight_invoice = sum(move.weight for move in guide.moves_ids if move.state != 'cancel')
+            weight_return = sum(move.weight for move in guide.moves_returns_ids if move.state != 'cancel')
+            weight_total = weight_invoice + weight_return
+            guide.update({
+                'weight_invoice': weight_invoice,
+                'weight_return': weight_return,
+                'weight_total': weight_total,
+            })
 
-    @api.depends('price', 'weight')
+    @api.depends('price', 'weight_total')
     def _compute_price_total(self):
         for guide in self:
-            guide.price_total = guide.price * guide.weight
+            guide.price_total = (guide.price * guide.weight_total) + guide.price_standby
 
     @api.onchange('carrier_id')
     def _onchange_carrier_id(self):

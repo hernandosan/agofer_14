@@ -29,7 +29,7 @@
                     <field name="move_id" decoration-bf="1"/>
                     <field name="partner_id"/>
                     <field name="journal_id"/>
-                    <field name="weight"/>
+                    <field name="weight_invoiced"/>
                     <field name="weight_returned"/>
                     <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
                     <field name="activity_exception_decoration" widget="activity_exception"/>
@@ -57,17 +57,20 @@
                             <group>
                                 <field name="user_id" invisible="True" />
                                 <field name="partner_id" required="True" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="journal_id" required="True" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="journal_id" required="True" domain="[('type','=','purchase')]"
+                                    attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="weight" />
-                                <field name="weight_returned" />
+                                <field name="weight_invoiced"/>
+                                <field name="weight_returned"/>
+                                <field name="move_id" attrs="{'invisible':[('move_id','=',False)]}"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Guides">
-                                <field name="guides_ids" domain="[('partner_id','=',partner_id)]" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="guides_ids" domain="[('partner_id','=',partner_id),('state','=','checked')]" 
+                                    attrs="{'readonly':[('state','!=','draft')]}"/>
                             </page>
                             <page string="Notes">
                                 <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>

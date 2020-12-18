@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <search string="Delivery Guide">
                     <field name="name" string="Name"/>
-                    <field name="parent_id" string="Carrier"/>
-                    <field name="partner_id" string="Driver"/>
+                    <field name="partner_id" string="Carrier"/>
+                    <field name="driver_id" string="Driver"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
                     <filter string="Invoiced" name="invoiced" domain="[('state', '=', 'invoiced')]"/>
@@ -21,8 +21,8 @@
                     <filter invisible="1" string="Future Activities" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                     <group expand="0" string="Group By">
                         <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
-                        <filter string="Carrier" name="group_parent_id" context="{'group_by': 'parent_id'}"/>
-                        <filter string="Driver" name="group_partner_id" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Carrier" name="group_partner_id" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Driver" name="group_driver_id" context="{'group_by': 'driver_id'}"/>
                         <filter string="Scheduled Date" name="group_date" context="{'group_by': 'scheduled_date'}"/>
                     </group>
                 </search>
@@ -37,12 +37,12 @@
                 <tree string="Delivery Guides" 
                     decoration-success="state == 'invoiced'" decoration-info="state == 'delivered'">
                     <field name="name" decoration-bf="1"/>
-                    <field name="parent_id"/>
                     <field name="partner_id"/>
+                    <field name="driver_id"/>
                     <field name="carrier_id" optional="hide"/>
                     <field name="scheduled_date"/>
                     <field name="price" optional="hide"/>
-                    <field name="weight"/>
+                    <field name="weight_invoice"/>
                     <field name="price_total"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="state" widget="badge" decoration-success="state == 'invoiced'" decoration-info="state == 'draft'"/>
@@ -81,9 +81,9 @@
                             <group>
                                 <field name="guide_type" invisible="True"/>
                                 <field name="guide_bool" invisible="True"/>
-                                <field name="parent_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="partner_id" domain="[('parent_id','=',parent_id)]" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="carrier_id" domain="[('partner_id','=',parent_id),('carrier_type','=','stock')]" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="partner_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="driver_id" domain="[('parent_id','=',partner_id)]" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="carrier_id" domain="[('partner_id','=',partner_id),('carrier_type','=','stock')]" attrs="{'readonly':[('state','!=','draft')]}" />
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
@@ -91,12 +91,17 @@
                                 <field name="price_kg" invisible="True" />
                                 <field name="tolerance" invisible="True" />
                                 <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="weight" />
+                                <field name="weight_invoice" invisible="True" />
+                                <field name="weight_return" invisible="True" />
+                                <field name="weight_total" />
+                                <field name="price_standby" attrs="{'readonly':[('state','!=','draft')]}" />
                                 <field name="price_total" />
                             </group>
                             <group>
-                                <field name="analytic_id" groups="analytic.group_analytic_accounting" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="analytic_id" required="True" groups="analytic.group_analytic_accounting" 
+                                    attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="analytic_tag_ids" required="False" widget="many2many_tags" groups="analytic.group_analytic_tags"  
+                                    attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                         </group>
                         <notebook>
@@ -128,8 +133,8 @@
                                         <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')" decoration-success="payment_state in ('paid', 'reversed')" attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}" optional="hide"/>
                                         <field name="delivery_state" widget="badge" decoration-success="delivery_state == 'delivered'" decoration-info="delivery_state == 'progress'" optional="show"/>
                                         <field name="move_type" invisible="True"/>
-                                        <button name="action_delivery_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/>
-                                        <button name="action_delivery_return" string="Return" type="object" icon="fa-close text-danger" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/> 
+                                        <button name="action_guide_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/>
+                                        <button name="action_guide_return" string="Return" type="object" icon="fa-close text-danger" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/> 
                                     </tree>
                                 </field>
                                 <separator string="Moves"/>
@@ -163,7 +168,7 @@
                                         <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')" decoration-success="payment_state in ('paid', 'reversed')" attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}" optional="hide"/>
                                         <field name="delivery_state" widget="badge" decoration-success="delivery_state == 'delivered'" decoration-info="delivery_state == 'progress'" optional="show"/>
                                         <field name="move_type" invisible="True"/>
-                                        <button name="action_delivery_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'pending')]}"/>
+                                        <button name="action_guide_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'pending')]}"/>
                                     </tree>
                                 </field>
                                 <separator string="Moves"/>
@@ -178,23 +183,23 @@
                             <page string="Tracking" attrs="{'invisible':[('state','in',('draft','cancel'))]}">
                                 <group>
                                     <group>
-                                        <field name="progress_date" string="Departure Date" readonly="True" />
-                                        <field name="delivered_date" readonly="True" />
+                                        <field name="date_progress" string="Departure Date" readonly="True" />
+                                        <field name="date_delivered" readonly="True" />
                                     </group>
                                     <group>
-                                        <field name="checked_date" readonly="True" />
-                                        <field name="invoiced_date" readonly="True" />
+                                        <field name="date_checked" readonly="True" />
+                                        <field name="date_invoiced" readonly="True" />
                                     </group>
                                 </group>
                             </page>
                             <page string="Driver">
                                 <group>
                                     <group>
-                                        <field name="partner_name" readonly="True" />
-                                        <field name="partner_mobile" readonly="True" />
+                                        <field name="driver_name" readonly="True" />
+                                        <field name="driver_mobile" readonly="True" />
                                     </group>
                                     <group>
-                                        <field name="partner_comment" readonly="True" />
+                                        <field name="driver_comment" readonly="True" />
                                     </group>
                                 </group>
                             </page>

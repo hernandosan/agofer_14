@@ -12,26 +12,30 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
-    shipping_bool = fields.Boolean('Shipping Bool', copy=False)
-    shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
-    pick_bool = fields.Boolean('Pick Bool')
-    pick_date = fields.Date('Pick Date')
-    upload_date = fields.Date('Upload Date')
-    upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
-    delivery_bool = fields.Boolean('Delivery Bool')
+    # Delivery
     delivery_assistant = fields.Boolean('Delivery Assistant')
+    delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
-    # Payment
+    # Payments
+    payment_account_id = fields.Many2one(related='team_id.account_advance_id')
+    payment_journal_id = fields.Many2one(related='team_id.journal_advance_id')
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
-    payment_journal_id = fields.Many2one(related='team_id.advance_journal_id')
-    payment_account_id = fields.Many2one(related='team_id.advance_account_id')
-    # Team
-    teams_ids = fields.Many2many(related='user_id.teams_ids')
+    # Pick
+    pick_bool = fields.Boolean('Pick Bool')
+    pick_date = fields.Date('Pick Date')
     # Pricelist
     pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
+    # Shipping
+    shipping_bool = fields.Boolean('Shipping Bool', copy=False)
+    shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
     # Stock
     warehouses_ids = fields.Many2many(related='team_id.warehouses_ids')
+    # Team
+    teams_ids = fields.Many2many(related='user_id.teams_ids')
+    # Upload
+    upload_date = fields.Date('Upload Date')
+    upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):
@@ -263,8 +267,8 @@ class SaleOrder(models.Model):
 
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
-        journal_id = self.team_id._team_invoice_journal_id()
-        invoice_vals.update(journal_id=journal_id.id)
+        journal_id = self.team_id._team_return_journal_id() if invoice_vals.get('move_type') == 'out_refund' else self.team_id._team_invoice_journal_id()
+        invoice_vals.update(journal_id=journal_id.id, delivery_state='pending', order_id=self.id)
         return invoice_vals
 
 

@@ -319,7 +319,7 @@
                                 </field>
                             </page>
                             <page string="Invoices" states="progress,done">
-                                <field name="moves_ids" attrs="{'readonly': [('state','!=','progress')]}" 
+                                <field name="moves_ids" attrs="{'readonly': [('state','!=','progress')]}" context="{'default_move_type': 'in_invoice'}"
                                     domain="[('move_type', '=', 'in_invoice'),('state', '!=', 'cancel'),('import_bool', '=', False),('import_type', 'not in', ('tariff','vat'))]"/>
                             </page>
                             <page string="Other Information">

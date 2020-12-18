@@ -29,10 +29,11 @@
                     <page string="Other info">
                         <group>
                             <group string='Account' groups="account.group_account_invoice">
-                                <field name="advance_account_id"/>
-                                <field name="advance_journal_id"/>
-                                <field name="crossover_journal_id"/>
-                                <field name="invoice_journal_id"/>
+                                <field name="account_advance_id"/>
+                                <field name="journal_advance_id"/>
+                                <field name="journal_crossover_id"/>
+                                <field name="journal_invoice_id"/>
+                                <field name="journal_return_id"/>
                             </group>
                             <group string='Stock' groups="stock.group_stock_user">
                                 <field name="warehouses_ids" required="True" widget="many2many_tags"/>

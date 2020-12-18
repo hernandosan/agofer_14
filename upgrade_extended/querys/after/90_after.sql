@@ -228,7 +228,7 @@ where agofer.id = sr.id;
 
 --Update stock_picking
 update stock_picking as sp
-set sale_id = so.id
+set order_id = so.id
 from procurement_group pg
 inner join sale_order so on so.name = pg.name
 where pg.id = sp.group_id;
@@ -241,7 +241,7 @@ where sm.picking_id = sp.id;
 
 update stock_picking set scheduled_date = date where scheduled_date is null;
 
-update stock_picking set shipping_type = null where sale_id is null;
+update stock_picking set shipping_type = null where order_id is null;
 
 update stock_picking as sp
 set shipping_type = null

@@ -17,14 +17,14 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base_user_role',
-        'sales_team',
-        'purchase',
-        'product',
-        'mrp',
-        'account_extended',
         'account_credit_control',
-        'purchase'
+        'account_extended',
+        'base_user_role',
+        'mrp',
+        'product',
+        'purchase',
+        'sales_team',
+        'stock_extended',
     ],
 
     # always loaded

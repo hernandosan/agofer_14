@@ -63,3 +63,10 @@ from dblink('dbname=agofer_08', 'select
 where agofer.date_origin >= '2019-01-01';
 
 select setval('purchase_import_id_seq', (select max(id) from purchase_import));
+
+update purchase_import as po 
+set currency_id = rc.id
+FROM dblink('dbname=agofer_08','select po.id, rc.name from purchase_import po inner join res_currency rc on rc.id = currency_id;') AS agofer 
+(id integer, name character varying) 
+inner join res_currency rc on rc.name = agofer.name 
+where po.id = agofer.id;
