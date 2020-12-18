@@ -35,12 +35,14 @@ INSERT INTO product_template (
 	agofer.weight, 
 	agofer.color, 
 	agofer.write_uid, 
-	agofer.uom_id, 
+	--agofer.uom_id,
+	1,
 	agofer.description_purchase, 
 	agofer.create_date, 
 	agofer.create_uid, 
 	agofer.company_id, 
-	agofer.uom_po_id, 
+	--agofer.uom_po_id,
+	1,
 	agofer.type, 
 	agofer.description, 
 	agofer.volume, 
@@ -58,6 +60,7 @@ INSERT INTO product_template (
 	agofer.purchase_line_warn, 
 	agofer.sale_line_warn, 
 	agofer.landed_cost_ok,
+	agofer.upload_delay,
 	--agofer.tracking
 	'none'
 FROM dblink('dbname=agofer_08', 'select

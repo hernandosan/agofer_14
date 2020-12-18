@@ -26,7 +26,8 @@ INSERT INTO account_bank_statement_line (
 	agofer.partner_name, 
 	agofer.amount, 
 	agofer.amount_currency,
-	agofer.move_id,
+	--agofer.move_id,
+	59522,
 	--agofer.payment_ref
 	'False'
 FROM dblink('dbname=agofer_08','select

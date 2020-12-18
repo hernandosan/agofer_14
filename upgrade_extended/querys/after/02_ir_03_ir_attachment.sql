@@ -71,6 +71,7 @@ FROM dblink('dbname=agofer_08', 'select
     name character varying,
     mimetype character varying,
     index_content text
-);
+)
+WHERE agofer.id NOT IN (SELECT id FROM ir_attachment);
 
 select setval('ir_attachment_id_seq', (select max(id) from ir_attachment));

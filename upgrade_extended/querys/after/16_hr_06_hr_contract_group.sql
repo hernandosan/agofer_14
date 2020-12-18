@@ -1,43 +1,35 @@
-INSERT INTO account_fiscal_position (
-	id,
+INSERT INTO hr_contract_group (
+	id, 
     create_uid,
     create_date,
-    position_id,
-    tax_src_id,
+    name,
     write_uid,
-    tax_dest_id,
     write_date,
     company_id
 ) SELECT
-	agofer.id,
+	agofer.id, 
     agofer.create_uid,
     agofer.create_date,
-    agofer.position_id,
-    agofer.tax_src_id,
+    agofer.name,
     agofer.write_uid,
-    agofer.tax_dest_id,
     agofer.write_date,
     --agofer.company_id
     1
 FROM dblink('dbname=agofer_08','select
-	id,
+	id, 
     create_uid,
     create_date,
-    position_id,
-    tax_src_id,
+    name,
     write_uid,
-    tax_dest_id,
     write_date
-	from account_fiscal_position;'
+	from hr_contract_group;'
 ) AS agofer(
-	id integer,
+	id integer, 
     create_uid integer,
     create_date timestamp without time zone,
-    position_id integer,
-    tax_src_id integer,
+    name character varying,
     write_uid integer,
-    tax_dest_id integer,
     write_date timestamp without time zone
 );
 
-select setval('account_fiscal_position_id_seq', (select max(id) from account_fiscal_position));
+select setval('hr_contract_group_id_seq', (select max(id) from hr_contract_group));

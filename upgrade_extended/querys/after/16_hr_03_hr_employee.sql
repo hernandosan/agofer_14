@@ -27,16 +27,19 @@ insert into hr_employee (
 	children, 
 	vehicle, 
 	place_of_birth,
-	company_id
+	company_id,
+	active,
+	partner_id,
+    user_partner_id
 ) select 
 	agofer.id, 
 	agofer.address_id, 
 	agofer.create_date, 
 	agofer.coach_id, 
-	--agofer.resource_id, 
-	1,
+	agofer.resource_id,
 	agofer.color, 
-	agofer.marital, 
+	--agofer.marital,
+	case when agofer.marital = 'common-law relationship' then 'cohabitant' else agofer.marital end,
 	agofer.job_id, 
 	agofer.work_phone, 
 	agofer.country_id, 
@@ -59,38 +62,45 @@ insert into hr_employee (
 	agofer.vehicle, 
 	agofer.place_of_birth,
 	--agofer.company_id
-	1
-from dblink('dbname=agofer_08','SELECT 
-	id, 
-	address_id, 
-	create_date, 
-	coach_id, 
-	resource_id, 
-	color, 
-	marital, 
-	job_id, 
-	work_phone, 
-	country_id, 
-	bank_account_id, 
-	parent_id, 
-	department_id, 
-	mobile_phone, 
-	create_uid, 
-	birthday, 
-	write_date, 
-	sinid, 
-	write_uid, 
-	work_email, 
-	work_location, 
-	notes, 
-	passport_id, 
-	gender, 
-	ssnid, 
-	children, 
-	vehicle, 
-	place_of_birth
-	FROM hr_employee;'
-) as agofer(
+	1,
+	agofer.active,
+	agofer.partner_id,
+    --agofer.user_partner_id
+    null
+from dblink('dbname=agofer_08','select
+	HE.id,
+	HE.address_id,
+	HE.create_date,
+	HE.coach_id,
+	HE.resource_id,
+	HE.color,
+	HE.marital,
+	HE.job_id,
+	HE.work_phone,
+	HE.country_id,
+	HE.bank_account_id,
+	HE.parent_id,
+	HE.department_id,
+	HE.mobile_phone,
+	HE.create_uid,
+	HE.birthday,
+	HE.write_date,
+	HE.sinid,
+	HE.write_uid,
+	HE.work_email,
+	HE.work_location,
+	HE.notes,
+	HE.passport_id,
+	HE.gender,
+	HE.ssnid,
+	HE.children,
+	HE.vehicle,
+	HE.place_of_birth,
+	RR.active,
+	RR.partner_id
+	from hr_employee
+	inner join resource_resource as RR on RR.id = HE.resource_id;'
+) AS agofer(
 	id integer, 
 	address_id integer, 
 	create_date timestamp without time zone, 
@@ -118,7 +128,9 @@ from dblink('dbname=agofer_08','SELECT
 	ssnid character varying, 
 	children integer, 
 	vehicle character varying, 
-	place_of_birth character varying
+	place_of_birth character varying,
+	active boolean,
+	partner_id integer
 );
 
 select setval('hr_employee_id_seq', (select max(id) from hr_employee));

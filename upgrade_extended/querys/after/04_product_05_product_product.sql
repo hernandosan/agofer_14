@@ -37,7 +37,7 @@ FROM dblink('dbname=agofer_08', 'select
     default_code character varying,
     write_date timestamp without time zone,
     active boolean,
-    product_tmpl_id integer
+    product_tmpl_id integer,
     ean13 character varying
 )
 WHERE agofer.id NOT IN (SELECT id FROM product_product);

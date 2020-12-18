@@ -13,7 +13,6 @@ INSERT INTO account_move (
 	date, 
 	partner_id, 
 	to_check,
-    statement_line_id,
 	move_type,
 	currency_id,
 	reference_type
@@ -33,7 +32,6 @@ SELECT
 	agofer.date, 
 	agofer.partner_id, 
 	agofer.to_check,
-	agofer.statement_id,
 	--agofer.move_type
 	'entry',
 	--agofer.currency_id
@@ -54,8 +52,7 @@ FROM dblink('dbname=agofer_08','select
 	am.narration, 
 	am.date, 
 	am.partner_id, 
-	am.to_check,
-	am.statement_id
+	am.to_check
 	from account_move am
 	inner join account_journal aj on aj.id = am.journal_id;'
 ) AS agofer(
@@ -73,7 +70,6 @@ FROM dblink('dbname=agofer_08','select
 	date date, 
 	partner_id integer, 
 	to_check boolean
-)
-WHERE agofer.date >= '2019-01-01';
+);
 
 select setval('account_move_id_seq', (select max(id) from account_move));
