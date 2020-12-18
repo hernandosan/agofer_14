@@ -32,7 +32,7 @@ class StockLandedCost(models.Model):
             cost = move_id._get_price_unit() or product_id.standard_price
             quantity = move_id.reserved_availability
             cost *= quantity
-            line.update(quantity=0,former_cost=cost)
+            line.update(quantity=quantity,former_cost=cost)
         return lines
 
     def button_validate(self):

@@ -37,11 +37,12 @@ class StockMove(models.Model):
 
     def _create_out_svl(self, forced_quantity=None):
         res = super(StockMove, self)._create_out_svl(forced_quantity=forced_quantity)
-        if self._is_out and self._is_returned('out'):
-            res.write({
-                'value': self._get_price_unit() * res.quantity,
-                'unit_cost': self._get_price_unit(),
-            })
+        for move in self:
+            if move._is_out and move._is_returned('out'):
+                res.filtered(lambda v: v.stock_move_id.id == move.id).write({
+                    'value': self._get_price_unit() * res.quantity,
+                    'unit_cost': self._get_price_unit(),
+                })
         return res
 
     def _create_int_svl(self, forced_quantity=None):

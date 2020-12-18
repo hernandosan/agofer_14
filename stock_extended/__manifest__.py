@@ -20,6 +20,7 @@
     'depends': [
         'delivery',
         'stock_account_extended',
+        'account_extended',
     ],
 
     # always loaded
@@ -31,6 +32,8 @@
         'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         'views/delivery_guide_view.xml',
+        'views/delivery_invoice_view.xml',
+        'views/ir_ui_menu_view.xml',
         'views/product_product_view.xml',
         'views/product_template_view.xml',
         'views/stock_landed_cost_view.xml',

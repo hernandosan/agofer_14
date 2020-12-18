@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_delivery_invoice_search">
+            <field name="name">view.delivery.invoice.search</field>
+            <field name="model">delivery.invoice</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <search string="Delivery Invoice">
+                    <field name="move_id" string="Invoice" filter_domain="[('move_id.name', 'ilike', self),('partner_id', 'child_of', self)]"/>
+                    <field name="partner_id" string="Carrier"/>
+                    <field name="user_id" string="User"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                        <filter string="Carrier" name="group_partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_delivery_invoice_tree">
+            <field name="name">view.delivery.invoice.tree</field>
+            <field name="model">delivery.invoice</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Delivery Invoices" 
+                    decoration-success="state == 'done'" decoration-info="state == 'draft'">
+                    <field name="move_id" decoration-bf="1"/>
+                    <field name="partner_id"/>
+                    <field name="journal_id"/>
+                    <field name="weight"/>
+                    <field name="weight_returned"/>
+                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
+                    <field name="activity_exception_decoration" widget="activity_exception"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_delivery_invoice_form">
+            <field name="name">view.delivery.invoice.form</field>
+            <field name="model">delivery.invoice</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <form string="Delivery Guide">
+                    <header>
+                        <button string="Confirm" type="object" name="action_confirm" states="draft" class="oe_highlight" />
+                        <button string="Cancel" type="object" name="action_cancel" states="draft" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+                        <div class="oe_title">
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" invisible="True" />
+                                <field name="partner_id" required="True" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="journal_id" required="True" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="weight" />
+                                <field name="weight_returned" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Guides">
+                                <field name="guides_ids" domain="[('partner_id','=',partner_id)]" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_delivery_invoice">
+            <field name="name">Delivery Invoices</field>
+            <field name="res_model">delivery.invoice</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_delivery_invoice" 
+            action="action_delivery_invoice" 
+            parent="menu_parent_stock" 
+            sequence="20"/>
+    </data>
+</odoo>

@@ -84,8 +84,6 @@
                                 <field name="parent_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly':[('state','!=','draft')]}" />
                                 <field name="partner_id" domain="[('parent_id','=',parent_id)]" attrs="{'readonly':[('state','!=','draft')]}" />
                                 <field name="carrier_id" domain="[('partner_id','=',parent_id),('carrier_type','=','stock')]" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="analytic_id" groups="analytic.group_analytic_accounting" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
@@ -95,6 +93,10 @@
                                 <field name="price" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <field name="weight" />
                                 <field name="price_total" />
+                            </group>
+                            <group>
+                                <field name="analytic_id" groups="analytic.group_analytic_accounting" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                         </group>
                         <notebook>
@@ -228,7 +230,7 @@
         </record>
 
         <menuitem id="menu_parent_stock" 
-            name="Stock" 
+            name="Transfers" 
             parent="stock.menu_stock_root" 
             sequence="3"/>
 
@@ -236,12 +238,12 @@
             name="Delivery Guides"
             parent="menu_parent_stock"
             action="action_delivery_guide_customer"
-            sequence="10"/>
+            sequence="5"/>
 
         <menuitem id="menu_delivery_guide_branch"
             name="Loading Orders"
             parent="menu_parent_stock"
             action="action_delivery_guide_branch"
-            sequence="15"/>
+            sequence="10"/>
     </data>
 </odoo>

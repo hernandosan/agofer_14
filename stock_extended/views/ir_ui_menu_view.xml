@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <menuitem
+            id="stock.menu_reordering_rules_replenish"
+            groups="group_stock_hide"/>
+
+        <menuitem
+            id="stock.menu_stock_scrap"
+            groups="group_stock_hide"/>
+
+        <menuitem
+            id="stock.menu_procurement_compute"
+            groups="group_stock_hide"/>
+    </data>
+</odoo>

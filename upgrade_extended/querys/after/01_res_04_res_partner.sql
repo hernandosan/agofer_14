@@ -222,4 +222,35 @@ FROM dblink('dbname=agofer_08','select
 )
 WHERE agofer.id NOT IN (SELECT id FROM res_partner);
 
-select setval('res_partner_id_seq', (select max(id) from res_partner));
+update res_partner as rp 
+set state_id = rcs.id, country_id = rcc.id
+from dblink('dbname=agofer_08','select rp.id, rc.name as rc_name, rcs.name as rcs_name, rcc.code as rcc_code
+from res_partner rp
+left join res_city rc on rc.id = rp.city_id 
+left join res_country_state rcs on rcs.id = rp.state_id
+left join res_country rcc on rcc.id = rp.country_id;') as agofer (id integer, rc_name character varying, rcs_name character varying, rcc_code character varying)
+inner join res_country_state rcs on rcs.name = agofer.rcs_name 
+inner join res_country rcc on rcc.code = agofer.rcc_code 
+where agofer.id = rp.id;
+
+update res_partner set credit_control = True, credit_type = 'insured' where credit_limit > 0 and parent_id is null;
+
+update res_partner as rp
+set first_name = agofer.primer_nombre, 
+second_name = agofer.otros_nombres, 
+first_surname = agofer.primer_apellido, 
+second_surname = agofer.segundo_apellido, 
+ref_num = agofer.ref
+from dblink('dbname=agofer_08','select id,
+primer_nombre, 
+otros_nombres, 
+primer_apellido, 
+segundo_apellido,
+ref
+from res_partner;') agofer (id integer, 
+primer_nombre character varying,
+otros_nombres character varying,
+primer_apellido character varying,
+segundo_apellido character varying,
+ref character varying)
+where agofer.id = rp.id;
