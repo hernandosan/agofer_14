@@ -1,4 +1,4 @@
-insert into hr_department (
+INSERT INTO hr_department (
 	id, 
 	create_uid, 
 	create_date, 
@@ -10,7 +10,7 @@ insert into hr_department (
 	manager_id, 
 	write_date,
 	active
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_uid, 
 	agofer.create_date, 
@@ -24,7 +24,7 @@ insert into hr_department (
 	agofer.write_date,
 	--agofer.active
 	TRUE
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id, 
 	create_uid, 
 	create_date, 
@@ -35,8 +35,8 @@ from dblink('dbname=agofer_08','SELECT
 	parent_id, 
 	manager_id, 
 	write_date
-	FROM hr_department;'
-) as agofer(
+	from hr_department;'
+) AS agofer (
 	id integer, 
 	create_uid integer, 
 	create_date timestamp without time zone, 
@@ -47,6 +47,7 @@ from dblink('dbname=agofer_08','SELECT
 	parent_id integer, 
 	manager_id integer, 
 	write_date timestamp without time zone
-)where agofer.id not in (select id from hr_department);
+)
+WHERE agofer.id NOT IN (SELECT id FROM hr_department);
 
 select setval('hr_department_id_seq', (select max(id) from hr_department));
