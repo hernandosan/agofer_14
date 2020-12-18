@@ -16,5 +16,11 @@
             <field name="domain">[('landed_type', '=', 'stock')]</field>
             <field name="context">{'default_landed_type': 'stock'}</field>
         </record>
+
+        <menuitem id="stock_landed_costs.menu_stock_landed_cost" 
+            action="stock_landed_costs.action_stock_landed_cost" 
+            name="Landed Costs" 
+            parent="menu_parent_stock" 
+            sequence="15"/>
     </data>
 </odoo>

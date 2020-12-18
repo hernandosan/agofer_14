@@ -169,14 +169,14 @@
 
         <menuitem id="menu_delivery_agofer" 
             name="Delivery Agofer" 
-            parent="menu_parent_stock" 
+            parent="stock.menu_stock_warehouse_mgmt" 
             action="action_delivery_agofer" 
-            sequence="1"/>
+            sequence="10"/>
 
         <menuitem id="menu_customer_pick" 
             name="Customer Pick" 
-            parent="menu_parent_stock" 
+            parent="stock.menu_stock_warehouse_mgmt" 
             action="action_customer_pick" 
-            sequence="5"/>
+            sequence="15"/>
     </data>
 </odoo>

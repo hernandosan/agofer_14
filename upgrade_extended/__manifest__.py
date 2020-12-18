@@ -24,7 +24,7 @@
         # OCA
         'account_asset_management',
         'auth_oauth_multi_token',
-        # Odoo 
+        # Odoo
         'auth_oauth',
         'base_address_city',
         'base_address_extended',
