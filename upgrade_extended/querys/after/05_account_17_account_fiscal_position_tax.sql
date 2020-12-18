@@ -1,4 +1,4 @@
-INSERT INTO account_fiscal_position (
+INSERT INTO account_fiscal_position_tax (
 	id,
     create_uid,
     create_date,
@@ -28,7 +28,7 @@ FROM dblink('dbname=agofer_08','select
     write_uid,
     tax_dest_id,
     write_date
-	from account_fiscal_position;'
+	from account_fiscal_position_tax;'
 ) AS agofer(
 	id integer,
     create_uid integer,

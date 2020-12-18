@@ -8,5 +8,7 @@
                     (4, ref('sales_team.group_sale_salesman'))
                 ]"/>
         </record>
+
+
     </data>
 </odoo>

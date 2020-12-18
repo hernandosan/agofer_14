@@ -1,5 +1,5 @@
 INSERT INTO mail_message_subtype (
-    id
+    id,
 	create_uid,
 	create_date,
 	name,
@@ -12,6 +12,7 @@ INSERT INTO mail_message_subtype (
 	description,
 	sequence
 )SELECT
+    agofer.id,
 	agofer.create_uid,
 	agofer.create_date,
 	agofer.name,

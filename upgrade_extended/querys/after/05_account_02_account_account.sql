@@ -25,7 +25,7 @@ INSERT INTO account_account (
 	agofer.name, 
 	agofer.company_id, 
 	agofer.note,
-	agofer.user_type_id
+	agofer.user_type
 FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	code, 
@@ -40,8 +40,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	note,
 	type,
 	user_type
-	FROM account_account 
-	where niif != True;'
+	FROM account_account;'
 ) AS agofer (
 	id integer, 
 	code character varying, 

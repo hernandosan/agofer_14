@@ -30,8 +30,7 @@ INSERT INTO account_move_line (
 	--agofer.statement_id,
 	null,
 	agofer.journal_id,
-	--agofer.currency_id,
-	8,
+	agofer.currency_id,
 	agofer.date_maturity,
 	agofer.partner_id,
 	agofer.blocked,
@@ -53,7 +52,7 @@ INSERT INTO account_move_line (
 	agofer.quantity,
 	--agofer.statement_line_id,
 	null
-FROM dblink('dbname=agofer_08','SELECT
+FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
 	statement_id,
@@ -79,7 +78,8 @@ FROM dblink('dbname=agofer_08','SELECT
 	amount_currency,
 	quantity,
 	statement_line_id
-	FROM account_move_line;'
+	from account_move_line
+	where currency_id IS NOT null;'
 ) AS agofer(
 	id integer,
 	create_date timestamp without time zone,

@@ -49,8 +49,7 @@ FROM dblink('dbname=agofer_08','select
 	type,
 	sequence_id,
 	currency
-	from account_journal
-	where niif != True;'
+	from account_journal;'
 ) AS agofer(
 	id integer, 
 	code character varying, 
