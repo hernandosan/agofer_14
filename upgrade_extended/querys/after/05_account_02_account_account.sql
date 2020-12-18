@@ -56,8 +56,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	type character varying,
 	user_type integer
 )
-WHERE agofer.type != 'view'
-AND agofer.id NOT IN (SELECT id FROM account_account)
+WHERE agofer.id NOT IN (SELECT id FROM account_account)
 AND agofer.code NOT IN (SELECT code FROM account_account);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
