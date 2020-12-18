@@ -48,6 +48,7 @@ FROM
 	write_uid integer,
 	write_date timestamp without time zone
 )
-WHERE agofer.id NOT IN (SELECT id FROM hr_concept);
+WHERE agofer.id NOT IN (SELECT id FROM hr_concept)
+AND agofer.code NOT IN (SELECT code FROM hr_concept);
 
 select setval('hr_concept_id_seq', (select max(id) from hr_concept));
