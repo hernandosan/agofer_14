@@ -18,7 +18,7 @@ INSERT INTO hr_payslip(
     agofer.id,
     agofer.number,
     --agofer.state
-    (case when v8.state = 'done' then 'paid' else 'draft' end),
+    (case when agofer.state = 'done' then 'paid' else 'draft' end),
     agofer.contract_id,
     agofer.liquidacion_date,
     agofer.liquid_date,
@@ -58,7 +58,9 @@ FROM dblink('dbname=agofer_08','select
         payslip_period_id integer,
         tipo_nomina integer,
         payslip_run_id integer,
+		create_uid integer,
         create_date timestamp without time zone,
+		write_uid integer,
         write_date timestamp without time zone
 )
 WHERE agofer.id NOT IN (SELECT id FROM hr_payslip);
