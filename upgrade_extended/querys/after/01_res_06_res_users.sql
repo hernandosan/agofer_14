@@ -1,3 +1,7 @@
+ALTER TABLE res_users DISABLE TRIGGER ALL;
+DELETE FROM res_users;
+ALTER TABLE res_users ENABLE TRIGGER ALL;
+
 INSERT INTO res_users (
 	id, 
 	active, 
@@ -69,7 +73,6 @@ FROM dblink('dbname=agofer_08', 'select
 	oauth_access_token character varying, 
 	oauth_uid character varying, 
 	oauth_provider_id integer
-)
-WHERE agofer.id NOT IN (SELECT id FROM res_users);
+);
 
 select setval('res_users_id_seq', (select max(id) from res_users));

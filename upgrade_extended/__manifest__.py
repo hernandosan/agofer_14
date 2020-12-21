@@ -23,7 +23,7 @@
         'hr_avancys',
         # OCA
         'account_asset_management',
-        'auth_oauth_multi_token',
+        # 'auth_oauth_multi_token',
         # Odoo
         'auth_oauth',
         'base_address_city',

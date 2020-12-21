@@ -1,3 +1,7 @@
+ALTER TABLE res_bank DISABLE TRIGGER ALL;
+DELETE FROM res_bank;
+ALTER TABLE res_bank ENABLE TRIGGER ALL;
+
 INSERT INTO res_bank (
 	id, 
 	city, 
@@ -70,7 +74,6 @@ FROM dblink('dbname=agofer_08','select
 	active boolean, 
 	write_uid integer, 
 	email character varying
-)
-WHERE agofer.id NOT IN (SELECT id FROM res_bank);
+);
 
 select setval('res_bank_id_seq', (select max(id) from res_bank));
