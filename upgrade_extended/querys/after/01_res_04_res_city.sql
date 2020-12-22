@@ -52,7 +52,6 @@ FROM dblink('dbname=agofer_08', 'select
 	create_date timestamp without time zone, 
 	write_uid integer, 
 	write_date timestamp without time zone
-)
-WHERE agofer.id NOT IN (SELECT id FROM res_city);
+);
 
 select setval('res_city_id_seq', (select max(id) from res_city));

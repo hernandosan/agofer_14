@@ -6,9 +6,9 @@
 
     'description': "Upgrade Agofer",
 
-    'author': "Agofer S.A.S.",
+    'author': "Agofer",
     'contributors': ['Juan Pablo Arcos jparcos@agofer.com.co'],
-    'website': "http://www.agofer.com.co",
+    'website': "https://agofer.com.co",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
@@ -23,7 +23,7 @@
         'hr_avancys',
         # OCA
         'account_asset_management',
-        'auth_oauth_multi_token',
+        # 'auth_oauth_multi_token',
         # Odoo
         'auth_oauth',
         'base_address_city',

@@ -8,7 +8,7 @@ class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
     production_type = fields.Selection([('manufacturing','Manufacturing'),('production','Production')], 
-        string='Manufacturing type', dafult='manufacturing')
+        string='Manufacturing type', default='manufacturing')
     move_noproduct_ids = fields.One2many('stock.move', 'non_conforming_production_id', 'Nonconforming Products', copy=True, 
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]}, domain=[('scrapped', '=', False)])
 

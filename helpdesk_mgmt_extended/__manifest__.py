@@ -6,9 +6,9 @@
 
     'description': "Helpdesk",
 
-    'author': "Agofer S.A.",
+    'author': "Agofer",
     'contributors': ['Reyes Santana rhsantana@agofer.com.co'],
-    'website': "http://www.agofer.com.co",
+    'website': "https://agofer.com.co",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
