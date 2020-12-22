@@ -263,7 +263,8 @@ class SaleOrder(models.Model):
 
     def _sale_payments_id(self):
         self.ensure_one()
-        return self.payments_id.filtered(lambda p: p.state == 'posted')
+        state = 'posted' if self._context.get('state') and self._context.get('state') == 'posted' else 'cancel'
+        return self.payments_id.filtered(lambda p: p.state != state)
 
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
