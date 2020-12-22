@@ -31,20 +31,20 @@ INSERT INTO account_bank_statement_line (
 	--agofer.payment_ref
 	'False'
 FROM dblink('dbname=agofer_08','select
-	id, 
-	statement_id, 
-	sequence, 
-	currency_id, 
-	write_date, 
-	create_date, 
-	write_uid, 
-	partner_id, 
-	create_uid, 
-	partner_name, 
-	amount, 
-	amount_currency	
+	id,
+	statement_id,
+	sequence,
+	currency_id,
+	write_date,
+	create_date,
+	write_uid,
+	partner_id,
+	create_uid,
+	partner_name,
+	amount,
+	amount_currency
 	from account_bank_statement_line
-	where statement_id is not null;'
+	where statement_id IS NOT null;'
 ) AS agofer(
 	id integer, 
 	statement_id integer, 
@@ -58,7 +58,6 @@ FROM dblink('dbname=agofer_08','select
 	partner_name character varying, 
 	amount numeric, 
 	amount_currency numeric
-)
-INNER JOIN account_bank_statement ABS ON ABS.id = agofer.statement_id;
+);
 
 select setval('account_bank_statement_line_id_seq', (select max(id) from account_bank_statement_line));

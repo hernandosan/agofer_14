@@ -1,4 +1,9 @@
+ALTER TABLE ir_model_data DISABLE TRIGGER ALL;
+DELETE FROM ir_model_data;
+ALTER TABLE ir_model_data ENABLE TRIGGER ALL;
+
 INSERT INTO ir_model_data (
+	id,
 	create_uid,
 	create_date,
 	write_date,
@@ -9,16 +14,18 @@ INSERT INTO ir_model_data (
 	model,
 	res_id
 ) SELECT
+	agofer.id,
 	agofer.create_uid,
 	agofer.create_date,
 	agofer.write_date,
 	agofer.write_uid,
 	agofer.noupdate,
-	agofer.name,
+	REPLACE(agofer.name, ' ', '_'),
 	agofer.module,
 	agofer.model,
 	agofer.res_id
 FROM dblink('dbname=agofer_08', 'select
+	id,
     create_uid,
     create_date,
     write_date,
@@ -30,6 +37,7 @@ FROM dblink('dbname=agofer_08', 'select
     res_id
     from ir_model_data;'
 ) AS agofer(
+	id integer,
 	create_uid integer,
 	create_date timestamp without time zone,
 	write_date timestamp without time zone,
@@ -39,9 +47,6 @@ FROM dblink('dbname=agofer_08', 'select
 	module character varying,
 	model character varying,
 	res_id integer
-)
-LEFT JOIN ir_module_module imm ON imm.name = agofer.module
-WHERE imm.name IS NULL
-AND agofer.module LIKE '%agofer%';
+);
 
 select setval('ir_model_data_id_seq', (select max(id) from ir_model_data));

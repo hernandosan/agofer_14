@@ -1,3 +1,7 @@
+ALTER TABLE account_journal DISABLE TRIGGER ALL;
+DELETE FROM account_journal;
+ALTER TABLE account_journal ENABLE TRIGGER ALL;
+
 INSERT INTO account_journal (
 	id, 
 	code, 

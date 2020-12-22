@@ -1,3 +1,7 @@
+ALTER TABLE product_product DISABLE TRIGGER ALL;
+DELETE FROM product_product;
+ALTER TABLE product_product ENABLE TRIGGER ALL;
+
 INSERT INTO product_product (
     id,
     create_uid,
@@ -39,12 +43,7 @@ FROM dblink('dbname=agofer_08', 'select
     active boolean,
     product_tmpl_id integer,
     ean13 character varying
-)
-WHERE agofer.id NOT IN (SELECT id FROM product_product);
+);
 
 select setval('product_product_id_seq', (select max(id) from product_product));
 
-update product_product as pp 
-set weight = pt.weight
-from product_template pt
-where pt.id = pp.product_tmpl_id;

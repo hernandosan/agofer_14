@@ -27,8 +27,7 @@ INSERT INTO account_move_line (
 ) SELECT
 	agofer.id, 
 	agofer.create_date, 
-	--agofer.statement_id,
-	null,
+	agofer.statement_id,
 	agofer.journal_id,
 	agofer.currency_id,
 	agofer.date_maturity,
@@ -50,8 +49,7 @@ INSERT INTO account_move_line (
 	agofer.product_uom_id,
 	agofer.amount_currency,
 	agofer.quantity,
-	--agofer.statement_line_id,
-	null
+	agofer.statement_line_id
 FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
@@ -75,11 +73,15 @@ FROM dblink('dbname=agofer_08','select
 	name,
 	product_id,
 	product_uom_id,
-	amount_currency,
+	(case
+	when currency_id != 9 and debit - credit <= 0 then - abs(amount_currency)
+	when currency_id != 9 and debit - credit >= 0 then abs(amount_currency)
+	when currency_id = 9 and round(debit - credit - amount_currency, 2) != 0 then debit -credit
+	else amount_currency
+	end),
 	quantity,
 	statement_line_id
-	from account_move_line
-	where currency_id IS NOT null;'
+	from account_move_line;'
 ) AS agofer(
 	id integer,
 	create_date timestamp without time zone,
@@ -107,8 +109,5 @@ FROM dblink('dbname=agofer_08','select
 	quantity numeric,
 	statement_line_id integer
 )
-INNER JOIN account_move am ON am.id = agofer.move_id
-INNER JOIN account_journal aj ON aj.id = agofer.journal_id
-INNER JOIN account_account aa ON aa.id = agofer.account_id;
 
 select setval('account_move_line_id_seq', (select max(id) from account_move_line));

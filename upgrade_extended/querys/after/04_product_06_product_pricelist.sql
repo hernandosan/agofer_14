@@ -1,3 +1,7 @@
+ALTER TABLE product_pricelist DISABLE TRIGGER ALL;
+DELETE FROM product_pricelist;
+ALTER TABLE product_pricelist ENABLE TRIGGER ALL;
+
 INSERT INTO product_pricelist (
 	id, 
 	create_date, 
@@ -13,8 +17,7 @@ INSERT INTO product_pricelist (
 	agofer.id, 
 	agofer.create_date, 
 	agofer.write_uid, 
-	--agofer.currency_id,
-	8, 
+	agofer.currency_id,
 	agofer.write_date, 
 	agofer.active, 
 	agofer.create_uid, 
@@ -43,7 +46,6 @@ FROM dblink('dbname=agofer_08', 'select
 	create_uid integer, 
 	name character varying, 
 	company_id integer
-)
-WHERE agofer.id NOT IN (SELECT id FROM product_pricelist);
+);
 
 select setval('product_pricelist_id_seq', (select max(id) from product_pricelist));

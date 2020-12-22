@@ -1,3 +1,7 @@
+ALTER TABLE mail_message DISABLE TRIGGER ALL;
+DELETE FROM mail_message;
+ALTER TABLE mail_message ENABLE TRIGGER ALL;
+
 INSERT INTO mail_message (
 	id, 
 	body, 
@@ -39,7 +43,7 @@ INSERT INTO mail_message (
 	agofer.author_id, 
 	agofer.model, 
 	agofer.email_from,
-    agofer.type
+    (case when agofer.type IS null then 'null' when agofer.type IS NOT null THEN agofer.type end)
 FROM dblink('dbname=agofer_08', 'select
 	id,
 	body,
@@ -83,9 +87,6 @@ FROM dblink('dbname=agofer_08', 'select
 	model character varying,
 	email_from character varying,
 	type character varying
-)
-INNER JOIN ir_model im ON im.model = agofer.model
-WHERE agofer.id NOT IN (SELECT id FROM mail_message)
-AND CAST(agofer.date as date) >= '2020-01-01';
+);
 
 select setval('mail_message_id_seq', (select max(id) from mail_message));

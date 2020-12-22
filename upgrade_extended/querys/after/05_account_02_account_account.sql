@@ -1,8 +1,10 @@
-UPDATE account_account SET code = code || '.';
+ALTER TABLE account_account DISABLE TRIGGER ALL;
+DELETE FROM account_account;
+ALTER TABLE account_account ENABLE TRIGGER ALL;
 
 INSERT INTO account_account (
 	id, 
-	code, 
+	code,
 	create_date, 
 	reconcile, 
 	currency_id, 
@@ -55,8 +57,6 @@ FROM dblink('dbname=agofer_08','SELECT
 	note text,
 	type character varying,
 	user_type integer
-)
-WHERE agofer.id NOT IN (SELECT id FROM account_account)
-AND agofer.code NOT IN (SELECT code FROM account_account);
+);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
