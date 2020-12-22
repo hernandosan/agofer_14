@@ -37,7 +37,7 @@ class DeliveryGuide(models.Model):
     price_kg = fields.Monetary('Carrier Price')
     price_standby = fields.Monetary('Stand By')
     price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
-    scheduled_date = fields.Date('Scheduled Date', required=True)
+    scheduled_date = fields.Date('Scheduled Date', required=True, default=fields.Date.today())
     tolerance = fields.Float('Tolerance (%)', copy=False)
     weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
@@ -96,7 +96,7 @@ class DeliveryGuide(models.Model):
 
     def _action_confirm(self):
         self.ensure_one()
-        ids = self.invoices_ids.picking_id.move_lines.ids if self.guide_type == 'customer' else self.pickings_ids.move_lines.ids
+        ids = self.invoices_ids.invoice_line_ids.sale_line_ids.move_ids.filtered(lambda m: m.picking_code == 'outgoing').ids
         self.write({'moves_ids': [(6, 0, ids)]})
 
     def action_moves(self):
@@ -105,37 +105,32 @@ class DeliveryGuide(models.Model):
 
     def _action_moves(self):
         self.ensure_one()
-        self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.move_lines.ids)]})
-        self.write({'moves_returns_ids': [(6, 0, self.invoices_returns_ids.picking_id.move_lines.ids)]})
+        # self.write({'moves_ids': [(6, 0, self.invoices_ids.picking_id.move_lines.ids)]})
+        ids = self.invoices_ids.invoice_line_ids.sale_line_ids.move_ids.filtered(lambda m: m.picking_code == 'incoming').ids
+        self.write({'moves_returns_ids': [(6, 0, ids)]})
 
     def action_progress(self):
         self.invoices_ids.write({'delivery_state': 'progress'})
         self.write({
             'state': 'progress',
-            'progress_date': fields.Date.today(),
+            'date_progress': fields.Date.today(),
         })
 
     def action_delivered(self):
-        self._action_delivered()
         self.write({
             'state': 'delivered',
-            'delivered_date': fields.Date.today(),
+            'date_delivered': fields.Date.today(),
         })
-
-    def _action_delivered(self):
-        self.ensure_one()
-        # self.invoices_ids.write({'delivery_state': 'delivered'})
-        self.write({'moves_returns_ids': [(6, 0, self.invoices_returns_ids.picking_id.move_lines.ids)]})
 
     def action_checked(self):
         self.write({
             'state': 'checked',
-            'checked_date': fields.Date.today()})
+            'date_checked': fields.Date.today()})
 
     def action_invoiced(self):
         self.write({
             'state': 'invoiced',
-            'invoiced_date': fields.Date.today(),
+            'date_invoiced': fields.Date.today(),
         })
 
     def action_cancel(self):

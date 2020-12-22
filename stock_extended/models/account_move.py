@@ -14,9 +14,18 @@ class AccountMove(models.Model):
             move._action_guide_confirm()
 
     def action_guide_return(self):
-        return True
+        if self._context.get('delivery_guide'):
+            self.env['delivery.guide'].browse(self._context.get('delivery_guide')).write({'guide_bool': True})
+        self.write({'delivery_state': 'novelty'})
 
     def _action_guide_confirm(self):
         self.ensure_one()
-        if len(self.guides_ids) > 1:
-            print('Holis')
+        if self.move_type == 'out_invoice':
+            guides_ids = self.guides_ids.filtered(lambda g: g.state in ('draft','confirm','progress'))
+            if len(guides_ids) > 1:
+                return self.write({'delivery_state': 'partial'})
+        if self.move_type == 'out_refund':
+            guides_ids = self.guides_returns_ids.filtered(lambda g: g.state in ('draft','confirm','progress'))
+            if len(guides_ids) > 1:
+                return self.write({'delivery_state': 'partial'})
+        return self.write({'delivery_state': 'delivered'})

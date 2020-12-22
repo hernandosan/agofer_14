@@ -17,9 +17,9 @@ class DeliveryInvoice(models.Model):
     journal_id = fields.Many2one('account.journal', 'Journal')
     move_id = fields.Many2one('account.move', 'Invoice')
     notes = fields.Text('Notes')
-    partner_id = fields.Many2one('res.partner', 'Carrier')
+    partner_id = fields.Many2one('res.partner', 'Carrier', tracking=True)
     price_total = fields.Monetary('Total Price', compute='_compute_price_total')
-    state = fields.Selection([('draft','Draft'),('done','Done'),('cancel','Cancel')], 'state', required=True, default='draft')
+    state = fields.Selection([('draft','Draft'),('done','Done'),('cancel','Cancel')], 'State', required=True, default='draft', tracking=True)
     user_id = fields.Many2one('res.users', 'User', default=lambda self: self.env.user)
     weight_invoiced = fields.Float('Weight', compute='_compute_weight')
     weight_returned = fields.Float('Weight Returned', compute='_compute_weight')
@@ -71,10 +71,10 @@ class DeliveryInvoice(models.Model):
             accounts = product_id._get_product_accounts()
             vals = {
                 'product_id': product_id.id,
-                'product_uom_id': product_id.uon_id.id,
+                'product_uom_id': product_id.uom_id.id,
                 'name': product_id.display_name,
                 'account_id': accounts.get('expense'),
-                'analytic_account_id': guide.analytic_account_id.id,
+                'analytic_account_id': guide.analytic_id.id,
                 'analytic_tag_ids': [(4, tag.id, 0) for tag in guide.analytic_tag_ids],
                 'quantity': guide.weight_total,
                 'price_unit': guide.price,

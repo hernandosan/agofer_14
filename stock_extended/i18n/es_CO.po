@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 14:57+0000\n"
-"PO-Revision-Date: 2020-11-23 14:57+0000\n"
+"POT-Creation-Date: 2020-12-22 17:03+0000\n"
+"PO-Revision-Date: 2020-12-22 17:03+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,26 +17,31 @@ msgstr ""
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_needaction
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_needaction
 msgid "Action Needed"
 msgstr "Acción requerida"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_ids
 msgid "Activities"
 msgstr "Actividades"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_exception_decoration
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_exception_decoration
 msgid "Activity Exception Decoration"
 msgstr "Decoración de Actividad  de Excepción"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_state
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_state
 msgid "Activity State"
 msgstr "Estado de la activida"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_type_icon
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_type_icon
 msgid "Activity Type Icon"
 msgstr ""
 
@@ -57,6 +62,7 @@ msgstr "Etiquetas analíticas"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_attachment_count
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_attachment_count
 msgid "Attachment Count"
 msgstr "Nº de archivos adjuntos"
 
@@ -71,17 +77,26 @@ msgid "Branch"
 msgstr "Sucursal"
 
 #. module: stock_extended
-#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__cancel
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "Calculate"
+msgstr "Calcular"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__cancel
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_invoice__state__cancel
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Cancel"
 msgstr "Cancelado"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__partner_id
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__parent_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__partner_id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__carrier_id
 #: model:res.partner.category,name:stock_extended.res_partner_category_carrier
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Carrier"
 msgstr "Transportador"
 
@@ -97,33 +112,48 @@ msgid "Checked"
 msgstr "Revisado"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__checked_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__date_checked
 msgid "Checked Date"
 msgstr "Fecha de Revisión"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__company_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__company_id
 msgid "Company"
 msgstr "Compañia"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__confirm
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_sale_advance_payment_inv_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_form
 msgid "Create Invoice"
 msgstr "Crear Factura"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_sale_advance_payment_inv_form
+msgid "Create and View Invoice"
+msgstr "Crear y Ver Facturas"
+
+#. module: stock_extended
+#: model:ir.actions.act_window,name:stock_extended.action_sale_advance_payment_inv
+msgid "Create invoices"
+msgstr "Crear facturas"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__create_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__create_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__create_date
 msgid "Created on"
 msgstr "Creado el"
 
@@ -135,6 +165,7 @@ msgstr "Facturas rectificativas"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__currency_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
@@ -155,25 +186,25 @@ msgstr "Cliente Recoge"
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Define your terms and conditions ..."
 msgstr "Defina sus terminos y condiciones ..."
 
 #. module: stock_extended
-#: model:ir.model.fields.selection,name:stock_extended.selection__account_move__delivery_state__delivered
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__delivered
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Delivered"
 msgstr "Entregado"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__delivered_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__date_delivered
 msgid "Delivered Date"
 msgstr "Fecha de Entrega"
 
 #. module: stock_extended
-#: model_terms:ir.ui.view,arch_db:stock_extended.view_account_move_form
-msgid "Delivery"
-msgstr "Entrega"
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight_invoice
+msgid "Delivered Weight"
+msgstr "Peso Entregado"
 
 #. module: stock_extended
 #: model:ir.actions.act_window,name:stock_extended.action_delivery_agofer
@@ -202,6 +233,7 @@ msgstr "Fecha de Entrega"
 #: model:ir.model,name:stock_extended.model_delivery_guide
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Delivery Guide"
 msgstr "Guia de Entrega"
 
@@ -223,6 +255,19 @@ msgid "Delivery Info"
 msgstr "Información de Entrega"
 
 #. module: stock_extended
+#: model:ir.model,name:stock_extended.model_delivery_invoice
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
+msgid "Delivery Invoice"
+msgstr "Facturar Entrega"
+
+#. module: stock_extended
+#: model:ir.actions.act_window,name:stock_extended.action_delivery_invoice
+#: model:ir.ui.menu,name:stock_extended.menu_delivery_invoice
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_tree
+msgid "Delivery Invoices"
+msgstr "Facturar Entregas"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_search
 msgid "Delivery Late"
 msgstr "Entrega Retrasada"
@@ -237,13 +282,6 @@ msgstr "Método entrega"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__guide_type
 msgid "Delivery Type"
 msgstr "Tipo de envío"
-
-#. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__delivery_state
-#: model:ir.model.fields,field_description:stock_extended.field_account_move__delivery_state
-#: model:ir.model.fields,field_description:stock_extended.field_account_payment__delivery_state
-msgid "Delivery state"
-msgstr "Estado de Entrega"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -264,20 +302,28 @@ msgstr "Ubicación Destino"
 #: model:ir.model.fields,field_description:stock_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__display_name
 msgid "Display Name"
 msgstr "Nombre Público"
 
 #. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_invoice__state__done
+msgid "Done"
+msgstr "Hecho"
+
+#. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__draft
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_invoice__state__draft
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Draft"
 msgstr "Borrador"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_id
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Driver"
@@ -285,21 +331,25 @@ msgstr "Conductor"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_follower_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_follower_ids
 msgid "Followers"
 msgstr "Seguidores"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_channel_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_channel_ids
 msgid "Followers (Channels)"
 msgstr "Seguidores (Canales)"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_partner_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Seguidores (Contactos)"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__activity_type_icon
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono de Font Awesome ej. fa-tasks"
 
@@ -316,6 +366,7 @@ msgstr "Actividades futuras"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Group By"
 msgstr "Agrupar por"
 
@@ -323,8 +374,17 @@ msgstr "Agrupar por"
 #: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__guides_ids
 #: model:ir.model.fields,field_description:stock_extended.field_account_move__guides_ids
 #: model:ir.model.fields,field_description:stock_extended.field_account_payment__guides_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__guides_ids
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Guides"
 msgstr "Guias"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__guides_returns_ids
+#: model:ir.model.fields,field_description:stock_extended.field_account_move__guides_returns_ids
+#: model:ir.model.fields,field_description:stock_extended.field_account_payment__guides_returns_ids
+msgid "Guides Return"
+msgstr "Guias retornadas"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__guide_bool
@@ -335,6 +395,8 @@ msgstr "Tiene devoluciones"
 #: model:ir.model.fields,field_description:stock_extended.field_account_move__id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__id
+#: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__id
 msgid "ID"
@@ -342,23 +404,29 @@ msgstr ""
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_exception_icon
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_exception_icon
 msgid "Icon"
 msgstr "Icono"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__activity_exception_icon
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_exception_icon
 msgid "Icon to indicate an exception activity."
 msgstr "Icono para indicar una actividad de excepción."
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_needaction
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_unread
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_needaction
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_has_error
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_has_sms_error
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_has_error
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
@@ -382,7 +450,8 @@ msgstr ""
 "comerciales usadas en las transacciones internacionales."
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__invoice_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__move_id
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Invoice"
 msgstr "Factura"
 
@@ -392,6 +461,11 @@ msgid "Invoice Date"
 msgstr "Fecha de Factura"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__sale_invoice_status
+msgid "Invoice Status"
+msgstr "Estado de la factura"
+
+#. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__invoiced
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
@@ -399,7 +473,7 @@ msgid "Invoiced"
 msgstr "Facturado"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__invoiced_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__date_invoiced
 msgid "Invoiced Date"
 msgstr "Fecha de Factura"
 
@@ -411,8 +485,14 @@ msgstr "Facturas"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_is_follower
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_is_follower
 msgid "Is Follower"
 msgstr "Es un seguidor"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__journal_id
+msgid "Journal"
+msgstr "Diario"
 
 #. module: stock_extended
 #: model:ir.model,name:stock_extended.model_account_move
@@ -428,6 +508,8 @@ msgstr "Tipo de costo"
 #: model:ir.model.fields,field_description:stock_extended.field_account_move____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking____last_update
 msgid "Last Modified on"
@@ -435,11 +517,13 @@ msgstr "Última Modificación el"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__write_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__write_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -456,23 +540,26 @@ msgstr "Ordenes de Cargue"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_main_attachment_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Adjuntos principales"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_has_error
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_has_error
 msgid "Message Delivery error"
 msgstr "Error de Envío de Mensaje"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_ids
 msgid "Messages"
 msgstr "Mensajes"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_mobile
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_mobile
 msgid "Mobile"
-msgstr "Móvil"
+msgstr "Celular"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -480,7 +567,7 @@ msgid "Moves"
 msgstr "Movimientos"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_name
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_name
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Name"
@@ -488,16 +575,19 @@ msgstr "Nombre"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_date_deadline
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Siguiente plazo de actividad"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_summary
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_summary
 msgid "Next Activity Summary"
 msgstr "Resumen de la siguiente actividad"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_type_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_type_id
 msgid "Next Activity Type"
 msgstr "Siguiente tipo de actividad"
 
@@ -508,9 +598,11 @@ msgid "No transfer found. Let's create one!"
 msgstr ""
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_comment
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_comment
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__notes
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
 msgid "Notes"
 msgstr "Notas"
 
@@ -521,33 +613,33 @@ msgstr "Número"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_needaction_counter
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Numero de Acciones"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_has_error_counter
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_has_error_counter
 msgid "Number of errors"
 msgstr "Numero de errores"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_needaction_counter
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_needaction_counter
 msgid "Number of messages which requires an action"
 msgstr "Número de mensajes que requieren una acción"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_has_error_counter
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr "Número de mensajes con error de envío"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__message_unread_counter
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__message_unread_counter
 msgid "Number of unread messages"
 msgstr "Número de mensajes no leidos"
-
-#. module: stock_extended
-#: model:ir.model.fields.selection,name:stock_extended.selection__account_move__delivery_state__pending
-msgid "Pending"
-msgstr "Pendiente"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_bool
@@ -577,20 +669,25 @@ msgid "Pickings"
 msgstr "Transferencias"
 
 #. module: stock_extended
+#: code:addons/stock_extended/models/delivery_invoice.py:0
+#, python-format
+msgid "Please add guides"
+msgstr "Por favor agregue guías"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__price_kg
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price
 msgid "Price (Kg)"
 msgstr "Precio (Kg)"
 
 #. module: stock_extended
-#: model:ir.model.fields.selection,name:stock_extended.selection__account_move__delivery_state__progress
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__progress
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Progress"
 msgstr "En Progreso"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__progress_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__date_progress
 msgid "Progress Date"
 msgstr "Fecha en Progreso"
 
@@ -602,26 +699,30 @@ msgstr "Compras"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_user_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_user_id
 msgid "Responsible User"
 msgstr "Usuario responsable"
 
 #. module: stock_extended
-#: model:ir.model.fields.selection,name:stock_extended.selection__account_move__delivery_state__return
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Return"
 msgstr "Devolución"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight_return
+msgid "Returned Weight"
+msgstr "Peso Retornado"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_has_sms_error
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "Error de entrega del SMS"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__sale_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_move__sale_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_payment__sale_id
-msgid "Sale Order"
-msgstr "Pedido de venta"
+#: model:ir.model,name:stock_extended.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Factura de Ventas de Pago Anticipado"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -668,17 +769,25 @@ msgid "Source Location"
 msgstr "Ubicación Origen"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price_standby
+msgid "Stand By"
+msgstr ""
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__state
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__state
 msgid "State"
 msgstr "Estado"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Status"
 msgstr "Estado"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__activity_state
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_state
 msgid ""
 "Status based on activities\n"
 "Overdue: Due date is already passed\n"
@@ -693,9 +802,13 @@ msgstr ""
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_carrier__carrier_type__stock
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_landed_cost__landed_type__stock
-#: model:ir.ui.menu,name:stock_extended.menu_parent_stock
 msgid "Stock"
 msgstr "Inventario"
+
+#. module: stock_extended
+#: model:res.groups,name:stock_extended.group_stock_hide
+msgid "Stock Hide"
+msgstr "Ocultar Inventario"
 
 #. module: stock_extended
 #: model:ir.model,name:stock_extended.model_stock_landed_cost
@@ -713,9 +826,7 @@ msgid "Stock Moves Return"
 msgstr "Movimientos de devolución"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_account_bank_statement_line__picking_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_move__picking_id
-#: model:ir.model.fields,field_description:stock_extended.field_account_payment__picking_id
+#: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__stock_picking
 msgid "Stock Picking"
 msgstr "Transferencia"
 
@@ -745,6 +856,23 @@ msgstr "Terminos y condiciones"
 #, python-format
 msgid "The price exceeds the allowed tolerance"
 msgstr "El precio excede la tolerancia permitida"
+
+#. module: stock_extended
+#: code:addons/stock_extended/wizard/sale_advance_payment_inv.py:0
+#, python-format
+msgid ""
+"The product used to invoice a down payment should be of type 'Service'. "
+"Please use another product or update this product."
+msgstr ""
+
+#. module: stock_extended
+#: code:addons/stock_extended/wizard/sale_advance_payment_inv.py:0
+#, python-format
+msgid ""
+"The product used to invoice a down payment should have an invoice policy set"
+" to \"Ordered quantities\". Please update your deposit product to be able to"
+" create a deposit invoice."
+msgstr ""
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_delivery
@@ -779,6 +907,16 @@ msgid "Total Cost (Kg)"
 msgstr "Costo Total (Kg)"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__price_total
+msgid "Total Price"
+msgstr "Precio Total"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight_total
+msgid "Total Weight"
+msgstr "Peso Total"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Tracking"
 msgstr "Seguimiento"
@@ -789,6 +927,11 @@ msgid "Transfer"
 msgstr "Transferir"
 
 #. module: stock_extended
+#: model:ir.ui.menu,name:stock_extended.menu_parent_stock
+msgid "Transfers"
+msgstr "Inventario"
+
+#. module: stock_extended
 #: model_terms:ir.actions.act_window,help:stock_extended.action_customer_pick
 #: model_terms:ir.actions.act_window,help:stock_extended.action_delivery_agofer
 msgid "Transfers allow you to move products from one location to another."
@@ -797,16 +940,19 @@ msgstr ""
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__activity_exception_decoration
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Tipo de actividad de excepción registrada."
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_unread
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_unread
 msgid "Unread Messages"
 msgstr "Mensajes sin leer"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_unread_counter
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Nº de mensajes sin leer"
 
@@ -827,6 +973,12 @@ msgid "Upload Late"
 msgstr "Cargue Retrasado"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__user_id
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
+msgid "User"
+msgstr "Usuario"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Vendor"
 msgstr "Proveedor"
@@ -839,18 +991,25 @@ msgstr "Almacén"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__website_message_ids
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__website_message_ids
 msgid "Website Messages"
 msgstr "Mensajes del sitio web"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__website_message_ids
+#: model:ir.model.fields,help:stock_extended.field_delivery_invoice__website_message_ids
 msgid "Website communication history"
 msgstr "Historial de comunicaciones del sitio web"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_invoiced
 msgid "Weight"
 msgstr "Peso"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_returned
+msgid "Weight Returned"
+msgstr "Peso Retornado"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form

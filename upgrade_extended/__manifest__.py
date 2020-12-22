@@ -27,7 +27,6 @@
         # Odoo
         'auth_oauth',
         'base_address_city',
-        'base_address_extended',
         'board',
         'crm',
         'hr_contract',

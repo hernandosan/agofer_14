@@ -104,12 +104,12 @@
                     <attribute name="groups">stock.group_stock_user</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="before">
-                    <button name="%(stock_extended.action_sale_advance_payment_inv)d" string="Create Invoice"
-                        type="action" class="btn-primary" context="{'active_ids': sale_id}"/>
+                    <button name="%(stock_extended.action_sale_advance_payment_inv)d" string="Create Invoice" 
+                        type="action" class="btn-primary" attrs="{'invisible': [('sale_invoice_status', '!=', 'to invoice')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
-                    <!-- <field name="sale_id" readonly="True"/> -->
-                    <field name="invoice_id" readonly="True"/>
+                    <field name="sale_id" invisible="True"/>
+                    <field name="sale_invoice_status" invisible="True"/>
                 </xpath>
                 <xpath expr="//notebook/page[@name='extra']/group" position="inside">
                     <group string="Delivery Info" attrs="{'invisible': [('shipping_type','=',False)]}">

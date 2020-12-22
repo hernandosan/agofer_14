@@ -18,9 +18,10 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'delivery',
-        'stock_account_extended',
         'account_extended',
+        'delivery',
+        'sale_extended',
+        'stock_account_extended',
     ],
 
     # always loaded
@@ -29,6 +30,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/res_partner_category_data.xml',
+        'wizard/sale_advance_payment_inv_view.xml',
         # 'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         'views/delivery_guide_view.xml',
@@ -36,7 +38,6 @@
         'views/ir_ui_menu_view.xml',
         'views/product_product_view.xml',
         'views/product_template_view.xml',
-        'views/sale_advance_payment_inv_view.xml',
         'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',
     ],
