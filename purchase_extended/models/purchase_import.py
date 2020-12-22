@@ -18,13 +18,19 @@ class PurchaseImport(models.Model):
         'cancel': [('readonly', True)],
     }
 
-    name = fields.Char('Number', required=True, index=True, copy=False, default='New')
-    origin = fields.Char('Source Document', copy=False)
-    partner_ref = fields.Char('Reference', copy=False)
-    partner_id = fields.Many2one('res.partner', string='Trading', required=True, states=READONLY_STATES, change_default=True, tracking=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    company_id = fields.Many2one('res.company', 'Company', required=True, index=True, states=READONLY_STATES, default=lambda self: self.env.company.id)
+
     currency_company_id = fields.Many2one(related='company_id.currency_id', store=True, string='Currency Company', readonly=True)
-    currency_id = fields.Many2one('res.currency', 'Currency', required=True, states=READONLY_STATES, default=lambda self: self.env.company.currency_id.id)
-    currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True, store=True, readonly=True, help='Ratio between the purchase order currency and the company currency')
+    currency_id = fields.Many2one('res.currency', 'Currency', required=True, states=READONLY_STATES, 
+        default=lambda self: self.env.company.currency_id.id)
+    currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True,  
+        help='Ratio between the purchase order currency and the company currency')
+    incoterm_id = fields.Many2one('account.incoterms', 'Incoterm', states={'done': [('readonly', True)]}, help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")
+    name = fields.Char('Number', required=True, index=True, copy=False, default='New')
+    notes = fields.Text('Terms and Conditions')
+    origin = fields.Char('Source Document', copy=False)
+    partner_id = fields.Many2one('res.partner', string='Trading', required=True, states=READONLY_STATES, change_default=True, tracking=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    partner_ref = fields.Char('Reference', copy=False)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('purchase', 'Purchase Import'),
@@ -32,13 +38,10 @@ class PurchaseImport(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled')
     ], string='Status', readonly=True, index=True, copy=False, default='draft', tracking=True)
-    notes = fields.Text('Terms and Conditions')
-    incoterm_id = fields.Many2one('account.incoterms', 'Incoterm', states={'done': [('readonly', True)]}, help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")
     user_id = fields.Many2one('res.users', string='User', index=True, tracking=True, default=lambda self: self.env.user, check_company=True)
-    company_id = fields.Many2one('res.company', 'Company', required=True, index=True, states=READONLY_STATES, default=lambda self: self.env.company.id)
     # Dates
-    date_import = fields.Datetime('Import Date', required=True, states=READONLY_STATES, index=True, copy=False, default=fields.Datetime.now)
-    date_approve = fields.Datetime('Confirmation Date', readonly=1, index=True, copy=False)
+    date_import = fields.Date('Import Date', required=True, states=READONLY_STATES, index=True, copy=False, default=fields.Date.today())
+    date_approve = fields.Date('Confirmation Date', readonly=1, index=True, copy=False)
     date_international = fields.Date(string='Port International Date', index=True)
     date_national = fields.Date(string='Port National Date', index=True)
     date_stock = fields.Date(string='Stock Date', index=True)
@@ -93,10 +96,11 @@ class PurchaseImport(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('purchase.import', sequence_date=seq_date) or '/'
         return super(PurchaseImport, self).create(vals)
 
-    @api.depends('date_import', 'currency_id', 'company_id', 'company_id.currency_id')
+    @api.depends('currency_company_id', 'currency_id', 'company_id', 'date_import')
     def _compute_currency_rate(self):
         for purchase in self:
-            purchase.currency_rate = self.env['res.currency']._get_conversion_rate(purchase.company_id.currency_id, purchase.currency_id, purchase.company_id, purchase.date_import)
+            rate = purchase.currency_id._get_conversion_rate(purchase.currency_company_id, purchase.currency_id, purchase.company_id, purchase.date_import)
+            purchase.currency_rate = 1 / rate
 
     @api.depends('move_lines_done', 'moves_ids')
     def _compute_account(self):
@@ -187,7 +191,7 @@ class PurchaseImport(models.Model):
             purchase.allowed_order_ids = self.env['purchase.order'].search(domain)
 
     def action_purchase(self):
-        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
+        self.write({'state': 'purchase', 'date_approve': fields.Date.today()})
 
     def action_progress(self):
         self.write({'state': 'progress'})
@@ -465,7 +469,7 @@ class PurchaseImportLine(models.Model):
 
     partner_id = fields.Many2one(related='import_id.partner_id', string='Partner', readonly=True, store=True)
     currency_id = fields.Many2one(related='import_id.currency_company_id', store=True, string='Currency', readonly=True)
-    date_import = fields.Datetime(related='import_id.date_import', string='Import Date', readonly=True)
+    date_import = fields.Date(related='import_id.date_import', string='Import Date', readonly=True)
 
     @api.depends('price_customs', 'taxes_tariff_id', 'taxes_id')
     def _compute_price(self):

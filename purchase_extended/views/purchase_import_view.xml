@@ -97,7 +97,7 @@
                                 <field name="partner_ref" attrs="{'readonly': [('state','!=','draft')]}" />
                                 <field name="incoterm_id" required="True"/>
                                 <field name="currency_id" groups="base.group_multi_currency" force_save="1"/>
-                                <field name="currency_rate" invisible="1"/>
+                                <field name="currency_rate" groups="base.group_multi_currency"/>
                                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             </group>
                             <group>
