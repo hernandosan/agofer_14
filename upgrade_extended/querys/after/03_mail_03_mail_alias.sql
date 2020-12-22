@@ -1,3 +1,7 @@
+ALTER TABLE mail_alias DISABLE TRIGGER ALL;
+DELETE FROM mail_alias;
+ALTER TABLE mail_alias ENABLE TRIGGER ALL;
+
 INSERT INTO mail_alias (
 	id, 
 	create_uid, 
@@ -57,8 +61,6 @@ FROM dblink('dbname=agofer_08','SELECT
 	create_date timestamp without time zone, 
 	alias_name character varying
 )
-INNER JOIN ir_model im1 ON im1.id = agofer.alias_model_id
-INNER JOIN ir_model im2 ON im2.id = agofer.alias_parent_model_id
-WHERE agofer.id NOT IN (SELECT id FROM mail_alias);
+INNER JOIN ir_model IR ON IR.id = agofer.alias_model_id;
 
 select setval('mail_alias_id_seq', (select max(id) from mail_alias));

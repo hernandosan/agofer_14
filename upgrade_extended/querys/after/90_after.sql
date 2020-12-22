@@ -327,4 +327,7 @@ order by pc.id;
 
 
 
-
+update product_product as pp
+set weight = pt.weight
+from product_template pt
+where pt.id = pp.product_tmpl_id;

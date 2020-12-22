@@ -1,3 +1,7 @@
+ALTER TABLE ir_sequence DISABLE TRIGGER ALL;
+DELETE FROM ir_sequence;
+ALTER TABLE ir_sequence ENABLE TRIGGER ALL;
+
 INSERT INTO ir_sequence (
 	id, 
 	create_uid, 
@@ -63,7 +67,6 @@ FROM dblink('dbname=agofer_08', 'select
 	prefix character varying, 
 	write_date timestamp without time zone, 
 	name character varying
-)
-WHERE agofer.id NOT IN (SELECT id FROM ir_sequence);
+);
 
 select setval('ir_sequence_id_seq', (select max(id) from ir_sequence));

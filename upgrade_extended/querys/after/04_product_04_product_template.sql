@@ -1,3 +1,7 @@
+ALTER TABLE product_template DISABLE TRIGGER ALL;
+DELETE FROM product_template;
+ALTER TABLE product_template ENABLE TRIGGER ALL;
+
 INSERT INTO product_template (
 	id, 
     list_price,
@@ -35,14 +39,12 @@ INSERT INTO product_template (
 	agofer.weight, 
 	agofer.color, 
 	agofer.write_uid, 
-	--agofer.uom_id,
-	1,
+	agofer.uom_id,
 	agofer.description_purchase, 
 	agofer.create_date, 
 	agofer.create_uid, 
 	agofer.company_id, 
-	--agofer.uom_po_id,
-	1,
+	agofer.uom_po_id,
 	agofer.type, 
 	agofer.description, 
 	agofer.volume, 
@@ -124,7 +126,6 @@ FROM dblink('dbname=agofer_08', 'select
     sale_line_warn character varying,
     landed_cost_ok boolean,
     upload_delay double precision
-)
-WHERE agofer.id NOT IN (SELECT id FROM product_template);
+);
 
 select setval('product_template_id_seq', (select max(id) from product_template));

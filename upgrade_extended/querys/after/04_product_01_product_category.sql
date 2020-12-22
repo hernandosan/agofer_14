@@ -1,3 +1,7 @@
+ALTER TABLE product_category DISABLE TRIGGER ALL;
+DELETE FROM product_category;
+ALTER TABLE product_category ENABLE TRIGGER ALL;
+
 INSERT INTO product_category (
 	id, 
 	create_uid, 
@@ -35,7 +39,6 @@ FROM dblink('dbname=agofer_08','select
 	parent_id integer, 
 	write_date timestamp without time zone, 
 	removal_strategy_id integer
-)
-WHERE agofer.id NOT IN (SELECT id FROM product_category);
+);
 
 select setval('product_category_id_seq', (select max(id) from product_category));

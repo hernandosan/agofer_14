@@ -27,8 +27,7 @@ INSERT INTO account_bank_statement(
 	agofer.user_id, 
 	agofer.name, 
 	agofer.balance_end, 
-	--agofer.journal_id,
-	1,
+	agofer.journal_id,
 	agofer.state, 
 	agofer.balance_end_real
 FROM dblink('dbname=agofer_08','select
@@ -64,7 +63,6 @@ FROM dblink('dbname=agofer_08','select
 	journal_id integer, 
 	state character varying, 
 	balance_end_real numeric
-)
-INNER JOIN account_journal AJ ON AJ.id = agofer.journal_id;
+);
 
 select setval('account_bank_statement_id_seq', (select max(id) from account_bank_statement));

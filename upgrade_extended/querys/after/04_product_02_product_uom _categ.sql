@@ -1,3 +1,7 @@
+ALTER TABLE uom_category DISABLE TRIGGER ALL;
+DELETE FROM uom_category;
+ALTER TABLE uom_category ENABLE TRIGGER ALL;
+
 INSERT INTO uom_category (
 	id, 
 	create_uid, 
@@ -27,7 +31,6 @@ FROM dblink('dbname=agofer_08', 'select
 	name character varying, 
 	write_uid integer, 
 	write_date timestamp without time zone
-)
-WHERE agofer.id NOT IN (SELECT id FROM uom_category);
+);
 
 select setval('uom_category_id_seq', (select max(id) from uom_category));
