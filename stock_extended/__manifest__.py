@@ -18,9 +18,10 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'delivery',
-        'stock_account_extended',
         'account_extended',
+        'delivery',
+        'sale_extended',
+        'stock_account_extended',
     ],
 
     # always loaded
@@ -36,9 +37,9 @@
         'views/ir_ui_menu_view.xml',
         'views/product_product_view.xml',
         'views/product_template_view.xml',
-        'views/sale_advance_payment_inv_view.xml',
         'views/stock_landed_cost_view.xml',
         'views/stock_picking_view.xml',
+        'wizard/sale_advance_payment_inv_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="action_sale_advance_payment_inv" model="ir.actions.act_window">
+            <field name="name">Create invoices</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.advance.payment.inv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_view_types">list</field>
+            <field name="context">{'default_stock_picking': True}</field>
+        </record>
+
+        <record id="view_sale_advance_payment_inv_form" model="ir.ui.view">
+            <field name="name">view.sale.advance.payment.inv.form</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='has_down_payments']" position="after">
+                    <field name="stock_picking" invisible="True" />
+                </xpath>
+                <xpath expr="//button[@id='create_invoice_open']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('stock_picking', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@id='create_invoice_open']" position="after">
+                    <button name="create_invoices_pickings" id="create_invoice_picking_open" string="Create and View Invoice" 
+                        type="object" context="{'open_invoices': True}" class="btn-primary" 
+                        attrs="{'invisible': [('stock_picking', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@id='create_invoice']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('stock_picking', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@id='create_invoice']" position="after">
+                    <button name="create_invoices_pickings" id="create_invoice_picking" string="Create Invoice" type="object" 
+                        attrs="{'invisible': [('stock_picking', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

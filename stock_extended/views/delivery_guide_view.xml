@@ -133,12 +133,14 @@
                                         <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')" decoration-success="payment_state in ('paid', 'reversed')" attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}" optional="hide"/>
                                         <field name="delivery_state" widget="badge" decoration-success="delivery_state == 'delivered'" decoration-info="delivery_state == 'progress'" optional="show"/>
                                         <field name="move_type" invisible="True"/>
-                                        <button name="action_guide_confirm" string="Confirm" type="object" icon="fa-check text-success" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/>
-                                        <button name="action_guide_return" string="Return" type="object" icon="fa-close text-danger" attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/> 
+                                        <button name="action_guide_confirm" string="Confirm" type="object" icon="fa-check text-success" 
+                                            attrs="{'invisible': [('delivery_state', '!=', 'progress')]}"/>
+                                        <button name="action_guide_return" string="Return" type="object" icon="fa-close text-danger" 
+                                            attrs="{'invisible': [('delivery_state', '!=', 'progress')]}" context="{'delivery_guide': parent.id}"/> 
                                     </tree>
                                 </field>
                                 <separator string="Moves"/>
-                                <field name="moves_ids" readonly="True"/>
+                                <field name="moves_ids" attrs="{'readonly':[('state','!=','confirm')]}"/>
                             </page>
                             <page string="Credit Notes" attrs="{'invisible':['|',('guide_bool','=',False),('guide_type','!=','customer')]}">
                                 <field name="invoices_returns_ids" domain="[('move_type','=','out_refund'),('state','=','posted'),('delivery_state','=','pending')]" 
@@ -172,7 +174,7 @@
                                     </tree>
                                 </field>
                                 <separator string="Moves"/>
-                                <!--<button name="action_moves" type="object" string="Calculate" class="oe_highlight"/>-->
+                                <button name="action_moves" type="object" string="Calculate" class="oe_highlight"/>
                                 <field name="moves_returns_ids" readonly="True"/>
                             </page>
                             <page string="Pickings" attrs="{'invisible':[('guide_type','!=','branch')]}">

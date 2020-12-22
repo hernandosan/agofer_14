@@ -7,7 +7,8 @@ INSERT INTO account_fiscal_position_tax (
     write_uid,
     tax_dest_id,
     write_date,
-    company_id
+    company_id,
+    option
 ) SELECT
 	agofer.id,
     agofer.create_uid,
@@ -18,7 +19,8 @@ INSERT INTO account_fiscal_position_tax (
     agofer.tax_dest_id,
     agofer.write_date,
     --agofer.company_id
-    1
+    1,
+    'day_after_invoice_date'
 FROM dblink('dbname=agofer_08','select
 	id,
     create_uid,

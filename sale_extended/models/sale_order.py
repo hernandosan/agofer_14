@@ -330,10 +330,9 @@ class SaleOrderLine(models.Model):
     def msg_product_qty(self):
         msg = ""
         for line in self:
-            free_qty_today = line.free_qty_today
+            warehouse = line.order_id.warehouse_id
+            free_qty_today = line.product_id.with_context({'warehouse': warehouse.id}).free_qty
             product_uom_qty = line.product_uom_qty
-            # if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
-            #     product_uom_qty = line.product_uom._compute_quantity(product_uom_qty, line.product_id.uom_id)
             if product_uom_qty > free_qty_today:
                 msg += line._msg_product_qty(product_uom_qty, free_qty_today)
         return msg
