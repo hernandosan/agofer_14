@@ -1,4 +1,8 @@
-insert into stock_location_route (
+ALTER TABLE stock_location_route DISABLE TRIGGER ALL;
+DELETE FROM stock_location_route;
+ALTER TABLE stock_location_route ENABLE TRIGGER ALL;
+
+INSERT INTO stock_location_route (
 	id, 
 	supplier_wh_id, 
 	create_uid, 
@@ -14,7 +18,7 @@ insert into stock_location_route (
 	active, 
 	write_uid, 
 	sale_selectable
-) select 
+) SELECT
 	agofer.id, 
 	agofer.supplier_wh_id, 
 	agofer.create_uid, 
@@ -30,7 +34,7 @@ insert into stock_location_route (
 	agofer.active, 
 	agofer.write_uid, 
 	agofer.sale_selectable
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	supplier_wh_id, 
 	create_uid, 
@@ -47,7 +51,7 @@ from dblink('dbname=agofer_08', 'select
 	write_uid, 
 	sale_selectable
 	from stock_location_route'
-) as agofer(
+) AS agofer(
 	id integer, 
 	supplier_wh_id integer, 
 	create_uid integer, 
@@ -63,6 +67,6 @@ from dblink('dbname=agofer_08', 'select
 	active boolean, 
 	write_uid integer, 
 	sale_selectable boolean
-)where agofer.id not in (select id from stock_location_route);
+);
 
 select setval('stock_location_route_id_seq', (select max(id) from stock_location_route));

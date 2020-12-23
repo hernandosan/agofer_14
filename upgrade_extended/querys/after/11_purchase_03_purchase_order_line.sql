@@ -1,4 +1,4 @@
-insert into purchase_order_line (
+INSERT INTO purchase_order_line (
 	id, 
 	create_date, 
 	product_uom, 
@@ -15,7 +15,7 @@ insert into purchase_order_line (
 	company_id, 
 	state, 
 	account_analytic_id
-) select 
+) SELECT
 	agofer.id, 
 	agofer.create_date, 
 	agofer.product_uom, 
@@ -32,7 +32,7 @@ insert into purchase_order_line (
 	agofer.company_id, 
 	agofer.state, 
 	agofer.account_analytic_id
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	create_date, 
 	product_uom, 
@@ -50,7 +50,7 @@ from dblink('dbname=agofer_08', 'select
 	state, 
 	account_analytic_id
 	from purchase_order_line;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 
 	product_uom integer, 

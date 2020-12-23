@@ -1,4 +1,8 @@
-insert into stock_location (
+ALTER TABLE stock_location DISABLE TRIGGER ALL;
+DELETE FROM stock_location;
+ALTER TABLE stock_location ENABLE TRIGGER ALL;
+
+INSERT INTO stock_location (
 	id, 
 	comment, 
 	create_date, 
@@ -18,7 +22,7 @@ insert into stock_location (
 	usage, 
 	valuation_in_account_id, 
 	valuation_out_account_id
-) select 
+) SELECT
 	agofer.id, 
 	agofer.comment, 
 	agofer.create_date, 
@@ -38,7 +42,7 @@ insert into stock_location (
 	agofer.usage, 
 	agofer.valuation_in_account_id, 
 	agofer.valuation_out_account_id
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	comment, 
 	create_date, 
@@ -59,7 +63,7 @@ from dblink('dbname=agofer_08', 'select
 	valuation_in_account_id, 
 	valuation_out_account_id
 	from stock_location;'
-) as agofer(
+) AS agofer(
 	id integer, 
 	comment text, 
 	create_date timestamp without time zone, 
@@ -79,6 +83,6 @@ from dblink('dbname=agofer_08', 'select
 	usage character varying, 
 	valuation_in_account_id integer, 
 	valuation_out_account_id integer
-)where agofer.id not in (select id from stock_location);
+);
 
 select setval('stock_location_id_seq', (select max(id) from stock_location));

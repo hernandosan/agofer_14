@@ -1,3 +1,7 @@
+ALTER TABLE stock_warehouse DISABLE TRIGGER ALL;
+DELETE FROM stock_warehouse;
+ALTER TABLE stock_warehouse ENABLE TRIGGER ALL;
+
 INSERT INTO stock_warehouse (
 	id, 
 	mto_pull_id, 

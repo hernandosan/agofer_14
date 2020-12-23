@@ -1,4 +1,4 @@
-insert into purchase_import (
+INSERT INTO purchase_import (
 	id, 
 	partner_id, 
 	origin, 
@@ -13,7 +13,7 @@ insert into purchase_import (
 	currency_rate, 
 	name, 
 	incoterm_id
-) select 
+) SELECT
 	agofer.id, 
 	agofer.trading_id, 
 	agofer.origin, 
@@ -26,9 +26,9 @@ insert into purchase_import (
 	agofer.create_uid, 
 	agofer.write_date, 
 	agofer.currency_rate, 
-	agofer.name, 
-	null
-from dblink('dbname=agofer_08', 'select 
+	agofer.name,
+	agofer.incoterm_id
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	trading_id, 
 	origin, 
@@ -59,14 +59,6 @@ from dblink('dbname=agofer_08', 'select
 	currency_rate numeric, 
 	name character varying, 
 	incoterm_id integer
-) 
-where agofer.date_origin >= '2019-01-01';
+);
 
 select setval('purchase_import_id_seq', (select max(id) from purchase_import));
-
-update purchase_import as po 
-set currency_id = rc.id
-FROM dblink('dbname=agofer_08','select po.id, rc.name from purchase_import po inner join res_currency rc on rc.id = currency_id;') AS agofer 
-(id integer, name character varying) 
-inner join res_currency rc on rc.name = agofer.name 
-where po.id = agofer.id;

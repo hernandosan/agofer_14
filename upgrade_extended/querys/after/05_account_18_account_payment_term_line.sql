@@ -1,3 +1,7 @@
+ALTER TABLE account_payment_term_line DISABLE TRIGGER ALL;
+DELETE FROM account_payment_term_line;
+ALTER TABLE account_payment_term_line ENABLE TRIGGER ALL;
+
 INSERT INTO account_payment_term_line (
 	id,
 	payment_id,

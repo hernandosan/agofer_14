@@ -1,4 +1,4 @@
-insert into mrp_production (
+INSERT INTO mrp_production (
 	id, 
 	origin, 
 	create_date, 
@@ -18,33 +18,35 @@ insert into mrp_production (
 	product_id, 
 	location_dest_id,
 	product_uom_id,
-	picking_type_id,
 	date_planned_start,
-	consumption
-) select 
-	agofer.id, 
-	agofer.origin, 
-	agofer.create_date, 
-	agofer.write_uid, 
-	agofer.product_qty, 
-	agofer.create_uid, 
-	agofer.user_id, 
-	agofer.location_src_id, 
-	agofer.date_start, 
-	agofer.company_id, 
-	agofer.priority, 
-	agofer.state, 
-	agofer.bom_id, 
-	agofer.date_finished, 
-	agofer.write_date, 
-	agofer.name, 
-	agofer.product_id, 
+	consumption,
+	picking_type_id
+) SELECT
+	agofer.id,
+	agofer.origin,
+	agofer.create_date,
+	agofer.write_uid,
+	agofer.product_qty,
+	agofer.create_uid,
+	agofer.user_id,
+	agofer.location_src_id,
+	agofer.date_start,
+	agofer.company_id,
+	agofer.priority,
+	agofer.state,
+	agofer.bom_id,
+	agofer.date_finished,
+	agofer.write_date,
+	agofer.name,
+	agofer.product_id,
 	agofer.location_dest_id,
 	agofer.product_uom,
-	1,
 	agofer.date_planned,
-	'flexible'
-from dblink('dbname=agofer_08', 'select 
+	--agofer.consumption
+	'flexible',
+	--agofer.picking_type_id
+	617
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	origin, 
 	create_date, 
@@ -66,7 +68,7 @@ from dblink('dbname=agofer_08', 'select
 	product_uom,
 	date_planned
 	from mrp_production;'
-) as agofer ( 
+) AS agofer (
 	id integer, 
 	origin character varying, 
 	create_date timestamp without time zone, 

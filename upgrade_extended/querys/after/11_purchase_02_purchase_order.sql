@@ -1,4 +1,4 @@
-insert into purchase_order (
+INSERT INTO purchase_order (
 	id, 
 	origin, 
 	create_date, 
@@ -21,7 +21,7 @@ insert into purchase_order (
 	amount_total, 
 	name, 
 	notes
-) select 
+) SELECT
 	agofer.id, 
 	agofer.origin, 
 	agofer.create_date, 
@@ -44,7 +44,7 @@ insert into purchase_order (
 	agofer.amount_total, 
 	agofer.name, 
 	agofer.notes
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	origin, 
 	create_date, 
@@ -68,7 +68,7 @@ from dblink('dbname=agofer_08', 'select
 	name, 
 	notes
 	from purchase_order;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	origin character varying, 
 	create_date timestamp without time zone, 
@@ -94,10 +94,3 @@ from dblink('dbname=agofer_08', 'select
 );
 
 select setval('purchase_order_id_seq', (select max(id) from purchase_order));
-
-update purchase_order as po 
-set currency_id = rc.id
-FROM dblink('dbname=agofer_08','select po.id, rc.name from purchase_order po inner join res_currency rc on rc.id = currency_id;') AS agofer 
-(id integer, name character varying) 
-inner join res_currency rc on rc.name = agofer.name 
-where po.id = agofer.id;

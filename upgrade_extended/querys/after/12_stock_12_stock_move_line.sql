@@ -76,7 +76,6 @@ FROM dblink('dbname=agofer_08','select
 	qty_done numeric,
 	picking_id integer,
 	owner_id integer
-)
-INNER JOIN stock_picking sp ON sp.id = agofer.picking_id;
+);
 
 select setval('stock_move_line_id_seq', (select max(id) from stock_move_line));

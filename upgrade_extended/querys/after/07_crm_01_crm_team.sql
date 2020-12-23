@@ -1,3 +1,7 @@
+ALTER TABLE crm_team DISABLE TRIGGER ALL;
+DELETE FROM crm_team;
+ALTER TABLE crm_team ENABLE TRIGGER ALL;
+
 INSERT INTO crm_team (
 	id, 
 	color, 
@@ -63,6 +67,6 @@ FROM dblink('dbname=agofer_08','select
     use_leads boolean,
     use_opportunities boolean
 )
-WHERE agofer.id NOT IN (SELECT id FROM crm_team);
+INNER JOIN mail_alias MA ON MA.id = agofer.alias_id;
 
 select setval('crm_team_id_seq', (select max(id) from crm_team));

@@ -1,3 +1,7 @@
+ALTER TABLE stock_rule DISABLE TRIGGER ALL;
+DELETE FROM stock_rule;
+ALTER TABLE stock_rule ENABLE TRIGGER ALL;
+
 INSERT INTO stock_rule (
 	id, 
 	create_date, 
@@ -38,7 +42,7 @@ INSERT INTO stock_rule (
 	agofer.group_propagation_option, 
 	agofer.partner_address_id, 
 	--agofer.warehouse_id, 
-	null,
+	1,
 	agofer.procure_method, 
 	agofer.location_id, 
 	agofer.location_src_id, 
@@ -99,7 +103,6 @@ FROM dblink('dbname=agofer_08', 'select
 	route_id integer, 
 	propagate_warehouse_id integer,
 	propagate boolean
-)
-WHERE agofer.id NOT IN (SELECT id FROM stock_rule);
+);
 
 select setval('stock_rule_id_seq', (select max(id) from stock_rule));

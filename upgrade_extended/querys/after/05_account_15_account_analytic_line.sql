@@ -34,8 +34,7 @@ INSERT INTO account_analytic_line (
 	agofer.unit_amount,
 	agofer.code,
 	agofer.general_account_id,
-	--agofer.currency_id,
-	8,
+	agofer.currency_id,
 	agofer.move_id,
 	agofer.product_id,
 	agofer.product_uom_id,
@@ -84,7 +83,6 @@ FROM dblink('dbname=agofer_08','select
 	product_uom_id integer,
 	ref character varying,
 	partner_id integer
-)
-INNER JOIN account_move_line AML ON AML.id = agofer.move_id;
+)INNER JOIN account_move_line OML ON OML.id = agofer.move_id;
 
 select setval('account_analytic_line_id_seq', (select max(id) from account_analytic_line));

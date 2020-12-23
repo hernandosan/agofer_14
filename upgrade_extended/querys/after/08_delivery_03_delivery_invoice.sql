@@ -1,4 +1,4 @@
-INSERT INTO delivery_guide (
+INSERT INTO delivery_invoice (
 	id,
     create_uid,
     create_date,

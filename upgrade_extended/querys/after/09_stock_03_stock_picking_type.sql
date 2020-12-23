@@ -1,3 +1,7 @@
+ALTER TABLE stock_picking_type DISABLE TRIGGER ALL;
+DELETE FROM stock_picking_type;
+ALTER TABLE stock_picking_type ENABLE TRIGGER ALL;
+
 INSERT INTO stock_picking_type (
 	id, 
 	code, 
@@ -25,8 +29,7 @@ INSERT INTO stock_picking_type (
 	agofer.write_date, 
 	agofer.sequence, 
 	agofer.color, 
-	--agofer.warehouse_id, 
-	null,
+	agofer.warehouse_id,
 	agofer.sequence_id, 
 	agofer.active, 
 	agofer.write_uid, 

@@ -1,3 +1,7 @@
+ALTER TABLE account_tax DISABLE TRIGGER ALL;
+DELETE FROM account_tax;
+ALTER TABLE account_tax ENABLE TRIGGER ALL;
+
 INSERT INTO account_tax (
 	id, 
 	create_date, 

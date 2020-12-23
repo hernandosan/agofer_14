@@ -108,6 +108,6 @@ FROM dblink('dbname=agofer_08','select
 	amount_currency numeric,
 	quantity numeric,
 	statement_line_id integer
-)
+);
 
 select setval('account_move_line_id_seq', (select max(id) from account_move_line));

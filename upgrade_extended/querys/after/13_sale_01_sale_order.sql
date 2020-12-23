@@ -1,4 +1,4 @@
-insert into sale_order (
+INSERT INTO sale_order (
 	id, 
 	origin, 
 	create_date, 
@@ -33,7 +33,7 @@ insert into sale_order (
 	upload_date,
 	delivery_date,
 	pick_date
-) select 
+) SELECT
 	agofer.id, 
 	agofer.origin, 
 	agofer.create_date, 
@@ -51,15 +51,15 @@ insert into sale_order (
 	agofer.create_uid, 
 	agofer.write_date, 
 	agofer.partner_invoice_id, 
-	--agofer.user_id, 
-	2, 
-	agofer.amount_total, 
-	agofer.name, 
-	agofer.partner_shipping_id, 
-	agofer.picking_policy, 
-	agofer.incoterm, 
-	agofer.warehouse_id, 
-	agofer.carrier_id, 
+	agofer.user_id,
+	agofer.amount_total,
+	agofer.name,
+	agofer.partner_shipping_id,
+	agofer.picking_policy,
+	agofer.incoterm,
+	agofer.warehouse_id,
+	--agofer.carrier_id,
+	(CASE WHEN agofer.carrier_id = 2 then 1 ELSE agofer.carrier_id end),
 	agofer.validity_date, 
 	agofer.access_token, 
 	agofer.medium_id, 
@@ -69,7 +69,7 @@ insert into sale_order (
 	agofer.upload_date,
 	agofer.delivery_date,
 	agofer.pick_date
-from dblink('dbname=agofer_08', 'select 
+FROM dblink('dbname=agofer_08', 'select
 	id, 
 	origin, 
 	create_date, 
@@ -105,7 +105,7 @@ from dblink('dbname=agofer_08', 'select
 	delivery_date,
 	pick_date
 	from sale_order;'
-) as agofer (
+) AS agofer (
 	id integer, 
 	origin character varying, 
 	create_date timestamp without time zone, 
@@ -140,7 +140,6 @@ from dblink('dbname=agofer_08', 'select
 	upload_date date,
 	delivery_date date,
 	pick_date date
-) 
-where cast(agofer.date_order as date) >= '2019-01-01';
+);
 
 select setval('sale_order_id_seq', (select max(id) from sale_order));

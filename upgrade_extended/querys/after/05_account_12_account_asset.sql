@@ -99,7 +99,6 @@ FROM dblink('dbname=agofer_08','select
 	value_residual numeric,
 	category_id integer,
 	purchase_date date
-)
-INNER JOIN account_asset_profile AAP ON AAP.id = agofer.category_id;
+);
 
 select setval('account_asset_id_seq', (select max(id) from account_asset));

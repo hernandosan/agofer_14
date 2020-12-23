@@ -61,6 +61,7 @@ FROM dblink('dbname=agofer_08','SELECT
 	create_date timestamp without time zone, 
 	alias_name character varying
 )
-INNER JOIN ir_model IR ON IR.id = agofer.alias_model_id;
+INNER JOIN ir_model IR ON IR.id = agofer.alias_model_id
+AND IR.id = agofer.alias_parent_model_id;
 
 select setval('mail_alias_id_seq', (select max(id) from mail_alias));
