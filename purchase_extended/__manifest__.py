@@ -22,6 +22,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/res_group_security.xml',
         'data/ir_sequence_data.xml',
         'data/product_template_data.xml',
         'wizard/stock_picking_wizard_view.xml',

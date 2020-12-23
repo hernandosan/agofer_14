@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 22:23+0000\n"
-"PO-Revision-Date: 2020-11-24 22:23+0000\n"
+"POT-Creation-Date: 2020-12-22 19:35+0000\n"
+"PO-Revision-Date: 2020-12-22 19:35+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,12 @@ msgstr "Grupo de cuenta"
 #: model:ir.ui.menu,name:account_extended.menu_account_group
 msgid "Account Groups"
 msgstr "Grupo de cuentas"
+
+#. module: account_extended
+#: model:ir.actions.act_window,name:account_extended.action_account_account_type
+#: model:ir.ui.menu,name:account_extended.menu_account_account_type
+msgid "Account Type"
+msgstr "Tipo de cuenta"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__move_id
@@ -145,7 +151,7 @@ msgstr "Efectivo"
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__cheque
 msgid "Cheque"
-msgstr "Cheque"
+msgstr ""
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__company_id
@@ -185,6 +191,11 @@ msgid "Create the first account group"
 msgstr "Crea el primer grupo de cuentas"
 
 #. module: account_extended
+#: model_terms:ir.actions.act_window,help:account_extended.action_account_account_type
+msgid "Create the first account type"
+msgstr ""
+
+#. module: account_extended
 #: model_terms:ir.actions.act_window,help:account_extended.action_account_consignment
 msgid "Create the first consignment"
 msgstr "Crea la primera consignación"
@@ -202,7 +213,6 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: account_extended
-#: model:account.payment.method,name:account_extended.account_payment_method_crossover_customer
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__type__crossover
 msgid "Crossover"
 msgstr "Cruce"
@@ -211,6 +221,11 @@ msgstr "Cruce"
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__currency_id
 msgid "Currency"
 msgstr "Moneda"
+
+#. module: account_extended
+#: model:ir.model,name:account_extended.model_res_currency_rate
+msgid "Currency Rate"
+msgstr "Tasa monetaria"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__date
@@ -232,6 +247,7 @@ msgstr "Fecha de consignación"
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__display_name
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__display_name
+#: model:ir.model.fields,field_description:account_extended.field_res_currency_rate__display_name
 msgid "Display Name"
 msgstr "Nombre Público"
 
@@ -291,6 +307,7 @@ msgstr "Agrupar por"
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__id
 #: model:ir.model.fields,field_description:account_extended.field_res_bank__id
+#: model:ir.model.fields,field_description:account_extended.field_res_currency_rate__id
 msgid "ID"
 msgstr ""
 
@@ -368,6 +385,7 @@ msgstr "Apunte contable"
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_extended.field_account_payment____last_update
 #: model:ir.model.fields,field_description:account_extended.field_res_bank____last_update
+#: model:ir.model.fields,field_description:account_extended.field_res_currency_rate____last_update
 msgid "Last Modified on"
 msgstr "Última Modificación el"
 
@@ -386,7 +404,7 @@ msgstr "Última actualización el"
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_move__niif_bool__local
 msgid "Local"
-msgstr "Local"
+msgstr ""
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_bank_statement_line__niif_bool
@@ -394,7 +412,7 @@ msgstr "Local"
 #: model:ir.model.fields,field_description:account_extended.field_account_move_line__niif_bool
 #: model:ir.model.fields,field_description:account_extended.field_account_payment__niif_bool
 msgid "Local / NIIF"
-msgstr "Local / NIIF"
+msgstr ""
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__message_main_attachment_id
@@ -414,7 +432,7 @@ msgstr "Mensajes"
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_move__niif_bool__niif
 msgid "NIIF"
-msgstr "NIIF"
+msgstr ""
 
 #. module: account_extended
 #: model:res.groups,name:account_extended.group_account_niif
@@ -497,7 +515,7 @@ msgstr "Número de mensajes no leidos"
 #. module: account_extended
 #: model:ir.model.fields.selection,name:account_extended.selection__account_consignment__payment_type__pse
 msgid "PSE"
-msgstr "PSE"
+msgstr ""
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__partner_id
@@ -523,6 +541,11 @@ msgstr "Número de pago"
 #: model:ir.model,name:account_extended.model_account_payment
 msgid "Payments"
 msgstr "Pagos"
+
+#. module: account_extended
+#: model:ir.model.fields,field_description:account_extended.field_res_currency_rate__rate_inv
+msgid "Rate Inverse"
+msgstr "Tasa Inversa"
 
 #. module: account_extended
 #: model:ir.model.fields,field_description:account_extended.field_account_consignment__consignment_bool
@@ -603,7 +626,7 @@ msgstr "El número de pago debe ser unico"
 #. module: account_extended
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_tree
 msgid "Total NIIF"
-msgstr "Total NIIF"
+msgstr ""
 
 #. module: account_extended
 #: model_terms:ir.ui.view,arch_db:account_extended.view_account_move_tree
