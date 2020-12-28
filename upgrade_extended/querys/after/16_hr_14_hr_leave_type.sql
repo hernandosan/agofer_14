@@ -30,6 +30,7 @@ INSERT INTO hr_leave_type (
 	agofer.create_date,
 	agofer.write_uid,
 	agofer.write_date
+
 FROM dblink('dbname=agofer_08', 'SELECT
 	ausencia.id AS id,
 	ausencia.name AS name,
@@ -43,8 +44,10 @@ FROM dblink('dbname=agofer_08', 'SELECT
 	ausencia.create_date AS create_date,
 	ausencia.write_uid AS write_uid,
 	ausencia.write_date AS write_date
-    from hr_holidays_status AS ausencia
-    where concept_category IS NOT NULL'
+FROM
+	hr_holidays_status AS ausencia
+WHERE
+	concept_category IS NOT NULL'
 ) AS agofer(
 	id integer,
 	name character varying,
@@ -63,4 +66,3 @@ WHERE agofer.id NOT IN (SELECT id FROM hr_leave_type);
 
 select setval('hr_leave_type_id_seq', (select max(id) from hr_leave_type));
 
-select setval('hr_novelty_id_seq', (select max(id) from hr_novelty));

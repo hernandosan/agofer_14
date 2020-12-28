@@ -1,3 +1,7 @@
+ALTER TABLE hr_concept DISABLE TRIGGER ALL;
+DELETE FROM hr_concept;
+ALTER TABLE hr_concept ENABLE TRIGGER ALL;
+
 INSERT INTO hr_concept (
 	id,
 	name,
@@ -17,7 +21,7 @@ INSERT INTO hr_concept (
 	agofer.partner_type,
 	agofer.partner_other,
 	agofer.category,
-	--agofer.company_id
+	--agofer.company_id,
 	1,
 	agofer.create_uid,
 	agofer.create_date,
@@ -48,7 +52,6 @@ FROM
 	write_uid integer,
 	write_date timestamp without time zone
 )
-WHERE agofer.id NOT IN (SELECT id FROM hr_concept)
-AND agofer.code NOT IN (SELECT code FROM hr_concept);
+WHERE agofer.id NOT IN (SELECT id FROM hr_concept);
 
 select setval('hr_concept_id_seq', (select max(id) from hr_concept));

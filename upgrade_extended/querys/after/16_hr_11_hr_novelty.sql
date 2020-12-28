@@ -12,11 +12,9 @@ INSERT INTO hr_novelty (
 	create_date,
 	write_uid,
 	write_date
-) SELECT
+)SELECT
 	agofer.name,
-	--agofer.type_novelty,
 	'STATIC',
-	--agofer.novelty_type_id
 	categoria.id as category_id,
 	agofer.state,
 	--agofer.contract_id,
@@ -25,11 +23,9 @@ INSERT INTO hr_novelty (
 	agofer.amount,
 	agofer.date,
 	agofer.company_id,
-	--agofer.create_uid,
-	2,
+	agofer.create_uid,
 	agofer.create_date,
-	--agofer.write_uid,
-	2,
+	agofer.write_uid,
 	agofer.write_date
 FROM dblink('dbname=agofer_08', 'SELECT
 	novedades.name AS name,
@@ -45,9 +41,12 @@ FROM dblink('dbname=agofer_08', 'SELECT
 	novedades.create_date AS create_date,
 	novedades.write_uid AS write_uid,
 	novedades.write_date AS write_date
-    from hr_payroll_novedades AS novedades
-    inner join hr_payroll_novedades_category AS categoria ON categoria.id = novedades.category_id
-    where categoria.concept_category IS NOT null'
+FROM
+	hr_payroll_novedades AS novedades
+INNER JOIN
+	hr_payroll_novedades_category AS categoria ON categoria.id = novedades.category_id
+WHERE
+	categoria.concept_category IS NOT null'
 ) AS agofer(
 	name character varying,
 	category_code character varying,

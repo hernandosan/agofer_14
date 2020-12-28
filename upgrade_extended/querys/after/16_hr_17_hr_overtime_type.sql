@@ -25,20 +25,20 @@ INSERT INTO hr_overtime_type (
 	agofer.create_date,
 	agofer.write_uid,
 	agofer.write_date
-FROM dblink('dbname=agofer_08', 'select
-	id,
-	multiplicador,
-	name,
-	code,
-	concept_category,
-	partner_type,
-	partner_id,
-	create_uid,
-	create_date,
-	write_uid,
-	write_date
-    from hr_payroll_extrahours_type'
-) AS agofer (
+FROM dblink('dbname=agofer_08', 'SELECT
+	categoria.id as id,
+	categoria.multiplicador AS multiplicador,
+	categoria.name AS name,
+	categoria.code AS code,
+	categoria.concept_category AS concept_category,
+	categoria.partner_type AS partner_type,
+	categoria.partner_id AS partner_id,
+	categoria.create_uid AS create_uid,
+	categoria.create_date AS create_date,
+	categoria.write_uid AS write_uid,
+	categoria.write_date AS write_date
+FROM hr_payroll_extrahours_type AS categoria'
+) AS agofer(
 	id integer,
 	multiplicador double precision,
 	name character varying,

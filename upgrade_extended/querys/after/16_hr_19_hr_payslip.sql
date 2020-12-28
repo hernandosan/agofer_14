@@ -47,7 +47,8 @@ FROM dblink('dbname=agofer_08','select
         create_date,
         write_uid,
         write_date
-        from hr_payslip;'
+        from hr_payslip
+		where id <> 125327;'
 ) as agofer(
         id integer,
         number character varying,
@@ -67,4 +68,4 @@ WHERE agofer.id NOT IN (SELECT id FROM hr_payslip);
 
 SELECT setval('hr_payslip_id_seq',(SELECT MAX(id)FROM hr_payslip));
 
-SELECT setval('hr_payslip_processing_id_seq',(SELECT MAX(id)FROM hr_payslip_processing));
+-- Cuidado con la nomina SLIP/23061 id 125327 no tiene contrato

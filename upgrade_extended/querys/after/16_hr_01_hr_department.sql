@@ -1,3 +1,7 @@
+ALTER TABLE hr_department DISABLE TRIGGER ALL;
+DELETE FROM hr_department;
+ALTER TABLE hr_department ENABLE TRIGGER ALL;
+
 INSERT INTO hr_department (
 	id, 
 	create_uid, 
@@ -47,7 +51,6 @@ FROM dblink('dbname=agofer_08','select
 	parent_id integer, 
 	manager_id integer, 
 	write_date timestamp without time zone
-)
-WHERE agofer.id NOT IN (SELECT id FROM hr_department);
+);
 
 select setval('hr_department_id_seq', (select max(id) from hr_department));

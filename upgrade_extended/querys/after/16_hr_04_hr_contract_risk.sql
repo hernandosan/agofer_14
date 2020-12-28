@@ -1,3 +1,7 @@
+ALTER TABLE hr_contract_risk DISABLE TRIGGER ALL;
+DELETE FROM hr_contract_risk;
+ALTER TABLE hr_contract_risk ENABLE TRIGGER ALL;
+
 INSERT INTO hr_contract_risk (
 	id, 
     create_uid,

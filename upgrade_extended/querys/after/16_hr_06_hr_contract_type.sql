@@ -1,5 +1,5 @@
 INSERT INTO hr_contract_type (
-	id, 
+	id,
     create_uid,
     create_date,
     name,
@@ -10,15 +10,18 @@ INSERT INTO hr_contract_type (
     type_class,
     company_id
 ) SELECT
-	agofer.id, 
+	agofer.id,
     agofer.create_uid,
     agofer.create_date,
     agofer.name,
     agofer.write_uid,
     agofer.write_date,
-    agofer.term,
-    agofer.section,
-    agofer.type_class,
+    --agofer.term,
+	(CASE WHEN agofer.term IS NULL THEN 'null' ELSE agofer.term END),
+    --agofer.section,
+	(CASE WHEN agofer.section IS NULL THEN 'null' ELSE agofer.section END),
+    --agofer.type_class,
+	(CASE WHEN agofer.type_class IS NULL THEN 'null' ELSE agofer.type_class END),
     --agofer.company_id
     1
 FROM dblink('dbname=agofer_08','select
@@ -36,7 +39,7 @@ FROM dblink('dbname=agofer_08','select
     type_class
 	from hr_contract_type;'
 ) AS agofer (
-	id integer, 
+	id integer,
     create_uid integer,
     create_date timestamp without time zone,
     name character varying,

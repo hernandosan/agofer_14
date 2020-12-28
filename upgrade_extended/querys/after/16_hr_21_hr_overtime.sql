@@ -68,5 +68,3 @@ FROM dblink('dbname=agofer_08', 'select
 WHERE agofer.id NOT IN (SELECT id FROM hr_overtime);
 
 select setval('hr_overtime_id_seq', (select max(id) from hr_overtime));
-
-SELECT setval('hr_payslip_line_id_seq',(SELECT MAX(id) FROM hr_payslip_line);

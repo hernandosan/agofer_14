@@ -1,4 +1,4 @@
-insert into helpdesk_ticket (
+INSERT INTO helpdesk_ticket (
 	id, 
 	number, 
 	name,
@@ -22,7 +22,8 @@ select
 	agofer.id, 
 	agofer.number, 
 	agofer.name,
-	agofer.description, 
+	--agofer.description,
+	(CASE WHEN agofer.description IS null then 'OK' ELSE agofer.description END),
 	agofer.user_id, 
 	agofer.state, 
 	agofer.partner_id, 
@@ -38,7 +39,7 @@ select
 	agofer.subcategory,
 	--agofer.active
 	'True'
-from dblink('dbname=agofer_08','SELECT 
+FROM dblink('dbname=agofer_08','select
 	id,
 	name as number,
 	name,
@@ -56,9 +57,8 @@ from dblink('dbname=agofer_08','SELECT
 	write_uid,
 	write_date,
 	subcategory
-	FROM website_support_ticket
-	WHERE description IS NOT NULL;'
-) as agofer(
+	FROM website_support_ticket;'
+) AS agofer(
 	id integer,
 	number character varying,
 	name character varying, 

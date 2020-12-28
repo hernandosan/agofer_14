@@ -1,4 +1,4 @@
-insert into sale_order_line (
+INSERT INTO sale_order_line (
 	id,
 	create_date,
 	product_uom,
@@ -22,7 +22,7 @@ insert into sale_order_line (
 	upload_delay,
 	customer_lead,
 	display_type
-) select
+) SELECT
 	agofer.id,
 	agofer.create_date,
 	agofer.product_uom,
@@ -46,8 +46,8 @@ insert into sale_order_line (
 	agofer.upload_delay,
 	agofer.delay,
 	--agofer.display_type
-	NULL
-from dblink('dbname=agofer_08','SELECT
+	null
+FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
 	product_uom,
@@ -71,10 +71,8 @@ from dblink('dbname=agofer_08','SELECT
 	upload_delay,
 	delay
 	FROM sale_order_line
-	WHERE product_uom_qty > 0
-	AND product_id IS NOT NULL
-	AND product_uom IS NOT NULL;'
-) as agofer(
+	WHERE product_id IS NOT null;'
+) AS agofer(
 	id integer,
 	create_date timestamp without time zone,
 	product_uom integer,
@@ -97,7 +95,6 @@ from dblink('dbname=agofer_08','SELECT
 	is_delivery boolean,
 	upload_delay double precision,
 	delay double precision
-)
-INNER JOIN sale_order SO ON SO.id = order_id;
+);
 
 select setval('sale_order_line_id_seq', (select max(id) from sale_order_line));

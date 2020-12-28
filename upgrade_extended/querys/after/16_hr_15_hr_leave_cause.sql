@@ -22,8 +22,9 @@ FROM dblink('dbname=agofer_08', 'SELECT
 	tipo.create_date as create_date,
 	tipo.write_uid as write_uid,
 	tipo.write_date as write_date
-    FROM hr_holidays_status_incapacity AS tipo'
-) AS agofer (
+FROM
+	hr_holidays_status_incapacity AS tipo'
+) AS agofer(
 	id integer,
 	name character varying,
 	code character varying,

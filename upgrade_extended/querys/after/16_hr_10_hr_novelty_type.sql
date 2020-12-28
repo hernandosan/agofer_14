@@ -52,11 +52,9 @@ INSERT INTO hr_novelty_type (
     	--agofer.apr_ope_debit,
     	--agofer.apr_ope_credit,
 	1, -- company_id
-	--agofer.create_uid,
-	2,
+	agofer.create_uid,
 	agofer.create_date,
-	--agofer.write_uid,
-	2,
+	agofer.write_uid,
 	agofer.write_date
 FROM dblink('dbname=agofer_08', 'SELECT
 	novedad.name as name,
