@@ -20,7 +20,6 @@ INSERT INTO stock_picking_type (
 	default_location_src_id, 
 	sequence_code,
 	company_id,
-	active,
 	show_entire_packs
 ) select 
 	agofer.id, 
@@ -29,7 +28,8 @@ INSERT INTO stock_picking_type (
 	agofer.write_date, 
 	agofer.sequence, 
 	agofer.color, 
-	agofer.warehouse_id,
+	--agofer.warehouse_id,
+	1,
 	agofer.sequence_id, 
 	agofer.active, 
 	agofer.write_uid, 
@@ -42,7 +42,7 @@ INSERT INTO stock_picking_type (
 	'UNK',
 	--agofer.company_id
 	1,
-	True,
+	--agofer.show_entire_packs
 	True
 from dblink('dbname=agofer_08', 'select
 	id, 

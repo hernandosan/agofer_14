@@ -15,7 +15,8 @@ INSERT INTO account_bank_statement_line (
 	payment_ref
 ) SELECT
 	agofer.id, 
-	agofer.statement_id, 
+	--agofer.statement_id,
+	(CASE WHEN agofer.statement_id IS null THEN 350 ELSE agofer.statement_id END),
 	agofer.sequence, 
 	agofer.currency_id, 
 	agofer.write_date, 
@@ -27,7 +28,7 @@ INSERT INTO account_bank_statement_line (
 	agofer.amount, 
 	agofer.amount_currency,
 	--agofer.move_id,
-	59522,
+	2316014,
 	--agofer.payment_ref
 	'False'
 FROM dblink('dbname=agofer_08','select
@@ -43,8 +44,7 @@ FROM dblink('dbname=agofer_08','select
 	partner_name,
 	amount,
 	amount_currency
-	from account_bank_statement_line
-	where statement_id IS NOT null;'
+	from account_bank_statement_line;'
 ) AS agofer(
 	id integer, 
 	statement_id integer, 

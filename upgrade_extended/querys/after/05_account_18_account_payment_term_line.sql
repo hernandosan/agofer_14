@@ -15,8 +15,7 @@ INSERT INTO account_payment_term_line (
 	option
 ) SELECT
 	agofer.id,
-	--agofer.payment_id,
-	1,
+	agofer.payment_id,
 	agofer.create_uid,
 	agofer.create_date,
 	agofer.days,
