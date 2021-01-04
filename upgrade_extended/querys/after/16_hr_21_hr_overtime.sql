@@ -65,6 +65,7 @@ FROM dblink('dbname=agofer_08', 'select
 	write_uid integer,
 	write_date timestamp without time zone
 )
+INNER JOIN hr_payslip HP ON HP.id = agofer.payslip_id
 WHERE agofer.id NOT IN (SELECT id FROM hr_overtime);
 
 select setval('hr_overtime_id_seq', (select max(id) from hr_overtime));

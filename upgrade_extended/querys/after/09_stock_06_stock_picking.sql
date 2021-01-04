@@ -60,7 +60,7 @@ INSERT INTO stock_picking (
 	agofer.weight,
 	agofer.incoterm,
 	--agofer.sale_id,
-	1,
+	null,
 	agofer.printed,
 	agofer.upload_date,
 	agofer.delivery_bool,

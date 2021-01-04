@@ -1,36 +1,36 @@
-table.header{
+#header table{
     width:100%;
 	font-family: arial, sans-serif;
 	border: 2px solid #dd0404;
 }
 
-th.header{
+#header th{
     width:20%;
     border: 1px solid #b2b2b2;
     text-align: center;
     padding: 2px;
 }
 
-td.header{
+#header td{
     width:30%;
     border: 1px solid #b2b2b2;
     text-align: center;
     padding: 1px;
 }
 
-table.report{
+#report table{
     width: 100%;
 	font-family: arial, sans-serif;
 	border: 2px solid #2b0bba;
 }
 
-th.report{
+#report th{
     border: 1px solid #b2b2b2;
     text-align: center;
     padding: 8px;
 }
 
-td.report{
+#report td{
     border: 1px solid #b2b2b2;
     text-align: center;
     padding: 6px;

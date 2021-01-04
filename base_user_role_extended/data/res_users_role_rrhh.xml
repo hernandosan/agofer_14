@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record id="role_rrhh_manager-human-talent" model="res.users.role">
+            <field name="name">Manager of Human Talent</field>
+            <field name="implied_ids" 
+                eval="[
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('hr_avancys.manager_payslip')),
+                    (4, ref('hr.group_hr_manager'))
+                ]"/>
+        </record>
+        <record id="role_rrhh_payroll_assistant" model="res.users.role">
+            <field name="name">Payroll Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('helpdesk_mgmt.group_helpdesk_user')),
+                    (4, ref('base.group_partner_manager')),
+                    (4, ref('hr_avancys.manager_payslip')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('hr.group_hr_manager'))
+                ]"/>
+        </record>
+        <record id="role_rrhh_assistant-human-talent" model="res.users.role">
+            <field name="name">Human Talent Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('account_extended.group_account_user'))
+                ]"/>
+        </record>
+        <record id="role_rrhh_administrative-assistant" model="res.users.role">
+            <field name="name">Administrative Assistant</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user'))
+                ]"/>
+        </record>
+
+    </data>
+</odoo>

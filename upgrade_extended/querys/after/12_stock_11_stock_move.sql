@@ -139,6 +139,7 @@ FROM dblink('dbname=agofer_08', 'select
 	raw_material_production_id integer,
 	production_id integer,
 	costo_promedio double precision
-);
+)
+INNER JOIN stock_picking SP ON SP.id = agofer.picking_id;
 
 select setval('stock_move_id_seq', (select max(id) from stock_move));

@@ -17,9 +17,12 @@
 
     # any module necessary for this one to work correctly
     'depends': [
+        'account_avancys',
         'account_credit_control',
         'account_extended',
         'base_user_role',
+        'helpdesk_mgmt',
+        'hr_avancys',
         'mrp',
         'product',
         'purchase',

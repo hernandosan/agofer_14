@@ -9,14 +9,14 @@ INSERT INTO purchase_import (
 	company_id, 
 	state, 
 	create_uid, 
-	write_date, 
-	currency_rate, 
+	write_date,
 	name, 
 	incoterm_id
 ) SELECT
 	agofer.id, 
 	agofer.trading_id, 
-	agofer.origin, 
+	agofer.origin,
+	--agofer.date_import,
 	cast(agofer.create_date as timestamp without time zone), 
 	create_date, 
 	agofer.write_uid, 
@@ -24,8 +24,7 @@ INSERT INTO purchase_import (
 	agofer.company_id, 
 	agofer.state, 
 	agofer.create_uid, 
-	agofer.write_date, 
-	agofer.currency_rate, 
+	agofer.write_date,
 	agofer.name,
 	agofer.incoterm_id
 FROM dblink('dbname=agofer_08', 'select
@@ -39,8 +38,7 @@ FROM dblink('dbname=agofer_08', 'select
 	company_id, 
 	state, 
 	create_uid, 
-	write_date, 
-	currency_rate, 
+	write_date,
 	name, 
 	incoterm_id
 	from purchase_import;'
@@ -55,8 +53,7 @@ FROM dblink('dbname=agofer_08', 'select
 	company_id integer, 
 	state character varying, 
 	create_uid integer, 
-	write_date timestamp without time zone, 
-	currency_rate numeric, 
+	write_date timestamp without time zone,
 	name character varying, 
 	incoterm_id integer
 );

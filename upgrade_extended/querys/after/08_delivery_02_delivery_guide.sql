@@ -24,7 +24,7 @@ INSERT INTO delivery_guide (
 	agofer.note,
 	agofer.costo_kilo,
 	--agofer.wave_id,
-	(CASE WHEN agofer.wavew_id IS null THEN 1 ELSE agofer.wave_id END),
+	(CASE WHEN agofer.wave_id IS null THEN 1 ELSE agofer.wave_id END),
 	agofer.date_schedule,
 	--agofer.company_id
 	1
@@ -55,6 +55,7 @@ FROM dblink('dbname=agofer_08','select
 	costo_kilo numeric,
 	wave_id integer,
 	date_schedule date
-);
+)
+INNER JOIN delivery_carrier DC ON DC.id = agofer.wave_id;
 
 select setval('delivery_guide_id_seq', (select max(id) from delivery_guide));

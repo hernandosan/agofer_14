@@ -27,30 +27,30 @@
                 <div>
                     <h1 style="text-align:center;">Portfolio Customer</h1>
                     <br></br>
-                    <table class="header">
+                    <table id="header">
                         <tr>
-                            <th class="header" name="th_date">Date Print</th>
-                            <td class="header" name="td_date"><span t-field="doc.payment_date"/></td>
-                            <th class="header" name="th_partner">Customer</th>
-                            <td class="header" name="td_partner"><span t-field="doc.partner_id.name"/></td>
+                            <th name="th_date">Date Print</th>
+                            <td name="td_date"><span t-field="doc.payment_date"/></td>
+                            <th name="th_partner">Customer</th>
+                            <td name="td_partner"><span t-field="doc.partner_id.name"/></td>
                         </tr>
                         <tr>
-                            <th class="header" name="th_partner_vat">NIT</th>
-                            <td class="header" name="td_partner_vat"><span t-field="doc.partner_id.vat"/></td>
-                            <th class="header" name="th_credit_limit">Credit Limit</th>
-                            <td class="header" name="td_credit_limit"><span t-field="doc.partner_id.credit_limit"/></td>
+                            <th name="th_partner_vat">NIT</th>
+                            <td name="td_partner_vat"><span t-field="doc.partner_id.vat"/></td>
+                            <th name="th_credit_limit">Credit Limit</th>
+                            <td name="td_credit_limit"><span t-field="doc.partner_id.credit_limit"/></td>
                         </tr>
                         <tr>
-                            <th class="header" name="th_payment_term">Payment Deadline</th>
-                            <td class="header" name="td_payment_term"><span t-field="doc.partner_id.property_payment_term_id"/></td>
-                            <th class="header" name="th_res_users">Salesman</th>
-                            <td class="header" name="td_res_users"><span t-field="doc.partner_id.user_id"/></td>
+                            <th name="th_payment_term">Payment Deadline</th>
+                            <td name="td_payment_term"><span t-field="doc.partner_id.property_payment_term_id"/></td>
+                            <th name="th_res_users">Salesman</th>
+                            <td name="td_res_users"><span t-field="doc.partner_id.user_id"/></td>
                         </tr>
                     </table>
                 </div>
                 <br></br>
                 <div>
-                    <table class="report">
+                    <table id="report">
                         <thead>
                             <tr>
                                 <th name="th_move_id">Invoice</th>
