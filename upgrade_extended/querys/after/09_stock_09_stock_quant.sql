@@ -11,7 +11,8 @@ INSERT INTO stock_quant (
 	product_id, 
 	in_date, 
 	owner_id,
-	quantity
+	quantity,
+	reserved_quantity
 ) SELECT
 	agofer.id, 
 	agofer.create_date, 
@@ -25,7 +26,9 @@ INSERT INTO stock_quant (
 	agofer.product_id, 
 	agofer.in_date, 
 	agofer.owner_id,
-	agofer.qty
+	agofer.qty,
+	--agofer.reserved_quantity
+	0
 FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 

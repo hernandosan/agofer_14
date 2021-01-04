@@ -296,6 +296,6 @@ FROM dblink('dbname=agofer_08','select
     codigo_afp character varying,
     codigo_ccf character varying,
     ref_type integer
-)
+);
 
 select setval('res_partner_id_seq', (select max(id) from res_partner));

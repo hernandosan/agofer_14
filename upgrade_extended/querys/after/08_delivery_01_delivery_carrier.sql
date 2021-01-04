@@ -19,15 +19,16 @@ INSERT INTO delivery_carrier (
 	zip_from,
 	zip_to,
 	company_id,
-	carrier_type
+	carrier_type,
+	price_kg
 ) SELECT
 	agofer.id,
-	agofer.tolerance,
+	agofer.tolerancia,
 	agofer.create_uid,
 	agofer.create_date,
 	agofer.name,
 	agofer.write_uid,
-	agofer.notes,
+	agofer.note,
 	agofer.write_date,
 	agofer.partner_id,
 	agofer.product_id,
@@ -37,39 +38,43 @@ INSERT INTO delivery_carrier (
 	'estimated',
 	--agofer.delivery_type
 	'fixed',
-	agofer.zip_from,
-	agofer.zip_to,
+	agofer.origen,
+	agofer.destino,
 	--agofer.company_id
 	1,
 	--agofer.carrier_type
-	'stock'
+	'stock',
+	--agofer.price_kg
+	cast(agofer.valor as double precision)
 FROM dblink('dbname=agofer_08','select
-	SPWT.id,
-	SPWT.tolerancia AS tolerance,
-	SPWT.create_uid,
-	SPWT.create_date,
-	SPWT.name,
-	SPWT.write_uid,
-	SPWT.note AS notes,
-	SPWT.write_date,
-	SPWT.partner_id,
-	SPWT.product_id,
-	SPWT.origen AS zip_from,
-	SPWT.destino AS zip_to
-	from stock_picking_wave_tarifa SPWT;'
+	id,
+	tolerancia,
+	create_uid,
+	create_date,
+	name,
+	write_uid,
+	note,
+	write_date,
+	partner_id,
+	product_id,
+	origen,
+    destino,
+	valor
+	from stock_picking_wave_tarifa;'
 ) AS agofer(
 	id integer,
-	tolerance double precision,
+	tolerancia double precision,
 	create_uid integer,
 	create_date timestamp without time zone,
 	name character varying,
 	write_uid integer,
-	notes text,
+	note text,
 	write_date timestamp without time zone,
 	partner_id integer,
 	product_id integer,
-	zip_from character varying,
-	zip_to character varying
+	origen character varying,
+	destino character varying,
+	valor numeric
 );
 
 select setval('delivery_carrier_id_seq', (select max(id) from delivery_carrier));

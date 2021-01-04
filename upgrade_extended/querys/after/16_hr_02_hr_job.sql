@@ -38,7 +38,7 @@ INSERT INTO hr_job (
 	agofer.address_id,
 	agofer.color,
 	--agofer.alias_id,
-	1,
+	334,
 	agofer.user_id,
 	--agofer.manager_id
 	1

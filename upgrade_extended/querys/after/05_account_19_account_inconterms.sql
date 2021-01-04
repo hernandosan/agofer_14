@@ -1,6 +1,6 @@
-ALTER TABLE account_inconterms DISABLE TRIGGER ALL;
-DELETE FROM account_inconterms;
-ALTER TABLE account_inconterms ENABLE TRIGGER ALL;
+ALTER TABLE account_incoterms DISABLE TRIGGER ALL;
+DELETE FROM account_incoterms;
+ALTER TABLE account_incoterms ENABLE TRIGGER ALL;
 
 INSERT INTO account_incoterms (
 	id,

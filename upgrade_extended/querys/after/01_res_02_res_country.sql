@@ -20,8 +20,7 @@ INSERT INTO res_country (
     create_date,
     write_uid,
     write_date,
-    enforce_cities,
-    street_format
+    enforce_cities
 ) SELECT
     v8.id,
     v8.name,
@@ -38,8 +37,7 @@ INSERT INTO res_country (
     v8.create_date,
     2,
     v8.write_date,
-    false,
-    '%(street)s'
+    false
 from dblink('dbname=agofer_08','select
     id,
     substring(code,0,3),

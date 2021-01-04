@@ -47,4 +47,4 @@ FROM dblink('dbname=agofer_08', 'select
     write_uid integer
 );
 
-SELECT setval('hr_payslip_line_id_seq',(SELECT MAX(id) FROM hr_payslip_line);
+SELECT setval('hr_payslip_line_id_seq',(SELECT MAX(id) FROM hr_payslip_line));

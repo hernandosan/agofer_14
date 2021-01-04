@@ -30,7 +30,8 @@ INSERT INTO crm_team (
 	agofer.name, 
 	agofer.use_quotations, 
 	agofer.invoiced_target,
-	agofer.alias_id,
+	--agofer.alias_id,
+	1,
     agofer.use_leads,
     agofer.use_opportunities,
 	--agofer.company_id
@@ -66,7 +67,6 @@ FROM dblink('dbname=agofer_08','select
 	alias_id integer,
     use_leads boolean,
     use_opportunities boolean
-)
-INNER JOIN mail_alias MA ON MA.id = agofer.alias_id;
+);
 
 select setval('crm_team_id_seq', (select max(id) from crm_team));

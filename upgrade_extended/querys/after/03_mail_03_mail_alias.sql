@@ -29,8 +29,7 @@ INSERT INTO mail_alias (
 	agofer.alias_model_id, 
 	agofer.write_date, 
 	agofer.create_date, 
-	--agofer.alias_name,
-	cast(agofer.id as character varying)
+	agofer.alias_name
 FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	create_uid, 

@@ -24,7 +24,12 @@
             <field name="implied_ids"
                 eval="[
                     (4, ref('stock.group_stock_user')),
-                    (4, ref('base.group_user'))
+                    (4, ref('base.group_user')),
+                    (4, ref('stock.group_stock_multi_locations')),
+                    (4, ref('stock.group_stock_multi_warehouses')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('mrp.group_mrp_user'))
                 ]"/>
         </record>
         <record id="role_stock_billing_assistant" model="res.users.role">
