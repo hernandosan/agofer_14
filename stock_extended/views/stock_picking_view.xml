@@ -128,6 +128,10 @@
                         <field name="pick_date" 
                             attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
                     </group>
+                    <group string="Print Control">
+                        <field name="print_picking" readonly="True" />
+                        <field name="print_user_id" readonly="True" />
+                    </group>
                 </xpath>
             </field>
         </record>

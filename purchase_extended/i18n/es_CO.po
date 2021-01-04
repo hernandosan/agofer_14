@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-22 19:11+0000\n"
-"PO-Revision-Date: 2020-12-22 19:11+0000\n"
+"POT-Creation-Date: 2021-01-04 22:22+0000\n"
+"PO-Revision-Date: 2021-01-04 22:22+0000\n"
 "Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,6 +62,16 @@ msgstr "Estado de la actividad"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__activity_type_icon
 msgid "Activity Type Icon"
 msgstr ""
+
+#. module: purchase_extended
+#: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
+msgid "Additional"
+msgstr "Adicional"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_additional
+msgid "Additional Price"
+msgstr "Precio Adicional"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__allowed_order_ids
@@ -423,6 +433,11 @@ msgid "Freight Price"
 msgstr "Precio Flete"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_freight_currency
+msgid "Freight Price Currency"
+msgstr "Precio Flete (Importación)"
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Future Activities"
 msgstr "Actividades futuras"
@@ -560,6 +575,11 @@ msgid "In Progress"
 msgstr "En Progreso"
 
 #. module: purchase_extended
+#: model:ir.ui.menu,name:purchase_extended.menu_stock_move
+msgid "Incoming Products"
+msgstr "Productos Entrantes"
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__incoterm_id
 msgid "Incoterm"
 msgstr ""
@@ -601,6 +621,11 @@ msgstr "Precio Gasto"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_insurance
 msgid "Insurance Price"
 msgstr "Precio Seguro"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_insurance_currency
+msgid "Insurance Price Currency"
+msgstr "Precio Seguro (Importación)"
 
 #. module: purchase_extended
 #: model:ir.model.fields,help:purchase_extended.field_purchase_import__incoterm_id
@@ -763,6 +788,11 @@ msgid "No purchase order found. Let's create one!"
 msgstr "No se encontró ningún pedido de compra. ¡Creemos uno!"
 
 #. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_move
+msgid "No stock move found"
+msgstr ""
+
+#. module: purchase_extended
 #: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_picking
 msgid "No transfer found. Let's create one!"
 msgstr "Crea una nueva transferencia"
@@ -904,6 +934,12 @@ msgstr "Precio"
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__price_type
 msgid "Price Type"
 msgstr "Tipo de precio"
+
+#. module: purchase_extended
+#: code:addons/purchase_extended/models/purchase_import.py:0
+#, python-format
+msgid "Price or Weight wrong, please check"
+msgstr "Precio o Peso mal, por favor revisar"
 
 #. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_stock_picking_wizard_form
@@ -1108,6 +1144,7 @@ msgid "Stock Move"
 msgstr "Movimiento de Existencias"
 
 #. module: purchase_extended
+#: model:ir.actions.act_window,name:purchase_extended.action_stock_move
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import__move_lines
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_form
 msgid "Stock Moves"
@@ -1204,6 +1241,17 @@ msgstr ""
 "                 presupuesto) o la factura (basada en las órdenes de entrega)."
 
 #. module: purchase_extended
+#: model_terms:ir.actions.act_window,help:purchase_extended.action_stock_move
+msgid ""
+"This menu gives you the full traceability of inventory\n"
+"                operations on a specific product. You can filter on the product\n"
+"                to see all the past or future movements for the product."
+msgstr ""
+"Este menú le da la trazabilidad completa de las operaciones de inventario en "
+"un producto específico. Puedes realizar un filtrado sobre el producto para "
+"ver todos los movimientos pasados o futuros para el producto."
+
+#. module: purchase_extended
 #: model_terms:ir.ui.view,arch_db:purchase_extended.view_purchase_import_search
 msgid "Today Activities"
 msgstr "Actividades de Hoy"
@@ -1275,9 +1323,19 @@ msgid "Unit Price"
 msgstr "Precio Unitario"
 
 #. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_unit_additional
+msgid "Unit Price Additional"
+msgstr "Precio Adicional Unitario"
+
+#. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_unit_currency
 msgid "Unit Price Currency"
 msgstr "Precio Unitario (Importación)"
+
+#. module: purchase_extended
+#: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__price_unit_subtotal
+msgid "Unit Price Subtotal"
+msgstr "Precio Subtotal Unitario"
 
 #. module: purchase_extended
 #: model:ir.model.fields,field_description:purchase_extended.field_purchase_import_line__product_uom

@@ -49,6 +49,4 @@ AND agofer.type = 'product'
 AND NOT (agofer.sls_usage = 'internal' OR (agofer.sls_usage = 'transit' AND agofer.sls_company_id IS NOT NULL))
 AND (agofer.sld_usage = 'internal' OR (agofer.sld_usage = 'transit' AND agofer.sld_company_id IS NOT NULL));
 
-
-
 select setval('stock_quant_id_seq', (select max(id) from stock_quant));

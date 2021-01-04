@@ -102,5 +102,5 @@ class StockMove(models.Model):
         if order.currency_id != order.company_id.currency_id:
             if order.currency_id != purchase.currency_id:
                 raise ValidationError(_("Currency of the import order is different to currency of the purchase order"))
-            price_unit = order.currency_id.with_context(date=purchase.date_import).compute(price_unit, purchase.currency_company_id)
+            price_unit = order.currency_id._convert(price_unit, purchase.currency_company_id, self.company_id, purchase.date_import)
         return price_unit

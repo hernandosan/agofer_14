@@ -42,7 +42,7 @@ class AccountConsignment(models.Model):
     @api.depends('invoices_ids')
     def _compute_amount_invoice(self):
         for consignment in self:
-            consignment.amount_invoice = sum(invoice.currency_id.with_context(date=invoice.invoice_date).compute(invoice.amount_residual, self.currency_id) for invoice in self.invoices_ids) or 0.0
+            consignment.amount_invoice = sum(invoice.currency_id._convert(invoice.amount_residual, consignment.currency_id, consignment.company_id, invoice.invoice_date) for invoice in consignment.invoices_ids) or 0.0
 
     @api.model
     def create(self, vals):

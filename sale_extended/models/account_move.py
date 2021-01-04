@@ -65,9 +65,9 @@ class AccountMove(models.Model):
         self.ensure_one()
         line_ids = []
         reconciled_pays = self.order_id._sale_payments_id().move_id.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
-        amount_pay = abs(sum(line.currency_id.with_context(date=line.date).compute(line.amount_residual, self.currency_id) for line in reconciled_pays)) or 0.0
+        amount_pay = abs(sum(line.currency_id._convert(line.amount_residual, self.currency_id, self.company_id, line.date) for line in reconciled_pays)) or 0.0
         reconciled_lines = self.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
-        amount_line = abs(sum(line.currency_id.with_context(date=line.date).compute(line.amount_residual, self.currency_id) for line in reconciled_lines)) or 0.0
+        amount_line = abs(sum(line.currency_id._convert(line.amount_residual, self.currency_id, self.company_id, line.date) for line in reconciled_lines)) or 0.0
         if not amount_pay or not amount_line:
             return False
         for invoice in self._prepare_crossover_move_line_invoice_values(reconciled_pays, amount_pay, reconciled_lines, amount_line):
@@ -84,7 +84,7 @@ class AccountMove(models.Model):
             if amount_payed >= amount_line:
                 break
             currency_id = self.currency_id
-            amount = abs(pay.currency_id.with_context(date=pay.date).compute(pay.amount_residual, currency_id))
+            amount = abs(pay.currency_id._convert(pay.amount_residual, currency_id, self.company_id, pay.date))
             amount = amount if amount + amount_payed <= amount_line else amount_line - amount_payed
             amount_payed += amount
             val = {
@@ -107,7 +107,7 @@ class AccountMove(models.Model):
             if amount_lined >= amount_pay:
                 break
             currency_id = self.currency_id
-            amount = abs(line.currency_id.with_context(date=line.date).compute(line.amount_residual, currency_id))
+            amount = abs(line.currency_id._convert(line.amount_residual, currency_id, self.company_id, line.date))
             amount = amount if amount + amount_lined <= amount_pay else amount_pay - amount_lined
             amount_lined += amount
             val = {

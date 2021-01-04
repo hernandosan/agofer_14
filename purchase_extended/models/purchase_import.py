@@ -126,9 +126,11 @@ class PurchaseImport(models.Model):
             currency_company_id = purchase.currency_company_id
             currency_id = purchase.currency_id
             amount_cost = sum(line.price_unit for line in purchase.import_line)
-            amount_cost_currency = currency_company_id.with_context(date=purchase.date_import).compute(amount_cost, currency_id)
-            amount_insurance = currency_id.with_context(date=purchase.date_import).compute(purchase.amount_insurance_currency, currency_company_id)
-            amount_freight = currency_id.with_context(date=purchase.date_import).compute(purchase.amount_freight_currency, currency_company_id)
+            company = purchase.company_id
+            date = purchase.date_import
+            amount_cost_currency = currency_company_id._convert(amount_cost, currency_id, company, date)
+            amount_insurance = currency_id._convert(purchase.amount_insurance_currency, currency_id, company, date)
+            amount_freight = currency_id._convert(purchase.amount_freight_currency, currency_id, company, date)
             amount_cif = purchase.amount_cost + amount_insurance + amount_freight
             purchase.update({
                 'amount_cost': amount_cost,
@@ -219,6 +221,8 @@ class PurchaseImport(models.Model):
     def _assign_percent(self, moves, option):
         self.ensure_one()
         total = sum((move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done) for move in moves)
+        if not total:
+            raise ValidationError(_("Price or Weight wrong, please check"))
         for move in moves:
             tot_move = (move.weight if self.price_type == 'weight' else move.price_unit) * (move.product_uom_qty if option == 'demand' else move.quantity_done)
             percentage = tot_move / total
@@ -230,15 +234,13 @@ class PurchaseImport(models.Model):
         self.move_lines.sudo().write({'import_line_id': False})
         currency_id = self.currency_id
         currency_company_id = self.currency_company_id
-        amount_insurance = currency_id.with_context(date=self.date_import).compute(self.amount_insurance_currency, currency_company_id)
-        amount_freight = currency_id.with_context(date=self.date_import).compute(self.amount_freight_currency, currency_company_id)
+        amount_insurance = currency_id._convert(self.amount_insurance_currency, currency_company_id, self.company_id, self.date_import)
+        amount_freight = currency_id._convert(self.amount_freight_currency, currency_company_id, self.company_id, self.date_import)
         amount_expense = self.amount_expense
         for move in moves:
             product_qty = move.product_uom_qty if option == 'demand' else move.quantity_done
             price_unit = move._get_price_unit_purchase() or move._get_price_unit()
-            price_unit_currency = currency_company_id.with_context(date=self.date_import).compute(price_unit, currency_id)
             price_cost = price_unit * product_qty
-            price_cost_currency = price_unit_currency * product_qty
             price_insurance = move.import_percentage * amount_insurance
             price_freight = move.import_percentage * amount_freight
             price_cif = price_cost + price_insurance + price_freight
@@ -256,9 +258,7 @@ class PurchaseImport(models.Model):
                 'product_qty': product_qty,
                 'product_uom': move.product_uom.id,
                 'price_unit': price_unit,
-                'price_unit_currency': price_unit_currency,
                 'price_cost': price_cost,
-                'price_cost_currency': price_cost_currency,
                 'price_insurance': price_insurance,
                 'price_freight': price_freight,
                 'price_cif': price_cif,
@@ -422,54 +422,63 @@ class PurchaseImportLine(models.Model):
     _description = 'Purchase Import Line'
     _order = 'import_id, order_id, sequence, id'
 
-    name = fields.Text(string='Description', required=True)
-    sequence = fields.Integer(string='Sequence', default=10)
-    product_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True)
-    product_uom_qty = fields.Float(string='Total Quantity', compute='_compute_product_uom_qty', store=True)
-    date_planned = fields.Datetime(string='Scheduled Date', index=True)
-    taxes_id = fields.Many2many('account.tax', string='Taxes')
-    taxes_tariff_id = fields.Many2many('account.tax', 'tax_import_res', string='Taxes tariff')
-
-    product_uom = fields.Many2one('uom.uom', string='Unit of Measure', domain="[('category_id', '=', product_uom_category_id)]")
-    product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
-    product_id = fields.Many2one('product.product', string='Product', domain=[('purchase_ok', '=', True)], change_default=True)
-    product_type = fields.Selection(related='product_id.type', readonly=True)
-    weight = fields.Float('Weight', digits='Stock Weight')
-
     categ_id = fields.Many2one(related='product_id.categ_id', store=True)
 
+    company_id = fields.Many2one('res.company', related='import_id.company_id', string='Company', store=True, readonly=True)
+
+    currency_id = fields.Many2one(related='import_id.currency_company_id', store=True, string='Currency', readonly=True)
     currency_import_id = fields.Many2one(related='import_id.currency_id', store=True, string='Import Currency')
-    price_unit_currency = fields.Monetary('Unit Price Currency', currency_field='currency_import_id')
-    price_cost_currency = fields.Monetary('Cost Price Currency', currency_field='currency_import_id')
 
-    price_unit = fields.Monetary(string='Unit Price', required=True)
-    price_subtotal = fields.Monetary(compute='_compute_price', string='Subtotal', store=True)
-    price_total = fields.Monetary(compute='_compute_price', string='Total', store=True)
-    price_tax = fields.Monetary(compute='_compute_price', string='Tax', store=True)
-
-    price_cost = fields.Monetary('Cost Price')
-    price_insurance = fields.Monetary('Insurance Price')
-    price_freight = fields.Monetary('Freight Price')
-    price_cif= fields.Monetary('CIF Price')
-
-    price_expense = fields.Monetary('Expense Price', store=True)
-    price_customs = fields.Monetary('Customs Price')
-    price_tariff = fields.Monetary('Tariff Price', compute='_compute_price', store=True)
-
-    order_id = fields.Many2one('purchase.order', 'Order', ondelete='set null', index=True, readonly=True)
-    line_id = fields.Many2one('purchase.order.line', 'Order Line', ondelete='set null', index=True, readonly=True)
+    date_import = fields.Date(related='import_id.date_import', string='Import Date', store=True, readonly=True)
+    date_planned = fields.Datetime(string='Scheduled Date', index=True)
 
     import_id = fields.Many2one('purchase.import', string='Import Reference', index=True, required=True, ondelete='cascade')
     import_percentage = fields.Float('Import Percentage', copy=False, default=0.0)
 
+    line_id = fields.Many2one('purchase.order.line', 'Order Line', ondelete='set null', index=True, readonly=True)
+
     move_id = fields.Many2one('stock.move', 'Move')
 
-    company_id = fields.Many2one('res.company', related='import_id.company_id', string='Company', store=True, readonly=True)
-    state = fields.Selection(related='import_id.state', store=True, readonly=False)
+    name = fields.Char(string='Description', required=True)
+
+    order_id = fields.Many2one('purchase.order', 'Order', ondelete='set null', index=True, readonly=True)
 
     partner_id = fields.Many2one(related='import_id.partner_id', string='Partner', readonly=True, store=True)
-    currency_id = fields.Many2one(related='import_id.currency_company_id', store=True, string='Currency', readonly=True)
-    date_import = fields.Date(related='import_id.date_import', string='Import Date', readonly=True)
+
+    price_additional = fields.Monetary('Additional Price')
+    price_cif= fields.Monetary('CIF Price')
+    price_cost = fields.Monetary('Cost Price', required=True)
+    price_cost_currency = fields.Monetary('Cost Price Currency', currency_field='currency_import_id', compute='_compute_price_currency')
+    price_customs = fields.Monetary('Customs Price')
+    price_expense = fields.Monetary('Expense Price')
+    price_freight = fields.Monetary('Freight Price', required=True)
+    price_freight_currency = fields.Monetary('Freight Price Currency', currency_field='currency_import_id', compute='_compute_price_currency')
+    price_insurance = fields.Monetary('Insurance Price', required=True)
+    price_insurance_currency = fields.Monetary('Insurance Price Currency', currency_field='currency_import_id', compute='_compute_price_currency')
+    price_subtotal = fields.Monetary(compute='_compute_price', string='Subtotal')
+    price_tariff = fields.Monetary('Tariff Price', compute='_compute_price')
+    price_tax = fields.Monetary(compute='_compute_price', string='Tax')
+    price_total = fields.Monetary(compute='_compute_price', string='Total')
+    price_unit = fields.Monetary('Unit Price', required=True)
+    price_unit_additional = fields.Monetary('Unit Price Additional')
+    price_unit_currency = fields.Monetary('Unit Price Currency', currency_field='currency_import_id', compute='_compute_price_currency')
+    price_unit_subtotal = fields.Monetary('Unit Price Subtotal')
+
+    product_id = fields.Many2one('product.product', string='Product', domain=[('purchase_ok', '=', True)], change_default=True)
+    product_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True)
+    product_type = fields.Selection(related='product_id.type', store=True, readonly=True)
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure', domain="[('category_id', '=', product_uom_category_id)]")
+    product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', store=True)
+    product_uom_qty = fields.Float(string='Total Quantity', compute='_compute_product_uom_qty', store=True)
+
+    sequence = fields.Integer(string='Sequence', default=10)
+    
+    state = fields.Selection(related='import_id.state', readonly=False, store=True)
+
+    taxes_id = fields.Many2many('account.tax', string='Taxes')
+    taxes_tariff_id = fields.Many2many('account.tax', 'tax_import_res', string='Taxes tariff')
+
+    weight = fields.Float('Weight', digits='Stock Weight')
 
     @api.depends('price_customs', 'taxes_tariff_id', 'taxes_id')
     def _compute_price(self):
@@ -483,13 +492,40 @@ class PurchaseImportLine(models.Model):
             partner = line.partner_id
             taxes = line.taxes_id.compute_all(price_vat, product=product, partner=partner)
             price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-            price_total = taxes.get('total_included')
             price_subtotal = taxes.get('total_excluded')
+            price_total = taxes.get('total_included')
+            price_additional = price_subtotal - line.price_cost
+            # Unit 
+            price_unit_subtotal = price_subtotal / line.product_qty
+            price_unit_additional = price_additional / line.product_qty
             line.update({
                 'price_tariff': price_tariff,
                 'price_tax': price_tax,
                 'price_subtotal': price_subtotal,
                 'price_total': price_total,
+                'price_additional': price_additional,
+                'price_unit_subtotal': price_unit_subtotal,
+                'price_unit_additional': price_unit_additional,
+            })
+
+    @api.depends('price_unit', 'price_cost', 'price_insurance', 'price_freight')
+    def _compute_price_currency(self):
+        for line in self:
+            price_unit = line.price_unit
+            price_cost = line.price_cost
+            price_insurance = line.price_insurance
+            price_freight = line.price_freight
+            company = line.company_id
+            date = line.date_import
+            price_unit_currency = line.currency_id._convert(price_unit, line.currency_import_id, company, date)
+            price_cost_currency = line.currency_id._convert(price_cost, line.currency_import_id, company, date)
+            price_insurance_currency = line.currency_id._convert(price_insurance, line.currency_import_id, company, date)
+            price_freight_currency = line.currency_id._convert(price_freight, line.currency_import_id, company, date)
+            line.update({
+                'price_unit_currency': price_unit_currency,
+                'price_cost_currency': price_cost_currency,
+                'price_insurance_currency': price_insurance_currency,
+                'price_freight_currency': price_freight_currency,
             })
 
     def action_validate(self):

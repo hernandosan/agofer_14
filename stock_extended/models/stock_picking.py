@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class StockPicking(models.Model):
@@ -16,6 +17,9 @@ class StockPicking(models.Model):
     # Pïck
     pick_bool = fields.Boolean('Pick Bool')
     pick_date = fields.Date('Pick Date')
+    # Print
+    print_picking = fields.Boolean('Printed', copy=False)
+    print_user_id = fields.Many2one('res.users', 'Print User', copy=False)
     # Sale
     sale_invoice_status = fields.Selection(related='sale_id.invoice_status')
     # Shipping
@@ -24,3 +28,22 @@ class StockPicking(models.Model):
     upload_date = fields.Date('Upload Date')
     # Warehouse
     warehouse_id = fields.Many2one(related='picking_type_id.warehouse_id', store=True)
+
+    def do_print_picking(self):
+        self.check_printed_picking()
+        return super(StockPicking, self).do_print_picking()
+
+    def printed_picking(self):
+        self.check_printed_picking()
+        self.write({'print_picking': True, 'print_user_id': self.env.user.id})
+        return True
+
+    def check_printed_picking(self):
+        for picking in self:
+            picking._check_printed_picking()
+
+    def _check_printed_picking(self):
+        self.ensure_one()
+        if self.print_picking:
+            raise ValidationError("The picking %s has already been printed" % self.name)
+        return True

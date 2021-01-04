@@ -32,6 +32,7 @@
         'views/purchase_import_view.xml',
         'views/purchase_order_view.xml',
         'views/stock_landed_cost_view.xml',
+        'views/stock_move_view.xml',
         'views/stock_picking_view.xml'
     ],
     # only loaded in demonstration mode

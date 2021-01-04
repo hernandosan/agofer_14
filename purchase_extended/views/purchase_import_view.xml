@@ -145,19 +145,24 @@
                                         <field name="product_qty"/>
                                         <field name="product_uom" string="UoM" groups="uom.group_uom" force_save="1" optional="show"/>
                                         <field name="weight" sum="Weight" optional="hide"/>
-                                        <field name="price_unit_currency" optional="hide"/>
+                                        <field name="price_unit_currency" invisible="True"/>
                                         <field name="price_unit" />
                                         <field name="import_percentage" invisible="1" sum="Percentage"/>
-                                        <field name="price_cost_currency" optional="hide" sum="Cost"/>
+                                        <field name="price_cost_currency" invisible="True"/>
                                         <field name="price_cost" sum="Cost"/>
                                         <field name="price_insurance" sum="Insurance" optional="hide"/>
+                                        <field name="price_insurance_currency" invisible="True"/>
                                         <field name="price_freight" sum="Freight" optional="hide"/>
+                                        <field name="price_freight_currency" invisible="True"/>
                                         <field name="price_cif" sum="CIF" optional="hide"/>
                                         <field name="price_expense" sum="Expenses" optional="hide"/>
                                         <field name="price_customs" sum="Customs"/>
                                         <field name="taxes_tariff_id" widget="many2many_tags" optional="show"/>
                                         <field name="price_tariff" optional="hide" sum="Tariff"/>
-                                        <field name="price_subtotal" widget="monetary" optional="show" sum="Subtotal"/>
+                                        <field name="price_unit_subtotal" optional="hide"/>
+                                        <field name="price_subtotal" optional="show" sum="Subtotal"/>
+                                        <field name="price_unit_additional" optional="hide"/>
+                                        <field name="price_additional" optional="hide" sum="Additional"/>
                                         <field name="taxes_id" widget="many2many_tags" optional="show"/>
                                         <field name="price_tax" widget="monetary" optional="hide" sum="Tax"/>
                                         <field name="price_total" widget="monetary" optional="show" sum="Total"/>

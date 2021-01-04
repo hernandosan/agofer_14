@@ -166,7 +166,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         decimal_places = self.currency_id.decimal_places
         amount_total = self.amount_total
-        amount_payment = sum(payment.currency_id.with_context(date=payment.date).compute(payment.amount, self.currency_id) for payment in self._sale_payments_id()) or 0.0
+        amount_payment = sum(payment.currency_id._convert(payment.amount, self.currency_id, self.company_id, payment.date) for payment in self._sale_payments_id()) or 0.0
         if amount_payment < amount_total:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
                 user = self.env.user.login
@@ -186,7 +186,7 @@ class SaleOrder(models.Model):
 
     def _validate_credit_quota(self):
         self.ensure_one()
-        amount_total = self.currency_id.with_context(date=self.date_order).compute(self.amount_total, self.company_id.currency_id)
+        amount_total = self.currency_id._convert(self.amount_total, self.company_id.currency_id, self.company_id, self.date_order)
         credit_quota = self.partner_id.commercial_partner_id.credit_quota
         decimal_places = self.company_id.currency_id.decimal_places
         if amount_total > credit_quota:
