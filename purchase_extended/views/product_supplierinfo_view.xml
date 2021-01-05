@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <menuitem id="menu_product_supplierinfo" 
+            parent="purchase.menu_purchase_products" 
+            sequence="25"
+            action="product.product_supplierinfo_type_action"/>
+    </data>
+</odoo>
