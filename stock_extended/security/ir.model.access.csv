@@ -4,3 +4,6 @@ access_delivery_guide_manager,delivery.guide.manager,model_delivery_guide,stock.
 access_delivery_guide_account,delivery.guide.account,model_delivery_guide,account_extended.group_account_user,1,0,0,0
 access_delivery_invoice_stock,access.delivery.invoice.stock,model_delivery_invoice,stock.group_stock_user,1,1,1,0
 access_delivery_invoice_account,access.delivery.invoice.account,model_delivery_invoice,account_extended.group_account_user,1,1,1,0
+access_stock_landed_cost_user,access.stock.landed.cost.user,stock_landed_costs.model_stock_landed_cost,stock.group_stock_user,1,1,1,0
+access_stock_landed_cost_lines_user,access.stock.landed.cost.lines.user,stock_landed_costs.model_stock_landed_cost_lines,stock.group_stock_user,1,1,1,0
+access_stock_valuation_adjustment_lines_user,access.stock.valuation.adjustment.lines.user,stock_landed_costs.model_stock_valuation_adjustment_lines,stock.group_stock_user,1,1,1,1
