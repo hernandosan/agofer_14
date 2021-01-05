@@ -7,7 +7,19 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='picking_ids']" position="before">
                     <field name="landed_type" invisible="True"/>
-                    <field name="carrier_id" required="True" domain="[('carrier_type','=',landed_type)]"/>
+                    <field name="carrier_partner_id" required="True"/>
+                    <field name="carrier_id" domain="[('carrier_type','=',landed_type),('partner_id','=','carrier_partner_id')]"/>
+                </xpath>
+                <xpath expr="//field[@name='cost_lines']/tree/field[@name='price_unit']" position="before">
+                    <field name="product_qty"/>
+                    <field name="price"/>
+                </xpath>
+                <xpath expr="//field[@name='valuation_adjustment_lines']/tree/field[@name='weight']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                    <attribute name="sum">Weight</attribute>
+                </xpath>
+                <xpath expr="//field[@name='valuation_adjustment_lines']/tree/field[@name='additional_landed_cost']" position="attributes">
+                    <attribute name="sum">Additional</attribute>
                 </xpath>
             </field>
         </record>

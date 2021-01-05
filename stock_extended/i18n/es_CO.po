@@ -98,7 +98,7 @@ msgstr "Cancelado"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Carrier"
-msgstr "Transportador"
+msgstr "Transportista"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price_kg
