@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-22 17:03+0000\n"
-"PO-Revision-Date: 2020-12-22 17:03+0000\n"
-"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
+"POT-Creation-Date: 2021-01-05 20:52+0000\n"
+"PO-Revision-Date: 2021-01-05 20:52+0000\n"
+"Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,7 +43,7 @@ msgstr "Estado de la activida"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_type_icon
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ícono de tipo de actvidad"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -305,6 +305,7 @@ msgstr "Ubicación Destino"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_stock_move__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__display_name
 msgid "Display Name"
 msgstr "Nombre Público"
@@ -398,9 +399,10 @@ msgstr "Tiene devoluciones"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__id
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_move__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__id
 msgid "ID"
-msgstr ""
+msgstr "ID (identificación)"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_exception_icon
@@ -438,7 +440,7 @@ msgstr ""
 #. module: stock_extended
 #: model:res.groups,name:stock_extended.group_stock_info
 msgid "Info"
-msgstr ""
+msgstr "Información"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_stock_picking__incoterm
@@ -511,6 +513,7 @@ msgstr "Tipo de costo"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_stock_move____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking____last_update
 msgid "Last Modified on"
 msgstr "Última Modificación el"
@@ -595,7 +598,7 @@ msgstr "Siguiente tipo de actividad"
 #: model_terms:ir.actions.act_window,help:stock_extended.action_customer_pick
 #: model_terms:ir.actions.act_window,help:stock_extended.action_delivery_agofer
 msgid "No transfer found. Let's create one!"
-msgstr ""
+msgstr "Crea una nueva transferencia"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_comment
@@ -644,7 +647,7 @@ msgstr "Número de mensajes no leidos"
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_bool
 msgid "Pick Bool"
-msgstr "Booleano de Recogida"
+msgstr "Sin Fecha de Recogida"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_date
@@ -652,9 +655,39 @@ msgid "Pick Date"
 msgstr "Fecha de Recogida"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_form
+msgid "Pick Info"
+msgstr "Información de Recogida"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_search
 msgid "Pick Late"
 msgstr "Recoge Tarde"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_license
+msgid "Pick License"
+msgstr "Placa quien recoge"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_name
+msgid "Pick Name"
+msgstr "Nombre quien recoge"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_risk
+msgid "Pick Risk"
+msgstr "ARL quien recoge"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_vat
+msgid "Pick VAT"
+msgstr "NIT quien recoge"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__print_picking
+msgid "Picking Printed"
+msgstr "Transferencia Impresa"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_delivery
@@ -679,6 +712,11 @@ msgstr "Por favor agregue guías"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price
 msgid "Price (Kg)"
 msgstr "Precio (Kg)"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_form
+msgid "Print Control"
+msgstr "Control de Impresión"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__progress
@@ -816,6 +854,11 @@ msgid "Stock Landed Cost"
 msgstr "Costo en Destino"
 
 #. module: stock_extended
+#: model:ir.model,name:stock_extended.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Existencias"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__moves_ids
 msgid "Stock Moves"
 msgstr "Movimientos de inventario"
@@ -850,6 +893,12 @@ msgstr "Impuestos excluidos"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__notes
 msgid "Terms and Conditions"
 msgstr "Terminos y condiciones"
+
+#. module: stock_extended
+#: code:addons/stock_extended/models/stock_picking.py:0
+#, python-format
+msgid "The picking %s has already been printed"
+msgstr "La transferencia %s ya ha sido impresa"
 
 #. module: stock_extended
 #: code:addons/stock_extended/models/delivery_guide.py:0
@@ -939,6 +988,11 @@ msgstr ""
 "Las transferencias le permiten mover productos de una ubicación a otra."
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__carrier_partner_id
+msgid "Transporter"
+msgstr "Transportador"
+
+#. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide__activity_exception_decoration
 #: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_exception_decoration
 msgid "Type of the exception activity on record."
@@ -979,6 +1033,11 @@ msgid "User"
 msgstr "Usuario"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__print_user_id
+msgid "User Print"
+msgstr "Usuario que imprimió"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Vendor"
 msgstr "Proveedor"
@@ -1010,6 +1069,12 @@ msgstr "Peso"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_returned
 msgid "Weight Returned"
 msgstr "Peso Retornado"
+
+#. module: stock_extended
+#: code:addons/stock_extended/models/stock_picking.py:0
+#, python-format
+msgid "You cannot change the shipping type in picking %s"
+msgstr "No puede cambiar el tipo de entrega en la transferencia %s"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
