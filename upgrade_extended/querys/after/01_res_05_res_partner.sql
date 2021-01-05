@@ -1,7 +1,3 @@
-ALTER TABLE res_partner DISABLE TRIGGER ALL;
-DELETE FROM res_partner;
-ALTER TABLE res_partner ENABLE TRIGGER ALL;
-
 INSERT INTO res_partner (
 	id, 
 	name,
