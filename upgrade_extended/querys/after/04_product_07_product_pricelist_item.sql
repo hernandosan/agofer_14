@@ -43,25 +43,29 @@ INSERT INTO product_pricelist_item (
 	--agofer.compute_price
 	'fixed'
 FROM dblink('dbname=agofer_08','select
-	id, 
-	create_uid, 
-	price_round, 
-	create_date, 
-	price_discount, 
-	base_pricelist_id, 
-	write_uid, 
-	price_max_margin, 
-	write_date, 
-	company_id, 
-	product_tmpl_id, 
-	product_id, 
-	base, 
-	min_quantity, 
-	price_min_margin, 
-	categ_id, 
-	price_surcharge,
-	price_version_id
-	from product_pricelist_item;'
+	ppi.id,
+	ppi.create_uid,
+	ppi.price_round,
+	ppi.create_date,
+	ppi.price_discount,
+	ppi.base_pricelist_id,
+	ppi.write_uid,
+	ppi.price_max_margin,
+	ppi.write_date,
+	ppi.company_id,
+	ppi.product_tmpl_id,
+	ppi.product_id,
+	ppi.base,
+	ppi.min_quantity,
+	ppi.price_min_margin,
+	ppi.categ_id,
+	ppi.price_surcharge,
+	pp.id as pricelist_id,
+	pp.type
+	from product_pricelist_item ppi
+    inner join product_pricelist_version ppv on ppv.id = ppi.price_version_id
+    inner join product_pricelist pp on pp.id = ppv.pricelist_id
+    where ppv.date_end is null;'
 ) AS agofer(
 	id integer, 
 	create_uid integer, 

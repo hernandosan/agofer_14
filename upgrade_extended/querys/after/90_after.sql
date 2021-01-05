@@ -30,17 +30,12 @@ where agofer.id = rc.id;
 update res_partner rp
 set write_uid = agofer.write_uid,
 create_uid = agofer.create_uid,
-user_id = agofer.user_id
+user_id = agofer.user_id,
+payment_responsible_id = agofer.user_id
 from dblink('dbname=agofer_08','select id, write_uid, create_uid, user_id from res_partner;') as agofer (id integer, write_uid integer, create_uid integer, user_id integer)
 where agofer.id = rp.id;
 
 update res_partner set credit_control = True, credit_type = 'insured' where credit_limit > 0 and parent_id is null;
-
---Update res_bank
-update res_bank rb
-set journal_id = agofer.journal_id
-from dblink('dbname=agofer_08','select id, journal_id from res_bank;') as agofer (id integer, journal_id integer)
-where agofer.id = rb.id;
 
 --Update product_category
 update product_category set parent_path = '' where parent_path is null;

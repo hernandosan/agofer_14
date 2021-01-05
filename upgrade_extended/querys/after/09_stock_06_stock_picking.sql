@@ -136,7 +136,6 @@ FROM dblink('dbname=agofer_08', 'select
 	pick_bool boolean,
 	pick_date date,
 	delivery_date date
-)
-INNER JOIN delivery_carrier DC ON DC.id = agofer.carrier_id;
+);
 
 select setval('stock_picking_id_seq', (select max(id) from stock_picking));

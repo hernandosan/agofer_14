@@ -37,3 +37,8 @@ SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update stocK_move set price_unit = cost where price_unit = 0 or price_unit is null
 		returning id;'
 ) AS agofer (id INTEGER);
+
+--SELECT COUNT(agofer.id)
+--    FROM dblink('dbname=agofer_08','update account_analytic_line as aal set move_id = null from (select aal.id from account_analytic_line aal inner join account_move_line aml on aml.id = aal.move_id) A
+--right join (select id from account_analytic_line where move_id is not null) B on A.id = B.id where A.id is null and aal.id = B.id;'
+--) AS agofer (id INTEGER);

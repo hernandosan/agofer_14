@@ -64,7 +64,7 @@ INSERT INTO product_template (
 	agofer.landed_cost_ok,
 	agofer.upload_delay,
 	--agofer.tracking
-	'none'
+	(CASE WHEN track_all = True THEN 'lot' ELSE 'none' END)
 FROM dblink('dbname=agofer_08', 'select
 	id, 
     list_price,

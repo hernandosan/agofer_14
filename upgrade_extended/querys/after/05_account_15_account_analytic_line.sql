@@ -83,6 +83,6 @@ FROM dblink('dbname=agofer_08','select
 	product_uom_id integer,
 	ref character varying,
 	partner_id integer
-)INNER JOIN account_move_line OML ON OML.id = agofer.move_id;
+);
 
 select setval('account_analytic_line_id_seq', (select max(id) from account_analytic_line));

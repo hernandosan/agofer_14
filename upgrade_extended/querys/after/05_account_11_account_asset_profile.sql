@@ -39,7 +39,7 @@ INSERT INTO account_asset_profile (
 	agofer.prorata, 
 	agofer.open_asset, 
 	--agofer.method_period,
-	'year',
+	(CASE WHEN agofer.method_period = 1 THEN 'month' WHEN agofer.method_period = 12 THEN 'year' END),
 	agofer.account_analytic_id, 
 	agofer.method,
 	--agofer.active
@@ -63,7 +63,8 @@ FROM dblink('dbname=agofer_08','select
 	prorata, 
 	open_asset,
 	account_analytic_id, 
-	method
+	method,
+	method_period
 	from account_asset_category;'
 ) AS agofer(
 	id integer, 
@@ -84,7 +85,8 @@ FROM dblink('dbname=agofer_08','select
 	prorata boolean, 
 	open_asset boolean, 
 	account_analytic_id integer,
-	method character varying
+	method character varying,
+	method_period integer
 );
 
 select setval('account_asset_profile_id_seq', (select max(id) from account_asset_profile));

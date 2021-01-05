@@ -1,7 +1,3 @@
-ALTER TABLE res_partner DISABLE TRIGGER ALL;
-DELETE FROM res_partner;
-ALTER TABLE res_partner ENABLE TRIGGER ALL;
-
 INSERT INTO res_partner (
 	id, 
 	name,
@@ -137,8 +133,7 @@ INSERT INTO res_partner (
 	agofer.primer_apellido,
 	agofer.segundo_apellido,
 	agofer.ref,
-	--agofer.verification_code,
-	null,
+	agofer.dev_ref,
 	--agofer.employee2emergency_id,
 	null,
 	--agofer.ref_type_required,
@@ -227,7 +222,8 @@ FROM dblink('dbname=agofer_08','select
     codigo_arl,
 	codigo_afp,
 	codigo_ccf,
-    ref_type
+    ref_type,
+    dev_ref
 	from res_partner;'
 ) AS agofer(
 	id integer,
@@ -295,7 +291,9 @@ FROM dblink('dbname=agofer_08','select
     codigo_arl character varying,
     codigo_afp character varying,
     codigo_ccf character varying,
-    ref_type integer
-);
+    ref_type integer,
+    dev_ref	integer
+)
+WHERE agofer.id NOT IN (SELECT id FROM res_partner);
 
 select setval('res_partner_id_seq', (select max(id) from res_partner));

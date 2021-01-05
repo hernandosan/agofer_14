@@ -38,7 +38,7 @@ INSERT INTO res_bank (
 	agofer.write_uid, 
 	agofer.email,
 	--agofer.journal_id
-	1
+	null
 FROM dblink('dbname=agofer_08','select
 	id, 
 	city, 

@@ -109,8 +109,8 @@
                 </div>
                 <div>
                     <strong>Amount to Words: </strong>
-                            <t t-set="amount_word" t-value="doc.num2word()"/>
-                            <span t-esc="amount_word"/>
+                        <t t-set="amount_word" t-value="doc.num2word()"/>
+                        <span t-esc="amount_word"/>
                 </div>
             </t>
         </template>

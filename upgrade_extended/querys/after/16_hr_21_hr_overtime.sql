@@ -17,8 +17,7 @@ INSERT INTO hr_overtime (
 ) SELECT
 	agofer.id,
 	agofer.name,
-	-- agofer.payslip_id,
-	2,
+	agofer.payslip_id,
 	-- agofer.contract_id,
 	3,
 	agofer.type_id,

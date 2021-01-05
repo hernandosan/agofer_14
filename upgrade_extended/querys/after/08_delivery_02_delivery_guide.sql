@@ -55,7 +55,6 @@ FROM dblink('dbname=agofer_08','select
 	costo_kilo numeric,
 	wave_id integer,
 	date_schedule date
-)
-INNER JOIN delivery_carrier DC ON DC.id = agofer.wave_id;
+);
 
 select setval('delivery_guide_id_seq', (select max(id) from delivery_guide));

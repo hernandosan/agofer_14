@@ -23,6 +23,7 @@ FROM dblink('dbname=agofer_08','select
 	res_model character varying,
 	res_id integer,
 	partner_id integer
-)INNER JOIN ir_model IR ON IR.model = agofer.res_model;
+)
+INNER JOIN ir_model IR ON IR.model = agofer.res_model;
 
 select setval('mail_followers_id_seq', (select max(id) from mail_followers));
