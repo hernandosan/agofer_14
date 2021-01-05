@@ -39,7 +39,6 @@
         'views/product_product_view.xml',
         'views/product_template_view.xml',
         'views/stock_landed_cost_view.xml',
-        'views/stock_picking_report.xml',
         'views/stock_picking_view.xml',
     ],
     # only loaded in demonstration mode

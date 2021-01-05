@@ -266,6 +266,11 @@ class SaleOrder(models.Model):
         state = 'posted' if self._context.get('state') and self._context.get('state') == 'posted' else 'cancel'
         return self.payments_id.filtered(lambda p: p.state != state)
 
+    def _create_invoices(self, grouped=False, final=False, date=None):
+        moves = super(SaleOrder, self)._create_invoices(grouped=grouped, final=final, date=date)
+        moves.action_post()
+        return moves
+
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
         journal_id = self.team_id._team_return_journal_id() if invoice_vals.get('move_type') == 'out_refund' else self.team_id._team_invoice_journal_id()
