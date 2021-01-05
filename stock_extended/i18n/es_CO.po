@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-05 20:52+0000\n"
-"PO-Revision-Date: 2021-01-05 20:52+0000\n"
+"POT-Creation-Date: 2021-01-05 22:10+0000\n"
+"PO-Revision-Date: 2021-01-05 22:10+0000\n"
 "Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,6 +44,11 @@ msgstr "Estado de la activida"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "Ícono de tipo de actvidad"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_landed_cost_form
+msgid "Additional"
+msgstr "Adicional"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -98,7 +103,7 @@ msgstr "Cancelado"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Carrier"
-msgstr "Transportador"
+msgstr "Transportista"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price_kg
@@ -305,6 +310,7 @@ msgstr "Ubicación Destino"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_move__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__display_name
 msgid "Display Name"
@@ -399,6 +405,7 @@ msgstr "Tiene devoluciones"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__id
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_move__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__id
 msgid "ID"
@@ -513,6 +520,7 @@ msgstr "Tipo de costo"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_move____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking____last_update
 msgid "Last Modified on"
@@ -736,6 +744,11 @@ msgid "Purchase"
 msgstr "Compras"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines__product_qty
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_user_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_user_id
 msgid "Responsible User"
@@ -852,6 +865,11 @@ msgstr "Ocultar Inventario"
 #: model:ir.model,name:stock_extended.model_stock_landed_cost
 msgid "Stock Landed Cost"
 msgstr "Costo en Destino"
+
+#. module: stock_extended
+#: model:ir.model,name:stock_extended.model_stock_landed_cost_lines
+msgid "Stock Landed Cost Line"
+msgstr "Línea de coste en destino"
 
 #. module: stock_extended
 #: model:ir.model,name:stock_extended.model_stock_move
@@ -988,6 +1006,7 @@ msgstr ""
 "Las transferencias le permiten mover productos de una ubicación a otra."
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__carrier_partner_id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__carrier_partner_id
 msgid "Transporter"
 msgstr "Transportador"
@@ -997,6 +1016,11 @@ msgstr "Transportador"
 #: model:ir.model.fields,help:stock_extended.field_delivery_invoice__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Tipo de actividad de excepción registrada."
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines__price
+msgid "Unit Price"
+msgstr "Precio Unitario"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_unread
@@ -1062,6 +1086,7 @@ msgstr "Historial de comunicaciones del sitio web"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_invoiced
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_landed_cost_form
 msgid "Weight"
 msgstr "Peso"
 
