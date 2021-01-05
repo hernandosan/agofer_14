@@ -5,6 +5,12 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_mark_done'][1]" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_mark_done'][2]" position="attributes">
+                    <attribute name="groups">mrp.group_mrp_user</attribute>
+                </xpath>
                 <xpath expr="//button[@name='button_scrap']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
@@ -107,6 +113,10 @@
                 Consume <a name="%(product.product_template_action)d" type='action' tabindex="-1">components</a> and build finished products using <a name="%(mrp.mrp_bom_form_action)d" type='action' tabindex="-1">bills of materials</a>
               </p>
             </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="mrp.action_mrp_production_moves">
+            <field name="domain">['|', '|', ('move_id.raw_material_production_id', '=', active_id), ('move_id.production_id', '=', active_id), ('move_id.non_conforming_production_id', '=', active_id)]</field>
         </record>
 
         <menuitem id="mrp.menu_mrp_production_action"
