@@ -11,3 +11,4 @@ access_stock_picking_wizard_user,stock.picking.wizard.user,model_stock_picking_w
 access_stock_picking_line_wizard_user,stock.picking.line.wizard.user,model_stock_picking_line_wizard,purchase.group_purchase_user,1,1,1,1
 access_stock_landed_cost_user,stock.landed.cost.user,stock_landed_costs.model_stock_landed_cost,purchase.group_purchase_user,1,1,1,0
 access_stock_landed_cost_manager,stock.landed.cost.manager,stock_landed_costs.model_stock_landed_cost,purchase.group_purchase_manager,1,1,1,1
+access_res_currency_rate_user,access.res.currency.rate.user,base.model_res_currency_rate,purchase.group_purchase_user,1,1,1,1

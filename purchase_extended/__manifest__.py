@@ -28,6 +28,7 @@
         'wizard/stock_picking_wizard_view.xml',
         'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
+        'views/product_supplierinfo_view.xml',
         'views/product_template_view.xml',
         'views/purchase_import_view.xml',
         'views/purchase_order_view.xml',

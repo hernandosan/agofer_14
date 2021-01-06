@@ -10,6 +10,10 @@ class StockPicking(models.Model):
         self.action_before_validate()
         return super(StockPicking, self).button_validate()
 
+    def do_print_picking(self):
+        self.action_before_validate()
+        return super(StockPicking, self).do_print_picking()
+
     def action_before_validate(self):
         for picking in self.filtered(lambda p: p.picking_type_code == 'outgoing' and p.sale_id):
             picking._action_before_validate()

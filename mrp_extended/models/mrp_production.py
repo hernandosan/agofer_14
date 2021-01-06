@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class MrpProduction(models.Model):
@@ -20,7 +19,7 @@ class MrpProduction(models.Model):
     def action_confirm(self):
         res = super(MrpProduction, self).action_confirm()
         self.action_confirm_noproducts()
-        return True
+        return res
 
     def action_cancel(self):
         res = super(MrpProduction, self).action_cancel()
@@ -31,7 +30,19 @@ class MrpProduction(models.Model):
         res = super(MrpProduction, self).button_plan()
         moves = self.move_noproduct_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
         moves.picking_id.action_assign()
-        moves.picking_id._action_done()
+        return res
+
+    def _post_inventory(self, cancel_backorder=False):
+        res = super(MrpProduction, self)._post_inventory(cancel_backorder=cancel_backorder)
+        for order in self:
+            finish_moves = order.move_noproduct_ids.filtered(lambda m: m.product_id == order.product_id and m.state not in ('done', 'cancel'))
+            for move in finish_moves:
+                if not move.quantity_done:
+                    move.quantity_done = move.product_uom_qty
+                    move.move_line_ids.lot_id = order.lot_producing_id
+            moves_to_finish = order.move_noproduct_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
+            moves_to_finish._action_assign()
+            moves_to_finish._action_done(cancel_backorder=cancel_backorder)
         return res
 
     def action_confirm_noproducts(self):
