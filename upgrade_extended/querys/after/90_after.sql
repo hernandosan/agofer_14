@@ -72,8 +72,6 @@ where sm.picking_id = sp.id;
 
 update stock_picking set scheduled_date = date where scheduled_date is null;
 
-update stock_picking set shipping_type = null where order_id is null;
-
 update stock_picking as sp
 set shipping_type = null
 from stock_picking_type spt
