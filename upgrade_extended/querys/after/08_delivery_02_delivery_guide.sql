@@ -24,7 +24,7 @@ INSERT INTO delivery_guide (
 	agofer.note,
 	agofer.costo_kilo,
 	--agofer.wave_id,
-	(CASE WHEN agofer.wave_id IS null THEN 1 ELSE agofer.wave_id END),
+	1,
 	agofer.date_schedule,
 	--agofer.company_id
 	1

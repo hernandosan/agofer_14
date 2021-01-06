@@ -12,10 +12,12 @@ INSERT INTO res_users (
 	signature, 
 	action_id, 
 	share, 
-	oauth_access_token, 
+	oauth_access_token,
+	oauth_access_max_token,
 	oauth_uid, 
 	oauth_provider_id, 
-	notification_type
+	notification_type,
+	oauth_master_uuid
 ) SELECT
 	agofer.id, 
 	agofer.active, 
@@ -30,10 +32,14 @@ INSERT INTO res_users (
 	agofer.signature, 
 	agofer.action_id, 
 	agofer.share, 
-	agofer.oauth_access_token, 
+	agofer.oauth_access_token,
+	agofer.oauth_access_max_token,
 	agofer.oauth_uid, 
 	agofer.oauth_provider_id,
-	'email'
+	--agofer.notification_type
+	'email',
+	--agofer.oauth_master_uuid
+	'null'
 FROM dblink('dbname=agofer_08', 'select
 	id, 
 	active, 
@@ -48,11 +54,12 @@ FROM dblink('dbname=agofer_08', 'select
 	signature, 
 	action_id, 
 	share, 
-	oauth_access_token, 
-	oauth_uid, 
-	oauth_provider_id 
+	oauth_access_token,
+	oauth_uid,
+	oauth_provider_id,
+	oauth_access_max_token
 	from res_users;'
-) AS agofer(
+) AS agofer (
 	id integer, 
 	active boolean, 
 	login character varying, 
@@ -68,7 +75,8 @@ FROM dblink('dbname=agofer_08', 'select
 	share boolean, 
 	oauth_access_token character varying, 
 	oauth_uid character varying, 
-	oauth_provider_id integer
+	oauth_provider_id integer,
+	oauth_access_max_token integer
 )
 WHERE agofer.id NOT IN (SELECT id FROM res_users);
 

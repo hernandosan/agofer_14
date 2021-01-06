@@ -64,7 +64,7 @@ INSERT INTO product_template (
 	agofer.landed_cost_ok,
 	agofer.upload_delay,
 	--agofer.tracking
-	(CASE WHEN track_all = True THEN 'lot' ELSE 'none' END)
+	(CASE WHEN agofer.track_all = True THEN 'lot' ELSE 'none' END)
 FROM dblink('dbname=agofer_08', 'select
 	id, 
     list_price,
@@ -94,7 +94,8 @@ FROM dblink('dbname=agofer_08', 'select
     purchase_line_warn,
     sale_line_warn,
     landed_cost_ok,
-    upload_delay
+    upload_delay,
+    track_all
 	from product_template;'
 ) AS agofer(
 	id integer, 
@@ -125,7 +126,8 @@ FROM dblink('dbname=agofer_08', 'select
     purchase_line_warn character varying,
     sale_line_warn character varying,
     landed_cost_ok boolean,
-    upload_delay double precision
+    upload_delay double precision,
+    track_all boolean
 );
 
 select setval('product_template_id_seq', (select max(id) from product_template));

@@ -19,6 +19,7 @@
     # any module necessary for this one to work correctly
     'depends': [
         'account_asset_management',
+        'account_menu',
         'sale_extended',
     ],
 
@@ -27,15 +28,12 @@
         'security/res_group_security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
-        'views/account_account_type_view.xml',
         'views/account_account_view.xml',
         'views/account_consignment_view.xml',
-        'views/account_group_view.xml',
         'views/account_journal_view.xml',
         'views/account_move_line_view.xml',
         'views/account_move_view.xml',
         'views/account_payment_view.xml',
-        'views/res_bank_view.xml',
         'views/res_currency_rate_view.xml',
         'wizard/account_consignment_wizard_view.xml',
     ],

@@ -34,7 +34,8 @@ FROM dblink('dbname=agofer_08', 'select
 	active, 
 	create_uid, 
 	name, 
-	company_id
+	company_id,
+	type
 	from product_pricelist;'
 ) AS agofer (
 	id integer, 
@@ -45,7 +46,8 @@ FROM dblink('dbname=agofer_08', 'select
 	active boolean, 
 	create_uid integer, 
 	name character varying, 
-	company_id integer
-);
+	company_id integer,
+	type character varying
+) where agofer.type = 'sale';
 
 select setval('product_pricelist_id_seq', (select max(id) from product_pricelist));
