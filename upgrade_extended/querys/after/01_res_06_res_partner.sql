@@ -69,7 +69,9 @@ INSERT INTO res_partner (
     arl_code,
     afp_code,
     ccf_code,
-    ref_type_id
+    ref_type_id,
+	credit_control,
+	credit_type
 ) SELECT
 	agofer.id,
 	agofer.name,
@@ -155,7 +157,9 @@ INSERT INTO res_partner (
          when agofer.ref_type = 6 then 5
          when agofer.ref_type = 5 then 6
          else null
-    end)
+    end),
+	case when agofer.credit_limit > 0 and agofer.parent_id is null then True else False end,
+	case when agofer.credit_limit > 0 and agofer.parent_id is null then 'insured' else null end
 FROM dblink('dbname=agofer_08','select
 	id,
 	name,

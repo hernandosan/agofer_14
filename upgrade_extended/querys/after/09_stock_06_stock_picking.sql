@@ -31,7 +31,8 @@ INSERT INTO stock_picking (
 	pick_date,
 	delivery_date,
 	location_id,
-    location_dest_id
+    location_dest_id,
+	scheduled_date
 ) SELECT
 	agofer.id,
 	agofer.origin,
@@ -70,7 +71,8 @@ INSERT INTO stock_picking (
 	--agofer.location_id,
     1,
     --agofer.location_dest_id
-    1
+    1,
+	agofer.date
 FROM dblink('dbname=agofer_08', 'select
 	id,
 	origin,

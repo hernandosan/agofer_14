@@ -20,6 +20,7 @@
     'depends': [
         # Avancys
         'account_avancys',
+        'electronic_invoice_dian',
         'hr_avancys',
         # OCA
         'account_asset_management',
