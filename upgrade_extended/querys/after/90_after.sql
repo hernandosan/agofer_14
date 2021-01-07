@@ -26,6 +26,13 @@ create_uid = agofer.create_uid
 from dblink('dbname=agofer_08','select id, write_uid, create_uid from res_city;') as agofer (id integer, write_uid integer, create_uid integer)
 where agofer.id = rc.id;
 
+--Update res_partner_title
+update res_partner_title rp
+set write_uid = agofer.write_uid,
+create_uid = agofer.create_uid
+from dblink('dbname=agofer_08','select id, write_uid, create_uid from res_partner_title;') as agofer (id integer, write_uid integer, create_uid integer)
+where agofer.id = rp.id;
+
 --Update res_partner
 update res_partner rp
 set write_uid = agofer.write_uid,
@@ -34,8 +41,6 @@ user_id = agofer.user_id,
 payment_responsible_id = agofer.user_id
 from dblink('dbname=agofer_08','select id, write_uid, create_uid, user_id from res_partner;') as agofer (id integer, write_uid integer, create_uid integer, user_id integer)
 where agofer.id = rp.id;
-
-update res_partner set credit_control = True, credit_type = 'insured' where credit_limit > 0 and parent_id is null; -- Insert
 
 --Update product_category
 update product_category set parent_path = '' where parent_path is null;
@@ -70,8 +75,6 @@ location_dest_id = sm.location_dest_id
 from stock_move sm
 where sm.picking_id = sp.id;
 
-update stock_picking set scheduled_date = date where scheduled_date is null; --Insert
-
 update stock_picking as sp
 set shipping_type = null
 from stock_picking_type spt
@@ -79,9 +82,9 @@ where spt.id = sp.picking_type_id
 and spt.code != 'outgoing'
 and sp.shipping_type is not null;
 
-update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null; -- Insert
+update stock_picking set delivery_bool = True where shipping_type = 'delivery' and delivery_date is null;
 
-update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null; -- INsert
+update stock_picking set delivery_bool = True where shipping_type = 'pick' and pick_date is null;
 
 --Update hr_department
 update hr_department hd
@@ -98,8 +101,8 @@ as agofer (id integer, manager_id integer)
 where agofer.id = hj.id;
 
 --Update hr_novelty
-update hr_novelty set state = 'paid' where state = 'done'; -- Insert
-update hr_novelty set state = 'cancel' where state in ('cancelled', 'refused'); -- Insert
+update hr_novelty set state = 'paid' where state = 'done';
+update hr_novelty set state = 'cancel' where state in ('cancelled', 'refused');
 
 --Update hr_overtime
-update hr_overtime set state = 'cancel' where state in ('cancelled','refuse'); -- Insert
+update hr_overtime set state = 'cancel' where state in ('cancelled','refuse');

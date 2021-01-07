@@ -25,7 +25,7 @@ INSERT INTO stock_rule (
 	delay, 
 	route_id, 
 	propagate_warehouse_id,
-	propagate_cancel,
+	propagate_cancel, 
 	auto
 ) SELECT
 	agofer.id, 
@@ -37,12 +37,13 @@ INSERT INTO stock_rule (
 	agofer.create_uid, 
 	agofer.name, 
 	agofer.company_id, 
-	agofer.action, 
+	--agofer.action, 
+	case when agofer.action = 'move' then 'pull' else agofer.action end, 
 	agofer.group_id, 
 	agofer.group_propagation_option, 
 	agofer.partner_address_id, 
-	--agofer.warehouse_id, 
-	1,
+	-- agofer.warehouse_id, 
+	1, 
 	agofer.procure_method, 
 	agofer.location_id, 
 	agofer.location_src_id, 
@@ -52,7 +53,7 @@ INSERT INTO stock_rule (
 	agofer.route_id, 
 	agofer.propagate_warehouse_id,
 	agofer.propagate,
-	--agofer.auto
+	--agofer.auto 
 	'manual'
 FROM dblink('dbname=agofer_08', 'select
 	id, 
@@ -78,7 +79,10 @@ FROM dblink('dbname=agofer_08', 'select
 	route_id, 
 	propagate_warehouse_id,
 	propagate
-	from procurement_rule;'
+	from procurement_rule 
+	where route_id is not null 
+	and picking_type_id is not null 
+	and location_id is not null;'
 ) AS agofer (
 	id integer, 
 	create_date timestamp without time zone, 

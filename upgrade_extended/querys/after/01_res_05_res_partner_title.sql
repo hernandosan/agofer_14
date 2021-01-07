@@ -12,11 +12,13 @@ INSERT INTO res_partner_title (
     write_date
 ) SELECT
     agofer.id,
-    agofer.create_uid,
+    --agofer.create_uid,
+    2,
     agofer.create_date,
     agofer.name,
     agofer.shortcut,
-    agofer.write_uid,
+    --agofer.write_uid,
+    2,
     agofer.write_date
 FROM dblink('dbname=agofer_08', 'select
 	id,
