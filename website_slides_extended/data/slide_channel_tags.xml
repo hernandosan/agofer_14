@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="slide_channel_tag_odoo" model="slide.channel.tag">
+            <field name="name">Odoo</field>
+            <field name="color">1</field>
+            <field name="group_id" ref="website_slides.slide_channel_tag_group_level"/>
+        </record>
+        <record id="slide_channel_tag_module" model="slide.channel.tag">
+            <field name="name">Module</field>
+            <field name="color">2</field>
+            <field name="group_id" ref="website_slides.slide_channel_tag_group_level"/>
+        </record>
+        <record id="slide_channel_tag_job_title" model="slide.channel.tag">
+            <field name="name">Job Tittle</field>
+            <field name="color">6</field>
+            <field name="group_id" ref="website_slides.slide_channel_tag_group_level"/>
+        </record>
+    </data>
+</odoo>

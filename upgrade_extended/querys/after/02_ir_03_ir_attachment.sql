@@ -1,7 +1,3 @@
-ALTER TABLE ir_attachment DISABLE TRIGGER ALL;
-DELETE FROM ir_attachment;
-ALTER TABLE ir_attachment ENABLE TRIGGER ALL;
-
 INSERT INTO ir_attachment (
     id,
     create_uid,
@@ -75,6 +71,7 @@ FROM dblink('dbname=agofer_08', 'select
     name character varying,
     mimetype character varying,
     index_content text
-);
+)
+WHERE agofer.id NOT IN (SELECT id FROM ir_attachment);;
 
 select setval('ir_attachment_id_seq', (select max(id) from ir_attachment));

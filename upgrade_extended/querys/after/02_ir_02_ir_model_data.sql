@@ -1,7 +1,3 @@
-ALTER TABLE ir_model_data DISABLE TRIGGER ALL;
-DELETE FROM ir_model_data;
-ALTER TABLE ir_model_data ENABLE TRIGGER ALL;
-
 INSERT INTO ir_model_data (
 	id,
 	create_uid,
@@ -47,6 +43,8 @@ FROM dblink('dbname=agofer_08', 'select
 	module character varying,
 	model character varying,
 	res_id integer
-);
+)
+WHERE agofer.id NOT IN (SELECT id FROM ir_model_data)
+AND agofer.module NOT IN (SELECT module FROM ir_model_data);
 
 select setval('ir_model_data_id_seq', (select max(id) from ir_model_data));

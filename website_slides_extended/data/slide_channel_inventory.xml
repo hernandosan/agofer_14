@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Course Creation-->
+        <record id="slide_channel_inventory" model="slide.channel">
+            <field name="name">Inventory</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="enroll">public</field>
+            <field name="channel_type">training</field>
+            <field name="allow_comment" eval="True"/>
+            <field name="is_published" eval="True"/>
+            <field name="image_1920" type="base64" file="website_slides_extended/static/src/img/inventory.png"/>
+            <field name="tag_ids" eval="[(5, 0),
+                                         (4, ref('website_slides_extended.slide_channel_tag_odoo')),
+                                         (4, ref('website_slides_extended.slide_channel_tag_module')),]"/>
+            <field name="description">Learn the concepts for managing the Inventory module!</field>
+        </record>
+        <!--Content Creation-->
+        <record id="slide_slide_product_categories" model="slide.slide">
+            <field name="name">Product Categories</field>
+            <field name="sequence">1</field>
+            <field name="url">https://youtu.be/HH1VK7c_bKk</field>
+            <field name="document_id">HH1VK7c_bKk</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_warehouse_management" model="slide.slide">
+            <field name="name">Warehouse Management</field>
+            <field name="sequence">2</field>
+            <field name="url">https://youtu.be/E3YVaVy5u04</field>
+            <field name="document_id">E3YVaVy5u04</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_shipping_methods" model="slide.slide">
+            <field name="name">Shipping Methods</field>
+            <field name="sequence">3</field>
+            <field name="url">https://youtu.be/mErlrCzVRro</field>
+            <field name="document_id">mErlrCzVRro</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_inventory_tweaks" model="slide.slide">
+            <field name="name">Inventory Tweaks</field>
+            <field name="sequence">4</field>
+            <field name="url">https://youtu.be/SUEFrzUR4LE</field>
+            <field name="document_id">SUEFrzUR4LE</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_inventory" model="slide.slide">
+            <field name="name">Inventory</field>
+            <field name="sequence">5</field>
+            <field name="url">https://youtu.be/10sgyBFuQlA</field>
+            <field name="document_id">10sgyBFuQlA</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_reports" model="slide.slide">
+            <field name="name">Reports</field>
+            <field name="sequence">6</field>
+            <field name="url">https://youtu.be/9PrXdvkeuuY</field>
+            <field name="document_id">9PrXdvkeuuY</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_transfers" model="slide.slide">
+            <field name="name">Shipping Methods</field>
+            <field name="sequence">7</field>
+            <field name="url">https://youtu.be/4DqY48i0buw</field>
+            <field name="document_id">4DqY48i0buw</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_costs_destination" model="slide.slide">
+            <field name="name">Costs at Destination</field>
+            <field name="sequence">8</field>
+            <field name="url">https://youtu.be/I2qE9zVol0M</field>
+            <field name="document_id">I2qE9zVol0M</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_inventory"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+    </data>
+</odoo>

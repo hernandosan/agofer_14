@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Course Creation-->
+        <record id="slide_channel_wallet" model="slide.channel">
+            <field name="name">Wallet</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="enroll">public</field>
+            <field name="channel_type">training</field>
+            <field name="allow_comment" eval="True"/>
+            <field name="is_published" eval="True"/>
+            <field name="image_1920" type="base64" file="website_slides_extended/static/src/img/wallet.jpeg"/>
+            <field name="tag_ids" eval="[(5, 0),
+                                         (4, ref('website_slides_extended.slide_channel_tag_odoo')),
+                                         (4, ref('website_slides_extended.slide_channel_tag_module')),]"/>
+            <field name="description">Learn the concepts for managing the Wallet module!</field>
+        </record>
+        <!--Content Creation-->
+        <record id="slide_slide_interest_settlement" model="slide.slide">
+            <field name="name">Interest Settlement</field>
+            <field name="sequence">1</field>
+            <field name="url">https://youtu.be/KaCQj-rtzRI</field>
+            <field name="document_id">KaCQj-rtzRI</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_wallet"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_credit_documentation" model="slide.slide">
+            <field name="name">Credit Documentation</field>
+            <field name="sequence">2</field>
+            <field name="url">https://youtu.be/X-NrjTbmPRo</field>
+            <field name="document_id">X-NrjTbmPRo</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_wallet"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+    </data>
+</odoo>

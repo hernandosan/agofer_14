@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Course Creation-->
+        <record id="slide_channel_purchase" model="slide.channel">
+            <field name="name">Purchase</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="enroll">public</field>
+            <field name="channel_type">training</field>
+            <field name="allow_comment" eval="True"/>
+            <field name="is_published" eval="True"/>
+            <field name="image_1920" type="base64" file="website_slides_extended/static/src/img/purchase.jpeg"/>
+            <field name="tag_ids" eval="[(5, 0),
+                                         (4, ref('website_slides_extended.slide_channel_tag_odoo')),
+                                         (4, ref('website_slides_extended.slide_channel_tag_module')),]"/>
+            <field name="description">Learn the concepts for managing the Purchases module!</field>
+        </record>
+        <!--Content Creation-->
+        <record id="slide_slide_purchase_order" model="slide.slide">
+            <field name="name">Purchase Order</field>
+            <field name="sequence">1</field>
+            <field name="url">https://youtu.be/fCB_6Wmkgmk</field>
+            <field name="document_id">fCB_6Wmkgmk</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_purchase"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_import" model="slide.slide">
+            <field name="name">Import</field>
+            <field name="sequence">2</field>
+            <field name="url">https://youtu.be/kq_V_RtlIUE</field>
+            <field name="document_id">kq_V_RtlIUE</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_purchase"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_product_creation" model="slide.slide">
+            <field name="name">Product Creation</field>
+            <field name="sequence">3</field>
+            <field name="url">https://youtu.be/kSKqXuP5dKU</field>
+            <field name="document_id">kSKqXuP5dKU</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_purchase"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+        <record id="slide_slide_provider_creation" model="slide.slide">
+            <field name="name">Provider Creation</field>
+            <field name="sequence">4</field>
+            <field name="url">https://youtu.be/X9eAnj-BfTo</field>
+            <field name="document_id">X9eAnj-BfTo</field>
+            <field name="slide_type">video</field>
+            <field name="channel_id" ref="website_slides_extended.slide_channel_purchase"/>
+            <field name="is_published" eval="True"/>
+            <field name="date_published" eval="datetime.now() - timedelta(days=8)"/>
+            <field name="is_preview" eval="False"/>
+            <field name="public_views">10</field>
+            <field name="completion_time">3</field>
+        </record>
+    </data>
+</odoo>
