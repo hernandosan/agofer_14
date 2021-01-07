@@ -71,7 +71,12 @@ FROM dblink('dbname=agofer_08', 'select
     name character varying,
     mimetype character varying,
     index_content text
+<<<<<<< HEAD
 )
 WHERE agofer.id NOT IN (SELECT id FROM ir_attachment);;
+=======
+) inner join ir_model im on im.model = agofer.res_model 
+where agofer.id not in (select id from ir_attachment);
+>>>>>>> 5b9791b2270fa8550f46f5362f5d832fddffed56
 
 select setval('ir_attachment_id_seq', (select max(id) from ir_attachment));

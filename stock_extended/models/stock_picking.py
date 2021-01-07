@@ -17,6 +17,8 @@ class StockPicking(models.Model):
     incoterm = fields.Many2one('account.incoterms', 'Incoterm', 
         help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")
     # Pïck
+    pick_file = fields.Binary('Authorization Pick')
+    pick_file_name = fields.Char('Authorization Pick Name')
     pick_bool = fields.Boolean('Pick Bool')
     pick_date = fields.Date('Pick Date')
     pick_name = fields.Char('Pick Name')
@@ -46,8 +48,12 @@ class StockPicking(models.Model):
         return res
 
     def do_print_picking(self):
-        self.printed_picking()
+        self.action_before_print()
         return super(StockPicking, self).do_print_picking()
+
+    def action_before_print(self):
+        self.printed_picking()
+        self.checked_state()
 
     def printed_picking(self):
         for picking in self:
@@ -79,3 +85,12 @@ class StockPicking(models.Model):
         self.ensure_one()
         if self.shipping_type == 'pick' and (not self.env.user.has_group('stock.group_stock_manager') or not self.env.user.has_group('sales_team.group_sale_manager')):
             raise ValidationError(_("You cannot change the shipping type in picking %s" % self.name))
+
+    def checked_state(self):
+        for picking in self:
+            picking._checked_state()
+
+    def _checked_state(self):
+        self.ensure_one()
+        if self.state != 'assigned' and not self.env.user.has_group('stock.group_stock_manager'):
+            raise ValidationError(_("You cannot print the picking %s" % self.name))

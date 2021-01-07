@@ -26,6 +26,13 @@ create_uid = agofer.create_uid
 from dblink('dbname=agofer_08','select id, write_uid, create_uid from res_city;') as agofer (id integer, write_uid integer, create_uid integer)
 where agofer.id = rc.id;
 
+--Update res_partner_title
+update res_partner_title rp
+set write_uid = agofer.write_uid,
+create_uid = agofer.create_uid
+from dblink('dbname=agofer_08','select id, write_uid, create_uid from res_partner_title;') as agofer (id integer, write_uid integer, create_uid integer)
+where agofer.id = rp.id;
+
 --Update res_partner
 update res_partner rp
 set write_uid = agofer.write_uid,
@@ -34,8 +41,6 @@ user_id = agofer.user_id,
 payment_responsible_id = agofer.user_id
 from dblink('dbname=agofer_08','select id, write_uid, create_uid, user_id from res_partner;') as agofer (id integer, write_uid integer, create_uid integer, user_id integer)
 where agofer.id = rp.id;
-
-update res_partner set credit_control = True, credit_type = 'insured' where credit_limit > 0 and parent_id is null;
 
 --Update product_category
 update product_category set parent_path = '' where parent_path is null;
@@ -69,8 +74,6 @@ set location_id = sm.location_id,
 location_dest_id = sm.location_dest_id
 from stock_move sm
 where sm.picking_id = sp.id;
-
-update stock_picking set scheduled_date = date where scheduled_date is null;
 
 update stock_picking as sp
 set shipping_type = null

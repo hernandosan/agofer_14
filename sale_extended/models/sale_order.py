@@ -17,11 +17,15 @@ class SaleOrder(models.Model):
     delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
     delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
+    # Incoterm
+    incoterm = fields.Many2one(default=lambda self: self.env['account.incoterms'].search([], limit=1))
     # Payments
     payment_account_id = fields.Many2one(related='team_id.account_advance_id')
     payment_journal_id = fields.Many2one(related='team_id.journal_advance_id')
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
     # Pick
+    pick_file = fields.Binary('Authorization Pick', copy=False)
+    pick_file_name = fields.Char('Authorization Pick Name', copy=False)
     pick_bool = fields.Boolean('Pick Bool')
     pick_date = fields.Date('Pick Date')
     # Pricelist
@@ -36,6 +40,8 @@ class SaleOrder(models.Model):
     # Upload
     upload_date = fields.Date('Upload Date')
     upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
+    # User
+    user_id = fields.Many2one(copy=False)
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):
@@ -252,6 +258,8 @@ class SaleOrder(models.Model):
             'shipping_type': self.shipping_type,
             'pick_bool': self.pick_bool,
             'pick_date': self.pick_date,
+            'pick_file': self.pick_file,
+            'pick_file_name': self.pick_file_name,
             'upload_date': self.upload_date,
             'delivery_bool': self.delivery_bool,
             'delivery_assistant': self.delivery_assistant,

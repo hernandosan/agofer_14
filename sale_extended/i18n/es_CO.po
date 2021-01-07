@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-22 22:40+0000\n"
-"PO-Revision-Date: 2020-12-22 22:40+0000\n"
-"Last-Translator: Juan Arcos jparcos@agofer.com.co\n"
+"POT-Creation-Date: 2021-01-06 15:44+0000\n"
+"PO-Revision-Date: 2021-01-06 15:44+0000\n"
+"Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +36,16 @@ msgstr "Cuenta de Anticipo"
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_journal_id
 msgid "Advance Journal"
 msgstr "Diario de Anticipo"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pick_file
+msgid "Authorization Pick"
+msgstr "Autorización de Recogida"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pick_file_name
+msgid "Authorization Pick Name"
+msgstr "Nombre de la Autorización de Recogida"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
@@ -206,7 +216,7 @@ msgstr "Precio Historico"
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__id
 #: model:ir.model.fields,field_description:sale_extended.field_stock_picking__id
 msgid "ID"
-msgstr ""
+msgstr "ID (identificación)"
 
 #. module: sale_extended
 #: model:ir.model.fields,help:sale_extended.field_sale_order_line__pricelist_id
@@ -216,9 +226,23 @@ msgstr ""
 "agregadas."
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__incoterm
+msgid "Incoterm"
+msgstr ""
+
+#. module: sale_extended
 #: model:res.groups,name:sale_extended.group_sale_info
 msgid "Info"
 msgstr "Información"
+
+#. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_sale_order__incoterm
+msgid ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
+msgstr ""
+"Los Términos de Comercio Internacional son una serie de condiciones "
+"comerciales usadas en las transacciones internacionales."
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__journal_invoice_id
@@ -454,11 +478,6 @@ msgid "Pick Date"
 msgstr "Fecha de Recogida"
 
 #. module: sale_extended
-#: model:res.groups,name:sale_extended.group_sale_point
-msgid "Point Asesor"
-msgstr "Asesor de Mostrador"
-
-#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__pricelist_id
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
@@ -528,7 +547,7 @@ msgstr "Miembros en el Pedido"
 #: model:ir.model.fields,field_description:sale_extended.field_account_bank_statement_line__order_id
 #: model:ir.model.fields,field_description:sale_extended.field_account_move__order_id
 msgid "Sale Order"
-msgstr "Pedio de Venta"
+msgstr "Orden de Venta"
 
 #. module: sale_extended
 #: model:ir.actions.server,name:sale_extended.ir_cron_run_reservation_ir_actions_server
@@ -557,6 +576,11 @@ msgid "Sales Team"
 msgstr "Equipo de Ventas"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__user_id
+msgid "Salesperson"
+msgstr "Vendedor"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__shipping_bool
 msgid "Shipping Bool"
 msgstr "Boleano de Entrega"
@@ -576,11 +600,6 @@ msgstr "Tipo de Entrega"
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Stock"
 msgstr "Almacén"
-
-#. module: sale_extended
-#: model:res.groups,name:sale_extended.group_sale_support
-msgid "Support Asesor"
-msgstr "Asesor de soporte"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/crm_team.py:0
