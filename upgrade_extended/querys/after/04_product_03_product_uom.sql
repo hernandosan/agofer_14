@@ -54,3 +54,10 @@ FROM dblink('dbname=agofer_08','SELECT
 );
 
 select setval('uom_uom_id_seq', (select max(id) from uom_uom));
+
+update ir_model_data imd 
+set res_id = agofer.res_id 
+from dblink('dbname=agofer_08','select name, model, res_id from ir_model_data where model = ''product.uom'';') as agofer 
+(name character varying, model character varying, res_id integer) 
+where agofer.name = imd.name 
+and imd.model = 'uom.uom';

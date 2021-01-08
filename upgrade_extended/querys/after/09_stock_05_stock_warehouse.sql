@@ -138,3 +138,10 @@ FROM dblink('dbname=agofer_08', 'select
 WHERE agofer.id NOT IN (SELECT id FROM stock_warehouse);
 
 select setval('stock_warehouse_id_seq', (select max(id) from stock_warehouse));
+
+update ir_model_data imd 
+set res_id = agofer.res_id 
+from dblink('dbname=agofer_08','select name, model, res_id from ir_model_data where model = ''stock.warehouse'';') as agofer 
+(name character varying, model character varying, res_id integer) 
+where agofer.name = imd.name 
+and imd.model = 'stock.warehouse';

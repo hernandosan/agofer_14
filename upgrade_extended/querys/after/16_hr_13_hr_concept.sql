@@ -1,6 +1,6 @@
-ALTER TABLE hr_concept DISABLE TRIGGER ALL;
-DELETE FROM hr_concept;
-ALTER TABLE hr_concept ENABLE TRIGGER ALL;
+-- ALTER TABLE hr_concept DISABLE TRIGGER ALL;
+-- DELETE FROM hr_concept;
+-- ALTER TABLE hr_concept ENABLE TRIGGER ALL;
 
 INSERT INTO hr_concept (
 	id,
