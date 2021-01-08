@@ -1,0 +1,252 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_slides_extended
+# Translators:
+# REYES HERNANDO SANTANA PEREZ
+# rhsantana@agofer.com.co
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-08 13:07+0000\n"
+"PO-Revision-Date: 2021-01-08 08:47-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es_CO\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_accounting
+msgid "Accounting"
+msgstr "Contabilidad"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_accounting_module
+msgid "Accounting Module"
+msgstr "Módulo de contabilidad"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_client_module
+#: model:slide.slide,name:website_slides_extended.slide_slide_monetary_rate
+msgid "Client Module"
+msgstr "Módulo de cliente"
+
+#. module: website_slides_extended
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_accounting
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_general
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_inventory
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_production
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_purchase
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_sale
+#: model_terms:slide.channel,enroll_msg:website_slides_extended.slide_channel_wallet
+msgid "Contact Responsible"
+msgstr ""
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_costs_destination
+msgid "Costs at Destination"
+msgstr "Costos en Destino"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_creation_orders
+msgid "Creation of Orders"
+msgstr "Creación de órdenes"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_credit_documentation
+msgid "Credit Documentation"
+msgstr "Documentación de crédito"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_customer_creation
+msgid "Customer Creation"
+msgstr "Creación de clientes"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_electronic_billing
+msgid "Electronic Billing"
+msgstr "Facturación Electrónica"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_general
+msgid "General"
+msgstr "Configuración General"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_import
+msgid "Import"
+msgstr ""
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_interest_settlement
+msgid "Interest Settlement"
+msgstr "Liquidación de Interés"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_Interface
+msgid "Interface"
+msgstr "Interface"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_inventory
+#: model:slide.slide,name:website_slides_extended.slide_slide_inventory
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_inventory_tweaks
+msgid "Inventory Tweaks"
+msgstr "Ajustes de Inventario"
+
+#. module: website_slides_extended
+#: model:slide.channel.tag,name:website_slides_extended.slide_channel_tag_job_title
+msgid "Job Tittle"
+msgstr "Cargos"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_general
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_general
+msgid "Learn the basics of Odoo!"
+msgstr "¡Aprende los conceptos básicos de Odoo!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_accounting
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_accounting
+msgid "Learn the concepts for managing the Accounting module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Contabilidad!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_inventory
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_inventory
+msgid "Learn the concepts for managing the Inventory module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Inventario!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_production
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_production
+msgid "Learn the concepts for managing the Production module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Produccion!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_purchase
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_purchase
+msgid "Learn the concepts for managing the Purchases module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Compras!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_sale
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_sale
+msgid "Learn the concepts for managing the Sale module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Ventas!"
+
+#. module: website_slides_extended
+#: model:slide.channel,description:website_slides_extended.slide_channel_wallet
+#: model:slide.channel,description_short:website_slides_extended.slide_channel_wallet
+msgid "Learn the concepts for managing the Wallet module!"
+msgstr "¡Aprenda los conceptos para administrar el módulo de Cartera!"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_material_list
+msgid "Material's list"
+msgstr "Lista de Materiales"
+
+#. module: website_slides_extended
+#: model:slide.channel.tag,name:website_slides_extended.slide_channel_tag_module
+msgid "Module"
+msgstr "Modulo"
+
+#. module: website_slides_extended
+#: model:slide.channel.tag,name:website_slides_extended.slide_channel_tag_odoo
+msgid "Odoo"
+msgstr ""
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_order_completion
+msgid "Order Completion"
+msgstr "Finalización Pedido"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_pricing
+msgid "Pricing"
+msgstr "Tarificacion"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_product_categories
+msgid "Product Categories"
+msgstr "Categorías de Producto"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_product_creation
+msgid "Product Creation"
+msgstr "Creación de Productos"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_production
+msgid "Production"
+msgstr "Producción"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_production_center
+msgid "Production Center"
+msgstr "Centro de Producción"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_provider_creation
+msgid "Provider Creation"
+msgstr "Creación de Proveedor"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_purchase
+msgid "Purchase"
+msgstr "Compras"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_purchase_order
+msgid "Purchase Order"
+msgstr "Orden de Compra"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_reclassification
+msgid "Reclassification"
+msgstr "Reclasificacion"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_reports
+msgid "Reports"
+msgstr ""
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_sale
+msgid "Sale"
+msgstr "Ventas"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_sales_teams
+msgid "Sales Teams"
+msgstr "Equipos de Venta"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_shipping_methods
+#: model:slide.slide,name:website_slides_extended.slide_slide_transfers
+msgid "Shipping Methods"
+msgstr "Métodos de Envió"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_suppliers_payments
+msgid "Suppliers And Payments"
+msgstr "Proveedores y Pagos"
+
+#. module: website_slides_extended
+#: model:slide.channel,name:website_slides_extended.slide_channel_wallet
+msgid "Wallet"
+msgstr "Cartera"
+
+#. module: website_slides_extended
+#: model:slide.slide,name:website_slides_extended.slide_slide_warehouse_management
+msgid "Warehouse Management"
+msgstr "Gestión de Almacenes"
