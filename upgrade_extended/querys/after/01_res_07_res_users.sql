@@ -18,6 +18,7 @@ INSERT INTO res_users (
 	oauth_provider_id, 
 	notification_type,
 	oauth_master_uuid
+	-- tz
 ) SELECT
 	agofer.id, 
 	agofer.active, 
@@ -40,6 +41,7 @@ INSERT INTO res_users (
 	'email',
 	--agofer.oauth_master_uuid
 	'null'
+	-- 'America/Bogota'
 FROM dblink('dbname=agofer_08', 'select
 	id, 
 	active, 
