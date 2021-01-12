@@ -7,7 +7,10 @@
     'description': "Upgrade Agofer",
 
     'author': "Agofer",
-    'contributors': ['Juan Pablo Arcos jparcos@agofer.com.co'],
+    'contributors': [
+        'Juan Pablo Arcos jparcos@agofer.com.co',
+        'Reyes Hernando Santana rhsantana@agofer.com.co',
+    ],
     'website': "https://agofer.com.co",
 
     # Categories can be used to filter modules in modules listing

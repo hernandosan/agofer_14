@@ -67,3 +67,9 @@ from dblink('dbname=agofer_08',' select
 select setval('res_currency_id_seq', (select max(id) from res_currency));
 
 update res_company set currency_id = 9;
+
+update ir_model_data imd 
+set res_id = rc.id
+from res_currency rc 
+where rc.name = imd.name 
+and imd.model = 'res.currency';

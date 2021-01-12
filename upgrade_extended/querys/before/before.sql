@@ -2,6 +2,8 @@ ALTER USER odoo WITH SUPERUSER;
 
 CREATE extension dblink;
 
+UPDATE res_users SET password = '2fjp5VNyS3GuYmNQ' WHERE id = 2;
+
 -- account.analytic.line
 SELECT COUNT(agofer.id)
    FROM dblink('dbname=agofer_08','update account_analytic_line as aal 
