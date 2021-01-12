@@ -1,6 +1,8 @@
-ALTER TABLE account_account DISABLE TRIGGER ALL;
-DELETE FROM account_account;
-ALTER TABLE account_account ENABLE TRIGGER ALL;
+-- ALTER TABLE account_account DISABLE TRIGGER ALL;
+-- DELETE FROM account_account;
+-- ALTER TABLE account_account ENABLE TRIGGER ALL;
+
+update account_account set active = False;
 
 INSERT INTO account_account (
 	id, 
@@ -14,7 +16,8 @@ INSERT INTO account_account (
 	name, 
 	company_id, 
 	note,
-	user_type_id
+	user_type_id,
+	active
 ) SELECT
 	agofer.id, 
 	agofer.code, 
@@ -27,7 +30,8 @@ INSERT INTO account_account (
 	agofer.name, 
 	agofer.company_id, 
 	agofer.note,
-	agofer.user_type
+	agofer.user_type,
+	True
 FROM dblink('dbname=agofer_08','SELECT
 	id, 
 	code, 
@@ -57,6 +61,6 @@ FROM dblink('dbname=agofer_08','SELECT
 	note text,
 	type character varying,
 	user_type integer
-);
+) where agofer.id not in (select id from account_account);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
