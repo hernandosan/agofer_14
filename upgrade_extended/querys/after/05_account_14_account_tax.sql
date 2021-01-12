@@ -20,8 +20,7 @@ INSERT INTO account_tax (
 	write_date, 
 	price_include,
 	amount_type, 
-	tax_group_id, 
-	active
+	tax_group_id
 ) SELECT
 	agofer.id, 
 	agofer.create_date, 
@@ -40,8 +39,7 @@ INSERT INTO account_tax (
 	--agofer.amount_type
 	'percent',
 	--agofer.tax_group_id
-	1, 
-	True
+	1
 FROM dblink('dbname=agofer_08','select
 	id, 
 	create_date, 
