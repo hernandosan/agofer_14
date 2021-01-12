@@ -112,7 +112,7 @@ msgstr "Asistente de Cartera"
 #. module: base_user_role_extended
 #: model:res.groups,name:base_user_role_extended.role_supply_procurement_assistant_res_groups
 #: model:res.users.role,name:base_user_role_extended.role_supply_procurement_assistant
-msgid "Procurement Assistant"
+msgid "Supply Assistant"
 msgstr "Asistente de Abastecimiento"
 
 #. module: base_user_role_extended
@@ -124,7 +124,7 @@ msgstr "Programador de Ruta"
 #. module: base_user_role_extended
 #: model:res.groups,name:base_user_role_extended.role_supply_supply_assistant_res_groups
 #: model:res.users.role,name:base_user_role_extended.role_supply_supply_assistant
-msgid "Supply Assistant"
+msgid "Supply Auxiliary"
 msgstr "Auxiliar de Abastecimiento"
 
 #. module: base_user_role_extended
