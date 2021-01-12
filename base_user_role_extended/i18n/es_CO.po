@@ -83,7 +83,7 @@ msgstr "Asistente de Credito"
 #: model:res.groups,name:base_user_role_extended.role_sale_manager_res_groups
 #: model:res.users.role,name:base_user_role_extended.role_sale_manager
 msgid "Manager"
-msgstr ""
+msgstr "Administrador"
 
 #. module: base_user_role_extended
 #: model:res.groups,name:base_user_role_extended.role_credit_manager_credit_res_groups
