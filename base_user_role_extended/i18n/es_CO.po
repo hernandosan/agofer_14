@@ -1,0 +1,146 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# Translators:
+# REYES HERNANDO SANTANA PEREZ
+# rhsantana@agofer.com.co
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-12 13:32+0000\n"
+"PO-Revision-Date: 2021-01-12 08:40-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_CO\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_auxiliary_costs_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_auxiliary_costs
+msgid "Auxiliary Costs"
+msgstr "Auxiliar de Costos"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_auxiliary_operations_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_auxiliary_operations
+msgid "Auxiliary Operations"
+msgstr "Auxiliar de Operaciones"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_treasury_manager_treasury_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_treasury_manager_treasury
+msgid "Auxiliary Treasury"
+msgstr "Auxiliar de Tesorería"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_sale_biller_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_sale_biller
+msgid "Biller"
+msgstr "Facturador"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_billing_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_billing_assistant
+msgid "Billing Assistant"
+msgstr "Auxiliar de Facturacion"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_sale_cashier_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_sale_cashier
+msgid "Cashier"
+msgstr "Cajero"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_credit_collections_coordinator_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_credit_collections_coordinator
+msgid "Collections Coordinator"
+msgstr "Coordinador de cobranzas"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_sale_commercial_advisor_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_sale_commercial_advisor
+msgid "Commercial Advisor"
+msgstr "Asesor Comercial"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_cost_coordinator_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_cost_coordinator
+msgid "Cost Coordinator"
+msgstr "Coordinador de Costos"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_credit_credit_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_credit_credit_assistant
+msgid "Credit Assistant"
+msgstr "Asistente de Credito"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_sale_manager_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_sale_manager
+msgid "Manager"
+msgstr ""
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_credit_manager_credit_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_credit_manager_credit
+msgid "Manager Credit"
+msgstr "Director de crédito, cartera y cobranza"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_operation_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_operation_assistant
+msgid "Operation Assistant"
+msgstr "Asistente de Operacion"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_operational_manager_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_operational_manager
+msgid "Operational Manager"
+msgstr "Director de Operaciones"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_credit_portfolio_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_credit_portfolio_assistant
+msgid "Portfolio Assistant"
+msgstr "Asistente de Cartera"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_supply_procurement_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_supply_procurement_assistant
+msgid "Procurement Assistant"
+msgstr "Asistente de Abastecimiento"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_stock_route_scheduler_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_stock_route_scheduler
+msgid "Route Scheduler"
+msgstr "Programador de Ruta"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_supply_supply_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_supply_supply_assistant
+msgid "Supply Assistant"
+msgstr "Auxiliar de Abastecimiento"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_supply_supply_manager_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_supply_supply_manager
+msgid "Supply Director"
+msgstr "Director de Abastecimiento"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_supply_transportation_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_supply_transportation_assistant
+msgid "Transportation Assistant"
+msgstr "Auxiliar de Trasnporte"
+
+#. module: base_user_role_extended
+#: model:res.groups,name:base_user_role_extended.role_treasury_treasury_assistant_res_groups
+#: model:res.users.role,name:base_user_role_extended.role_treasury_treasury_assistant
+msgid "Treasury Assistant"
+msgstr "Asistente de Tesorería"
