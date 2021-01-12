@@ -60,6 +60,11 @@ class SaleOrder(models.Model):
         if self.upload_date:
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
 
+    @api.onchange('team_id')
+    def _onchange_team_id(self):
+        self.warehouses_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouses_id
+        self.pricelist_id = self.team_id.pricelist_ids[0] if self.team_id and  self.team_id.pricelist_id else self.pricelist_id
+
     def copy(self, default=None):
         if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
             default = dict(default or {})
