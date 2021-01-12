@@ -88,3 +88,5 @@ FROM dblink('dbname=agofer_08', 'select
 	email_from character varying,
 	type character varying
 )inner join ir_model im on im.model = agofer.model;
+
+select setval('mail_message_id_seq', (select max(id) from mail_message));
