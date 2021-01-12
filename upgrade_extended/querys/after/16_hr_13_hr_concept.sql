@@ -2,6 +2,8 @@
 -- DELETE FROM hr_concept;
 -- ALTER TABLE hr_concept ENABLE TRIGGER ALL;
 
+update hr_concept set code = code || '.';
+
 INSERT INTO hr_concept (
 	id,
 	name,
@@ -52,7 +54,6 @@ FROM
 	write_uid integer,
 	write_date timestamp without time zone
 )
-WHERE agofer.id NOT IN (SELECT id FROM hr_concept) 
-and agofer.code not in (select code from hr_concept);
+WHERE agofer.id NOT IN (SELECT id FROM hr_concept);
 
 select setval('hr_concept_id_seq', (select max(id) from hr_concept));
