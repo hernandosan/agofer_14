@@ -19,7 +19,7 @@ INSERT INTO account_tax (
 	amount, 
 	write_date, 
 	price_include,
-	amount_type,
+	amount_type, 
 	tax_group_id
 ) SELECT
 	agofer.id, 
@@ -71,6 +71,6 @@ FROM dblink('dbname=agofer_08','select
 	amount numeric, 
 	write_date timestamp without time zone, 
 	price_include boolean
-);
+) where agofer.id not in (select id from account_tax);
 
 select setval('account_tax_id_seq', (select max(id) from account_tax));

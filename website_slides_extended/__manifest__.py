@@ -17,7 +17,10 @@
     'version': '14.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_slides'],
+    'depends': [
+        # 'website_slides',
+        'website_slides_survey',
+        ],
 
     # always loaded
     'data': [

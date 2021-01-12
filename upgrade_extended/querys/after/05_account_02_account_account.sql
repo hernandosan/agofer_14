@@ -2,7 +2,7 @@
 -- DELETE FROM account_account;
 -- ALTER TABLE account_account ENABLE TRIGGER ALL;
 
-update account_account set active = False;
+update account_account set active = False, code = code || '.';
 
 INSERT INTO account_account (
 	id, 
