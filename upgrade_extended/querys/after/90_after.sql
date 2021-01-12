@@ -45,7 +45,12 @@ where agofer.id = rp.id;
 --Update product_category
 update product_category set parent_path = '' where parent_path is null;
 
-update product_category set parent_path = cast(id as character varying) || '/' where parent_path = '' and parent_id is null;
+update product_category set parent_path = cast(id as character varying) || '/' where parent_path = '';
+
+--Update stock_location
+update stock_location set parent_path = '' where parent_path is null;
+
+update stock_location set parent_path = cast(id as character varying) || '/' where parent_path = '';
 
 --Update stock_picking_type
 update stock_picking_type spt
