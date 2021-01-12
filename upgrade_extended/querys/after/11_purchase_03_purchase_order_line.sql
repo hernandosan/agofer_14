@@ -30,7 +30,9 @@ INSERT INTO purchase_order_line (
 	agofer.name, 
 	agofer.date_planned, 
 	agofer.company_id, 
-	agofer.state, 
+	--agofer.state,
+    (CASE WHEN agofer.state = 'confirmed' THEN 'purchase'
+      ELSE agofer.state END),
 	agofer.account_analytic_id
 FROM dblink('dbname=agofer_08', 'select
 	id, 

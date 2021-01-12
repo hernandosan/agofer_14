@@ -46,7 +46,11 @@ INSERT INTO sale_order (
 	agofer.amount_untaxed, 
 	agofer.company_id, 
 	agofer.note, 
-	agofer.state, 
+	--agofer.state,
+	(CASE WHEN agofer.state = 'shipping_except' THEN 'cancel'
+	      WHEN agofer.state = 'shipping_except' THEN 'sale'
+	      WHEN agofer.state = 'manual' THEN 'sale'
+	      ELSE agofer.state END),
 	agofer.pricelist_id, 
 	agofer.create_uid, 
 	agofer.write_date, 

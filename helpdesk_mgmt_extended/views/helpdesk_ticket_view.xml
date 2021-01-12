@@ -18,7 +18,7 @@
             <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree" />
             <field name="arch" type="xml">
                 <xpath expr="//tree" position="attributes">
-                    <attribute name="decoration-danger">not sla_date and sla_deadline &lt; current_date</attribute>
+                    <attribute name="decoration-danger">not sla_date and sla_deadline > current_date</attribute>
                 </xpath>
                 <xpath expr="//field[@name='stage_id']" position="after">
                     <field name="type_id" optional="hide"/>

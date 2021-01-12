@@ -34,7 +34,10 @@ INSERT INTO purchase_order (
 	agofer.picking_type_id, 
 	agofer.partner_id, 
 	agofer.amount_tax, 
-	agofer.state, 
+	--agofer.state,
+	(CASE WHEN agofer.state IN ('except_picking','except_invoice') THEN 'cancel'
+	      WHEN agofer.state = 'approved' THEN 'purchase'
+	      ELSE agofer.state END),
 	agofer.incoterm_id, 
 	agofer.write_uid, 
 	agofer.payment_term_id, 
