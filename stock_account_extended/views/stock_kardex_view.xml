@@ -48,7 +48,7 @@
                         <notebook>
                             <page string="Operations">
                                 <field name="kardex_ids" readonly="True">
-                                    <tree string="Stock Moves" editable="bottom">
+                                    <tree string="Stock Moves" editable="bottom" decoration-danger="move_type == 'out'" decoration-info="move_type == 'none'" decoration-success="move_type == 'in'">
                                         <field name="stock_move_id"/>
                                         <field name="date"/>
                                         <field name="product_id" invisible="True"/>
