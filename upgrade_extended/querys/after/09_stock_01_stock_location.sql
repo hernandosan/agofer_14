@@ -1,5 +1,9 @@
 ALTER TABLE stock_location DISABLE TRIGGER ALL;
-DELETE FROM stock_location;
+
+delete from stock_location as sl
+using dblink('dbname=agofer_08','select id from stock_location;') as agofer (id integer) 
+where sl.id = agofer.id;
+
 ALTER TABLE stock_location ENABLE TRIGGER ALL;
 
 INSERT INTO stock_location (
@@ -87,3 +91,10 @@ FROM dblink('dbname=agofer_08', 'select
 );
 
 select setval('stock_location_id_seq', (select max(id) from stock_location));
+
+update ir_model_data imd 
+set res_id = agofer.res_id 
+from dblink('dbname=agofer_08','select name, model, res_id from ir_model_data where model = ''stock.location'';') as agofer 
+(name character varying, model character varying, res_id integer) 
+where agofer.name = imd.name 
+and imd.model = 'stock.location';
