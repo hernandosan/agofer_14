@@ -64,3 +64,8 @@ FROM dblink('dbname=agofer_08','SELECT
 ) where agofer.id not in (select id from account_account);
 
 select setval('account_account_id_seq', (select max(id) from account_account));
+
+update account_account as aa 
+set internal_type = aat.type
+from account_account_type aat 
+where aat.id = aa.user_type_id;

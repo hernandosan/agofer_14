@@ -28,6 +28,9 @@ class SaleOrder(models.Model):
     pick_file_name = fields.Char('Authorization Pick Name', copy=False)
     pick_bool = fields.Boolean('Pick Bool')
     pick_date = fields.Date('Pick Date')
+    pick_license = fields.Char('Pick License')
+    pick_name = fields.Char('Pick Name')
+    pick_vat = fields.Char('Pick VAT')
     # Pricelist
     pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
     # Shipping
@@ -99,13 +102,13 @@ class SaleOrder(models.Model):
         if self.upload_date:
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
 
-    def copy(self, default=None):
-        if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
-            default = dict(default or {})
-            pricelist_id = self.warehouse_id.pricelists_ids[0].id if self.warehouse_id.pricelists_ids else False
-            if pricelist_id:
-                default.update(pricelist_id=self.warehouse_id.pricelists_ids[0].id)
-        return super(SaleOrder, self).copy(default)
+    # def copy(self, default=None):
+    #     if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
+    #         default = dict(default or {})
+    #         pricelist_id = self.team_id.pricelists_ids[0] if self.team_id and self.team_id.pricelists_ids else False
+    #         if pricelist_id:
+    #             default.update(pricelist_id=pricelist_id.id)
+    #     return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
         self.action_before_confirm()
@@ -299,6 +302,9 @@ class SaleOrder(models.Model):
             'pick_date': self.pick_date,
             'pick_file': self.pick_file,
             'pick_file_name': self.pick_file_name,
+            'pick_license': self.pick_license,
+            'pick_name': self.pick_name,
+            'pick_vat': self.pick_vat,
             'upload_date': self.upload_date,
             'delivery_bool': self.delivery_bool,
             'delivery_assistant': self.delivery_assistant,

@@ -8,5 +8,13 @@
         <record id="sale.account_invoice_line_rule_see_personal" model="ir.rule">
             <field name="active" eval="False"/>
         </record>
+
+        <record id="sale.sale_order_personal_rule" model="ir.rule">
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="sale.sale_order_line_personal_rule" model="ir.rule">
+            <field name="active" eval="False"/>
+        </record>
     </data>
 </odoo>
