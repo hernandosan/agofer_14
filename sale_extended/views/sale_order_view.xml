@@ -82,9 +82,9 @@
                     </group>
                 </xpath>
                 <xpath expr="//page[@name='other_information']" position="before">
-                    <field name="payment_journal_id" invisible="True"/>
-                    <field name="payment_account_id" invisible="True"/>
                     <group string="Payments">
+                        <field name="payment_journal_id" invisible="True"/>
+                        <field name="payment_account_id" invisible="True"/>
                         <field name="payments_id" attrs="{'readonly': [('state','not in',('draft','sent'))]}" 
                         context="{
                             'default_payment_type': 'inbound',
@@ -93,6 +93,7 @@
                             'default_currency_id': currency_id,
                             'default_amount': amount_total,
                             'default_ref': name,
+                            'default_destination_account_id': payment_account_id,
                             'default_journal_id': payment_journal_id,
                             'default_destination_account_id': payment_account_id,
                         }"/>
