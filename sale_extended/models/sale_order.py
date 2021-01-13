@@ -55,15 +55,49 @@ class SaleOrder(models.Model):
         if self.date_order:
             self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 2)
 
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        if not self.partner_id:
+            self.update({
+                'partner_invoice_id': False,
+                'partner_shipping_id': False,
+                'fiscal_position_id': False,
+            })
+            return
+
+        self = self.with_company(self.company_id)
+
+        addr = self.partner_id.address_get(['delivery', 'invoice'])
+        partner_user = self.partner_id.user_id or self.partner_id.commercial_partner_id.user_id
+        values = {
+            # 'pricelist_id': self.partner_id.property_product_pricelist and self.partner_id.property_product_pricelist.id or False,
+            'payment_term_id': self.partner_id.property_payment_term_id and self.partner_id.property_payment_term_id.id or False,
+            'partner_invoice_id': addr['invoice'],
+            'partner_shipping_id': addr['delivery'],
+        }
+        user_id = partner_user.id
+        if not self.env.context.get('not_self_saleperson'):
+            user_id = user_id or self.env.uid
+        # if user_id and self.user_id.id != user_id:
+        #     values['user_id'] = user_id
+
+        if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.env.company.invoice_terms:
+            values['note'] = self.with_context(lang=self.partner_id.lang).env.company.invoice_terms
+        if not self.env.context.get('not_self_saleperson') or not self.team_id:
+            values['team_id'] = self.env['crm.team'].with_context(
+                default_team_id=self.partner_id.team_id.id
+            )._get_default_team_id(domain=['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)], user_id=user_id)
+        self.update(values)
+
+    @api.onchange('team_id')
+    def _onchange_team_id(self):
+        self.warehouse_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouse_id
+        self.pricelist_id = self.team_id.pricelists_ids[0] if self.team_id and  self.team_id.pricelists_ids else self.pricelist_id
+
     @api.onchange('upload_date')
     def _onchange_upload_date(self):
         if self.upload_date:
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
-
-    @api.onchange('team_id')
-    def _onchange_team_id(self):
-        self.warehouses_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouses_id
-        self.pricelist_id = self.team_id.pricelist_ids[0] if self.team_id and  self.team_id.pricelist_id else self.pricelist_id
 
     def copy(self, default=None):
         if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):

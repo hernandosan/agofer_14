@@ -48,4 +48,4 @@ SELECT COUNT(agofer.id)
 -- stock.move
 SELECT COUNT(agofer.id)
     FROM dblink('dbname=agofer_08','update stocK_move set price_unit = cost 
-    where price_unit = 0 or price_unit is null returning id;') AS agofer (id INTEGER);
+    where (price_unit = 0 or price_unit is null) and cost > 0 returning id;') AS agofer (id INTEGER);
