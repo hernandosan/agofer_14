@@ -24,7 +24,8 @@ INSERT INTO account_move_line (
 	product_uom_id, 
 	amount_currency, 
 	quantity, 
-	statement_line_id
+	statement_line_id, 
+	exclude_from_invoice_tab
 ) SELECT
 	agofer.id, 
 	agofer.create_date, 
@@ -51,7 +52,8 @@ INSERT INTO account_move_line (
 	agofer.product_uom_id,
 	agofer.amount_currency,
 	agofer.quantity,
-	agofer.statement_line_id
+	agofer.statement_line_id, 
+	True
 FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
@@ -113,3 +115,22 @@ FROM dblink('dbname=agofer_08','select
 );
 
 select setval('account_move_line_id_seq', (select max(id) from account_move_line));
+
+update account_move_line as aml 
+set amount_residual = agofer.sum
+from dblink('dbname=agofer_08','select aml.id, 
+case
+	when aml.reconcile_id is not null then 0.0 
+	when aa.reconcile != True then 0.0 
+	when aml.reconcile_partial_id is not null then abs(amr.sum)
+	else abs(aml.debit - aml.credit)
+end 
+from account_move_line aml 
+inner join account_account aa on aa.id = aml.account_id 
+left join (select aml.id, sum(aml2.debit - aml2.credit)
+from account_move_line aml
+inner join account_move_reconcile amr on amr.id = aml.reconcile_partial_id 
+inner join account_move_line aml2 on aml2.reconcile_partial_id = amr.id or aml2.reconcile_id = amr.id
+where aml.id != aml2.id 
+group by aml.id) amr on amr.id = aml.id') agofer (id integer, sum numeric) 
+where aml.id = agofer.id;

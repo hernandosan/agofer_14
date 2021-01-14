@@ -35,6 +35,7 @@
         'views/account_move_view.xml',
         'views/account_payment_view.xml',
         'views/res_currency_rate_view.xml',
+        'views/res_partner_view.xml',
         'wizard/account_consignment_wizard_view.xml',
     ],
     # only loaded in demonstration mode
