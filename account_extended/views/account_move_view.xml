@@ -79,5 +79,9 @@
                 </xpath>
             </field>
         </record>
+
+        <record model="ir.ui.menu" id="account.menu_finance">
+            <field name="groups_id" eval="[(4, ref('account_extended.group_account_user'))]"/>
+        </record>
     </data>
 </odoo>

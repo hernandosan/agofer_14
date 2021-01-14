@@ -56,6 +56,9 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="account_credit_control.partner_followup_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//page[@name='credit_control']" position="attributes">
+                    <attribute name="groups">account_credit_control.group_account_credit_control_info</attribute>
+                </xpath>
                 <xpath expr="//page[@name='credit_control']" position="replace">
                     <page string="Credit Control" name="credit_control" 
                         attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}" 
