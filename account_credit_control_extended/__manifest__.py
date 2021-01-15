@@ -36,8 +36,7 @@
         'views/res_partner_view.xml',
         'wizard/credit_interest_wizard_template.xml',
         'wizard/credit_interest_wizard_view.xml',
-        # 'wizard/credit_customer_wizard_template.xml',
-        # 'wizard/credit_customer_wizard_view.xml'
+        'wizard/credit_customer_wallet_template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

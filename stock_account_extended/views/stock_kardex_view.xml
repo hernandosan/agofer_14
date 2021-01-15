@@ -28,8 +28,9 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="action_kardex_line" icon="fa-list" class="oe_stat_button" 
-                                string="Report Kardex" type="object" attrs="{'invisible': [('kardex_ids', '=', [])]}"/>
+                            <button name="stock_account_extended.action_stock_kardex_line" icon="fa-list" class="oe_stat_button"
+                                string="Report Kardex" type="action" />
+<!--                            attrs="{'invisible': [('kardex_ids', '=', [])]}"-->
                         </div>
                         <h1>
                             <field name="name"/>
@@ -48,7 +49,9 @@
                         <notebook>
                             <page string="Operations">
                                 <field name="kardex_ids" readonly="True">
-                                    <tree string="Stock Moves" editable="bottom">
+                                    <tree string="Stock Moves" editable="bottom"
+                                          decoration-danger="move_type == 'out'" decoration-info="move_type == 'none'"
+                                          decoration-success="move_type == 'in'">
                                         <field name="stock_move_id"/>
                                         <field name="date"/>
                                         <field name="product_id" invisible="True"/>
@@ -140,5 +143,12 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_stock_kardex_line_tree"/>
         </record>
+
+        <record id="action_kardex" model="ir.actions.act_window">
+            <field name="name">Report Kardex Line</field>
+            <field name="res_model">stock.kardex.line</field>
+            <field name="context">{'search_default_kardex_ids': [active_id]}</field>
+        </record>
+
     </data>
 </odoo>

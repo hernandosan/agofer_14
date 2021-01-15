@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
         <report
-            id="report_credit_customer_wizard"
-            model="credit.customer.wizard"
-            string="Credit Customer"
-            name="account_credit_control_extended.template_credit_customer_wizard"
+            id="report_credit_customer_wallet"
+            model="res.partner"
+            string="Credit Customer Wallet"
+            name="account_credit_control_extended.template_credit_customer_wallet"
             report_type="qweb-pdf"/>
 
-        <template id="template_credit_customer_wizard">
+        <template id="template_credit_customer_wallet">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="account_credit_control_extended.template_credit_customer_wizard_document" t-lang="doc.partner_id.lang"/>
+                    <t t-call="account_credit_control_extended.template_credit_customer_wallet_document" t-lang="doc.id.lang"/>
                 </t>
             </t>
         </template>
@@ -20,10 +21,9 @@
             <link rel="stylesheet" type="text/css" href="/account_credit_control_extended/static/src/css/report_style.css"/>
         </template>
 
-        <template id="template_credit_customer_wizard_document">
-            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+        <template id="template_credit_customer_wallet_document">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.id.lang)" />
             <t t-call="web.external_layout">
-            <P t-call="account_credit_control_extended.style_table"></P>
                 <div>
                     <h1 style="text-align:center;">Portfolio Customer</h1>
                     <br></br>
@@ -32,19 +32,19 @@
                             <th name="th_date">Date Print</th>
                             <td name="td_date"><span t-field="doc.payment_date"/></td>
                             <th name="th_partner">Customer</th>
-                            <td name="td_partner"><span t-field="doc.partner_id.name"/></td>
+                            <td name="td_partner"><span t-field="doc.id.name"/></td>
                         </tr>
                         <tr>
                             <th name="th_partner_vat">NIT</th>
-                            <td name="td_partner_vat"><span t-field="doc.partner_id.vat"/></td>
+                            <td name="td_partner_vat"><span t-field="doc.id.vat"/></td>
                             <th name="th_credit_limit">Credit Limit</th>
-                            <td name="td_credit_limit"><span t-field="doc.partner_id.credit_limit"/></td>
+                            <td name="td_credit_limit"><span t-field="doc.id.credit_limit"/></td>
                         </tr>
                         <tr>
                             <th name="th_payment_term">Payment Deadline</th>
-                            <td name="td_payment_term"><span t-field="doc.partner_id.property_payment_term_id"/></td>
+                            <td name="td_payment_term"><span t-field="doc.id.property_payment_term_id"/></td>
                             <th name="th_res_users">Salesman</th>
-                            <td name="td_res_users"><span t-field="doc.partner_id.user_id"/></td>
+                            <td name="td_res_users"><span t-field="doc.id.user_id"/></td>
                         </tr>
                     </table>
                 </div>
