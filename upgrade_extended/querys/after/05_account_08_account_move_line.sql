@@ -25,7 +25,8 @@ INSERT INTO account_move_line (
 	amount_currency, 
 	quantity, 
 	statement_line_id, 
-	exclude_from_invoice_tab
+	exclude_from_invoice_tab, 
+	reconciled
 ) SELECT
 	agofer.id, 
 	agofer.create_date, 
@@ -52,8 +53,9 @@ INSERT INTO account_move_line (
 	agofer.product_uom_id,
 	agofer.amount_currency,
 	agofer.quantity,
-	agofer.statement_line_id, 
-	True
+	agofer.statement_line_id,
+	True,
+	case when agofer.reconcile_id is not null then True else False end
 FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,
@@ -84,7 +86,8 @@ FROM dblink('dbname=agofer_08','select
 	else amount_currency
 	end),
 	quantity,
-	statement_line_id
+	statement_line_id, 
+	reconcile_id
 	from account_move_line;'
 ) AS agofer(
 	id integer,
@@ -111,7 +114,8 @@ FROM dblink('dbname=agofer_08','select
 	product_uom_id integer,
 	amount_currency numeric,
 	quantity numeric,
-	statement_line_id integer
+	statement_line_id integer,
+	reconcile_id integer
 );
 
 select setval('account_move_line_id_seq', (select max(id) from account_move_line));

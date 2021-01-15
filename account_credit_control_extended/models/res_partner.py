@@ -66,3 +66,16 @@ class ResPartner(models.Model):
             'default_lines_ids': [(6, 0, ids)],
         }
         return result
+
+    lines_ids = fields.Many2many('account.move.line', string='Invoices')
+    def credit_customer_wallet(self):
+        this = self[0]
+        self.line_ids.unlink()
+        line_ids = []
+        for line in self.lines_ids:
+            vals = {
+                'invoice_id': line.move_id.id,
+                'line_id': line.id
+            }
+            line_ids.append((0, 0, vals))
+        return line_ids

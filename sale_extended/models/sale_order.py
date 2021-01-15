@@ -335,7 +335,8 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     price_unit = fields.Float(copy=False)
-    price_kg = fields.Float('Kg Price', digits='Product Price', compute='_compute_price_kg')
+    price_unit_discount = fields.Float('Unit Price Discount', compute='_compute_price', digits='Product Price')
+    price_kilogram = fields.Float('Kg Price', digits='Product Price', compute='_compute_price')
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
     shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
     upload_delay = fields.Float(related='product_id.upload_delay', store=True)
@@ -349,10 +350,16 @@ class SaleOrderLine(models.Model):
                 msg = _('Order blocked by discount. \n') + message
                 raise ValidationError(msg)
 
-    @api.depends('product_uom', 'price_unit', 'product_id')
-    def _compute_price_kg(self):
+    @api.depends('price_unit', 'discount')
+    def _compute_price(self):
         for line in self:
-            line.price_kg = line.product_uom._compute_price(line.price_unit, line.product_id.uom_id) / line.product_id.weight if line.product_uom and line.price_unit and line.product_id and line.product_id.weight else 0.0
+            price_unit_discount = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            price = line.product_uom._compute_price(price_unit_discount, line.product_id.uom_id)
+            price_kilogram = price / line.product_id.
+            line.update({
+                'price_unit_discount': price_unit_discount,
+                'price_kilogram': price_kilogram
+            })
 
     def msg_standard_price(self):
         msg = ""
