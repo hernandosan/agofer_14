@@ -334,13 +334,14 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    delivery_delay = fields.Float(related='product_id.delivery_delay', store=True)
     price_unit = fields.Float(copy=False)
     price_unit_discount = fields.Float('Unit Price Discount', compute='_compute_price', digits='Product Price')
     price_kilogram = fields.Float('Kg Price', digits='Product Price', compute='_compute_price')
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
     shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
     upload_delay = fields.Float(related='product_id.upload_delay', store=True)
-    delivery_delay = fields.Float(related='product_id.delivery_delay', store=True)
+    weight = fields.Float('Weight', digits='Stock Weight', compute='_compute_weight')
 
     @api.onchange('discount')
     def _onchange_discount(self):
@@ -350,15 +351,24 @@ class SaleOrderLine(models.Model):
                 msg = _('Order blocked by discount. \n') + message
                 raise ValidationError(msg)
 
-    @api.depends('price_unit', 'discount')
+    @api.depends('price_unit', 'discount', 'product_uom', 'product_id')
     def _compute_price(self):
         for line in self:
-            price_unit_discount = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            price = line.product_uom._compute_price(price_unit_discount, line.product_id.uom_id)
-            price_kilogram = price / line.product_id.
+            boolean = line.price_unit and line.product_uom and line.product_id
+            price_unit_discount = line.price_unit * (1 - (line.discount or 0.0) / 100.0) if boolean else 0.0
+            price = line.product_uom._compute_price(price_unit_discount, line.product_id.uom_id) if boolean else 0.0
+            price_kilogram = price / line.product_id.weight if boolean and line.product_id.weight else 0.0
             line.update({
                 'price_unit_discount': price_unit_discount,
                 'price_kilogram': price_kilogram
+            })
+
+    @api.depends('product_uom', 'product_uom_qty', 'product_id')
+    def _compute_weight(self):
+        for line in self:
+            quantity = line.product_uom._compute_quantity(line.product_uom_qty, line.product_id.uom_id)
+            line.update({
+                'weight': quantity * line.product_id.weight
             })
 
     def msg_standard_price(self):
