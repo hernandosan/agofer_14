@@ -1,8 +1,6 @@
--- ALTER TABLE hr_concept DISABLE TRIGGER ALL;
--- DELETE FROM hr_concept;
--- ALTER TABLE hr_concept ENABLE TRIGGER ALL;
-
-update hr_concept set code = code || '.';
+ALTER TABLE hr_concept DISABLE TRIGGER ALL;
+DELETE FROM hr_concept;
+ALTER TABLE hr_concept ENABLE TRIGGER ALL;
 
 INSERT INTO hr_concept (
 	id,
@@ -53,7 +51,13 @@ FROM
 	create_date timestamp without time zone,
 	write_uid integer,
 	write_date timestamp without time zone
-)
-WHERE agofer.id NOT IN (SELECT id FROM hr_concept);
+);
 
 select setval('hr_concept_id_seq', (select max(id) from hr_concept));
+
+update ir_model_data imd 
+set res_id = agofer.res_id 
+from dblink('dbname=agofer_08','select name, model, res_id from ir_model_data where model = ''hr.concept'';') as agofer 
+(name character varying, model character varying, res_id integer) 
+where agofer.name = imd.name 
+and imd.model = 'hr.concept';

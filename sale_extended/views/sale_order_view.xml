@@ -17,8 +17,17 @@
                 <xpath expr="//button[@name='action_draft']" position="attributes">
                     <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
                 </xpath>
-                <xpath expr="//field[@name='pricelist_id']" position="before">
+                <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <attribute name="domain">['|',('id','=',partner_id),('parent_id','=','partner_id')]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                    <attribute name="domain">[('id','child_of',partner_id)]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='show_update_pricelist']" position="before">
                     <field name="pricelists_ids" invisible="True"/>
+                    <field name="teams_ids" invisible="True"/>
+                    <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" options="{'no_create': True}" 
+                        required="True" domain="[('id','in',teams_ids)]" attrs="{'readonly': [('state','in',('sale','done'))]}"/>
                 </xpath>
                 <xpath expr="//field[@name='pricelist_id']" position="attributes">
                     <attribute name="domain">[('id','in',pricelists_ids)]</attribute>
@@ -39,16 +48,17 @@
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                     <field name="price_kg" optional="hide"/>
                 </xpath>
-                <xpath expr="//field[@name='user_id']" position="attributes">
-                    <attribute name="readonly">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='team_id']" position="before">
-                    <field name="teams_ids" invisible="True"/>
-                </xpath>
-                <xpath expr="//field[@name='team_id']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state','=','done')]}</attribute>
-                    <attribute name="domain">[('id','in',teams_ids)]</attribute>
-                    <attribute name="required">True</attribute>
+                <xpath expr="//group[@name='sales_person']" position="replace">
+                    <group name="sales_person" string="Sales">
+                        <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
+                        <!-- <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" options="{'no_create': True}"/> -->
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                        <field name="require_signature"/>
+                        <field name="require_payment"/>
+                        <field name="reference" readonly="1" attrs="{'invisible': [('reference', '=', False)]}"/>
+                        <field name="client_order_ref"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                    </group>
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']/label[1]" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -76,15 +86,21 @@
                             attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="pick_date" 
                             attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                        <field name="pick_name" filename="pick_file_name"
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                        <field name="pick_vat" filename="pick_file_name"
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                        <field name="pick_license" filename="pick_file_name"
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="pick_file" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
                         <field name="pick_file_name" invisible="True"/>
                     </group>
                 </xpath>
                 <xpath expr="//page[@name='other_information']" position="before">
-                    <field name="payment_journal_id" invisible="True"/>
-                    <field name="payment_account_id" invisible="True"/>
                     <group string="Payments">
+                        <field name="payment_journal_id" invisible="True"/>
+                        <field name="payment_account_id" invisible="True"/>
                         <field name="payments_id" attrs="{'readonly': [('state','not in',('draft','sent'))]}" 
                         context="{
                             'default_payment_type': 'inbound',
@@ -93,6 +109,7 @@
                             'default_currency_id': currency_id,
                             'default_amount': amount_total,
                             'default_ref': name,
+                            'default_destination_account_id': payment_account_id,
                             'default_journal_id': payment_journal_id,
                             'default_destination_account_id': payment_account_id,
                         }"/>

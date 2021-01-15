@@ -39,7 +39,7 @@
         'hr_recruitment',
         'mass_mailing',
         'l10n_co',
-        'website',
+        'purchase_requisition',
         # Extended
         'account_extended',
         'base_user_role_extended',
@@ -50,6 +50,7 @@
         'stock_account_extended',
         'stock_extended',
         'purchase_extended',
+        'website_slides_extended',
     ],
 
     # always loaded

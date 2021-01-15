@@ -27,7 +27,10 @@ class SaleOrder(models.Model):
     pick_file = fields.Binary('Authorization Pick', copy=False)
     pick_file_name = fields.Char('Authorization Pick Name', copy=False)
     pick_bool = fields.Boolean('Pick Bool')
-    pick_date = fields.Date('Pick Date')
+    pick_date = fields.Date('Pick Date', default=fields.Date.today())
+    pick_license = fields.Char('Pick License')
+    pick_name = fields.Char('Pick Name')
+    pick_vat = fields.Char('Pick VAT')
     # Pricelist
     pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
     # Shipping
@@ -55,23 +58,57 @@ class SaleOrder(models.Model):
         if self.date_order:
             self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 2)
 
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        """
+        Update the following fields when the partner is changed:
+        - Pricelist
+        - Payment terms
+        - Invoice address
+        - Delivery address
+        - Sales Team
+        """
+        if not self.partner_id:
+            self.update({
+                'partner_invoice_id': False,
+                'partner_shipping_id': False,
+                'fiscal_position_id': False,
+            })
+            return
+
+        self = self.with_company(self.company_id)
+
+        addr = self.partner_id.address_get(['delivery', 'invoice'])
+        partner_user = self.partner_id.user_id or self.partner_id.commercial_partner_id.user_id
+        values = {
+            # 'pricelist_id': self.partner_id.property_product_pricelist and self.partner_id.property_product_pricelist.id or False,
+            'payment_term_id': self.partner_id.property_payment_term_id and self.partner_id.property_payment_term_id.id or False,
+            'partner_invoice_id': addr['invoice'],
+            'partner_shipping_id': addr['delivery'],
+        }
+        user_id = partner_user.id
+        if not self.env.context.get('not_self_saleperson'):
+            user_id = user_id or self.env.uid
+        # if user_id and self.user_id.id != user_id:
+        #     values['user_id'] = user_id
+
+        if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.env.company.invoice_terms:
+            values['note'] = self.with_context(lang=self.partner_id.lang).env.company.invoice_terms
+        if not self.env.context.get('not_self_saleperson') or not self.team_id:
+            values['team_id'] = self.env['crm.team'].with_context(
+                default_team_id=self.partner_id.team_id.id
+            )._get_default_team_id(domain=['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)], user_id=user_id)
+        self.update(values)
+
+    @api.onchange('team_id')
+    def _onchange_team_id(self):
+        self.warehouse_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouse_id
+        self.pricelist_id = self.team_id.pricelists_ids[0] if self.team_id and  self.team_id.pricelists_ids else self.pricelist_id
+
     @api.onchange('upload_date')
     def _onchange_upload_date(self):
         if self.upload_date:
             self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
-
-    @api.onchange('team_id')
-    def _onchange_team_id(self):
-        self.warehouses_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouses_id
-        self.pricelist_id = self.team_id.pricelist_ids[0] if self.team_id and  self.team_id.pricelist_id else self.pricelist_id
-
-    def copy(self, default=None):
-        if not self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
-            default = dict(default or {})
-            pricelist_id = self.warehouse_id.pricelists_ids[0].id if self.warehouse_id.pricelists_ids else False
-            if pricelist_id:
-                default.update(pricelist_id=self.warehouse_id.pricelists_ids[0].id)
-        return super(SaleOrder, self).copy(default)
 
     def action_confirm(self):
         self.action_before_confirm()
@@ -94,7 +131,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_price_discount()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
+                if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by discount. User: %s, Order: %s \n") % (user, order) + msg_validate
@@ -112,7 +149,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_standard_price()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
+                if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by cost. User: %s, Order: %s \n") % (user, order) + msg_validate
@@ -130,7 +167,7 @@ class SaleOrder(models.Model):
         for sale in self:
             msg_validate = sale._validate_product_qty()
             if msg_validate:
-                if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
+                if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
                     body = _("Order confirmed by quanity. User %s, Order %s \n") % (user, order) + msg_validate
@@ -155,7 +192,7 @@ class SaleOrder(models.Model):
         days = 3 if weekday not in (3, 4, 5) else 4
         date = date_order + timedelta(days=days)
         if not self.delivery_bool and self.delivery_date and self.delivery_date < date:
-            if self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
+            if self.env.user.has_group('sales_team.group_sale_manager'):
                 user = self.env.user.login
                 order = self.name
                 body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
@@ -265,6 +302,9 @@ class SaleOrder(models.Model):
             'pick_date': self.pick_date,
             'pick_file': self.pick_file,
             'pick_file_name': self.pick_file_name,
+            'pick_license': self.pick_license,
+            'pick_name': self.pick_name,
+            'pick_vat': self.pick_vat,
             'upload_date': self.upload_date,
             'delivery_bool': self.delivery_bool,
             'delivery_assistant': self.delivery_assistant,
