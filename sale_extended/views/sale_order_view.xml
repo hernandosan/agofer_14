@@ -5,12 +5,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <!-- <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                    <attribute name="groups">account.group_account_invoice</attribute>
                 </xpath>
                 <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath> -->
+                    <attribute name="groups">account.group_account_invoice</attribute>
+                </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
                 </xpath>
@@ -37,16 +37,20 @@
                     <attribute name="attrs">{'readonly': [('state','in',('done','cancel'))]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[1]/field[@name='price_unit']" position="attributes">
-                    <attribute name="readonly">1</attribute>
+                    <attribute name="groups">sale_extended.group_price_unit</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[1]/field[@name='price_unit']" position="after">
-                    <field name="price_kg"/>
+                    <field name="price_unit_discount"/>
+                    <field name="price_kilogram"/>
+                    <field name="weight"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
-                    <attribute name="readonly">1</attribute>
+                    <attribute name="groups">sale_extended.group_price_unit</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="price_kg" optional="hide"/>
+                    <field name="price_unit_discount"/>
+                    <field name="price_kilogram" optional="hide"/>
+                    <field name="weight" optional="show" sum="Weight"/>
                 </xpath>
                 <xpath expr="//group[@name='sales_person']" position="replace">
                     <group name="sales_person" string="Sales">
