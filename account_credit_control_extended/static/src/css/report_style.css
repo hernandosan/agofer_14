@@ -1,7 +1,5 @@
 #header table{
     width:100%;
-	font-family: arial, sans-serif;
-	border: 2px solid #dd0404;
 }
 
 #header th{
@@ -15,19 +13,16 @@
     width:30%;
     border: 1px solid #b2b2b2;
     text-align: center;
-    padding: 1px;
 }
 
 #report table{
     width: 100%;
-	font-family: arial, sans-serif;
-	border: 2px solid #2b0bba;
 }
 
 #report th{
     border: 1px solid #b2b2b2;
     text-align: center;
-    padding: 8px;
+    padding: 6px;
 }
 
 #report td{
@@ -36,3 +31,21 @@
     padding: 6px;
 }
 
+#total table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#total th {
+  text-align: right;
+  border-bottom: 6px solid #ddd;
+  font-size: 20px;
+  padding-right: 30px;
+}
+
+#total td {
+  text-align: center;
+  border-bottom: 6px solid #ddd;
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="report_credit_wallet"
+                model="res.partner"
+                string="Credit Wallet"
+                name="account_credit_control_extended.template_credit_customer_wallet"
+                file="ProjectName.report_ModelName"
+                report_type="qweb-pdf"/>
+
+        <template id="style_table">
+            <link rel="stylesheet" type="text/css" href="/account_credit_control_extended/static/src/css/report_style.css"/>
+        </template>
+
+        <template id="template_credit_customer_wallet">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <p t-call="account_credit_control_extended.style_table"></p>
+                        <div id="header" class="page">
+                            <h1 style="text-align:center;">Portfolio Customer</h1>
+                            <br></br>
+                            <table>
+                                <tr>
+                                    <th name="th_date">Date Print</th>
+                                    <td name="td_date"><span t-field="doc.payment_date"/></td>
+                                    <th name="th_partner">Customer</th>
+                                    <td name="td_partner"><span t-field="doc.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th name="th_partner_vat">NIT</th>
+                                    <td name="td_partner_vat"><span t-field="doc.vat"/></td>
+                                    <th name="th_credit_limit">Credit Limit</th>
+                                    <td name="td_credit_limit"><span t-field="doc.credit_limit"/></td>
+                                </tr>
+                                <tr>
+                                    <th name="th_payment_term">Payment Deadline</th>
+                                    <td name="td_payment_term"><span t-field="doc.property_supplier_payment_term_id"/></td>
+                                    <th name="th_res_users">Salesman</th>
+                                    <td name="td_res_users"><span t-field="doc.user_id"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br></br>
+                        <div id = "report">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th name="th_move_id" width="15%">Invoice</th>
+                                        <th name="th_date" width="15%">Date</th>
+                                        <th name="th_date_maturity" width="15%">Date Maturity</th>
+                                        <th name="th_days_maturity" width="15%">Days Maturity</th>
+                                        <th name="th_amount" width="20%">Amount</th>
+                                        <th name="th_amount_taxed" width="20%">Amount Residual</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <t t-foreach="doc.credit_customer_wallet()" t-as="line">
+                                        <tr>
+                                            <td name="td_move_id"><span t-field="line.move_id"/></td>
+                                            <td name="td_date"><span t-field="line.move_id.invoice_date"/></td>
+                                            <td name="td_date_maturity"><span t-field="line.move_id.invoice_date_due"/></td>
+                                            <t t-set="days" t-value="doc.days_maturity(line.move_id.invoice_date_due)"/>
+                                            <td name="td_days_maturity"><span t-esc="days"/></td>
+                                            <td name="td_amount_total"><span t-field="line.move_id.amount_total_signed"/></td>
+                                            <td name="td_amount_total"><span t-field="line.move_id.amount_residual_signed"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="total">
+                            <table>
+                                <thead>
+                                    <th width="60%">TOTAL:</th>
+                                    <td name="td_amount_total" width="20%"><span t-field="doc.amount_total_invoice"/></td>
+                                    <td name="td_amount_residual" width="20%"><span t-field="doc.amount_residual_invoice"/></td>
+                                </thead>
+                            </table>
+                        </div>
+                        <br></br>
+                        <div id="report" class="page">
+                            <h1 style="text-align:center;">Sale</h1>
+                            <br></br>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th name="th_move_id" width="25%">Sale</th>
+                                        <th name="th_date" width="25%">Date</th>
+                                        <th name="th_amount" width="25%">Payment Terms</th>
+                                        <th name="th_amount_taxed" width="25%">Amount Residual</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <t t-foreach="doc.sale_order_customer()" t-as="line">
+                                        <tr>
+                                            <td name="td_move_id" ><span t-field="line.id"/></td>
+                                            <td name="td_date"><span t-field="line.expected_date"/></td>
+                                            <td name="td_amount_total"><span t-field="line.payment_term_id" /></td>
+                                            <td name="td_amount_total"><span t-field="line.amount_total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="total">
+                            <table>
+                                <thead>
+                                    <th width="70%">TOTAL:</th>
+                                    <td width="25%"><span t-field="doc.amount_total_sale"/></td>
+                                </thead>
+                            </table>
+                        </div>
+                        <br></br>
+                        <div id="total">
+                            <table>
+                                <thead>
+                                    <th width="70%">TOTAL INVOICES AND SALES:</th>
+                                    <th width="25%"><span t-field="doc.amount_total_inv_sal"/></th>
+                                </thead>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

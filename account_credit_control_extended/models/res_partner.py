@@ -67,15 +67,50 @@ class ResPartner(models.Model):
         }
         return result
 
-    lines_ids = fields.Many2many('account.move.line', string='Invoices')
+    payment_date = fields.Date('Payment Date', default=fields.Date.today())
+    date_maturity = fields.Date('Days')
+    amount_residual_invoice = fields.Monetary('Amount Residual', compute='amount_totals_invoice')
+    amount_total_invoice = fields.Monetary('Amount Total', compute='amount_totals_invoice')
+    amount_total_sale = fields.Monetary('Amount Total', compute='amount_totals_sale')
+    amount_total_inv_sal = fields.Monetary('Amount Total Invoice and Sale', compute='totals')
+
     def credit_customer_wallet(self):
-        this = self[0]
-        self.line_ids.unlink()
-        line_ids = []
-        for line in self.lines_ids:
-            vals = {
-                'invoice_id': line.move_id.id,
-                'line_id': line.id
-            }
-            line_ids.append((0, 0, vals))
-        return line_ids
+        self.ensure_one()
+        domain = [
+            ('partner_id', 'child_of', self.id),
+            ('account_id.user_type_id.type', 'in', ('receivable', 'payable')),
+            ('reconciled', '=', False)
+        ]
+        return self.env['account.move.line'].search(domain)
+
+    def days_maturity(self, date_maturity):
+        return (fields.Date.from_string(self.payment_date) - fields.Date.from_string(date_maturity)).days
+
+    def sale_order_customer(self):
+        self.ensure_one()
+        domain = [
+            ('partner_id', 'child_of', self.id),
+            ('state', 'in', ('draft', 'sale')),
+        ]
+        return self.env['sale.order'].search(domain)
+
+    def amount_totals_invoice(self):
+        for record in self:
+            amount_residual = 0
+            amount_total = 0
+            for line in record.credit_customer_wallet():
+                amount_residual += line.move_id.amount_residual_signed
+                amount_total += line.move_id.amount_total_signed
+            record.amount_residual_invoice = round(amount_residual, 2)
+            record.amount_total_invoice = round(amount_total, 2)
+
+    def amount_totals_sale(self):
+        for record in self:
+            amount_total = 0
+            for line in record.sale_order_customer():
+                amount_total += line.amount_total
+            record.amount_total_sale = round(amount_total, 2)
+
+    def totals(self):
+        self.amount_total_inv_sal = round((self.amount_residual_invoice + self.amount_total_sale), 2)
+

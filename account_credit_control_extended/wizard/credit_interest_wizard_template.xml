@@ -24,7 +24,7 @@
             <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
             <t t-call="web.external_layout" t-css="false" t-scss="false">
                 <p t-call="account_credit_control_extended.style_table"></p>
-                <div>
+                <div id="header">
                     <group>
                         <div>
                             <strong>Partner: </strong>
@@ -47,8 +47,7 @@
                         </div>
                     </group>
                 </div>
-<!--                <P t-call="account_credit_control_extended.style_table"></P>-->
-                <div>
+                <div id = "report">
                     <table>
                         <thead>
                             <tr>
@@ -109,8 +108,8 @@
                 </div>
                 <div>
                     <strong>Amount to Words: </strong>
-                        <t t-set="amount_word" t-value="doc.num2word()"/>
-                        <span t-esc="amount_word"/>
+                    <t t-set="amount_word" t-value="doc.num2word()"/>
+                    <span t-esc="amount_word"/>
                 </div>
             </t>
         </template>
