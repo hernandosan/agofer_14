@@ -29,11 +29,12 @@
             </field>
         </record>
 
-        <act_window id="action_stock_picking_wizard"
-                    name="Transport Order"
-                    binding_model="purchase.import"
-                    res_model="stock.picking.wizard"
-                    view_mode="form"
-                    target="new"/>
+        <record model="ir.actions.act_window" id="action_stock_picking_wizard">
+            <field name="name">Transport Order</field>
+            <field name="res_model">stock.picking.wizard</field>
+            <field name="binding_model">purchase.import</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
     </data>
 </odoo>

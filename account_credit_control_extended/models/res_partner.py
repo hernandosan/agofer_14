@@ -113,4 +113,3 @@ class ResPartner(models.Model):
 
     def totals(self):
         self.amount_total_inv_sal = round((self.amount_residual_invoice + self.amount_total_sale), 2)
-

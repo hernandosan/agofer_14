@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:23+0000\n"
-"PO-Revision-Date: 2021-01-13 22:23+0000\n"
+"POT-Creation-Date: 2021-01-15 17:31+0000\n"
+"PO-Revision-Date: 2021-01-15 17:31+0000\n"
 "Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -270,9 +270,9 @@ msgid "Kg"
 msgstr ""
 
 #. module: sale_extended
-#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_kg
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_kilogram
 msgid "Kg Price"
-msgstr "Precio Kg"
+msgstr "Precio Kilogramo"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report__kilogram
@@ -681,6 +681,16 @@ msgid "Unit Price"
 msgstr "Precio Unitario"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_unit_discount
+msgid "Unit Price Discount"
+msgstr "Precio Unitario"
+
+#. module: sale_extended
+#: model:res.groups,name:sale_extended.group_price_unit
+msgid "Unit Price Modify"
+msgstr "Modificar Precio Unitario"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__upload_date
 msgid "Upload Date"
 msgstr "Fecha de Cargue"
@@ -695,6 +705,12 @@ msgstr "Usuarios"
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__warehouses_ids
 msgid "Warehouses"
 msgstr "Almacenes"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__weight
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
+msgid "Weight"
+msgstr "Peso"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_product_template_form_stock

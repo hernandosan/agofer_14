@@ -38,6 +38,7 @@
         'data/res_users_role_stock.xml',
         'data/res_users_role_supply.xml',
         'data/res_users_role_treasury.xml',
+        'data/res_users_role_rrhh.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
