@@ -54,13 +54,15 @@ class HrEmployee(models.Model):
                 <tr>
                     <th style="border: 1px solid black"> """ + _('Employee') + """ </th>
                     <th style="border: 1px solid black"> """ + _('Birthday') + """ </th>
+                    <th style="border: 1px solid black"> """ + _('Work Location') + """ </th>
                 </tr>
             </thead>
             <tbody>
             """
         for employee in self.browse(ids):
             table_hr_birth += "<tr>" + '<td style="border: 1px solid black">' + employee.name + "</td>" \
-                              + '<td style="border: 1px solid black">' + employee.birthday.strftime('%d/%m/%Y') \
+                              + '<td style="border: 1px solid black">' + sorted(employee.birthday.strftime('%d/%m/%Y')) \
+                              + '<td style="border: 1px solid black">' + employee.work_location + "</td>" \
                               + "</td>" + "</tr>"
         if ids:
             table_hr_birth += "</tbody>" + "</table>"
