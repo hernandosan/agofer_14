@@ -44,7 +44,7 @@ class HrEmployee(models.Model):
 
     def table_hr_birth(self):
         month = fields.Date.today().month
-        employees = self.search([('birthday', '!=', False)])
+        employees = self.search([('birthday', '!=', False)], order='birthday')
         ids = [employee.id for employee in employees if employee.birthday.month == month]
         table_hr_birth = ""
         if ids:
@@ -54,16 +54,16 @@ class HrEmployee(models.Model):
                 <tr>
                     <th style="border: 1px solid black"> """ + _('Employee') + """ </th>
                     <th style="border: 1px solid black"> """ + _('Birthday') + """ </th>
-                    <th style="border: 1px solid black"> """ + _('Work Location') + """ </th>
+                    <th style="border: 1px solid black"> """ + _('WorkLocation') + """ </th>
                 </tr>
             </thead>
             <tbody>
             """
         for employee in self.browse(ids):
-            table_hr_birth += "<tr>" + '<td style="border: 1px solid black">' + employee.name + "</td>" \
-                              + '<td style="border: 1px solid black">' + sorted(employee.birthday.strftime('%d/%m/%Y')) \
-                              + '<td style="border: 1px solid black">' + employee.work_location + "</td>" \
-                              + "</td>" + "</tr>"
+            table_hr_birth += "<tr>" \
+                              + "<td style='border: 1px solid black'>" + employee.name + "</td>" \
+                              + '<td style="border: 1px solid black">' + employee.birthday.strftime('%d/%m/%Y') + "</td>" \
+                              + '<td style="border: 1px solid black">' + employee.work_location + "</td>" + "</tr>"
         if ids:
             table_hr_birth += "</tbody>" + "</table>"
         return table_hr_birth

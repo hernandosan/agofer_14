@@ -122,6 +122,27 @@
                                 </thead>
                             </table>
                         </div>
+                        <br></br>
+                        <div id="header">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th name="th_move_id" width="15%">Pay</th>
+                                        <th name="th_date" width="15%">Date</th>
+                                        <th name="th_amount_taxed" width="20%">Amount Residual</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <t t-foreach="doc.customer_amount_residual()" t-as="line">
+                                        <tr>
+                                            <td name="td_move_id"><span t-field="line.move_id.move_name"/></td>
+                                            <td name="td_date"><span t-field="line.move_id.invoice_date"/></td>
+                                            <td name="td_amount_total"><span t-field="line.move_id.amount_residual"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
                     </t>
                 </t>
             </t>
