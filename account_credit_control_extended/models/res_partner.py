@@ -113,3 +113,11 @@ class ResPartner(models.Model):
 
     def totals(self):
         self.amount_total_inv_sal = round((self.amount_residual_invoice + self.amount_total_sale), 2)
+
+    def customer_amount_residual(self):
+        self.ensure_one()
+        domain = [
+            ('partner_id', 'child_of', self.id),
+            ('act.type', '=', 'payable'),
+        ]
+        return self.env['account.move.line'].search(domain)
