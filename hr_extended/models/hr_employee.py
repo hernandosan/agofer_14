@@ -61,7 +61,7 @@ class HrEmployee(models.Model):
             """
         for employee in self.browse(ids):
             table_hr_birth += "<tr>" + '<td style="border: 1px solid black">' + employee.name + "</td>" \
-                              + '<td style="border: 1px solid black">' + sorted(employee.birthday.strftime('%d/%m/%Y')) \
+                              + '<td style="border: 1px solid black">' + employee.birthday.strftime('%d/%m/%Y') \
                               + '<td style="border: 1px solid black">' + employee.work_location + "</td>" \
                               + "</td>" + "</tr>"
         if ids:

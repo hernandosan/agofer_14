@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <report
-            id="report_credit_interest_wizard"
-            model="credit.interest.wizard"
-            string="Credit Interest"
-            name="account_credit_control_extended.template_credit_interest_wizard"
-            report_type="qweb-pdf"/>
+        <record id="report_credit_interest_wizard" model="ir.actions.report">
+            <field name="name">Credit Interest</field>
+            <field name="model">credit.interest.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_credit_control_extended.template_credit_interest_wizard</field>
+        </record>
 
         <template id="template_credit_interest_wizard">
             <t t-call="web.html_container">

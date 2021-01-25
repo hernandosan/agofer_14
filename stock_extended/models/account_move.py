@@ -21,11 +21,11 @@ class AccountMove(models.Model):
     def _action_guide_confirm(self):
         self.ensure_one()
         if self.move_type == 'out_invoice':
-            guides_ids = self.guides_ids.filtered(lambda g: g.state in ('draft','confirm','progress'))
+            guides_ids = self.guides_ids.filtered(lambda g: g.state not in 'cancel')
             if len(guides_ids) > 1:
                 return self.write({'delivery_state': 'partial'})
         if self.move_type == 'out_refund':
-            guides_ids = self.guides_returns_ids.filtered(lambda g: g.state in ('draft','confirm','progress'))
+            guides_ids = self.guides_returns_ids.filtered(lambda g: g.state not in 'cancel')
             if len(guides_ids) > 1:
                 return self.write({'delivery_state': 'partial'})
         return self.write({'delivery_state': 'delivered'})

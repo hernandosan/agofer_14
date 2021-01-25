@@ -134,7 +134,7 @@
                         <field name="pick_date" 
                             attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
                         <field name="pick_file" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)]}"/>
+                            attrs="{'invisible': [('shipping_type','!=','pick')]}"/>
                         <field name="pick_file_name" invisible="True"/>
                     </group>
                     <group string="Pick Info" attrs="{'invisible': [('shipping_type','!=','pick')]}">

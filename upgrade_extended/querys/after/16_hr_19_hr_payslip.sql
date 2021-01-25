@@ -68,4 +68,7 @@ WHERE agofer.id NOT IN (SELECT id FROM hr_payslip);
 
 SELECT setval('hr_payslip_id_seq',(SELECT MAX(id)FROM hr_payslip));
 
--- Cuidado con la nomina SLIP/23061 id 125327 no tiene contrato
+insert into hr_payslip_type_hr_concept_rel (hr_payslip_type_id, hr_concept_id) 
+select agofer.type_id, agofer.concept_id 
+from dblink('dbname=agofer_08',
+            'select type_id, concept_id from paysliptype_concept_rel') as agofer(type_id integer, concept_id integer);

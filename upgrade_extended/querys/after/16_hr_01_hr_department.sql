@@ -13,7 +13,8 @@ INSERT INTO hr_department (
 	parent_id, 
 	manager_id, 
 	write_date,
-	active
+	active,
+	complete_name
 ) SELECT
 	agofer.id, 
 	agofer.create_uid, 
@@ -27,7 +28,8 @@ INSERT INTO hr_department (
 	1,
 	agofer.write_date,
 	--agofer.active
-	TRUE
+	TRUE,
+	agofer.name
 FROM dblink('dbname=agofer_08','select
 	id, 
 	create_uid, 
@@ -54,3 +56,9 @@ FROM dblink('dbname=agofer_08','select
 );
 
 select setval('hr_department_id_seq', (select max(id) from hr_department));
+
+update hr_department as hd 
+set complete_name = hd2.name || ' / ' || hd.name
+from hr_department hd2 
+where hd.parent_id = hd2.id 
+and hd.parent_id is not null;
