@@ -11,7 +11,8 @@ INSERT INTO delivery_guide (
 	price_kg,
 	carrier_id,
 	scheduled_date,
-	company_id
+	company_id,
+	guide_type
 ) SELECT
 	agofer.id,
 	agofer.create_date,
@@ -27,7 +28,8 @@ INSERT INTO delivery_guide (
 	1,
 	agofer.date_schedule,
 	--agofer.company_id
-	1
+	1,
+	'customer'
 FROM dblink('dbname=agofer_08','select
 	id,
 	create_date,

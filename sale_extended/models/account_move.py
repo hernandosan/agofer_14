@@ -11,7 +11,6 @@ class AccountMove(models.Model):
         ('pending','Pending'),
         ('progress','Progress'),
         ('partial','Partial'),
-        ('novelty','Novelty'),
         ('delivered', 'Delivered')
     ], 'Delivery State')
     order_id = fields.Many2one('sale.order', 'Sale Order', copy=False)
