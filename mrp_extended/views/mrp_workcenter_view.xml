@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='costs_hour']" position="before">
-                    <field name="sequence_id" groups="group_mrp_manufacturing"/>    
+                    <field name="sequence_id" groups="mrp_extended.group_mrp_manufacturing"/>    
                 </xpath>
                 <xpath expr="//field[@name='costs_hour']" position="after">
                     <field name="product_id" required="True"/>    
