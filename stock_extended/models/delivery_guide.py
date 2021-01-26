@@ -32,9 +32,17 @@ class DeliveryGuide(models.Model):
     driver_name = fields.Char(related='driver_id.name')
 
     guide_bool = fields.Boolean('Has Return', default=False, copy=False)
-    guide_invoice_id = fields.One2many('delivery.guide.move', 'guide_id', 'Moves', domain="[('move_type','=','invoice')]", copy=False)
-    guide_refund_id = fields.One2many('delivery.guide.move', 'guide_id', 'Refunds', domain="[('move_type','=','refund')]", copy=False)
-    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer')
+    guide_account_invoice_ids = fields.One2many('delivery.guide.line', 'guide_account_invoice_id', 'Invoices', copy=False)
+    guide_account_refund_ids = fields.One2many('delivery.guide.line', 'guide_account_refund_id', 'Refunds', copy=False)
+    guide_stock_invoice_ids = fields.One2many('delivery.guide.line', 'guide_stock_invoice_id', 'Invoices Moves', copy=False)
+    guide_stock_refund_ids = fields.One2many('delivery.guide.line', 'guide_stock_refund_id', 'Refunds Moves', copy=False)
+    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer', required=True)
+    guide_subtype = fields.Selection([
+        ('picking','Picking'),
+        ('repicking','Repicking'), 
+        ('standby','Stand By'),
+        ('other','Other')], 'Delivery Subtype', copy=False, tracking=True)
+    guide_update = fields.Boolean('Update', default=False, copy=False)
 
     invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices', copy=False)
     invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id', 'Credit Notes', copy=False)
@@ -57,6 +65,7 @@ class DeliveryGuide(models.Model):
     weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
+    weight_manual = fields.Float('Manual Weight', traking=True)
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
 
     state = fields.Selection([
@@ -68,13 +77,13 @@ class DeliveryGuide(models.Model):
         ('invoiced','Invoiced'),
         ('cancel','Cancel')], 'State', default='draft', copy=False, tracking=True)
 
-    @api.depends('moves_ids', 'guide_invoice_id', 'guide_refund_id', 'moves_ids')
+    @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
     def _compute_weight(self):
         for guide in self:
-            weight_invoice = sum(move.weight for move in guide.guide_invoice_id if move.move_state != 'cancel')
-            weight_return = sum(move.weight for move in guide.guide_refund_id if move.move_state != 'cancel')
+            weight_invoice = sum(move.stock_weight for move in guide.guide_stock_invoice_ids if move.stock_state != 'cancel')
+            weight_return = sum(move.stock_weight for move in guide.guide_stock_refund_ids if move.stock_state != 'cancel')
             weight_move = sum(move.weight for move in guide.moves_ids if move.state != 'cancel')
-            weight_total = weight_invoice + weight_return + weight_move
+            weight_total = weight_invoice + weight_return + weight_move + guide.weight_manual
             guide.update({
                 'weight_invoice': weight_invoice,
                 'weight_return': weight_return,
@@ -98,6 +107,11 @@ class DeliveryGuide(models.Model):
         if self.price and ((self.price - self.price_kg) / self.price_kg) * 100 > self.carrier_tolerance and not self.user.has_group('stock.group_stock_manager'):
             raise ValidationError(_("The price exceeds the allowed tolerance"))
 
+    @api.onchange('invoices_returns_ids')
+    def _onchange_invoices_returns_ids(self):
+        if self.invoices_returns_ids:
+            self.guide_update = True
+
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
@@ -108,52 +122,13 @@ class DeliveryGuide(models.Model):
         self.write({'state': 'draft'})
 
     def action_confirm(self):
-        for guide in self.filtered(lambda s: s.guide_type == 'customer'):
-            guide._action_confirm_customer()
-        for guide in self.filtered(lambda s: s.guide_type == 'branch'):
-            guide._action_confirm_branch()
-        self.write({'state': 'confirm'})
-
-    def _action_confirm_customer(self):
-        self.ensure_one()
-        guide_invoice_id = self._prepare_guide_invoice()
-        self.write({'guide_invoice_id': guide_invoice_id})
-
-    def _action_confirm_branch(self):
-        self.ensure_one()
-        ids = self.pickings_ids.move_lines.ids
-        self.write({'moves_ids': [(6, 0, ids)]})
-
-    def _prepare_guide_invoice(self, move_type='invoice'):
-        self.ensure_one()
-        guide_invoice = []
-        invoices = self.invoices_ids if move_type == 'invoice' else self.invoices_returns_ids
-        picking_code = 'outgoing' if move_type == 'invoice' else 'incoming'
-        for move in invoices.invoice_line_ids.sale_line_ids.move_ids.filtered(lambda m: m.picking_code == picking_code):
-            domain = [('move_id','=',move.id),('move_state','!=','cancel')]
-            quantity_guide = sum(g.product_uom_qty for g in self.env['delivery.guide.move'].search(domain)) or 0.0
-            quantity = move.product_uom_qty - quantity_guide
-            vals = {
-                'move_id': move.id,
-                'move_type': move_type,
-                'product_uom_qty': quantity,
-                'guide_qty': quantity
-            }
-            if quantity > 0:
-                guide_invoice.append((0,0,vals))
-        return guide_invoice
-
-    def action_moves(self):
         for guide in self:
-            guide._action_moves()
-
-    def _action_moves(self):
-        self.ensure_one()
-        guide_refund_id = self._prepare_guide_invoice(move_type='refund')
-        self.write({'guide_refund_id': guide_refund_id})
+            getattr(guide, '_action_confirm_%s' % guide.guide_type)()
+        self.write({'state': 'confirm'})
 
     def action_progress(self):
         self.invoices_ids.write({'delivery_state': 'progress'})
+        self.guide_account_invoice_ids.write({'account_delivery_state': 'progress'})
         self.write({
             'state': 'progress',
             'date_progress': fields.Date.today(),
@@ -177,35 +152,156 @@ class DeliveryGuide(models.Model):
         })
 
     def action_cancel(self):
-        self.invoices_ids.write({'delivery_state': 'pending'})
-        self.invoices_returns_ids.write({'delivery_state': 'pending'})
         self.write({'state': 'cancel'})
 
+    def action_update(self):
+        for guide in self:
+            guide._action_update()
 
-class DeliveryGuideMove(models.Model):
-    _name = 'delivery.guide.move'
-    _description = 'Delivery Guide Move'
-    _rec_name = 'move_id'
+    def _action_update(self):
+        self.ensure_one()
+        self.guide_account_refund_ids.unlink()
+        self.guide_stock_refund_ids.unlink()
+        self = self.with_context({'account_type': 'refund'})
+        guide_account_refund_ids = self._prepare_guide_line('account')
+        guide_stock_refund_ids = self._prepare_guide_line('stock')
+        self.write({
+            'guide_account_refund_ids': guide_account_refund_ids,
+            'guide_stock_refund_ids': guide_stock_refund_ids,
+            'guide_update': False,
+        })
 
-    guide_id = fields.Many2one('delivery.guide', 'Guide', ondelete='cascade', required=True)
-    guide_qty = fields.Float('Guide Quantity', digits='Product Unit of Measure')
-    move_id = fields.Many2one('stock.move', 'Move', ondelete='restrict', required=True)
-    move_state = fields.Selection(related='move_id.state')
-    move_type = fields.Selection([('invoice','Invoice'),('refund','Refund')], 'Type', default='invoice')
-    picking_id = fields.Many2one(related='move_id.picking_id')
-    product_id = fields.Many2one(related='move_id.product_id')
-    product_uom_id = fields.Many2one(related='product_id.uom_id')
-    product_uom_qty = fields.Float('Quantity', digits='Product Unit of Measure')
-    weight = fields.Float(compute='_compute_weight', digits='Weight', store=True)
+    def _action_confirm_customer(self):
+        self.ensure_one()
+        self.guide_account_invoice_ids.unlink()
+        self.guide_stock_invoice_ids.unlink()
+        self = self.with_context({'account_type': 'invoice'})
+        guide_account_invoice_ids = self._prepare_guide_line('account')
+        guide_stock_invoice_ids = self._prepare_guide_line('stock')
+        self.write({
+            'guide_account_invoice_ids': guide_account_invoice_ids,
+            'guide_stock_invoice_ids': guide_stock_invoice_ids,
+        })
 
-    @api.onchange('product_uom_qty')
-    def _onchange_product_uom_qty(self):
-        if self.product_uom_qty > self.guide_qty:
+    def _action_confirm_branch(self):
+        self.ensure_one()
+        ids = self.pickings_ids.move_lines.ids
+        self.write({'moves_ids': [(6, 0, ids)]})
+
+    def _prepare_guide_line(self, line_type):
+        self.ensure_one()
+        return getattr(self, '_prepare_guide_line_%s' % line_type)()
+
+    def _prepare_guide_line_account(self):
+        self.ensure_one()
+        guide_line = []
+        invoices = self.invoices_ids if self._context.get('account_type') == 'invoice' else self.invoices_returns_ids
+        for invoice in invoices:
+            vals = {
+                'line_type': 'account_invoice', 
+                'account_id': invoice.id, 
+                'account_delivery_state': 'pending'
+            }
+            guide_line.append((0,0,vals))
+        return guide_line
+
+    def _prepare_guide_line_stock(self):
+        self.ensure_one()
+        guide_line = []
+        invoices = self.invoices_ids if self._context.get('account_type') == 'invoice' else self.invoices_returns_ids
+        picking_code = 'outgoing' if self._context.get('account_type') == 'invoice' else 'incoming'
+        for move in invoices.invoice_line_ids.sale_line_ids.move_ids.filtered(lambda m: m.picking_code == picking_code):
+            domain = [('stock_id','=',move.id),('line_type','=','stock_invoice'),('guide_stock_invoice_id.state','!=','cancel')]
+            quantity_guide = sum(l.stock_product_uom_qty for l in self.env['delivery.guide.line'].search(domain)) or 0.0
+            quantity = move.product_uom_qty - quantity_guide
+            vals = {
+                'line_type': 'stock_invoice',
+                'stock_id': move.id,
+                'stock_product_uom_qty': quantity,
+                'stock_product_qty': quantity
+            }
+            guide_line.append((0,0,vals))
+        return guide_line
+
+
+class DeliveryGuideLine(models.Model):
+    _name = 'delivery.guide.line'
+    _description = 'Delivery Guide Line'
+    _rec_name = 'line_type'
+
+    # Account
+    account_amount_total_signed = fields.Monetary(related='account_id.amount_total_signed')
+    account_delivery_bool = fields.Boolean('Has Novelty', default=False)
+    account_delivery_state = fields.Selection([
+        ('pending','Pending'),
+        ('progress','Progress'),
+        ('delivered', 'Delivered')
+    ], 'Delivery State')
+    account_id = fields.Many2one('account.move', 'Invoice')
+    account_date = fields.Date(related='account_id.invoice_date')
+    account_name = fields.Char(related='account_id.name')
+    account_order_id = fields.Many2one(related='account_id.order_id')
+    account_partner_id = fields.Many2one(related='account_id.partner_id')
+    account_state = fields.Selection(related='account_id.state')
+
+    # Company
+    company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.user.company_id)
+    currency_id = fields.Many2one(related='company_id.currency_id')
+
+    # Guide
+    guide_account_invoice_id = fields.Many2one('delivery.guide', 'Guide Invoice')
+    guide_account_refund_id = fields.Many2one('delivery.guide', 'Guide Refund')
+    guide_stock_invoice_id = fields.Many2one('delivery.guide', 'Guide Invoice Move')
+    guide_stock_refund_id = fields.Many2one('delivery.guide', 'Guide Refund Move')
+
+    # Line
+    line_type = fields.Selection([
+        ('account_invoice', 'Invoice'),
+        ('account_refund', 'Refund'),
+        ('stock_invoice', 'Invoice Move'),
+        ('stock_refund', 'Refund Move'),
+    ], 'Type', required=True, default='')    
+
+    # Move
+    stock_date = fields.Datetime(related='stock_id.date')
+    stock_id = fields.Many2one('stock.move', 'Invoice Move')
+    stock_picking_id = fields.Many2one(related='stock_id.picking_id')
+    stock_product_id = fields.Many2one(related='stock_id.product_id')
+    stock_product_uom_qty = fields.Float('Demand', digits='Product Unit of Measure')
+    stock_product_qty = fields.Float('Quantity', digits='Product Unit of Measure')
+    stock_state = fields.Selection(related='stock_id.state')
+    stock_uom_id = fields.Many2one(related='stock_product_id.uom_id')
+    stock_weight = fields.Float(compute='_compute_stock_weight', digits='Weight', store=True)
+
+    @api.onchange('stock_product_qty')
+    def _onchange_stock_product_qty(self):
+        if self.stock_product_qty > self.stock_product_uom_qty:
             raise ValidationError(_("The quantity cannot be greater than the delivered"))
 
-    @api.depends('product_id', 'product_uom_qty')
-    def _compute_weight(self):
-        moves_with_weight = self.filtered(lambda moves: moves.product_id.weight > 0.00)
+    @api.depends('stock_product_id', 'stock_product_uom_qty')
+    def _compute_stock_weight(self):
+        moves_with_weight = self.filtered(lambda moves: moves.stock_product_id.weight > 0.00)
         for move in moves_with_weight:
-            move.weight = (move.product_uom_qty * move.product_id.weight)
-        (self - moves_with_weight).weight = 0
+            move.stock_weight = (move.stock_product_uom_qty * move.stock_product_id.weight)
+        (self - moves_with_weight).stock_weight = 0
+
+    def action_confirm(self):
+        for line in self:
+            line._action_confirm()
+
+    def _action_confirm(self):
+        self.ensure_one()
+        vals = {'account_delivery_state': 'delivered'}
+        domain = [('account_id','=',self.account_id.id),('line_type','=','account_invoice'),('guide_account_invoice_id.state','!=','cancel')]
+        if self._context.get('guide_refund'):
+            domain = [('account_id','=',self.account_id.id),('line_type','=','account_refund'),('guide_account_refund_id.state','!=','cancel')]
+        lines = self.env['delivery.guide.line'].search(domain)
+        vals_invoice = {'delivery_state': 'delivered'}
+        if len(lines) > 1:
+            vals_invoice.update(delivery_state='partial')
+        self.account_id.write(vals_invoice)
+        if self._context.get('guide_return'):
+            vals.update(account_delivery_bool=True)
+            if not self.guide_account_refund_id.guide_bool:
+                self.guide_account_refund_id.write({'guide_bool': True})
+        self.update(vals)
