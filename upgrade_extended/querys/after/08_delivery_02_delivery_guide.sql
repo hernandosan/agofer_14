@@ -10,7 +10,7 @@ INSERT INTO delivery_guide (
 	notes,
 	price_kg,
 	carrier_id,
-	scheduled_date,
+	date_scheduled,
 	company_id,
 	guide_type
 ) SELECT
@@ -24,8 +24,7 @@ INSERT INTO delivery_guide (
 	agofer.name,
 	agofer.note,
 	agofer.costo_kilo,
-	--agofer.wave_id,
-	1,
+	agofer.tarifa_id,
 	agofer.date_schedule,
 	--agofer.company_id
 	1,
@@ -42,7 +41,8 @@ FROM dblink('dbname=agofer_08','select
 	note,
 	costo_kilo,
 	wave_id,
-	date_schedule
+	date_schedule,
+	tarifa_id
 	from stock_picking_wave_extended;'
 ) AS agofer(
 	id integer,
@@ -56,7 +56,8 @@ FROM dblink('dbname=agofer_08','select
 	note text,
 	costo_kilo numeric,
 	wave_id integer,
-	date_schedule date
+	date_schedule date,
+	tarifa_id integer
 );
 
 select setval('delivery_guide_id_seq', (select max(id) from delivery_guide));

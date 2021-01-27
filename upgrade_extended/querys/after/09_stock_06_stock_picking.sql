@@ -141,3 +141,9 @@ FROM dblink('dbname=agofer_08', 'select
 );
 
 select setval('stock_picking_id_seq', (select max(id) from stock_picking));
+
+update stock_move as sm 
+set reference = sp.name 
+from stock_picking sp 
+where sp.id = sm.picking_id 
+and sm.reference is null;
