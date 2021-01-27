@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+        <record id="view_hr_branch_search" model="ir.ui.view">
+            <field name="name">view.hr.branch.search</field>
+            <field name="model">hr.branch</field>
+            <field name="arch" type="xml">
+                <search string="Branches">
+                    <field name="name" string="Branch"/>
+                    <field name="partner_id" />
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                </search>
+             </field>
+        </record>
+
+        <record id="view_hr_branch_tree" model="ir.ui.view">
+            <field name="name">view.hr.branch.tree</field>
+            <field name="model">hr.branch</field>
+            <field name="arch" type="xml">
+                <tree string="Branches">
+                    <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="partner_id"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_branch_form" model="ir.ui.view">
+            <field name="name">view.hr.branch.form</field>
+            <field name="model">hr.branch</field>
+            <field name="arch" type="xml">
+                <form string="Branch">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="active" invisible="1"/>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="parent_id"/>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_hr_branch" model="ir.actions.act_window">
+            <field name="name">Branches</field>
+            <field name="res_model">hr.branch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new branch
+                </p><p>
+                    Odoo's branch structure is used to manage all documents
+                    related to employees by branches: expenses, timesheets,
+                    leaves, recruitments, etc.
+                </p>
+            </field>
+        </record>
+
+        <!-- <menuitem
+            id="menu_hr_branch"
+            action="action_hr_branch"
+            parent="hr.menu_hr_root"
+            groups="hr.group_hr_user"/> -->
+        
+        <menuitem
+            id="menu_hr_branch"
+            action="action_hr_branch"
+            parent="hr.menu_human_resources_configuration" 
+            groups="hr.group_hr_user"/>
+    </data>
+</odoo>
