@@ -28,9 +28,8 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="stock_account_extended.action_stock_kardex_line" icon="fa-list" class="oe_stat_button"
-                                string="Report Kardex" type="action" />
-<!--                            attrs="{'invisible': [('kardex_ids', '=', [])]}"-->
+                            <button class="oe_stat_button" name="%(action_stock_kardex_line_select)d" 
+                                string="Kardex Items" type="action" icon="fa-bars"/>
                         </div>
                         <h1>
                             <field name="name"/>
@@ -109,46 +108,5 @@
             sequence="120" 
             action="action_stock_kardex" 
         />
-
-        <!-- Stock Kardex Line -->
-        <record model="ir.ui.view" id="view_stock_kardex_line_tree">
-            <field name="name">view.stock.kardex.line.tree</field>
-            <field name="model">stock.kardex.line</field>
-            <field name="priority" eval="16"/>
-            <field name="arch" type="xml">
-                <tree string="Stock Moves" create="False" edit="False" delete="False" editable="bottom">
-                    <field name="stock_move_id"/>
-                    <field name="date"/>
-                    <field name="product_id" invisible="True"/>
-                    <field name="move_type" invisible="True"/>
-                    <field name="move_subtype"/>
-                    <field name="location_id"/>
-                    <field name="location_dest_id"/>
-                    <field name="qty_init"/>
-                    <field name="quantity"/>
-                    <field name="qty_end"/>
-                    <field name="price_unit"/>
-                    <field name="price_total"/>
-                    <field name="standard_price"/>
-                    <field name="value_total"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
-                </tree>
-            </field>
-        </record>
-
-        <record model="ir.actions.act_window" id="action_stock_kardex_line">
-            <field name="name">Report Kardex Line</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.kardex.line</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_stock_kardex_line_tree"/>
-        </record>
-
-        <record id="action_kardex" model="ir.actions.act_window">
-            <field name="name">Report Kardex Line</field>
-            <field name="res_model">stock.kardex.line</field>
-            <field name="context">{'search_default_kardex_ids': [active_id]}</field>
-        </record>
-
     </data>
 </odoo>

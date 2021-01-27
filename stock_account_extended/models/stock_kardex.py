@@ -14,6 +14,7 @@ class StockKardex(models.Model):
     date_from = fields.Datetime('Date From')
     date_to = fields.Datetime('Date To', default=fields.Datetime.now())
     kardex_ids = fields.One2many('stock.kardex.line', 'kardex_id', 'Lines')
+    user_id = fields.Many2one('res.users', 'User', default=lambda self: self.env.user)
 
     def action_compute(self):
         self._action_compute()
@@ -108,17 +109,11 @@ class StockKardex(models.Model):
         else:
             return 'None'
 
-    def action_kardex_line(self):
-        result = self.env['ir.actions.act_window']._for_xml_id('stock_account_extended.action_stock_kardex_line')
-
-        result['context'] = {}
-        result['domain'] = "[('id','in',%s)]" % (self.kardex_ids.ids)
-
-        return result
 
 class StockKardexLine(models.Model):
     _name = 'stock.kardex.line'
     _description = 'Stock Kardex Line'
+    _rec_name = 'product_id'
 
     account_move_id = fields.Many2one('account.move', 'Journal Entry', readonly=True, check_company=True)
     company_id = fields.Many2one('res.company', 'Company', related='kardex_id.company_id', readonly=True)
@@ -138,3 +133,4 @@ class StockKardexLine(models.Model):
     standard_price = fields.Monetary('Standard Price', readonly=True)
     stock_move_id = fields.Many2one('stock.move', 'Stock Move', readonly=True, check_company=True, index=True)
     value_total = fields.Monetary('Total Value', readonly=True)
+    user_id = fields.Many2one(related='kardex_id.user_id')
