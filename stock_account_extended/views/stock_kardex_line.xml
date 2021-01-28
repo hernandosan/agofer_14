@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <menuitem
+            id="menu_stock_kardex"
+            parent="stock.menu_warehouse_report"
+            name="Kardex List"
+            sequence="130"
+            action="action_stock_kardex"
+        />
+    
+    </data>
+</odoo>
