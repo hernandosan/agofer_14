@@ -37,6 +37,7 @@ def post_init_hook(cr, result):
         _logger.warning('Table: %s, Progress: %s' % (file, round(i*100/total, 2)))
         with open(os.path.join(path, file), 'r') as query_file:
             cr.execute(query = query_file.read())
+            cr.commit()
     end = datetime.now()
     time = start - end
     _logger.warning('Query after, End: %s, Time: %s' % (end, round(time.seconds/60, 2)))
