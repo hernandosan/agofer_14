@@ -1,3 +1,5 @@
+insert into hr_period (name) values ('Indefinido')
+
 INSERT INTO hr_payslip(
     id,
     name,
@@ -13,7 +15,8 @@ INSERT INTO hr_payslip(
     create_uid,
     create_date,
     write_uid,
-    write_date
+    write_date,
+	journal_id
 ) SELECT
     agofer.id,
     agofer.number,
@@ -24,7 +27,7 @@ INSERT INTO hr_payslip(
     agofer.liquid_date,
     --agofer.company_id
     1,
-    agofer.payslip_period_id,
+    case when agofer.payslip_period_id is null then (select max(id) from hr_period) else agofer.payslip_period_id end,
     agofer.tipo_nomina,
     agofer.payslip_run_id,
     --agofer.payslip_processing_id
@@ -32,7 +35,8 @@ INSERT INTO hr_payslip(
     agofer.create_uid,
     agofer.create_date,
     agofer.write_uid,
-    agofer.write_date
+    agofer.write_date,
+	agofer.journal_id
 FROM dblink('dbname=agofer_08','select
         id,
         number,
@@ -46,9 +50,9 @@ FROM dblink('dbname=agofer_08','select
         create_uid,
         create_date,
         write_uid,
-        write_date
-        from hr_payslip
-		where id <> 125327;'
+        write_date,
+		journal_id
+        from hr_payslip;'
 ) as agofer(
         id integer,
         number character varying,
@@ -62,13 +66,9 @@ FROM dblink('dbname=agofer_08','select
 		create_uid integer,
         create_date timestamp without time zone,
 		write_uid integer,
-        write_date timestamp without time zone
+        write_date timestamp without time zone,
+		journal_id integer
 )
 WHERE agofer.id NOT IN (SELECT id FROM hr_payslip);
 
 SELECT setval('hr_payslip_id_seq',(SELECT MAX(id)FROM hr_payslip));
-
-insert into hr_payslip_type_hr_concept_rel (hr_payslip_type_id, hr_concept_id) 
-select agofer.type_id, agofer.concept_id 
-from dblink('dbname=agofer_08',
-            'select type_id, concept_id from paysliptype_concept_rel') as agofer(type_id integer, concept_id integer);

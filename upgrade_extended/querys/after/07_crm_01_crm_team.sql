@@ -70,3 +70,9 @@ FROM dblink('dbname=agofer_08','select
 );
 
 select setval('crm_team_id_seq', (select max(id) from crm_team));
+
+update account_move as am 
+set team_id = agofer.section_id 
+from dblink('dbname=agofer_08','select move_id, section_id from account_invoice where section_id is not null') as agofer 
+(move_id integer, section_id integer) 
+where am.id = agofer.move_id;

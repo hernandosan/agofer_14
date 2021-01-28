@@ -65,7 +65,7 @@ class DeliveryGuide(models.Model):
     weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
-    weight_manual = fields.Float('Manual Weight', traking=True)
+    weight_manual = fields.Float('Manual Weight', tracking=True)
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
 
     state = fields.Selection([
