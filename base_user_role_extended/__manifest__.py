@@ -17,29 +17,37 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'account_avancys',
+        # Odoo
+        'hr_recruitment',
+        'purchase',
+        'survey',
+        # OCA
         'account_credit_control',
-        'account_extended',
         'base_user_role',
         'helpdesk_mgmt',
-        'hr_avancys',
-        'mrp',
-        'product',
-        'purchase',
-        'sales_team',
+        # Agofer
+        'account_extended',
+        'mrp_extended',
+        'sale_extended',
         'stock_extended',
+        # Avancys
+        'account_avancys',
+        'electronic_invoice_dian',
+        'hr_avancys',
     ],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        # 'data/res_users_role_treasury.xml',
+        'data/res_users_role_account.xml',
+        'data/res_users_role_admin.xml',
         'data/res_users_role_credit.xml',
+        'data/res_users_role_hr.xml',
+        'data/res_users_role_purchase.xml',
         'data/res_users_role_sale.xml',
         'data/res_users_role_stock.xml',
-        'data/res_users_role_supply.xml',
-        'data/res_users_role_treasury.xml',
-        'data/res_users_role_rrhh.xml',
-        'views/views.xml',
+        'views/res_users_role_view.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

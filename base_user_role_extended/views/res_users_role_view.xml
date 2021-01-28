@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="view_res_users_role_form" model="ir.ui.view">
+            <field name="name">view.res.users.role.form</field>
+            <field name="model">res.users.role</field>
+            <field name="inherit_id" ref="base_user_role.view_res_users_role_form" />
+            <field name="active" eval="True" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='group_id']" position="before">
+                    <field name="parent_id" />
+                    <field name="child_id" invisible="True"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

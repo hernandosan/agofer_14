@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="role_hr_user" model="res.users.role">
+            <field name="name">User HR</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('base.group_user')),
+                    (4, ref('hr.group_hr_user')),
+                    (4, ref('hr_recruitment.group_hr_recruitment_user')),
+                    (4, ref('hr_avancys.user_payslip')),
+                    (4, ref('account_extended.group_account_user'))
+                ]"/>
+        </record>
+
+        <record id="role_hr_assistant" model="res.users.role">
+            <field name="name">Assistant Payroll</field>
+            <field name="child_id" ref="role_hr_user"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('hr_contract.group_hr_contract_manager')),
+                    (4, ref('hr.group_hr_manager')),
+                    (4, ref('helpdesk_mgmt.group_helpdesk_user_own')),
+                    (4, ref('hr_recruitment.group_hr_recruitment_user')),
+                    (4, ref('hr_avancys.manager_payslip'))
+                ]"/>
+        </record>
+
+        <record id="role_hr_manager" model="res.users.role">
+            <field name="name">Manager HR</field>
+            <field name="child_id" ref="role_hr_assistant"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('hr_recruitment.group_hr_recruitment_manager'))
+                ]"/>
+        </record>
+    </data>
+</odoo>
