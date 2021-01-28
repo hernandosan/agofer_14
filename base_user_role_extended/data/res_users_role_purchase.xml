@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="role_purchase_user" model="res.users.role">
+            <field name="name">User Purchase</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('stock.group_stock_user')),
+                    (4, ref('sale_extended.group_sale_info'))
+                ]"/>
+        </record>
+
+        <record id="role_purchase_assistant" model="res.users.role">
+            <field name="name">Assistant Purchase</field>
+            <field name="child_id" ref="role_purchase_user"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('base.group_multi_currency'))
+                ]"/>
+        </record>
+
+        <record id="role_purchase_manager" model="res.users.role">
+            <field name="name">Manager Purchase</field>
+            <field name="child_id" ref="role_purchase_assistant"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('purchase.group_purchase_manager'))
+                ]"/>
+        </record>
+    </data>
+</odoo>

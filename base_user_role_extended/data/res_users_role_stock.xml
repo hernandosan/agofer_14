@@ -1,69 +1,43 @@
 <odoo>
     <data>
-        <record id="role_stock_operational_manager" model="res.users.role">
-            <field name="name">Operational Manager</field>
-            <field name="implied_ids" 
-                eval="[
-                    (4, ref('purchase.group_purchase_user')),
-                    (4, ref('base.group_user'))
-                ]"/>
-        </record>
-        <record id="role_stock_cost_coordinator" model="res.users.role">
-            <field name="name">Cost Coordinator</field>
+        <record id="role_stock_user" model="res.users.role">
+            <field name="name">User Stock</field>
             <field name="implied_ids"
                 eval="[
-                    (4, ref('product.group_product_variant')),
-                    (4, ref('mrp.group_mrp_user')),
-                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('purchase_extended.group_group_info')),
                     (4, ref('stock.group_stock_user')),
-                    (4, ref('base.group_user'))
+                    (4, ref('sale_extended.group_sale_info')),
+                    (4, ref('mrp_extended.group_mrp_info'))
                 ]"/>
         </record>
-        <record id="role_stock_auxiliary_costs" model="res.users.role">
-            <field name="name">Auxiliary Costs</field>
+
+        <record id="role_stock_assistant" model="res.users.role">
+            <field name="name">Assistant Stock</field>
+            <field name="child_id" ref="role_stock_user"/>
             <field name="implied_ids"
                 eval="[
-                    (4, ref('stock.group_stock_user')),
-                    (4, ref('base.group_user')),
-                    (4, ref('stock.group_stock_multi_locations')),
-                    (4, ref('stock.group_stock_multi_warehouses')),
-                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('stock.group_stock_user'))
+                ]"/>
+        </record>
+
+        <record id="role_stock_analytic" model="res.users.role">
+            <field name="name">Analytic Stock</field>
+            <field name="child_id" ref="role_stock_assistant"/>
+            <field name="implied_ids"
+                eval="[
                     (4, ref('purchase.group_purchase_user')),
                     (4, ref('mrp.group_mrp_user'))
                 ]"/>
         </record>
-        <record id="role_stock_billing_assistant" model="res.users.role">
-            <field name="name">Billing Assistant</field>
+
+        <record id="role_stock_manager" model="res.users.role">
+            <field name="name">Manager Stock</field>
+            <field name="child_id" ref="role_stock_analytic"/>
             <field name="implied_ids"
                 eval="[
-                    (4, ref('stock.group_stock_user')),
-                    (4, ref('account_extended.group_account_user')),
-                    (4, ref('base.group_user'))
+                    (4, ref('mrp.group_mrp_manager')),
+                    (4, ref('stock.group_stock_manager'))
                 ]"/>
-        </record>
-        <record id="role_stock_route_scheduler" model="res.users.role">
-            <field name="name">Route Scheduler</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('stock.group_stock_user')),
-                    (4, ref('base.group_user'))
-                ]"/>
-        </record>
-        <record id="role_stock_operation_assistant" model="res.users.role">
-            <field name="name">Operation Assistant</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('purchase.group_purchase_user')),
-                    (4, ref('base.group_user'))
-                ]"/>
-        </record>
-        <record id="role_stock_auxiliary_operations" model="res.users.role">
-            <field name="name">Auxiliary Operations</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('stock.group_stock_user')),
-                    (4, ref('base.group_user'))
-                 ]"/>
         </record>
     </data>
 </odoo>

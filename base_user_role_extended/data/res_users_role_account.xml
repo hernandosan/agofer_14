@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+        <record id="role_account_user_documents" model="res.users.role">
+            <field name="name">User Account Documents</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account.group_account_invoice'))
+                ]"/>
+        </record>
+
+        <record id="role_account_user" model="res.users.role">
+            <field name="name">User Account</field>
+            <field name="child_id" ref="role_account_user_documents"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('electronic_invoice_dian.group_user')),
+                    (4, ref('stock_extended.group_stock_info')),
+                    (4, ref('sales_team.group_sale_salesman'))
+                ]"/>
+        </record>
+
+        <record id="role_account_coordinator" model="res.users.role">
+            <field name="name">Coordinator Account</field>
+            <field name="child_id" ref="role_account_user"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('stock.group_stock_user'))
+                ]"/>
+        </record>
+
+        <record id="role_account_coordinator_mrp" model="res.users.role">
+            <field name="name">Coordinator Account</field>
+            <field name="child_id" ref="role_account_coordinator"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('mrp.group_mrp_manager'))
+                ]"/>
+        </record>
+
+        <record id="role_account_manager" model="res.users.role">
+            <field name="name">Manager Account</field>
+            <field name="child_id" ref="role_account_coordinator_mrp"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('purchase.group_purchase_user')),
+                    (4, ref('account.group_account_manager')),
+                    (4, ref('hr_contract.group_hr_contract_manager')),
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('hr.group_hr_user')),
+                    (4, ref('mrp.group_mrp_user')),
+                    (4, ref('electronic_invoice_dian.group_manager')),
+                    (4, ref('stock.group_stock_user')),
+                    (4, ref('account_extended.group_account_niif')),
+                    (4, ref('base.group_multi_currency')),
+                    (4, ref('hr_avancys.manager_payslip')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads')),
+                ]"/>
+        </record>
+    </data>
+</odoo>

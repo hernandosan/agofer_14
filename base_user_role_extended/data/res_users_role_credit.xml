@@ -1,43 +1,42 @@
 <odoo>
     <data>
-        <record id="role_credit_manager_credit" model="res.users.role">
+    <record id="role_credit_user" model="res.users.role">
+            <field name="name">User Credit</field>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('base.group_user')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
+                ]"/>
+        </record>
+
+        <record id="role_credit_assistant" model="res.users.role">
+            <field name="name">Assistant Credit</field>
+            <field name="child_id" ref="role_credit_user"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                    (4, ref('account_extended.group_account_user')),
+                    (4, ref('sales_team.group_sale_salesman_all_leads'))
+                ]"/>
+        </record>
+
+        <record id="role_credit_coordinator" model="res.users.role">
+            <field name="name">Coordinator Credit</field>
+            <field name="child_id" ref="role_credit_assistant"/>
+            <field name="implied_ids"
+                eval="[
+                    (4, ref('account_credit_control.group_account_credit_control_user')),
+                ]"/>
+        </record>
+
+        <record id="role_credit_manager" model="res.users.role">
             <field name="name">Manager Credit</field>
+            <field name="child_id" ref="role_credit_coordinator"/>
             <field name="implied_ids" 
                 eval="[
                     (4, ref('account_credit_control.group_account_credit_control_manager')),
-                    (4, ref('account_extended.group_account_user')),
-                    (4, ref('base.group_user')),
-                    (4, ref('sales_team.group_sale_salesman_all_leads'))
-                ]"/>
-        </record>
-        <record id="role_credit_collections_coordinator" model="res.users.role">
-            <field name="name">Collections Coordinator</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('account_credit_control.group_account_credit_control_user')),
-                    (4, ref('account_extended.group_account_user')),
-                    (4, ref('base.group_user')),
-                    (4, ref('sales_team.group_sale_salesman_all_leads'))
-                ]"/>
-        </record>
-        <record id="role_credit_credit_assistant" model="res.users.role">
-            <field name="name">Credit Assistant</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('account_credit_control.group_account_credit_control_user')),
-                    (4, ref('account_extended.group_account_user')),
-                    (4, ref('base.group_user')),
-                    (4, ref('sales_team.group_sale_salesman_all_leads'))
-                ]"/>
-        </record>
-        <record id="role_credit_portfolio_assistant" model="res.users.role">
-            <field name="name">Portfolio Assistant</field>
-            <field name="implied_ids"
-                eval="[
-                    (4, ref('account_credit_control.group_account_credit_control_user')),
-                    (4, ref('account_extended.group_account_user')),
-                    (4, ref('base.group_user')),
-                    (4, ref('sales_team.group_sale_salesman_all_leads'))
                 ]"/>
         </record>
     </data>
