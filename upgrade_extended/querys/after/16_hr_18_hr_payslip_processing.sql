@@ -12,7 +12,8 @@ INSERT INTO hr_payslip_processing(
     create_uid,
     create_date,
     write_uid,
-    write_date
+    write_date,
+	journal_id
 ) SELECT
     agofer.id,
     agofer.name,
@@ -32,7 +33,8 @@ INSERT INTO hr_payslip_processing(
     agofer.create_uid,
     agofer.create_date,
     agofer.write_uid,
-    agofer.write_date
+    agofer.write_date,
+	agofer.journal_id
 FROM dblink('dbname=agofer_08',' select
         id,
         name,
@@ -44,7 +46,8 @@ FROM dblink('dbname=agofer_08',' select
 		create_uid,
 		create_date,
 		write_uid,
-        write_date
+        write_date,
+		journal_id
         from hr_payslip_run;'
 ) AS agofer (
         id integer,
@@ -57,7 +60,8 @@ FROM dblink('dbname=agofer_08',' select
 		create_uid integer,
 		create_date timestamp without time zone,
 		write_uid integer,
-        write_date timestamp without time zone
+        write_date timestamp without time zone,
+	    journal_id integer
 )
 WHERE agofer.id NOT IN (SELECT id FROM hr_payslip_processing);
 
