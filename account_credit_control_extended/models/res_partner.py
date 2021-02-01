@@ -118,6 +118,6 @@ class ResPartner(models.Model):
         self.ensure_one()
         domain = [
             ('partner_id', 'child_of', self.id),
-            ('act.type', '=', 'payable'),
+            ('act_type', '=', 'payable'),
         ]
         return self.env['account.move.line'].search(domain)

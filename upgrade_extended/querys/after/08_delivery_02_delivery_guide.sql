@@ -19,7 +19,11 @@ INSERT INTO delivery_guide (
 	agofer.write_uid,
 	agofer.partner_id,
 	agofer.create_uid,
-	agofer.state,
+	--agofer.state,
+    (CASE WHEN agofer.state = in_progress THEN progress
+          WHEN agofer.state = invoice THEN invoiced
+          WHEN agofer.state = done THEN delivered
+          ELSE agofer.state END),
 	agofer.write_date,
 	agofer.name,
 	agofer.note,
