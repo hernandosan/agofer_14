@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id="role_sale_salesman" model="res.users.role">
-            <field name="name">Commercial Advisor</field>
+            <field name="name">Salesman Sale</field>
             <field name="implied_ids"
                 eval="[
                     (4, ref('sales_team.group_sale_salesman')),
@@ -17,7 +17,7 @@
         </record>
 
         <record id="role_sale_biller" model="res.users.role">
-            <field name="name">Biller</field>
+            <field name="name">Biller Sale</field>
             <field name="child_id" ref="role_sale_salesman"/>
             <field name="implied_ids"
                 eval="[
@@ -31,7 +31,7 @@
         </record>
 
         <record id="role_sale_cashier" model="res.users.role">
-            <field name="name">Cashier</field>
+            <field name="name">Cashier Sale</field>
             <field name="child_id" ref="role_sale_biller"/>
             <field name="implied_ids"
                 eval="[
@@ -43,7 +43,7 @@
         </record>
 
         <record id="role_sale_admin" model="res.users.role">
-            <field name="name">User Admin</field>
+            <field name="name">Admin Sale</field>
             <field name="child_id" ref="role_sale_cashier"/>
             <field name="implied_ids" 
                 eval="[
