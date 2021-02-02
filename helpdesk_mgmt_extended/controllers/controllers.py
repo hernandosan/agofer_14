@@ -1,21 +1,16 @@
-# -*- coding: utf-8 -*-
-# from odoo import http
+from odoo import http
+from odoo.addons.helpdesk_mgmt.controllers.main import HelpdeskTicketController
 
 
-# class HelpdeskMgmtExtended(http.Controller):
-#     @http.route('/helpdesk_mgmt_extended/helpdesk_mgmt_extended/', auth='public')
-#     def index(self, **kw):
-#         return "Hello, world"
-
-#     @http.route('/helpdesk_mgmt_extended/helpdesk_mgmt_extended/objects/', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('helpdesk_mgmt_extended.listing', {
-#             'root': '/helpdesk_mgmt_extended/helpdesk_mgmt_extended',
-#             'objects': http.request.env['helpdesk_mgmt_extended.helpdesk_mgmt_extended'].search([]),
-#         })
-
-#     @http.route('/helpdesk_mgmt_extended/helpdesk_mgmt_extended/objects/<model("helpdesk_mgmt_extended.helpdesk_mgmt_extended"):obj>/', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('helpdesk_mgmt_extended.object', {
-#             'object': obj
-#         })
+class CustomHelpdeskTicketController(HelpdeskTicketController):
+    @http.route("/new/ticket", type="http", auth="user", website=True)
+    def create_new_ticket(self, **kw):
+        categories = http.request.env["helpdesk.ticket.category"].search(
+            [("active", "=", True), ('team_id', '=', )])
+        types = http.request.env["helpdesk.ticket.type"].search([])
+        email = http.request.env.user.email
+        name = http.request.env.user.name
+        return http.request.render(
+            "helpdesk_mgmt.portal_create_ticket",
+            {"categories": categories, "email": email, "name": name, "types": types},
+        )

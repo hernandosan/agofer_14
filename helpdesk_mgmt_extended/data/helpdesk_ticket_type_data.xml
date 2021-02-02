@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
-        <record id="helpdesk_ticket_type_incidents" model="helpdesk.ticket.type">
+        <record id="helpdesk_ticket_type_odoo" model="helpdesk.ticket.type">
             <field name="sequence">1</field>
-            <field name="name">Management of incidents</field>
+            <field name="name">Odoo</field>
         </record>
 
-        <record id="helpdesk_ticket_type_changes" model="helpdesk.ticket.type">
+        <record id="helpdesk_ticket_type_service" model="helpdesk.ticket.type">
             <field name="sequence">2</field>
-            <field name="name">Change Management</field>
+            <field name="name">Services TI</field>
+        </record>
+
+        <record id="helpdesk_ticket_type_rrhh" model="helpdesk.ticket.type">
+            <field name="sequence">3</field>
+            <field name="name">Human Resources</field>
         </record>
 
         <record id="helpdesk_ticket_type_others" model="helpdesk.ticket.type">
-            <field name="sequence">3</field>
-            <field name="name">Management of others</field>
-        </record>
-
-        <record id="helpdesk_ticket_type_training" model="helpdesk.ticket.type">
             <field name="sequence">4</field>
-            <field name="name">Training management</field>
+            <field name="name">General</field>
         </record>
     </data>
 </odoo>

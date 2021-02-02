@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="helpdesk_create_ticket_type" inherit_id="helpdesk_mgmt.portal_create_ticket">
+            <xpath expr="//div[2]" position="after">
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="type">Type</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="type" name="type">
+                            <t t-foreach="types" t-as="type">
+                                <option t-attf-value="#{type.id}">
+                                    <t t-esc="type.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
