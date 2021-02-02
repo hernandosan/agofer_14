@@ -27,8 +27,9 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" name="%(action_stock_kardex_line_select)d" 
-                                string="Kardex Items" type="action" icon="fa-bars"/>
+                            <button name="stock_kardex.action_your_action" string="Test" type="action" state="draft"/>
+<!--                            <button class="oe_stat_button" name="%(action_stock_kardex_line_select)d" -->
+<!--                                string="Kardex Items" type="action" icon="fa-bars"/>-->
                         </div>
                         <h1>
                             <field name="name"/>
