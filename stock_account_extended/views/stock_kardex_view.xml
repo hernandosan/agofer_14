@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="view_stock_kardex_tree">
             <field name="name">view.stock.kardex.tree</field>
             <field name="model">stock.kardex</field>
