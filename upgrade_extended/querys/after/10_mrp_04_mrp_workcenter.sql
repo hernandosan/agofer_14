@@ -43,7 +43,7 @@ FROM dblink('dbname=agofer_08', 'select
     write_date,
     create_date,
     write_uid
-	from mrp_production;'
+	from mrp_workcenter;'
 ) AS agofer (
 	id integer,
     create_uid integer,
@@ -59,4 +59,4 @@ FROM dblink('dbname=agofer_08', 'select
     write_uid integer
 );
 
-SELECT setval('mrp_production_id_seq', (SELECT max(id) FROM mrp_production));
+SELECT setval('mrp_workcenter_id_seq', (SELECT max(id) FROM mrp_workcenter));

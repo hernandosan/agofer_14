@@ -12,7 +12,21 @@
                                 <option t-attf-value="#{cate.id}">
                                     <t t-esc="cate.name"/>
                                 </option>
-                            </t>,
+                            </t>
+                        </select>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[4]" position="replace">
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="category">Category</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="category" name="category" required="True">
+                            <t t-foreach="categories" t-as="cat">
+                                <option t-attf-value="#{cat.id}">
+                                    <t t-esc="cat.name"/>
+                                </option>
+                            </t>
                         </select>
                     </div>
                 </div>
