@@ -7,12 +7,12 @@
                 <div class="form-group">
                     <label class="col-md-3 col-sm-4 control-label" for="type">Type</label>
                     <div class="col-md-7 col-sm-8">
-                        <select class="form-control" id="type" name="type">
-                            <t t-foreach="types" t-as="type">
-                                <option t-attf-value="#{type.id}">
-                                    <t t-esc="type.name"/>
+                        <select class="form-control" id="types" name="types">
+                            <t t-foreach="types" t-as="cate">
+                                <option t-attf-value="#{cate.id}">
+                                    <t t-esc="cate.name"/>
                                 </option>
-                            </t>
+                            </t>,
                         </select>
                     </div>
                 </div>
