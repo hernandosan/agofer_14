@@ -109,6 +109,12 @@ class StockKardex(models.Model):
         else:
             return 'None'
 
+    def action_view_kardex(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_account_extended.action_stock_kardex_line")
+        action['domain'] = [('kardex_id', '=', self.id)]
+        return action
+
 
 class StockKardexLine(models.Model):
     _name = 'stock.kardex.line'

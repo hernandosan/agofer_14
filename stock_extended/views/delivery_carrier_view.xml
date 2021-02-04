@@ -9,8 +9,7 @@
                     <div class="oe_title" name="title">
                         <label for="name" string="Name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="e.g. UPS Express" 
-                                attrs="{'readonly':[('carrier_type','=','stock')], 'required':[('carrier_type','!=','stock')]}"/>
+                            <field name="name" placeholder="e.g. UPS Express"/>
                         </h1>
                     </div>
                 </xpath>
@@ -21,11 +20,8 @@
                         <field name="debug_logging" invisible="1"/>
                         <field name="carrier_type" invisible="1"/>
                         <field name="delivery_type" invisible="1"/>
-                        <field name="partner_id" required="True"/>
-                        <field name="warehouse_id" attrs="{'required':[('carrier_type','=','stock')]}"/>
-                        <field name="warehouse_dest_id" attrs="{'invisible':[('carrier_type','=','stock')]}"/>
-                        <field name="destination"  
-                            attrs="{'invisible':[('carrier_type','!=','stock')], 'required':[('carrier_type','=','stock')]}"/>
+                        <field name="city_id" attrs="{'required':[('carrier_type','=','stock')]}"/>
+                        <field name="city_dest_id" attrs="{'required':[('carrier_type','=','stock')]}"/>
                         <field name="integration_level" widget="radio" attrs="{'invisible': ['|', ('delivery_type', '=', 'fixed'), ('delivery_type', '=', 'base_on_rule')]}"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>

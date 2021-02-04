@@ -22,6 +22,7 @@
         'delivery',
         'sale_extended',
         'stock_account_extended',
+        'base_address_city',
     ],
 
     # always loaded
