@@ -9,19 +9,172 @@
             <field name="team_id">1</field>
         </record>
 
+        <record id="category_odoo_sales" model="helpdesk.ticket.category">
+            <field name="name">Sales</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_draft" model="helpdesk.ticket.category">
+            <field name="name">Draft</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_accounting" model="helpdesk.ticket.category">
+            <field name="name">Accounting</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_shopping" model="helpdesk.ticket.category">
+            <field name="name">Shopping</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_inventory" model="helpdesk.ticket.category">
+            <field name="name">Inventory</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_production" model="helpdesk.ticket.category">
+            <field name="name">Production</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_marketing" model="helpdesk.ticket.category">
+            <field name="name">Marketing</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_human_talent" model="helpdesk.ticket.category">
+            <field name="name">Human Talent</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_knowledge" model="helpdesk.ticket.category">
+            <field name="name">Knowledge</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
+        <record id="category_odoo_reports" model="helpdesk.ticket.category">
+            <field name="name">Reports</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">1</field>
+        </record>
+
         <record id="category_service_libreoffice" model="helpdesk.ticket.category">
-            <field name="name">LibreOffice</field>
+            <field name="name">LibreOffice (Calc, Writer, Impress)</field>
             <field name="active">True</field>
             <field name="company_id">1</field>
-            <field name="team_id">1</field>
+            <field name="team_id">2</field>
         </record>
 
-        <record id="category_human_vacation" model="helpdesk.ticket.category">
-            <field name="name">Vacations</field>
+        <record id="category_service_navigation" model="helpdesk.ticket.category">
+            <field name="name">Navigation (Chrome, Firefox, Chromium)</field>
             <field name="active">True</field>
             <field name="company_id">1</field>
-            <field name="team_id">1</field>
+            <field name="team_id">2</field>
         </record>
 
+        <record id="category_odoo_workspace" model="helpdesk.ticket.category">
+            <field name="name">WorkSpace (Problems with files in G Suite)</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_service_intranet" model="helpdesk.ticket.category">
+            <field name="name">Intranet (Permissions or problems when entering the platform)</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_service_printer" model="helpdesk.ticket.category">
+            <field name="name">Printer</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_service_scanner" model="helpdesk.ticket.category">
+            <field name="name">Scanner</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_service_telephony" model="helpdesk.ticket.category">
+            <field name="name">Telephony (calls between extensions, locals, between branches.)</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_service_others" model="helpdesk.ticket.category">
+            <field name="name">Others (Detail your request)</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">2</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Vacation request</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Labor Certification</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Layoffs</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Layoffs</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Layoffs</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
+
+        <record id="category_talent_vacation" model="helpdesk.ticket.category">
+            <field name="name">Layoffs</field>
+            <field name="active">True</field>
+            <field name="company_id">1</field>
+            <field name="team_id">3</field>
+        </record>
     </data>
 </odoo>

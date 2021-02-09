@@ -1,0 +1,88 @@
+<odoo>
+    <data>
+        <template id="assets_fronted_scan" name="scan assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/scan_extended/static/src/js/select_scan.js"></script>
+            </xpath>
+        </template>
+
+        <template id="scan_layout" name="Portal layout: scan" inherit_id="portal.portal_breadcrumbs" priority="60">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'scan' or scan" t-attf-class="breadcrumb-item #{'active ' if not scan else ''}">
+                    <a t-if="scan" t-attf-href="/scan?{{ keep_query() }}">Scan</a>
+                    <t t-else="">Scan</t>
+                </li>
+                <li t-if="scan" class="breadcrumb-item active">
+                    <t t-esc="ticket.name"/>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="portal_create_scan" name="Create Scan">
+            <t t-call="portal.portal_layout">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="text-center">Send a new scan</h1>
+                        </div>
+                    </div>
+                </div>
+                <form action="/submitted/scan" method="POST" class="form-horizontal mt32" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="type">Type Document</label>
+                        <div class="col-md-7 col-sm-8">
+                            <select class="form-control" id="type_document" name="type_document" required="True">
+                                <option selected="selected">--Selection--</option>
+                                <option value="account.invoice">Invoice</option>
+                                <option value="sale.order">Sale Order</option>
+                                <option value="stock.picking">Remission</option>
+                                <option value="stock.picking.wave.extended">Delivery Guide</option>
+                                <option value="account.voucher">Cash Out</option>
+                                <option value="mrp.production">Production order</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="type">Type Document</label>
+                        <div class="col-md-7 col-sm-8">
+                            <select class="form-control" id="prefix_document" name="prefix_document" required="True">
+                                <option selected="selected">--Selection--</option>
+                            </select>
+                            <group class="form-inline">
+                                <select class="form-control" id="prefix2_document" name="prefix2_document" style="display:none">
+                                    <option selected="selected">--Selection--</option>
+                                </select>
+                                <select class="form-control" id="prefix3_document" name="prefix3_document" style="display:none">
+                                    <option selected="selected">--Selection--</option>
+                                </select>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="subject">Number Document</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="number" class="form-control" name="subject" required="True"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="attachment">
+                            <i class="fa fa-camera fa-lg"> </i> Add Attachments</label>
+                        <div class="col-md-7 col-sm-8">
+                            <div class="btn btn-default btn-file col-md-12">
+                                <input class="form-control o_website_form_input" name="attachment" id="attachment"
+                                       type="file" multiple="multiple"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                            <button class="btn btn-primary btn-lg">Submit Scan</button>
+                        </div>
+                    </div>
+                </form>
+            </t>
+        </template>
+
+    </data>
+</odoo>
