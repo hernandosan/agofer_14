@@ -1,101 +1,79 @@
 import base64
 
 from openerp import http
-from datetime import datetime
-import pytz
 
 
 class WebUploadAttachment(http.Controller):
     @http.route('/scan', type='http', auth='user', website=True)
     def website_scan(self):
-        return http.request.render("scan_extended.portal_create_scan")
+        error = {}
+        return http.request.render("scan_extended.portal_create_scan", {
+            'error': error,
+        })
 
     @http.route("/submitted/scan", type="http", auth="user", website=True, csrf=True)
-    def submit_scan(self, **post):
-        ident = {
-            'account.move': 'number',
-            'account.voucher': 'number',
-            'sale.order': 'name',
-            'stock.picking': 'name',
-            'stock.picking.wave.extended': 'name',
-            'mrp.production': 'name',
-            'production.extended': 'name',
-        }
+    def submit_scan(self, **kw):
+        # Creation of variables
+        name = kw.get('prefix_document')
+        name2 = kw.get('prefix2_document')
+        name3 = kw.get('prefix3_document')
+        number = kw.get('number_doc')
+        type_document = kw.get('type_document')
+        error = ''
 
-        type_document = post.get('type_document')
+        # Data Validation
+        if type_document == 'account.move' or type_document == 'sale.order':
+            if name.startswith('CF'):
+                name = name + '-' + str(number)
+            else:
+                name = name + str(number)
 
-        # error = {}
-        # prefixes = ''.join([str(post.get(k)) for k in sorted(post) if k.startswith('prefix')])
-        # suffixes = ''.join([str(post.get(k)) for k in sorted(post) if k.startswith('suffix')])
-        # if prefixes.startswith('IE'):
-        #     prefixes = prefixes.replace('-', '')
-        # if prefixes.startswith('PO'):
-        #     prefixes = prefixes.replace('/', '')
-        #
-        # if not post.get('attachment'):
-        #     error['attachment'] = 'missing'
-        # filefield = post.get('attachment')
-        # if post.get("attachment"):
-        #     for c_file in http.request.httprequest.files.getlist("attachment"):
-        #         data = c_file.read()
-        #         if c_file.filename:
-        #             http.request.env["ir.attachment"].sudo().create(
-        #                 {
-        #                     "name": c_file.filename,
-        #                     "datas": base64.b64encode(data),
-        #                 }
-        #             )
-        #
-        # numero = post.get('numero')
-        # if not (numero and numero.isdigit()):
-        #     error['numero'] = 'No se encuentra ese documento.'
-        #
-        # type_document = post.get('type_document')
-        # if (type_document not in ident):
-        #     error['numero'] = 'No se encuentra el tipo de documento.'
-        # else:
-        #     if numero not in error and type_document == 'stock.picking.wave.extended':
-        #         numero = numero.zfill(5)
-        #     elif numero not in error and type_document == 'account.voucher':
-        #         numero = numero.zfill(6)
-        #     elif numero not in error and prefixes.startswith('MO'):
-        #         numero = numero.zfill(5)
-        #     elif numero not in error and prefixes.startswith('PO'):
-        #         type_document = 'production.extended'
-        #     doc = http.request.env[type_document].search([(ident[type_document], '=', prefixes + numero + suffixes)])
-        #     if not doc:
-        #         error['attachment'] = 'No se encuentra el documento %s.' % doc
-        #
-        # created = False
-        # try:
-        #     tz = pytz.timezone(http.request.env.user.tz) or pytz.utc
-        #     hour = datetime.now(tz).strftime("%Y-%m-%d_%H:%M:%S")
-        #     msg = ''
-        #     for fileitem in filefield:
-        #         created = http.request.env['ir.attachment'].create({
-        #             'type': 'binary',
-        #             'res_model': type_document,
-        #             'res_id': doc.id,
-        #             'name': fileitem.filename,
-        #             'description': 'GO_' + hour,
-        #             'datas_fname': fileitem.filename,
-        #             'datas': base64.encodestring(fileitem.read()),
-        #         })
-        #         msg += created and str(created.id) + ', ' or ''
-        # except Exception as e:
-        #     error['attachment'] = "creating: %s" % str(e) or repr(e)
-        #
-        # if error:
-        #     """
-        #     request.session['web_upload_attachments_error'] = error
-        #     request.session['web_upload_attachments_default'] = post
-        #     """
-        #     return http.request.render("scan_extended.portal_create_scan", {
-        #         'error': error,
-        #         'default': post,
-        #     })
-        #
-        # return http.request.render("web_upload_attachments.gracias", {
-        #     'created': msg or 'Error',
-        #     'doc': '{} (#{})'.format(doc[ident[type_document]], str(doc.id)),
-        # })
+        if type_document == 'stock.picking':
+            number = number.zfill(5)
+            name = name + name2 + '/' + name3 + '/' + str(number)
+
+        if type_document == 'delivery.guide':
+            number = number.zfill(5)
+            name = name + '-' + str(number)
+
+        if type_document == 'account.payment':
+            number = number.zfill(6)
+            name = name + str(number) + '-' + name2
+
+        if type_document == 'mrp.production':
+            if name == 'MO':
+                name = name + '/' + number
+            elif name == 'PO':
+                name = name + number
+
+        # Search in Models
+        if type_document != 'selection':
+            new_attachment = http.request.env[type_document].sudo().search([("name", "=", name)])
+
+        # Error
+        if kw.get('prefix_document') == '--Selection--':
+            error = "You have not selected a prefix type for the document"
+        elif not new_attachment:
+            error = "The document ( " + name + " ) does not exist in the system"
+
+        # Send attachments
+        if error == '':
+            for c_file in http.request.httprequest.files.getlist("attachment"):
+                data = c_file.read()
+                if c_file.filename:
+                    created = http.request.env["ir.attachment"].sudo().create(
+                        {
+                            "name": c_file.filename,
+                            "datas": base64.b64encode(data),
+                            "res_model": type_document,
+                            "res_id": new_attachment.id,
+                        }
+                    )
+            return http.request.render("scan_extended.portal_confirm_scan",{
+                'name': name,
+                'created': str(created.id)
+            })
+        else:
+            return http.request.render("scan_extended.portal_create_scan", {
+                'error': error
+            })

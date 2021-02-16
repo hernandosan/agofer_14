@@ -1,0 +1,120 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* scan_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-16 20:14+0000\n"
+"PO-Revision-Date: 2021-02-16 15:15-0500\n"
+"Last-Translator: Reyes Hernando Santana Perez rhsantana@agofer.com.co\n"
+"Language-Team: es-CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "--Selection--"
+msgstr "--Selección--"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "<i class=\"fa fa-camera fa-lg\"/> Add Attachments"
+msgstr "<i class=\"fa fa-camera fa-lg\"/> Añadir un adjunto"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid ""
+"<i class=\"fa fa-plus-square fa-lg\"/>\n"
+"                                    Include more attachments"
+msgstr "<i class=\"fa fa-plus-square fa-lg\">Incluir más archivos adjuntos</i>"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "Attachment created:"
+msgstr "Adjunto creado:"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Cash Out"
+msgstr "Egreso en Efectivo"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Delivery Guide"
+msgstr "Guía de Entrega"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "Document:"
+msgstr "Documento:"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Number Document"
+msgstr "Número del documento"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Prefix Document"
+msgstr "Prefijo del documento"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Production order"
+msgstr "Orden de Producción"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Remission"
+msgstr "Remisión"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Sale Order"
+msgstr "Pedido de Venta"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Send a new scan"
+msgstr "Subir archivo adjunto"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Submit Scan"
+msgstr "Subir archivo adjunto"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "Thanks!"
+msgstr "¡Gracias!"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_create_scan
+msgid "Type Document"
+msgstr "Tipo de documento"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "Upload another file"
+msgstr "Subir otro archivo"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "User:"
+msgstr "Usuario:"
+
+#. module: scan_extended
+#: model_terms:ir.ui.view,arch_db:scan_extended.portal_confirm_scan
+msgid "Your file has been received."
+msgstr "Su archivo ha sido recibido."

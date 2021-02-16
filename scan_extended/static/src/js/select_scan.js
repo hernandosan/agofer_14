@@ -83,7 +83,7 @@ odoo.define('scan_extended.agofer', function (require) {
         let current_year = new Date().getFullYear();
 
         if (select_one) {
-            document.getElementById("type_document").addEventListener("click", selection);
+            document.getElementById("type_document").addEventListener("change", selection);
 
             function selection() {
                 let selector = select_one.value;
@@ -93,37 +93,34 @@ odoo.define('scan_extended.agofer', function (require) {
                 $("#prefix2_document").attr('style', 'display:none');
                 $("#prefix3_document").empty();
                 $("#prefix3_document").attr('style', 'display:none');
-                $("#suffix").val('');
 
                 switch (selector) {
-                    case "account.invoice":
+                    case "account.move":
                         select_two.innerHTML = "";
                         $("#prefix_document").append("<option>--Selection--</option>");
                         populate_options('#prefix_document', account_invoice);
                         break;
                     case "sale.order":
                         select_two.innerHTML = "";
-                        $("#prefix_document").append(`<option>PV/${current_year}</option>`);
+                        $("#prefix_document").append(`<option>PV/${current_year}/</option>`);
                         break;
                     case "stock.picking":
                         select_two.innerHTML = "";
                         $("#prefix_document").append("<option>--Selection--</option>");
                         populate_options('#prefix_document', sucs);
-                        $("#prefix2_document").attr('style','display:block');
+                        $("#prefix2_document").attr('style', 'display:block');
                         populate_options('#prefix2_document', stock_picking_sub2);
-                        $("#prefix3_document").attr('style','display:block');
+                        $("#prefix3_document").attr('style', 'display:block');
                         populate_options('#prefix3_document', stock_picking_sub3);
                         break;
-                    case "stock.picking.wave.extended":
+                    case "delivery.guide":
                         select_two.innerHTML = "";
-                        $('<span/>').attr('id', 'fixed1').text('GUIA').insertAfter($("#prefix_document"));
-                        $("#prefix_document").hide();
+                        $("#prefix_document").append(`<option>GUIA</option>`);
                         break;
-                    case "account.voucher":
+                    case "account.payment":
                         select_two.innerHTML = "";
                         $("#prefix_document").append(`<option>EGF/${current_year}</option>`);
-                        $("#suffix").val('-');
-                        $("#prefix2_document").append("<option>--Selection--</option>").attr('style','display:block');
+                        $("#prefix2_document").append("<option>--Selection--</option>").attr('style', 'display:block');
                         populate_options('#prefix2_document', sucs);
                         break;
                     case "mrp.production":
@@ -140,6 +137,18 @@ odoo.define('scan_extended.agofer', function (require) {
                         break;
                 }
             }
+
+            $("#add-files-button").click(function () {
+                let last_file = $('form input:file').last();
+                let count_file = ($('form input:file').length) + 1;
+                $("<input/>", {
+                    "class": "form-control o_website_form_input",
+                    "type": "file",
+                    "name": "attachment",
+                    "id": "attachment",
+                    "multiple": "multiple"
+                }).insertAfter(last_file);
+            });
         }
     });
 });
