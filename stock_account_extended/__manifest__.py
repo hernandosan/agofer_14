@@ -28,7 +28,7 @@
         'security/ir.model.access.csv',
         'views/purchase_order_view.xml',
         'views/stock_kardex_view.xml',
-        'views/stock_kardex_line.xml',
+        'views/stock_kardex_line_view.xml',
         'views/stock_landed_cost_view.xml',
     ],
     # only loaded in demonstration mode

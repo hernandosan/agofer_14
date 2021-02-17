@@ -28,6 +28,7 @@
         # OCA
         'account_asset_management',
         'account_tax_balance',
+        'account_financial_report',
         'auth_oauth_multi_token',
         # Odoo
         'auth_oauth',
