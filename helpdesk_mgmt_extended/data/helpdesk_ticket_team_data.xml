@@ -3,26 +3,29 @@
     <data noupdate="1">
         <record id="helpdesk_ticket_team_odoo" model="helpdesk.ticket.team">
             <field name="name">Odoo</field>
+            <field name="message_main_attachment_id">3</field>
+            <field name="alias_id">3</field>
             <field name="active">True</field>
             <field name="company_id">1</field>
             <field name="user_id">2</field>
-            <field name="alias_id">2</field>
         </record>
 
         <record id="helpdesk_ticket_team_service" model="helpdesk.ticket.team">
             <field name="name">Services TI</field>
+            <field name="message_main_attachment_id">3</field>
+            <field name="alias_id">3</field>
             <field name="active">True</field>
             <field name="company_id">1</field>
             <field name="user_id">2</field>
-            <field name="alias_id">2</field>
         </record>
 
         <record id="helpdesk_ticket_team_human" model="helpdesk.ticket.team">
             <field name="name">Human Talent</field>
+            <field name="message_main_attachment_id">3</field>
+            <field name="alias_id">3</field>
             <field name="active">True</field>
             <field name="company_id">1</field>
             <field name="user_id">2</field>
-            <field name="alias_id">2</field>
         </record>
 
     </data>

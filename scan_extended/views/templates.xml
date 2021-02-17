@@ -1,0 +1,137 @@
+<odoo>
+    <data>
+        <template id="assets_fronted_scan" name="scan assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/scan_extended/static/src/js/select_scan.js"></script>
+            </xpath>
+        </template>
+
+        <template id="portal_create_scan" name="Create Scan">
+            <t t-call="portal.portal_layout">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="text-center">Send a new scan</h1>
+                        </div>
+                    </div>
+                </div>
+                <form action="/submitted/scan" method="POST" class="form-horizontal mt32" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="type">Type Document</label>
+                        <div class="col-md-7 col-sm-8">
+                            <select class="form-control" id="type_document" name="type_document">
+                                <option value="selection">--Selection--</option>
+                                <option value="account.move">Invoice</option>
+                                <option value="sale.order">Sale Order</option>
+                                <option value="stock.picking">Remission</option>
+                                <option value="delivery.guide">Delivery Guide</option>
+                                <option value="account.payment">Cash Out</option>
+                                <option value="mrp.production">Production order</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="type">Prefix Document</label>
+                        <div class="col-md-7 col-sm-8">
+                            <select class="form-control" id="prefix_document" name="prefix_document" required="True">
+                                <option selected="selected">--Selection--</option>
+                            </select>
+                            <group class="form-inline">
+                                <select class="form-control" id="prefix2_document" name="prefix2_document"
+                                        style="display:none">
+                                    <option selected="selected">--Selection--</option>
+                                </select>
+                                <select class="form-control" id="prefix3_document" name="prefix3_document"
+                                        style="display:none">
+                                    <option selected="selected">--Selection--</option>
+                                </select>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="subject">Number Document</label>
+                        <div id="number" class="col-md-7 col-sm-8">
+                            <input type="number" class="form-control"
+                                   name="number_doc" required="True"/>
+                        </div>
+                    </div>
+                    <div>
+                        <t t-if="error or warning">
+                            <div class="alert alert-danger">
+                                <label>
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    <t t-esc="error"/></label>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="attachment">
+                            <i class="fa fa-camera fa-lg"></i> Add Attachments</label>
+                        <div class="col-md-7 col-sm-8">
+                            <div class="btn btn-default btn-file col-md-12">
+                                <input class="form-control o_website_form_input" name="attachment" id="attachment"
+                                       type="file" multiple="multiple" required="True"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-sm-4 control-label">
+                                <div class="btn btn-info" type="button"
+                                     id="add-files-button">
+                                    <i class="fa fa-plus-square fa-lg"></i>
+                                    Include more attachments
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                            <button class="btn btn-primary btn-lg">Submit Scan</button>
+                        </div>
+                    </div>
+                </form>
+            </t>
+        </template>
+
+        <template id="portal_confirm_scan">
+        <t t-call="portal.portal_layout">
+            <div id="wrap">
+                <div class="container">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Thanks!</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="alert alert-success">
+                                Your file has been received.
+                            </div>
+                            <div class="panel panel-default">
+                                <table class="table">
+                                    <tr>
+                                        <th>User:</th>
+                                        <td><span t-esc="request.env.user.name"/></td>
+                                    </tr>
+                                    <tr class="mt16">
+                                        <th>Document:</th>
+                                        <td><t t-esc="name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Attachment created:</th>
+                                        <td>#<t t-esc="created"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <a href="/scan" class="btn btn-primary btn-lg">
+                                Upload another file
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</data>
+        </odoo>

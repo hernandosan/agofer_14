@@ -4,7 +4,6 @@
             <field name="name">User Stock</field>
             <field name="implied_ids"
                 eval="[
-                    (4, ref('purchase_extended.group_group_info')),
                     (4, ref('stock.group_stock_user')),
                     (4, ref('sale_extended.group_sale_info')),
                     (4, ref('mrp_extended.group_mrp_info'))
