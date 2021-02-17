@@ -138,3 +138,8 @@ FROM dblink('dbname=agofer_08','select
 );
 
 select setval('hr_employee_id_seq', (select max(id) from hr_employee));
+
+update hr_employee he 
+set name = rp.name 
+from res_partner rp 
+where rp.id = he.partner_id;

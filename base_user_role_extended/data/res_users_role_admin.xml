@@ -16,7 +16,8 @@
                     (4, ref('hr_recruitment.group_hr_recruitment_manager')),
                     (4, ref('sales_team.group_sale_manager')),
                     (4, ref('account_extended.group_account_niif')),
-                    (4, ref('base.group_multi_currency'))
+                    (4, ref('base.group_multi_currency')),
+                    (4, ref('hr_avancys.manager_payslip')),
                 ]"/>
         </record>
     </data>

@@ -14,6 +14,21 @@ directory = os.path.dirname(__file__)
 
 def pre_init_hook(cr):
     env = api.Environment(cr, SUPERUSER_ID, {})
+    # HR
+    vals = {
+        'pays_sub_trans_train_prod': False, 
+        'pays_eg_b2_with_wage': True,
+        'pays_atep_b1_with_wage': True,
+        'discount_suspensions': True,
+        'average_sub_trans': True,
+        'pay_ccf_mat_pat': True,
+        'eps_rate_employee': 4,
+        'eps_rate_employer': 8.5,
+        'pen_rate_employee': 4,
+        'pen_rate_employer': 12,
+    }
+    env['res.config.settings'].create(vals).set_values()
+    # General
     vals = {
         'external_email_server_default': True, 
         'auth_signup_uninvited': 'b2b',
