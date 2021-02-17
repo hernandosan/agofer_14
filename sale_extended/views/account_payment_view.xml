@@ -1,5 +1,6 @@
 <odoo>
     <data>
+
         <record id="view_account_payment_form" model="ir.ui.view">
             <field name="name">view.account.payment.form</field>
             <field name="model">account.payment</field>
@@ -8,7 +9,12 @@
                 <xpath expr="//group[@name='group2']" position="inside">
                     <field name="order_id" groups="account.group_account_invoice"/>
                 </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="action_print_payment" string="Print" type="object" class="oe_highlight"
+                    groups="account.group_account_invoice" attrs="{'invisible': [('state', 'not in', 'posted')]}"/>
+                </xpath>
             </field>
         </record>
+
     </data>
 </odoo>

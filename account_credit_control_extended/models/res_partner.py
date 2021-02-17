@@ -9,9 +9,9 @@ class ResPartner(models.Model):
     credit_control = fields.Boolean('Credit Control')
     credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
-        ('insured','Insured Quota'),
-        ('administrative','Administrative Quota'),
-        ('committee','Committee Quota')], 'Quota Type', tracking=True)
+        ('insured', 'Insured Quota'),
+        ('administrative', 'Administrative Quota'),
+        ('committee', 'Committee Quota')], 'Quota Type', tracking=True)
     credit_maturity = fields.Monetary(compute='_compute_credit_maturity', string='Total Receivable Maturity')
     credit_quota = fields.Monetary(compute='_compute_credit_quota', string='Total Quota')
     document_ids = fields.One2many('credit.document', 'partner_id', 'Documents')

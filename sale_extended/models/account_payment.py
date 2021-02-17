@@ -18,3 +18,6 @@ class AccountPayment(models.Model):
             'destination_account_id': destination_account_id.id if destination_account_id else False,
             'journal_id': journal_id.id if journal_id else False,
         })
+
+    def action_print_payment(self):
+        return self.env.ref('account.action_report_payment_receipt').report_action(self)
