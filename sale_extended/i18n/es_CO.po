@@ -6,14 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-15 17:31+0000\n"
-"PO-Revision-Date: 2021-01-15 17:31+0000\n"
-"Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2021-02-17 15:32+0000\n"
+"PO-Revision-Date: 2021-02-17 10:33-0500\n"
+"Last-Translator: \n"
+"Language-Team: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"Language: es\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
@@ -344,11 +346,6 @@ msgid "Members"
 msgstr "Miembros"
 
 #. module: sale_extended
-#: model:ir.model.fields.selection,name:sale_extended.selection__account_move__delivery_state__novelty
-msgid "Novelty"
-msgstr "Novedad"
-
-#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__order_id
 msgid "Order"
 msgstr "Pedido"
@@ -373,7 +370,6 @@ msgstr ""
 "Pedido bloqueado por días. Fecha de entrega no puede ser menor a 3 días"
 
 #. module: sale_extended
-#: code:addons/sale_extended/models/sale_order.py:0
 #: code:addons/sale_extended/models/sale_order.py:0
 #, python-format
 msgid "Order blocked by discount. \n"
@@ -511,6 +507,11 @@ msgid "Pricelists"
 msgstr "Listas de precios"
 
 #. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_account_payment_form
+msgid "Print"
+msgstr "Imprimir"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_product_template
 msgid "Product Template"
 msgstr "Plantilla del Producto"
@@ -593,7 +594,7 @@ msgstr ""
 #. module: sale_extended
 #: model:ir.model,name:sale_extended.model_crm_team
 msgid "Sales Team"
-msgstr "Equipo de ventas"
+msgstr "Equipo de Ventas"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__user_id
@@ -641,14 +642,11 @@ msgstr "El equipo de ventas %s no tiene un diario de cruces"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/crm_team.py:0
-#: code:addons/sale_extended/models/crm_team.py:0
 #, python-format
 msgid "The CRM Team %s has not invoice journal"
 msgstr "El equipo de ventas %s no tiene un diario de facturación"
 
 #. module: sale_extended
-#: code:addons/sale_extended/models/res_partner.py:0
-#: code:addons/sale_extended/models/res_partner.py:0
 #: code:addons/sale_extended/models/res_partner.py:0
 #, python-format
 msgid "The Partner %s has not CRM team"

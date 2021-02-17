@@ -34,7 +34,7 @@
         'wizard/sale_advance_payment_inv_view.xml',
         # 'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
-        'views/delivery_guide_move_view.xml',
+        # 'views/delivery_guide_move_view.xml',
         'views/delivery_guide_view.xml',
         'views/delivery_invoice_view.xml',
         'views/ir_ui_menu_view.xml',
