@@ -121,6 +121,8 @@
                     <group string="Delivery Info" attrs="{'invisible': [('shipping_type','=',False)]}">
                         <field name="sale_id" invisible="True" />
                         <field name="shipping_type" />
+                        <field name="shipping_type_vehicle" />
+                        <field name="shipping_type_condition" attrs="{'invisible': [('shipping_type_vehicle','!=','delivery')]}"/>
                         <field name="delivery_assistant" 
                             attrs="{'invisible': [('shipping_type','!=','delivery')]}"/>
                         <field name="delivery_bool" 

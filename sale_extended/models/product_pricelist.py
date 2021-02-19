@@ -14,6 +14,8 @@ class ProductPricelist(models.Model):
 class ProductPricelistItem(models.Model):
     _inherit = 'product.pricelist.item'
 
+    applied_on = fields.Selection(default='0_product_variant')
+
     @api.model
     def create(self, vals):
         item = super(ProductPricelistItem, self).create(vals)

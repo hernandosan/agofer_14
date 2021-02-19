@@ -67,6 +67,7 @@ class StockKardex(models.Model):
             standard_total = standard_price * quantity
             vals = {
                 'stock_move_id': move.id,
+                'stock_picking_id': move.picking_id.id if move.picking_id else False,
                 'date': move.date,
                 'product_id': move.product_id.id,
                 'move_type': move_type,
@@ -122,21 +123,35 @@ class StockKardexLine(models.Model):
     _rec_name = 'product_id'
 
     account_move_id = fields.Many2one('account.move', 'Journal Entry', readonly=True, check_company=True)
+
     company_id = fields.Many2one('res.company', 'Company', related='kardex_id.company_id', readonly=True)
+
     currency_id = fields.Many2one('res.currency', 'Currency', related='company_id.currency_id', readonly=True, required=True)
+
     date = fields.Datetime('Date')
-    location_dest_id = fields.Many2one('stock.location', 'Destination Location', check_company=True, help="Location where the system will stock the finished products.")
+
     location_id = fields.Many2one('stock.location', 'Source Location', check_company=True, help="Sets a location if you produce at a fixed location. This can be a partner location if you subcontract the manufacturing operations.")
+    location_dest_id = fields.Many2one('stock.location', 'Destination Location', check_company=True, help="Location where the system will stock the finished products.")
+
     move_subtype = fields.Char('Subtype')
     move_type = fields.Char('Type')
+
     kardex_id = fields.Many2one('stock.kardex', 'Kardex', required=True, ondelete='cascade')
+
     price_total = fields.Monetary('Total Cost', readonly=True)
     price_unit = fields.Monetary('Unit Cost', readonly=True)
+
     product_id = fields.Many2one('product.product', 'Product', readonly=True, required=True, check_company=True)
+
     qty_end = fields.Float('Quantity End', digits=0, readonly=True)
     qty_init = fields.Float('Quantity Init', digits=0, readonly=True)
     quantity = fields.Float('Quantity', digits=0, help='Quantity', readonly=True)
+
     standard_price = fields.Monetary('Standard Price', readonly=True)
+
     stock_move_id = fields.Many2one('stock.move', 'Stock Move', readonly=True, check_company=True, index=True)
+    stock_picking_id = fields.Many2one('stock.picking', 'Stock Picking', readonly=True, check_company=True, index=True)
+
     value_total = fields.Monetary('Total Value', readonly=True)
+
     user_id = fields.Many2one(related='kardex_id.user_id')

@@ -3,6 +3,25 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+selection_type_vehicle = [
+    ('automobile', 'Automobile'),
+    ('carry', 'Carry'),
+    ('minimule', 'Minimule'),
+    ('pedestrian', 'Pedestrian'),
+    ('simple', 'Simple'),
+    ('tractomule', 'Tractomule'),
+    ('truck', 'Truck'),
+    ('turbo', 'Turbo'),
+    ('wheelbarrow', 'Wheelbarrow'),
+]
+
+selection_condition_vehicle = [
+    ('bodywork', 'Bodywork'),
+    ('not_apply', 'Not apply'),
+    ('slab', 'Slab'),
+    ('van', 'Van')
+]
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -32,6 +51,8 @@ class StockPicking(models.Model):
     sale_invoice_status = fields.Selection(related='sale_id.invoice_status')
     # Shipping
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type')
+    shipping_type_vehicle = fields.Selection(selection_type_vehicle, 'Vehicle Type')
+    shipping_type_condition = fields.Selection(selection_condition_vehicle, 'Vehicle Condition')
     # Upload
     upload_date = fields.Date('Upload Date')
     # Warehouse

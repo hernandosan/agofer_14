@@ -52,7 +52,9 @@
                     (4, ref('purchase.group_purchase_user')),
                     (4, ref('stock.group_stock_multi_locations')),
                     (4, ref('stock.group_stock_multi_warehouses')),
-                    (4, ref('stock_extended.group_stock_info'))
+                    (4, ref('stock_extended.group_stock_info')),
+                    (4, ref('sale_extended.group_delete_attachment')),
+                    (4, ref('stock.group_stock_user'))
                 ]"/>
         </record>
 
