@@ -1,20 +1,33 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    credit_control = fields.Boolean('Credit Control')
+    credit_control = fields.Boolean('Credit Control', default=True, tracking=True)
     credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
         ('insured', 'Insured Quota'),
         ('administrative', 'Administrative Quota'),
-        ('committee', 'Committee Quota')], 'Quota Type', tracking=True)
+        ('committee', 'Committee Quota')], 'Quota Type', default='insured', tracking=True)
     credit_maturity = fields.Monetary(compute='_compute_credit_maturity', string='Total Receivable Maturity')
     credit_quota = fields.Monetary(compute='_compute_credit_quota', string='Total Quota')
     document_ids = fields.One2many('credit.document', 'partner_id', 'Documents')
+
+    @api.model
+    def create(self, vals):
+        if (vals.get('company_type') and vals.get('company_type') == 'company') and (vals.get('legal_status_type') and vals.get('legal_status_type') == 'legal'):
+            if not vals.get('document_ids'):
+                raise ValidationError(_("Please add company RUT."))
+            type_id = False
+            for document in vals.get('document_ids'):
+                type_id = True if document[2].get('type_id') == 1 else False
+            if not type_id:
+                raise ValidationError(_("Please add company RUT."))
+        return super(ResPartner, self).create(vals)
 
     @api.depends_context('force_company')
     def _compute_credit_maturity(self):

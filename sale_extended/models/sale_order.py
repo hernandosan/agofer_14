@@ -216,7 +216,7 @@ class SaleOrder(models.Model):
         amount_total = self.amount_total
         amount_payment = sum(payment.currency_id._convert(payment.amount, self.currency_id, self.company_id, payment.date) for payment in self._sale_payments_id()) or 0.0
         if amount_payment < amount_total:
-            if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
+            if self.env.user.has_group('account_credit_control.group_account_credit_control_user') or self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                 user = self.env.user.login
                 order = self.name
                 body = _("Order confirmed by cash. User: %s, Order: %s") % (user, order)
@@ -238,7 +238,7 @@ class SaleOrder(models.Model):
         credit_quota = self.partner_id.commercial_partner_id.credit_quota
         decimal_places = self.company_id.currency_id.decimal_places
         if amount_total > credit_quota:
-            if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
+            if self.env.user.has_group('account_credit_control.group_account_credit_control_user') or self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                 user = self.env.user.login
                 order = self.name
                 body = _("Order confirmed by quota. User: %s, Order: %s") % (user, order)
@@ -407,7 +407,8 @@ class SaleOrderLine(models.Model):
         msg = ""
         for line in self:
             warehouse = line.order_id.warehouse_id
-            free_qty_today = line.product_id.with_context({'warehouse': warehouse.id}).free_qty
+            location = warehouse.lot_stock_id
+            free_qty_today = line.product_id.with_context({'warehouse': warehouse.id, 'location': location.id}).free_qty
             product_uom_qty = line.product_uom_qty
             if product_uom_qty > free_qty_today:
                 msg += line._msg_product_qty(product_uom_qty, free_qty_today)
