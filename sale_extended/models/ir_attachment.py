@@ -10,5 +10,6 @@ class IrAttachment(models.Model):
     def unlink(self):
         for attachment in self:
             if (attachment.create_uid != self.env.user) and not self.env.user.has_group('sale_extended.group_delete_attachment'):
-                raise UserError(_("You can't delete attachments you didn't create."))
+                print('Unlink Attachment')
+                # raise UserError(_("You can't delete attachments you didn't create."))
         return super(IrAttachment, self).unlink()
