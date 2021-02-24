@@ -20,19 +20,27 @@
                     <filter string="Checked Date" name="filter_date_checked" date="date_checked"/>
                     <filter string="Invoiced Date" name="filter_date_invoiced" date="date_invoiced"/>
                     <separator/>
-                    <filter invisible="1" string="Late Activities" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]" help="Show all records which has next action date is before today"/>
-                    <filter invisible="1" string="Today Activities" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Late Activities" name="activities_overdue"
+                            domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                            help="Show all records which has next action date is before today"/>
+                    <filter invisible="1" string="Today Activities" name="activities_today"
+                            domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                            domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                     <group expand="0" string="Group By">
                         <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
                         <filter string="Carrier" name="group_partner_id" context="{'group_by': 'partner_id'}"/>
                         <filter string="Driver" name="group_driver_id" context="{'group_by': 'driver_id'}"/>
                         <separator/>
-                        <filter string="Scheduled Date" name="group_date_scheduled" context="{'group_by': 'date_scheduled'}"/>
-                        <filter string="Progress Date" name="group_date_progress" context="{'group_by': 'date_progress'}"/>
-                        <filter string="Delivered Date" name="group_date_delivered" context="{'group_by': 'date_delivered'}"/>
+                        <filter string="Scheduled Date" name="group_date_scheduled"
+                                context="{'group_by': 'date_scheduled'}"/>
+                        <filter string="Progress Date" name="group_date_progress"
+                                context="{'group_by': 'date_progress'}"/>
+                        <filter string="Delivered Date" name="group_date_delivered"
+                                context="{'group_by': 'date_delivered'}"/>
                         <filter string="Checked Date" name="group_date_checked" context="{'group_by': 'date_checked'}"/>
-                        <filter string="Invoiced Date" name="group_date_invoiced" context="{'group_by': 'date_invoiced'}"/>
+                        <filter string="Invoiced Date" name="group_date_invoiced"
+                                context="{'group_by': 'date_invoiced'}"/>
                     </group>
                 </search>
             </field>
@@ -43,8 +51,8 @@
             <field name="model">delivery.guide</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <tree string="Delivery Guides" 
-                    decoration-success="state == 'invoiced'" decoration-info="state == 'delivered'">
+                <tree string="Delivery Guides"
+                      decoration-success="state == 'invoiced'" decoration-info="state == 'delivered'">
                     <field name="name" decoration-bf="1"/>
                     <field name="partner_id"/>
                     <field name="driver_id"/>
@@ -54,7 +62,8 @@
                     <field name="weight_invoice"/>
                     <field name="price_total"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="state" widget="badge" decoration-success="state == 'invoiced'" decoration-info="state == 'draft'"/>
+                    <field name="state" widget="badge" decoration-success="state == 'invoiced'"
+                           decoration-info="state == 'draft'"/>
                     <field name="activity_exception_decoration" widget="activity_exception"/>
                 </tree>
             </field>
@@ -67,13 +76,18 @@
             <field name="arch" type="xml">
                 <form string="Delivery Guide">
                     <header>
-                        <button string="Draft" type="object" name="action_draft" states="confirm" />
-                        <button string="Confirm" type="object" name="action_confirm" states="draft" class="oe_highlight" />
-                        <button string="Progress" type="object" name="action_progress" states="confirm" class="oe_highlight" />
-                        <button string="Delivered" type="object" name="action_delivered" states="progress" class="oe_highlight"/>
-                        <button string="Checked" type="object" name="action_checked" states="delivered" class="oe_highlight" groups="stock.group_stock_manager"/>
-                        <button string="Invoiced" type="object" name="action_invoiced" states="checked" class="oe_highlight" groups="account.group_account_invoice"/>
-                        <button string="Cancel" type="object" name="action_cancel" states="draft,confirm" />
+                        <button string="Draft" type="object" name="action_draft" states="confirm"/>
+                        <button string="Confirm" type="object" name="action_confirm" states="draft"
+                                class="oe_highlight"/>
+                        <button string="Progress" type="object" name="action_progress" states="confirm"
+                                class="oe_highlight"/>
+                        <button string="Delivered" type="object" name="action_delivered" states="progress"
+                                class="oe_highlight"/>
+                        <button string="Checked" type="object" name="action_checked" states="delivered"
+                                class="oe_highlight" groups="stock.group_stock_manager"/>
+                        <button string="Invoiced" type="object" name="action_invoiced" states="checked"
+                                class="oe_highlight" groups="account.group_account_invoice"/>
+                        <button string="Cancel" type="object" name="action_cancel" states="draft,confirm"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -92,65 +106,74 @@
                                 <field name="guide_type" invisible="True"/>
                                 <field name="guide_subtype" attrs="{'invisible':[('guide_type','!=','branch')]}"/>
                                 <field name="guide_bool" invisible="True"/>
-                                <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" attrs="{'readonly':[('state','not in',('draft'))]}"/>
-                                <field name="driver_id" domain="[('parent_id','=',partner_id)]" attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="carrier_id" domain="[('partner_id','=',partner_id),('carrier_type','=','stock')]" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="partner_id" widget="res_partner_many2one"
+                                       context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                                       attrs="{'readonly':[('state','not in',('draft'))]}"/>
+                                <field name="driver_id" domain="[('parent_id','=',partner_id)]"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="carrier_id"
+                                       attrs="{'readonly':[('state','!=','draft')], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                             </group>
                             <group>
                                 <field name="weight_invoice" attrs="{'invisible':[('guide_type','=','branch')]}"/>
                                 <field name="weight_return" attrs="{'invisible':[('guide_type','=','branch')]}"/>
-                                <field name="weight_move" attrs="{'invisible':[('guide_type','=','customer')]}"/>
+                                <field name="weight_move" attrs="{'invisible':[('guide_type','=','customer')], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
                                 <field name="weight_manual" attrs="{'invisible':[('guide_type','=','customer')]}"/>
-                                <field name="weight_total" />
+                                <field name="weight_total"/>
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="price_kg" invisible="True" />
-                                <field name="carrier_tolerance" invisible="True" />
-                                <field name="price" attrs="{'readonly':[('state','not in',('draft'))]}"/>
-                                <field name="price_standby" />
-                                <field name="price_total" />
+                                <field name="price_kg" invisible="True"/>
+                                <field name="carrier_tolerance" invisible="True"/>
+                                <field name="price" attrs="{'readonly':[('state','not in', ('draft'))], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
+                                <field name="price_standby"/>
+                                <field name="price_total"/>
                             </group>
                             <group>
-                                <field name="invoices_ids" widget="many2many_tags" 
-                                    attrs="{'readonly':[('state','!=','draft')], 'invisible':[('guide_type','!=','customer')]}" 
-                                    domain="[('move_type','=','out_invoice'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]" />
+                                <field name="invoices_ids" widget="many2many_tags"
+                                       attrs="{'readonly':[('state','!=','draft')], 'invisible':[('guide_type','!=','customer')]}"
+                                       domain="[('move_type','=','out_invoice'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]"/>
                                 <field name="guide_update" invisible="True"/>
                                 <label for="invoices_returns_ids" attrs="{'invisible':[('guide_bool','=',False)]}"/>
                                 <div class="o_row" attrs="{'invisible':[('guide_bool','=',False)]}">
-                                    <field name="invoices_returns_ids" widget="many2many_tags" 
-                                        attrs="{'readonly':[('state','!=','progress')], 'invisible':[('guide_bool','=',False)]}" 
-                                        domain="[('move_type','=','out_refund'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]"/>
-                                    <button name="action_update" type="object" string=" Update Moves" class="btn-link mb-1 px-0" icon="fa-refresh" 
-                                        attrs="{'invisible': ['|','|',('guide_update','=',False),('state','!=','progress'),('guide_bool','=',False)]}"/>
+                                    <field name="invoices_returns_ids" widget="many2many_tags"
+                                           attrs="{'readonly':[('state','!=','progress')], 'invisible':[('guide_bool','=',False)]}"
+                                           domain="[('move_type','=','out_refund'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]"/>
+                                    <button name="action_update" type="object" string=" Update Moves"
+                                            class="btn-link mb-1 px-0" icon="fa-refresh"
+                                            attrs="{'invisible': ['|','|',('guide_update','=',False),('state','!=','progress'),('guide_bool','=',False)]}"/>
                                 </div>
                             </group>
                             <group>
-                                <field name="analytic_id" required="True" groups="analytic.group_analytic_accounting" 
-                                    attrs="{'readonly':[('state','!=','draft')]}" />
-                                <field name="analytic_tag_ids" required="False" widget="many2many_tags" groups="analytic.group_analytic_tags"  
-                                    attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="analytic_id" required="True" groups="analytic.group_analytic_accounting"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="analytic_tag_ids" required="False" widget="many2many_tags"
+                                       groups="analytic.group_analytic_tags"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Invoices" attrs="{'invisible':[('guide_type','!=','customer')]}">
-                                <field name="guide_account_invoice_ids" readonly="True" 
-                                    attrs="{'invisible':[('guide_account_invoice_ids','=',[])]}">
+                                <field name="guide_account_invoice_ids" readonly="True"
+                                       attrs="{'invisible':[('guide_account_invoice_ids','=',[])]}">
                                     <tree>
                                         <field name="guide_account_invoice_id" invisible="True"/>
                                         <field name="account_id" invisible="True"/>
-                                        <field name="account_name" />
-                                        <field name="account_partner_id" />
-                                        <field name="account_date" />
+                                        <field name="account_name"/>
+                                        <field name="account_partner_id"/>
+                                        <field name="account_date"/>
                                         <field name="account_amount_total_signed" sum="Total" optional="hide"/>
-                                        <field name="account_order_id" />
-                                        <field name="account_state" />
-                                        <field name="account_delivery_bool" />
-                                        <field name="account_delivery_state" />
-                                        <button name="action_confirm" string="Confirm" type="object" icon="fa-check text-success" 
-                                            attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}"/>
-                                        <button name="action_confirm" string="Return" type="object" icon="fa-close text-danger" 
-                                             attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}" context="{'guide_return': True}"/> 
+                                        <field name="account_order_id"/>
+                                        <field name="account_state"/>
+                                        <field name="account_delivery_bool"/>
+                                        <field name="account_delivery_state"/>
+                                        <button name="action_confirm" string="Confirm" type="object"
+                                                icon="fa-check text-success"
+                                                attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}"/>
+                                        <button name="action_confirm" string="Return" type="object"
+                                                icon="fa-close text-danger"
+                                                attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}"
+                                                context="{'guide_return': True}"/>
                                     </tree>
                                     <form>
                                         <sheet>
@@ -158,34 +181,34 @@
                                                 <group>
                                                     <field name="guide_account_invoice_id" invisible="True"/>
                                                     <field name="account_id" invisible="True"/>
-                                                    <field name="account_name" />
-                                                    <field name="account_partner_id" />
-                                                    <field name="account_date" />
+                                                    <field name="account_name"/>
+                                                    <field name="account_partner_id"/>
+                                                    <field name="account_date"/>
                                                 </group>
                                                 <group>
-                                                    <field name="account_order_id" />
-                                                    <field name="account_amount_total_signed" />
-                                                    <field name="account_state" />
-                                                    <field name="account_delivery_state" />
+                                                    <field name="account_order_id"/>
+                                                    <field name="account_amount_total_signed"/>
+                                                    <field name="account_state"/>
+                                                    <field name="account_delivery_state"/>
                                                 </group>
                                             </group>
                                         </sheet>
                                     </form>
                                 </field>
                                 <separator string="Moves" attrs="{'invisible':[('guide_stock_invoice_ids','=',[])]}"/>
-                                <field name="guide_stock_invoice_ids" context="{'create': False}" 
-                                    attrs="{'invisible':[('guide_stock_invoice_ids','=',[])], 'readonly':[('state','not in',('draft','confirm'))]}">
+                                <field name="guide_stock_invoice_ids" context="{'create': False}"
+                                       attrs="{'invisible':[('guide_stock_invoice_ids','=',[])], 'readonly':[('state','not in',('draft','confirm'))]}">
                                     <tree editable="bottom" create="0">
                                         <field name="guide_stock_invoice_id" invisible="True"/>
                                         <field name="stock_id" invisible="True"/>
-                                        <field name="stock_date" />
-                                        <field name="stock_picking_id" />
-                                        <field name="stock_product_id" />
-                                        <field name="stock_uom_id" />
-                                        <field name="stock_product_uom_qty" invisible="True" />
-                                        <field name="stock_product_qty" />
+                                        <field name="stock_date"/>
+                                        <field name="stock_picking_id"/>
+                                        <field name="stock_product_id"/>
+                                        <field name="stock_uom_id"/>
+                                        <field name="stock_product_uom_qty" invisible="True"/>
+                                        <field name="stock_product_qty"/>
                                         <field name="stock_weight" sum="Weight"/>
-                                        <field name="stock_state" />
+                                        <field name="stock_state"/>
                                     </tree>
                                     <form>
                                         <sheet>
@@ -193,37 +216,40 @@
                                                 <group>
                                                     <field name="guide_stock_invoice_id" invisible="True"/>
                                                     <field name="stock_id" invisible="True"/>
-                                                    <field name="stock_date" />
-                                                    <field name="stock_picking_id" />
-                                                    <field name="stock_state" />
+                                                    <field name="stock_date"/>
+                                                    <field name="stock_picking_id"/>
+                                                    <field name="stock_state"/>
                                                 </group>
                                                 <group>
-                                                    <field name="stock_product_id" />
-                                                    <field name="stock_uom_id" />
+                                                    <field name="stock_product_id"/>
+                                                    <field name="stock_uom_id"/>
                                                     <field name="stock_product_uom_qty" invsible="True"/>
-                                                    <field name="stock_product_qty" />
-                                                    <field name="stock_weight" />
+                                                    <field name="stock_product_qty"/>
+                                                    <field name="stock_weight"/>
                                                 </group>
                                             </group>
                                         </sheet>
                                     </form>
                                 </field>
                             </page>
-                            <page string="Credit Notes" attrs="{'invisible':[('guide_bool','=',False),('guide_type','!=','customer')]}">
-                                <field name="guide_account_refund_ids" readonly="True" 
-                                    attrs="{'invisible':[('guide_account_refund_ids','=',[])]}">
+                            <page string="Credit Notes"
+                                  attrs="{'invisible':[('guide_bool','=',False),('guide_type','!=','customer')]}">
+                                <field name="guide_account_refund_ids" readonly="True"
+                                       attrs="{'invisible':[('guide_account_refund_ids','=',[])]}">
                                     <tree>
                                         <field name="guide_account_refund_id" invisible="True"/>
                                         <field name="account_id" invisible="True"/>
-                                        <field name="account_name" />
-                                        <field name="account_partner_id" />
-                                        <field name="account_date" />
+                                        <field name="account_name"/>
+                                        <field name="account_partner_id"/>
+                                        <field name="account_date"/>
                                         <field name="account_amount_total_signed" sum="Total" optional="hide"/>
-                                        <field name="account_order_id" />
-                                        <field name="account_state" />
-                                        <field name="account_delivery_state" />
-                                        <button name="action_confirm" string="Confirm" type="object" icon="fa-check text-success" 
-                                            attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}" context="{'guide_refund': True}"/>
+                                        <field name="account_order_id"/>
+                                        <field name="account_state"/>
+                                        <field name="account_delivery_state"/>
+                                        <button name="action_confirm" string="Confirm" type="object"
+                                                icon="fa-check text-success"
+                                                attrs="{'invisible': [('account_delivery_state', '!=', 'progress')]}"
+                                                context="{'guide_refund': True}"/>
                                     </tree>
                                     <form>
                                         <sheet>
@@ -231,34 +257,34 @@
                                                 <group>
                                                     <field name="guide_account_refund_id" invisible="True"/>
                                                     <field name="account_id" invisible="True"/>
-                                                    <field name="account_name" />
-                                                    <field name="account_partner_id" />
-                                                    <field name="account_date" />
+                                                    <field name="account_name"/>
+                                                    <field name="account_partner_id"/>
+                                                    <field name="account_date"/>
                                                 </group>
                                                 <group>
-                                                    <field name="account_order_id" />
-                                                    <field name="account_amount_total_signed" />
-                                                    <field name="account_state" />
-                                                    <field name="account_delivery_state" />
+                                                    <field name="account_order_id"/>
+                                                    <field name="account_amount_total_signed"/>
+                                                    <field name="account_state"/>
+                                                    <field name="account_delivery_state"/>
                                                 </group>
                                             </group>
                                         </sheet>
                                     </form>
                                 </field>
                                 <separator string="Moves" attrs="{'invisible':[('guide_stock_refund_ids','=',[])]}"/>
-                                <field name="guide_stock_refund_ids" readonly="True" 
-                                    attrs="{'invisible':[('guide_stock_refund_ids','=',[])]}">
+                                <field name="guide_stock_refund_ids" readonly="True"
+                                       attrs="{'invisible':[('guide_stock_refund_ids','=',[])]}">
                                     <tree>
                                         <field name="guide_stock_refund_id" invisible="True"/>
                                         <field name="stock_id" invisible="True"/>
-                                        <field name="stock_date" />
-                                        <field name="stock_picking_id" />
-                                        <field name="stock_product_id" />
-                                        <field name="stock_uom_id" />
-                                        <field name="stock_product_uom_qty" invisible="True" />
-                                        <field name="stock_product_qty" />
+                                        <field name="stock_date"/>
+                                        <field name="stock_picking_id"/>
+                                        <field name="stock_product_id"/>
+                                        <field name="stock_uom_id"/>
+                                        <field name="stock_product_uom_qty" invisible="True"/>
+                                        <field name="stock_product_qty"/>
                                         <field name="stock_weight" sum="Weight"/>
-                                        <field name="stock_state" />
+                                        <field name="stock_state"/>
                                     </tree>
                                     <form>
                                         <sheet>
@@ -266,23 +292,24 @@
                                                 <group>
                                                     <field name="guide_stock_refund_id" invisible="True"/>
                                                     <field name="stock_id" invisible="True"/>
-                                                    <field name="stock_date" />
-                                                    <field name="stock_picking_id" />
-                                                    <field name="stock_state" />
+                                                    <field name="stock_date"/>
+                                                    <field name="stock_picking_id"/>
+                                                    <field name="stock_state"/>
                                                 </group>
                                                 <group>
-                                                    <field name="stock_product_id" />
-                                                    <field name="stock_uom_id" />
+                                                    <field name="stock_product_id"/>
+                                                    <field name="stock_uom_id"/>
                                                     <field name="stock_product_uom_qty" invsible="True"/>
-                                                    <field name="stock_product_qty" />
-                                                    <field name="stock_weight" />
+                                                    <field name="stock_product_qty"/>
+                                                    <field name="stock_weight"/>
                                                 </group>
                                             </group>
                                         </sheet>
                                     </form>
                                 </field>
                             </page>
-                            <page string="Pickings" attrs="{'invisible':['|',('guide_type','!=','branch'),('guide_subtype','!=','picking')]}">
+                            <page string="Pickings"
+                                  attrs="{'invisible':['|',('guide_type','!=','branch'),('guide_subtype','!=','picking')]}">
                                 <field name="pickings_ids" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <separator string="Moves"/>
                                 <field name="moves_ids" readonly="True"/>
@@ -290,28 +317,30 @@
                             <page string="Tracking" attrs="{'invisible':[('state','in',('draft','cancel'))]}">
                                 <group>
                                     <group>
-                                        <field name="date_progress" string="Departure Date" />
-                                        <field name="date_delivered" />
+                                        <field name="date_progress" string="Departure Date"/>
+                                        <field name="date_delivered"/>
                                     </group>
                                     <group>
-                                        <field name="date_checked" />
-                                        <field name="date_invoiced" />
+                                        <field name="date_checked"/>
+                                        <field name="date_invoiced"/>
                                     </group>
                                 </group>
                             </page>
                             <page string="Driver">
                                 <group>
                                     <group>
-                                        <field name="driver_name" readonly="True" />
-                                        <field name="driver_mobile" readonly="True" />
+                                        <field name="driver_name" readonly="True"/>
+                                        <field name="driver_mobile" readonly="True"/>
                                     </group>
                                     <group>
-                                        <field name="driver_comment" readonly="True" />
+                                        <field name="driver_plate" readonly="True"/>
+                                        <field name="driver_comment" readonly="True"/>
                                     </group>
                                 </group>
                             </page>
                             <page string="Notes">
-                                <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
+                                <field name="notes" class="oe_inline"
+                                       placeholder="Define your terms and conditions ..."/>
                                 <div class="oe_clear"/>
                             </page>
                         </notebook>
@@ -341,21 +370,21 @@
             <field name="context">{'default_guide_type': 'branch'}</field>
         </record>
 
-        <menuitem id="menu_parent_stock" 
-            name="Transfers" 
-            parent="stock.menu_stock_root" 
-            sequence="3"/>
+        <menuitem id="menu_parent_stock"
+                  name="Transfers"
+                  parent="stock.menu_stock_root"
+                  sequence="3"/>
 
         <menuitem id="menu_delivery_guide_customer"
-            name="Delivery Guides"
-            parent="menu_parent_stock"
-            action="action_delivery_guide_customer"
-            sequence="5"/>
+                  name="Delivery Guides"
+                  parent="menu_parent_stock"
+                  action="action_delivery_guide_customer"
+                  sequence="5"/>
 
         <menuitem id="menu_delivery_guide_branch"
-            name="Loading Orders"
-            parent="menu_parent_stock"
-            action="action_delivery_guide_branch"
-            sequence="10"/>
+                  name="Loading Orders"
+                  parent="menu_parent_stock"
+                  action="action_delivery_guide_branch"
+                  sequence="10"/>
     </data>
 </odoo>

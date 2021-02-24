@@ -1,0 +1,74 @@
+.driver table {
+    width: 100%;
+    border: hidden;
+}
+
+.driver th, .driver td, .driver span {
+    text-align: center;
+    border: hidden;
+}
+
+.delivery table {
+    width: 100%;
+    border: hidden;
+}
+
+.delivery tr {
+    border-bottom: solid 1px #0000FF;
+}
+
+.delivery th {
+    background-color: #f2f2f2;
+    border: hidden;
+    text-align: center;
+}
+
+.delivery td, .delivery span {
+    width: auto;
+    text-align: center;
+    padding: 2px;
+    font-family: "Open Sans", "Helvetica", Sans;
+    font-size: x-small;
+    border-right: hidden;
+    border-left: hidden;
+}
+
+.total table {
+    width: 35%;
+    position: relative;
+    left: 65%;
+    border: hidden;
+    border-top: solid 2px #0B1612;
+}
+
+.total tr {
+    border-top: solid 2px #0B1612;
+    font-family: "Open Sans", "Helvetica", Sans;
+    font-size: small;
+}
+
+.total th {
+    width: 20%;
+    text-align: left;
+}
+
+.total td{
+    width: 15%;
+    text-align: center;
+}
+
+.div_1 {
+    border-radius: 10px;
+    border: 1px solid #00b3ee;
+    padding: 5px;
+    margin-right: 30%;
+    margin-left: 30%;
+    text-align: center;
+}
+
+.div_2 {
+    border-radius: 10px;
+    border: 1px solid #b8daff;
+    padding: 5px;
+    text-align: left;
+}

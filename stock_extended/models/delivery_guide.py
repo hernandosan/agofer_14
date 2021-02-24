@@ -13,10 +13,11 @@ class DeliveryGuide(models.Model):
     analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
 
-    carrier_id = fields.Many2one('delivery.carrier', 'Tariff', required=True)
+    carrier_id = fields.Many2one('delivery.carrier', 'name')
     carrier_tolerance = fields.Float('Tolerance (%)', related='carrier_id.tolerance')
 
-    company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True,
+                                 default=lambda self: self.env.company)
 
     currency_id = fields.Many2one(related='company_id.currency_id', store=True)
 
@@ -30,32 +31,40 @@ class DeliveryGuide(models.Model):
     driver_id = fields.Many2one('res.partner', 'Driver')
     driver_mobile = fields.Char(related='driver_id.mobile')
     driver_name = fields.Char(related='driver_id.name')
+    driver_plate = fields.Char(related='driver_id.plate')
 
     guide_bool = fields.Boolean('Has Return', default=False, copy=False)
-    guide_account_invoice_ids = fields.One2many('delivery.guide.line', 'guide_account_invoice_id', 'Invoices', copy=False)
+    guide_account_invoice_ids = fields.One2many('delivery.guide.line', 'guide_account_invoice_id', 'Invoices',
+                                                copy=False)
     guide_account_refund_ids = fields.One2many('delivery.guide.line', 'guide_account_refund_id', 'Refunds', copy=False)
-    guide_stock_invoice_ids = fields.One2many('delivery.guide.line', 'guide_stock_invoice_id', 'Invoices Moves', copy=False)
-    guide_stock_refund_ids = fields.One2many('delivery.guide.line', 'guide_stock_refund_id', 'Refunds Moves', copy=False)
-    guide_type = fields.Selection([('customer','Customer'),('branch','Branch')], 'Delivery Type', copy=False, default='customer', required=True)
+    guide_stock_invoice_ids = fields.One2many('delivery.guide.line', 'guide_stock_invoice_id', 'Invoices Moves',
+                                              copy=False)
+    guide_stock_refund_ids = fields.One2many('delivery.guide.line', 'guide_stock_refund_id', 'Refunds Moves',
+                                             copy=False)
+    guide_type = fields.Selection([('customer', 'Customer'), ('branch', 'Branch')], 'Delivery Type', copy=False,
+                                  default='customer', required=True)
     guide_subtype = fields.Selection([
-        ('picking','Picking'),
-        ('repicking','Repicking'), 
-        ('standby','Stand By'),
-        ('other','Other')], 'Delivery Subtype', copy=False, tracking=True)
+        ('picking', 'Picking'),
+        ('repicking', 'Repicking'),
+        ('standby', 'Stand By'),
+        ('other', 'Other')], 'Delivery Subtype', copy=False, tracking=True)
     guide_update = fields.Boolean('Update', default=False, copy=False)
 
-    invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices', copy=False)
-    invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id', 'Credit Notes', copy=False)
+    invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices',
+                                    copy=False)
+    invoices_returns_ids = fields.Many2many('account.move', 'guide_invoice_return_rel', 'guide_id', 'invoice_id',
+                                            'Credit Notes', copy=False)
 
     moves_ids = fields.Many2many('stock.move', 'guide_move_rel', 'guide_id', 'move_id', 'Stock Moves', copy=False)
 
-    name = fields.Char('Number', required=True, readonly=True, default='New', copy=False)    
+    name = fields.Char('Number', required=True, readonly=True, default='New', copy=False)
 
     notes = fields.Text('Terms and Conditions')
 
     partner_id = fields.Many2one('res.partner', 'Carrier', required=True)
 
-    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings', copy=False)
+    pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings',
+                                    copy=False)
 
     price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
     price_kg = fields.Monetary('Carrier Price')
@@ -69,19 +78,21 @@ class DeliveryGuide(models.Model):
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
 
     state = fields.Selection([
-        ('draft','Draft'),
-        ('confirm','Confirm'),
-        ('progress','Progress'),
-        ('delivered','Delivered'),
-        ('checked','Checked'),
-        ('invoiced','Invoiced'),
-        ('cancel','Cancel')], 'State', default='draft', copy=False, tracking=True)
+        ('draft', 'Draft'),
+        ('confirm', 'Confirm'),
+        ('progress', 'Progress'),
+        ('delivered', 'Delivered'),
+        ('checked', 'Checked'),
+        ('invoiced', 'Invoiced'),
+        ('cancel', 'Cancel')], 'State', default='draft', copy=False, tracking=True)
 
     @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
     def _compute_weight(self):
         for guide in self:
-            weight_invoice = sum(move.stock_weight for move in guide.guide_stock_invoice_ids if move.stock_state != 'cancel')
-            weight_return = sum(move.stock_weight for move in guide.guide_stock_refund_ids if move.stock_state != 'cancel')
+            weight_invoice = sum(
+                move.stock_weight for move in guide.guide_stock_invoice_ids if move.stock_state != 'cancel')
+            weight_return = sum(
+                move.stock_weight for move in guide.guide_stock_refund_ids if move.stock_state != 'cancel')
             weight_move = sum(move.weight for move in guide.moves_ids if move.state != 'cancel')
             weight_total = weight_invoice + weight_return + weight_move + guide.weight_manual
             guide.update({
@@ -104,7 +115,9 @@ class DeliveryGuide(models.Model):
 
     @api.onchange('price')
     def _onchange_price(self):
-        if self.price and ((self.price - self.price_kg) / self.price_kg) * 100 > self.carrier_tolerance and not self.user.has_group('stock.group_stock_manager'):
+        if self.price and ((
+                                   self.price - self.price_kg) / self.price_kg) * 100 > self.carrier_tolerance and not self.user.has_group(
+                'stock.group_stock_manager'):
             raise ValidationError(_("The price exceeds the allowed tolerance"))
 
     @api.onchange('invoices_returns_ids')
@@ -198,11 +211,11 @@ class DeliveryGuide(models.Model):
         invoices = self.invoices_ids if self._context.get('account_type') == 'invoice' else self.invoices_returns_ids
         for invoice in invoices:
             vals = {
-                'line_type': 'account_invoice', 
-                'account_id': invoice.id, 
+                'line_type': 'account_invoice',
+                'account_id': invoice.id,
                 'account_delivery_state': 'pending'
             }
-            guide_line.append((0,0,vals))
+            guide_line.append((0, 0, vals))
         return guide_line
 
     def _prepare_guide_line_stock(self):
@@ -211,7 +224,8 @@ class DeliveryGuide(models.Model):
         invoices = self.invoices_ids if self._context.get('account_type') == 'invoice' else self.invoices_returns_ids
         picking_code = 'outgoing' if self._context.get('account_type') == 'invoice' else 'incoming'
         for move in invoices.invoice_line_ids.sale_line_ids.move_ids.filtered(lambda m: m.picking_code == picking_code):
-            domain = [('stock_id','=',move.id),('line_type','=','stock_invoice'),('guide_stock_invoice_id.state','!=','cancel')]
+            domain = [('stock_id', '=', move.id), ('line_type', '=', 'stock_invoice'),
+                      ('guide_stock_invoice_id.state', '!=', 'cancel')]
             quantity_guide = sum(l.stock_product_uom_qty for l in self.env['delivery.guide.line'].search(domain)) or 0.0
             quantity = move.product_uom_qty - quantity_guide
             vals = {
@@ -220,7 +234,7 @@ class DeliveryGuide(models.Model):
                 'stock_product_uom_qty': quantity,
                 'stock_product_qty': quantity
             }
-            guide_line.append((0,0,vals))
+            guide_line.append((0, 0, vals))
         return guide_line
 
 
@@ -233,8 +247,8 @@ class DeliveryGuideLine(models.Model):
     account_amount_total_signed = fields.Monetary(related='account_id.amount_total_signed')
     account_delivery_bool = fields.Boolean('Has Novelty', default=False)
     account_delivery_state = fields.Selection([
-        ('pending','Pending'),
-        ('progress','Progress'),
+        ('pending', 'Pending'),
+        ('progress', 'Progress'),
         ('delivered', 'Delivered')
     ], 'Delivery State')
     account_id = fields.Many2one('account.move', 'Invoice')
@@ -260,7 +274,7 @@ class DeliveryGuideLine(models.Model):
         ('account_refund', 'Refund'),
         ('stock_invoice', 'Invoice Move'),
         ('stock_refund', 'Refund Move'),
-    ], 'Type', required=True, default='')    
+    ], 'Type', required=True, default='')
 
     # Move
     stock_date = fields.Datetime(related='stock_id.date')
@@ -292,9 +306,11 @@ class DeliveryGuideLine(models.Model):
     def _action_confirm(self):
         self.ensure_one()
         vals = {'account_delivery_state': 'delivered'}
-        domain = [('account_id','=',self.account_id.id),('line_type','=','account_invoice'),('guide_account_invoice_id.state','!=','cancel')]
+        domain = [('account_id', '=', self.account_id.id), ('line_type', '=', 'account_invoice'),
+                  ('guide_account_invoice_id.state', '!=', 'cancel')]
         if self._context.get('guide_refund'):
-            domain = [('account_id','=',self.account_id.id),('line_type','=','account_refund'),('guide_account_refund_id.state','!=','cancel')]
+            domain = [('account_id', '=', self.account_id.id), ('line_type', '=', 'account_refund'),
+                      ('guide_account_refund_id.state', '!=', 'cancel')]
         lines = self.env['delivery.guide.line'].search(domain)
         vals_invoice = {'delivery_state': 'delivered'}
         if len(lines) > 1:
