@@ -32,6 +32,8 @@ class StockPicking(models.Model):
     delivery_assistant = fields.Boolean('Delivery Assistant')
     delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
+    # Driver
+    driver_id = fields.Many2one('res.partner', 'Driver')
     # Incoterm
     incoterm = fields.Many2one('account.incoterms', 'Incoterm', 
         help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")

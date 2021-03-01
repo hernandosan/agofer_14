@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="report_delivery_guide" model="ir.actions.report">
+            <field name="name">Print Guide</field>
+            <field name="model">delivery.guide</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock_extended.template_delivery_guide</field>
+            <field name="report_file">stock_extended.template_delivery_guide</field>
+        </record>
+
+        <template id="style_table">
+            <link rel="stylesheet" type="text/css" href="/stock_extended/static/src/css/report_style.css"/>
+        </template>
+
+        <template id="template_delivery_guide">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-if="doc.guide_type == 'customer'">
+                        <t t-call="stock_extended.template_delivery_guide_customer" t-lang="doc.partner_id.lang"/>
+                    </t>
+                    <t t-if="doc.guide_type == 'branch'">
+                        <t t-call="stock_extended.template_delivery_guide_branch" t-lang="doc.partner_id.lang"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="template_delivery_guide_customer">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <p t-call="stock_extended.style_table"/>
+                    <div class="page">
+                        <h2 style="text-align: center; color: #ff8a00"><span>Delivery Guide</span></h2>
+                        <br></br>
+                        <div class="driver">
+                            <table>
+                                <tr>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
+                                        <h3><strong><span t-field="doc.partner_id.name"/></strong></h3>
+                                    </td>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                        <span>NIT: </span><span t-field="doc.partner_id.ref_num"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Plate</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                    <th>Price by Kg</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <span t-field="doc.driver_name"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                                        <span t-field="doc.driver_plate"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.carrier_id.city_id"/>
+                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                        <span t-field="doc.carrier_id.city_dest_id"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                        <span t-field="doc.carrier_id.price_kg"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid #696969"></hr>
+                    <br></br>
+                    <div class="delivery">
+                        <table>
+                            <tr>
+                                <th>Invoice or Referral</th>
+                                <th>Destination</th>
+                                <th>Weight in (Kg)</th>
+                                <th>Take Invoice</th>
+                                <th>Returns Invoice</th>
+                            </tr>
+                            <t t-foreach="doc.guide_account_invoice_ids" t-as="line">
+                                <tr style="border-bottom: solid 1px #0000FF;">
+                                    <td><span t-field="line.account_name"/></td>
+                                    <td><span t-field="line.account_partner_id"/></td>
+                                    <td><span t-field="line.stock_weight"/></td>
+                                    <td style="text-align: center;"><i class="fa fa-square-o fa-2x"
+                                                                       aria-hidden="true"></i></td>
+                                    <td style="text-align: center;"><i class="fa fa-square-o fa-2x"
+                                                                       aria-hidden="true"></i></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <div class="total">
+                        <table>
+                            <tr>
+                                <th>Total agreed value</th>
+                                <td><span class="total" t-field="doc.price_total"/></td>
+                            </tr>
+                            <tr>
+                                <th>Total weight</th>
+                                <td><span t-field="doc.weight_total"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br></br>
+                </t>
+            </t>
+        </template>
+
+        <template id="template_delivery_guide_branch">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout" t-css="false" t-scss="false">
+                    <p t-call="stock_extended.style_table"></p>
+                    <div class="page">
+                        <h2 style="text-align: center; color: #ff8a00;"><span>Loading Orders</span></h2>
+                        <br></br>
+                        <div class="driver">
+                            <table>
+                                <tr>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
+                                        <h3><strong><span t-field="doc.partner_id.name"/></strong></h3>
+                                    </td>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                        <span>NIT: </span><span t-field="doc.partner_id.ref_num"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Plate</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                    <th>Price by Kg</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <span t-field="doc.driver_name"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                                        <span t-field="doc.driver_plate"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.carrier_id.city_id"/>
+                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                        <span t-field="doc.carrier_id.city_dest_id"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                        <span t-field="doc.carrier_id.price_kg"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid #696969"></hr>
+                    <br></br>
+                    <div class="div_1">
+                        <h3 style="color: #ff8a00;">Reason</h3>
+                        <h4><span t-field="doc.guide_subtype"/></h4>
+                    </div>
+                    <br></br>
+                    <t t-if="doc.guide_subtype == 'picking'">
+                        <div class="delivery">
+                            <table>
+                                <tr>
+                                    <th>Referral</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                    <th>Weight in (Kg)</th>
+                                    <th>Document</th>
+                                </tr>
+                                <t t-foreach="doc.pickings_ids" t-as="line">
+                                    <tr style="border-bottom: solid 1px #0000FF;">
+                                        <td><span t-field="line.name"/></td>
+                                        <td><span t-field="line.location_id"/></td>
+                                        <td><span t-field="line.location_dest_id"/></td>
+                                        <td><span t-field="line.weight"/></td>
+                                        <td><span t-field="line.origin"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                        <br></br>
+                    </t>
+                    <t t-if="doc.guide_subtype != 'picking'">
+                        <div class="delivery">
+                            <table>
+                                <tr>
+                                    <th>Progress Date</th>
+                                    <th>Delivered Date</th>
+                                    <th>Checked Date</th>
+                                    <th>Invoiced Date</th>
+                                </tr>
+                                <tr style="border-bottom: solid 1px #0000FF;">
+                                    <td>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <span t-field="doc.date_progress"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <span t-field="doc.date_delivered"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <span t-field="doc.date_checked"/>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <span t-field="doc.date_invoiced"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br></br>
+                    </t>
+                    <br></br>
+                    <div class="total">
+                        <table>
+                            <tr>
+                                <th>Total agreed value</th>
+                                <td><span class="total" t-field="doc.price_total"/></td>
+                            </tr>
+                            <tr>
+                                <th>Total weight</th>
+                                <td><span t-field="doc.weight_total"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br></br>
+                    <t t-if="doc.notes is not False">
+                        <div class="div_2">
+                            <span t-field="doc.notes"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

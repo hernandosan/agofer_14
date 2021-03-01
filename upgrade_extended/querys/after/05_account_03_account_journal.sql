@@ -13,7 +13,7 @@ SET code = agofer.code,
 	company_id = agofer.company_id, 
 	profit_account_id = agofer.profit_account_id, 
 	type = agofer.type,
-	sequence_id = agofer.sequence_id,
+	sequence = agofer.sequence_id,
 	currency_id = agofer.currency 
 FROM dblink('dbname=agofer_08','select
 	id, 
