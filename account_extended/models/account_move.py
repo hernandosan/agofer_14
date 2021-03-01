@@ -31,24 +31,24 @@ class AccountMoveLine(models.Model):
     )]
 
     niif_bool = fields.Selection(related='move_id.niif_bool')
-    niif_debit = fields.Monetary('NIIF Debit', compute='_compute_niff_debit_credit', currency_field='company_currency_id')
-    niif_credit = fields.Monetary(string='NIIF Credit', compute='_compute_niff_debit_credit', currency_field='company_currency_id')
+    niif_debit = fields.Monetary('NIIF Debit', compute='_compute_niif_debit_credit', inverse='_inverse_niif_debit_credit', currency_field='company_currency_id')
+    niif_credit = fields.Monetary(string='NIIF Credit', compute='_compute_niif_debit_credit', inverse="_inverse_niif_debit_credit", currency_field='company_currency_id')
     niif_balance = fields.Monetary(string='NIIF Balance', currency_field='company_currency_id', compute='_compute_niif_balance')
 
     @api.depends('niif_bool', 'debit', 'credit')
-    def _compute_niff_debit_credit(self):
+    def _compute_niif_debit_credit(self):
         for line in self:
             vals = {}
-            if niif_bool == 'both':
+            if line.niif_bool == 'both':
                 vals.update(niif_debit=line.debit, niif_credit=line.credit)
-            if niif_bool == 'local':
+            if line.niif_bool == 'local':
                 vals.update(niif_debit=0.0, niif_credit=0.0)
             line.update(vals)
 
-    def _inverse_niff_debit_credit(self):
+    def _inverse_niif_debit_credit(self):
         for line in self:
             vals = {}
-            if niif_bool == 'niif':
+            if line.niif_bool == 'niif':
                 vals.update(debit=line.niif_debit, credit=line.niif_credit)
             line.update(vals)
 
