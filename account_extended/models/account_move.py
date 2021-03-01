@@ -31,16 +31,9 @@ class AccountMoveLine(models.Model):
     )]
 
     niif_bool = fields.Selection(related='move_id.niif_bool')
-<<<<<<< HEAD
     niif_debit = fields.Monetary('NIIF Debit', compute='_compute_niff_debit_credit', currency_field='company_currency_id')
     niif_credit = fields.Monetary(string='NIIF Credit', compute='_compute_niff_debit_credit', currency_field='company_currency_id')
     niif_balance = fields.Monetary(string='NIIF Balance', currency_field='company_currency_id', compute='_compute_niif_balance')
-=======
-    niif_debit = fields.Monetary('NIIF Debit', default=0.0, currency_field='company_currency_id')
-    niif_credit = fields.Monetary(string='NIIF Credit', default=0.0, currency_field='company_currency_id')
-    niif_balance = fields.Monetary(string='NIIF Balance', currency_field='company_currency_id',
-                                   compute='_compute_niif_balance')
->>>>>>> 06d071e7b6eed5eff6dca7aa922f3c67cff210c9
 
     @api.depends('niif_bool', 'debit', 'credit')
     def _compute_niff_debit_credit(self):
