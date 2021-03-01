@@ -6,6 +6,10 @@
             <field name="model">account.account</field>
             <field name="inherit_id" ref="account.view_account_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="after">
+                    <field name="active" invisible="True"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                </xpath>
                 <xpath expr="//field[@name='group_id']" position="attributes">
                     <attribute name="domain">[('niif_bool','=',False)]</attribute>
                 </xpath>
