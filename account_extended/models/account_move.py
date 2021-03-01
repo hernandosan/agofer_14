@@ -56,38 +56,3 @@ class AccountMoveLine(models.Model):
     def _compute_niif_balance(self):
         for line in self:
             line.niif_balance = line.niif_debit - line.niif_credit
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        lines = super(AccountMoveLine, self).create(vals_list)
-        lines.prepare_values_write(vals_list, list=True)
-        return lines
-<<<<<<< HEAD
-=======
-
-    def write(self, vals):
-        res = super(AccountMoveLine, self).write(vals)
-        self.prepare_values_write(vals)
-        return res
-
-    def prepare_values_write(self, vals, list=False):
-        for i, line in enumerate(self):
-            values = vals[i] if list else vals
-            line._prepare_values_write(values)
-
-    def _prepare_values_write(self, vals):
-        self.ensure_one()
-        if 'debit' in vals or 'credit' in vals:
-            for line in self:
-                niif_bool = line.niif_bool
-                values = {}
-                if niif_bool == 'both':
-                    values.update(niif_debit=vals.get('debit') or line.debit,
-                                  niif_credit=vals.get('credit') or line.credit)
-                elif niif_bool == 'local':
-                    values.update(niif_debit=0.0, niif_credit=0.0)
-                else:
-                    continue
-                    # vals.update(debit=0.0, credit=0.0)
-                line.write(values)
->>>>>>> 06d071e7b6eed5eff6dca7aa922f3c67cff210c9
