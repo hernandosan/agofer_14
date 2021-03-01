@@ -1,0 +1,99 @@
+.a_header table {
+    width: 100%;
+    border: hidden;
+}
+
+.a_header th, .a_header td, .a_header span {
+    text-align: center;
+    border: hidden;
+}
+
+.a_body table {
+    width: 100%;
+    border: hidden;
+    height: 300px;
+}
+
+.a_body tr {
+    border-bottom: solid 1px #0000FF;
+}
+
+.a_body th {
+    background-color: #f2f2f2;
+    border: hidden;
+    text-align: center;
+}
+
+.a_body td, .a_body span {
+    width: auto;
+    text-align: center;
+    padding: 2px;
+    font-family: "Open Sans", "Helvetica", Sans;
+    font-size: x-small;
+    border-right: hidden;
+    border-left: hidden;
+}
+
+.a_total table {
+    width: 35%;
+    position: relative;
+    left: 65%;
+    border: hidden;
+    border-top: solid 2px #0B1612;
+}
+
+.a_total tr {
+    border-top: solid 2px #0B1612;
+    font-family: "Open Sans", "Helvetica", Sans;
+    font-size: small;
+}
+
+.a_total th {
+    width: 20%;
+    text-align: left;
+}
+
+.a_total td {
+    width: 15%;
+    text-align: center;
+}
+
+.div_1 {
+    border-radius: 10px;
+    border: 1px solid #00b3ee;
+    padding: 5px;
+    margin-right: 30%;
+    margin-left: 30%;
+    text-align: center;
+}
+
+.div_2 {
+    border-radius: 10px;
+    border: 1px solid #b8daff;
+    padding: 5px;
+    text-align: left;
+}
+
+.div_3{
+    position:absolute;
+    bottom: -925px;
+    width: 228mm;
+}
+
+o_boxed_footer {
+    max-height: 200px !important;
+}
+
+footer {
+    max-height: 200px !important;
+}
+
+.o_boxed_footer {
+    max-height: 200px !important;
+}
+
+.footer {
+    max-height: 200px !important;
+}
+
+

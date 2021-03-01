@@ -28,6 +28,7 @@
         'security/res_group_security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
+        'reports/report_account_move.xml',
         'views/account_account_view.xml',
         'views/account_consignment_view.xml',
         'views/account_journal_view.xml',
