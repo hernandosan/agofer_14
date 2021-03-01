@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_account_move" model="ir.actions.report">
+            <field name="name">Accounting Receipt</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_extended.template_account_move</field>
+            <field name="report_file">account_extended.template_account_move</field>
+        </record>
+
+        <template id="style_table">
+            <link rel="stylesheet" type="text/css" href="/account_extended/static/src/css/report_style.css"/>
+        </template>
+
+        <template id="template_account_move">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="account_extended.template_account_move_entries" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="template_account_move_entries">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <p t-call="account_extended.style_table"/>
+                    <div class="page">
+                        <h3 style="text-align: center; color: #ff8a00"><strong><span
+                                t-field="doc.journal_id"/></strong><span></span>   <span t-field="doc.name"/></h3>
+                        <h4 style="text-align: center;"><span>Date: </span><span t-field="doc.date"/></h4>
+                        <br></br>
+                        <div class="a_header">
+                            <table>
+                                <tr>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                        <h3><strong><span t-field="doc.partner_id.name"/></strong></h3>
+                                    </td>
+                                    <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                        <span>NIT: </span><span t-field="doc.partner_id.ref_num"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="0">Direction</th>
+                                    <t t-if="doc.partner_id.phone is not False">
+                                        <th>Phone</th>
+                                    </t>
+                                    <t t-if="doc.partner_id.mobile is not False">
+                                        <th>Mobile</th>
+                                    </t>
+                                    <t t-if="doc.partner_id.email is not False">
+                                        <th>Email</th>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <span t-field="doc.partner_id.street"/>
+                                        <span t-field="doc.partner_id.city_id"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="doc.partner_id.phone is not False">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            <span t-field="doc.partner_id.phone"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="doc.partner_id.mobile is not False">
+                                            <i class="fa fa-mobile" aria-hidden="true"></i>
+                                            <span t-field="doc.partner_id.mobile"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="doc.partner_id.email is not False">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            <span t-field="doc.partner_id.email"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid #696969"></hr>
+                    <br></br>
+                    <h4>Reference:</h4>
+                    <span t-field="doc.ref"/>
+                    <br></br>
+                    <br></br>
+                    <div class="a_body">
+                        <table>
+                            <tr>
+                                <th>Account</th>
+                                <th>Partner</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr style="border-bottom: solid 1px #0000FF;">
+                                    <td><span t-field="line.account_id"/></td>
+                                    <td><span t-field="line.partner_id"/></td>
+                                    <td><span t-field="line.debit"/></td>
+                                    <td><span t-field="line.credit"/></td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="text-align: left" colspan="2"><h5>Total:</h5></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br></br>
+                    <div class="div_2">
+                        <span t-field="doc.create_uid"/><br/>
+                        <span t-field="doc.create_uid.email"/><br/>
+                        <span t-field="doc.create_date"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

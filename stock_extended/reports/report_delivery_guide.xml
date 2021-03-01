@@ -29,8 +29,8 @@
 
         <template id="template_delivery_guide_customer">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout" t-css="false" t-scss="false">
-                    <p t-call="stock_extended.style_table"></p>
+                <t t-call="web.external_layout">
+                    <p t-call="stock_extended.style_table"/>
                     <div class="page">
                         <h2 style="text-align: center; color: #ff8a00"><span>Delivery Guide</span></h2>
                         <br></br>

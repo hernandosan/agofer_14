@@ -32,6 +32,7 @@
         'data/ir_sequence_data.xml',
         'data/res_partner_category_data.xml',
         'reports/report_delivery_guide.xml',
+        'reports/report_stock_picking.xml',
         'wizard/sale_advance_payment_inv_view.xml',
         # 'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',

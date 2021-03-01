@@ -160,6 +160,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='carrier_data']/field[@name='carrier_id']" position="after">
                     <field name="carrier_partner_id" />
+                    <field name="driver_id" domain="[('parent_id', '=', carrier_partner_id)]"/>
                 </xpath>
             </field>
         </record>
