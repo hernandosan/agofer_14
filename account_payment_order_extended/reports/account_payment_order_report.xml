@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <!-- Bancolombia -->
+        <record id="report_bancolombia" model="ir.actions.report">
+            <field name="name">Bancolombia</field>
+            <field name="model">account.payment.order</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">account_payment_order_extended.template_bancolombia</field>
+        </record>
+
+        <template id="template_bancolombia"><t t-esc="docs.report_bancolombia()"/></template>
+    </data>
+</odoo>

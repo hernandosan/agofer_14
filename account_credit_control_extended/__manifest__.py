@@ -33,12 +33,12 @@
         'data/ir_cron_data.xml',
         'data/mail_template_data.xml',
         'views/account_payment_term_view.xml',
+        'views/credit_control_report.xml',
         'views/credit_document_type_view.xml',
         'views/credit_document_view.xml',
         'views/res_partner_view.xml',
         'wizard/credit_interest_wizard_template.xml',
         'wizard/credit_interest_wizard_view.xml',
-        'wizard/credit_wallet.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
