@@ -61,16 +61,16 @@
                                         <span t-field="doc.driver_plate"/>
                                     </td>
                                     <td>
-                                        <span t-field="doc.carrier_id.city_id"/>
+                                        <span t-field="doc.rate_id.city_id"/>
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                     </td>
                                     <td>
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                        <span t-field="doc.carrier_id.city_dest_id"/>
+                                        <span t-field="doc.rate_id.city_dest_id"/>
                                     </td>
                                     <td>
                                         <i class="fa fa-balance-scale" aria-hidden="true"></i>
-                                        <span t-field="doc.carrier_id.price_kg"/>
+                                        <span t-field="doc.rate_id.price_kg"/>
                                     </td>
                                 </tr>
                             </table>
@@ -153,16 +153,16 @@
                                         <span t-field="doc.driver_plate"/>
                                     </td>
                                     <td>
-                                        <span t-field="doc.carrier_id.city_id"/>
+                                        <span t-field="doc.rate_id.city_id"/>
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                     </td>
                                     <td>
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                        <span t-field="doc.carrier_id.city_dest_id"/>
+                                        <span t-field="doc.rate_id.city_dest_id"/>
                                     </td>
                                     <td>
                                         <i class="fa fa-balance-scale" aria-hidden="true"></i>
-                                        <span t-field="doc.carrier_id.price_kg"/>
+                                        <span t-field="doc.rate_id.price_kg"/>
                                     </td>
                                 </tr>
                             </table>

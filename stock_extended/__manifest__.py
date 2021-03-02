@@ -39,6 +39,7 @@
         # 'views/delivery_guide_move_view.xml',
         'views/delivery_guide_view.xml',
         'views/delivery_invoice_view.xml',
+        'views/delivery_rate_view.xml',
         'views/ir_ui_menu_view.xml',
         'views/product_product_view.xml',
         'views/product_template_view.xml',

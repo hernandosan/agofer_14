@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class StockLandedCost(models.Model):
     _inherit = 'stock.landed.cost'
 
-    carrier_id = fields.Many2one('delivery.carrier', 'Carrier', check_company=True, states={'done': [('readonly', True)]})
+    rate_id = fields.Many2one('delivery.rate', 'Rate', check_company=True, states={'done': [('readonly', True)]})
     carrier_partner_id = fields.Many2one('res.partner', 'Transporter', states={'done': [('readonly', True)]})
     landed_type = fields.Selection([('stock','Stock'), ('purchase','Purchase')], 'Landed Type', default='stock')
 

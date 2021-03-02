@@ -11,3 +11,5 @@ access_stock_landed_cost_user,access.stock.landed.cost.user,stock_landed_costs.m
 access_stock_landed_cost_lines_user,access.stock.landed.cost.lines.user,stock_landed_costs.model_stock_landed_cost_lines,stock.group_stock_user,1,1,1,0
 access_stock_valuation_adjustment_lines_user,access.stock.valuation.adjustment.lines.user,stock_landed_costs.model_stock_valuation_adjustment_lines,stock.group_stock_user,1,1,1,1
 access_stock_move_user,access.stock.move.user,stock.model_stock_move,stock_extended.group_stock_info,1,0,0,0
+access_delivery_rate_manager,delivery.rate.manager,model_delivery_rate,base.group_user,1,1,1,1
+access_delivery_rate_line_manager,delivery.rate.line.manager,model_delivery_rate_line,base.group_user,1,1,1,1

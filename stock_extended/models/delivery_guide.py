@@ -13,9 +13,6 @@ class DeliveryGuide(models.Model):
     analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
 
-    carrier_id = fields.Many2one('delivery.carrier', 'name')
-    carrier_tolerance = fields.Float('Tolerance (%)', related='carrier_id.tolerance')
-
     company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True,
                                  default=lambda self: self.env.company)
 
@@ -67,15 +64,20 @@ class DeliveryGuide(models.Model):
                                     copy=False)
 
     price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
-    price_kg = fields.Monetary('Carrier Price')
+    price_additional = fields.Monetary('Additional Cost')
     price_standby = fields.Monetary('Stand By')
     price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
+
+    rate_id = fields.Many2one('delivery.rate', 'Delivery Rate')
+    rate_line_id = fields.Many2one('delivery.rate.line', 'Values')
+    rate_tolerance = fields.Float('Tolerance (%)', related='rate_id.tolerance')
 
     weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_manual = fields.Float('Manual Weight', tracking=True)
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
+    weight_adjust = fields.Float('Adjust Weight', digits='Stock Weight')
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -85,6 +87,8 @@ class DeliveryGuide(models.Model):
         ('checked', 'Checked'),
         ('invoiced', 'Invoiced'),
         ('cancel', 'Cancel')], 'State', default='draft', copy=False, tracking=True)
+
+    show_update_price_kg = fields.Boolean(string='Has Price(Kg) Changed', default=False)
 
     @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
     def _compute_weight(self):
@@ -105,20 +109,12 @@ class DeliveryGuide(models.Model):
     @api.depends('price', 'weight_total')
     def _compute_price_total(self):
         for guide in self:
-            guide.price_total = (guide.price * guide.weight_total) + guide.price_standby
+            guide.price_total = (guide.price * guide.weight_total) + guide.price_standby + guide.price_additional
 
-    @api.onchange('carrier_id')
-    def _onchange_carrier_id(self):
-        if self.carrier_id:
-            self.price_kg = self.carrier_id.price_kg
-            self.price = self.carrier_id.price_kg
-
-    @api.onchange('price')
-    def _onchange_price(self):
-        if self.price and ((
-                                   self.price - self.price_kg) / self.price_kg) * 100 > self.carrier_tolerance and not self.user.has_group(
-                'stock.group_stock_manager'):
-            raise ValidationError(_("The price exceeds the allowed tolerance"))
+    @api.onchange('rate_line_id')
+    def _onchange_rate_line_id(self):
+        if self.rate_line_id:
+            self.price = self.rate_line_id.name
 
     @api.onchange('invoices_returns_ids')
     def _onchange_invoices_returns_ids(self):
@@ -236,6 +232,18 @@ class DeliveryGuide(models.Model):
             }
             guide_line.append((0, 0, vals))
         return guide_line
+
+    @api.onchange('weight_adjust')
+    def _onchange_adjust_weight(self):
+        if self.weight_adjust != self.weight_adjust:
+            self.show_update_price_kg = False
+        else:
+            self.show_update_price_kg = True
+
+    def update_prices(self):
+        self.update({'price': ((self.rate_line_id.name * self.weight_adjust)/self.weight_total)})
+        self.show_update_price_kg = False
+        self.message_post(body=_("Price(Kg) have been recomputed according to pricelist <b>%s<b>", self.weight_adjust))
 
 
 class DeliveryGuideLine(models.Model):
