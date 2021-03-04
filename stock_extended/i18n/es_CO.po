@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 15:51+0000\n"
-"PO-Revision-Date: 2021-03-01 15:51+0000\n"
-"Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
+"POT-Creation-Date: 2021-03-02 21:57+0000\n"
+"PO-Revision-Date: 2021-03-03 17:49-0500\n"
+"Last-Translator: Reyes Hernando Santana rhsantana@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,6 +31,23 @@ msgid ""
 msgstr ""
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid ""
+"<br/><br/><i class=\"fa fa-id-card\" aria-hidden=\"true\"/>\n"
+"                                            <span>Name - ID - Signature - Seal</span>\n"
+"                                            <span>Customer / Responsible Employee</span>"
+msgstr ""
+"Nombre - Cédula – Firma - Sello\n"
+"Cliente / Empleado Responsable"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid ""
+"<i class=\"fa fa-id-card-o\" aria-hidden=\"true\"/> <span>\n"
+"                                            Plate: </span>"
+msgstr "Placa"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
 msgid "<span>Delivery Guide</span>"
 msgstr "Guía de Entrega"
@@ -43,8 +60,14 @@ msgstr "Ordenes de Cargue"
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 msgid "<span>NIT: </span>"
 msgstr ""
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "<span>Remission N°: </span>"
+msgstr "Remisión N°"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_needaction
@@ -75,6 +98,11 @@ msgstr "Estado de la activida"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "Ícono de tipo de actvidad"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price_additional
+msgid "Additional Cost"
+msgstr "Costo Adicional"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_res_partner__type
@@ -124,6 +152,15 @@ msgid "Branch"
 msgstr "Sucursal"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid ""
+"By signing this receipt, I am satisfied with the\n"
+"                                            goods detailed in\n"
+"                                            this\n"
+"                                            reference."
+msgstr "Con la firma de la presente recibo a satisfacción las mercancías detalladas en esta remisión."
+
+#. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__state__cancel
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_invoice__state__cancel
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -135,17 +172,21 @@ msgstr "Cancelado"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__partner_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__partner_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__partner_id
-#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__carrier_id
 #: model:res.partner.category,name:stock_extended.res_partner_category_carrier
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "Carrier"
-msgstr "Transportista"
+msgstr "Compañía de Transporte"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price_kg
-msgid "Carrier Price"
-msgstr "Precio de Transportador"
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Carrier Signature"
+msgstr "Firma del transportista"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_vehicle__carry
+msgid "Carry"
+msgstr ""
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_vehicle__carry
@@ -169,6 +210,7 @@ msgstr "Fecha de Revisión"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__company_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__company_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__company_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__company_id
 msgid "Company"
 msgstr "Compañia"
 
@@ -191,6 +233,11 @@ msgid "Create Invoice"
 msgstr "Crear Factura"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Create User"
+msgstr "Usuario responsable"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_sale_advance_payment_inv_form
 msgid "Create and View Invoice"
 msgstr "Crear y Ver Facturas"
@@ -204,6 +251,8 @@ msgstr "Crear facturas"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__create_uid
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__create_uid
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__create_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__create_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
@@ -211,8 +260,15 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__create_date
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__create_date
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__create_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__create_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__create_date
 msgid "Created on"
 msgstr "Creado el"
+
+#. module: stock_extended
+#: model_terms:ir.actions.act_window,help:stock_extended.action_delivery_rate
+msgid "Creation of pricing for delivery guide"
+msgstr "Creación de precios para Guías de entrega"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__invoices_returns_ids
@@ -224,6 +280,7 @@ msgstr "Facturas rectificativas"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__currency_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__currency_id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__currency_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
@@ -241,20 +298,46 @@ msgid "Customer Pick"
 msgstr "Cliente Recoge"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Date Sale Order"
+msgstr "Fecho Pedido De Venta"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__stock_date
 msgid "Date Scheduled"
 msgstr "Fecha Programada"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid ""
+"Dear customer,\n"
+"                                            no claims are\n"
+"                                            accepted after 10 days of receipt of the invoice. Check the merchandise that\n"
+"                                            we are delivering to you. We are not responsible for shortages or\n"
+"                                            deterioration detected after\n"
+"                                            delivered the material or that do not have its corresponding annotation or\n"
+"                                            indication in the delivery remission, nor for defects or failures on the\n"
+"                                            same that are likely to be verified by the naked eye or\n"
+"                                            with the help of basic measuring instruments. The signatory is understood to\n"
+"                                            be authorized to receive the goods. Agofer delivers goods through third\n"
+"                                            parties. The transporter has received\n"
+"                                            conformity of the merchandise and is responsible for any damage to it during\n"
+"                                            transport."
+msgstr ""
+"Estimado cliente no se aceptan reclamos después de 10 días de recibida la factura. Verifique la mercancía que le estamos entregando. No nos hacemos responsables por faltantes o deterioro detectados después de\n"
+"entregado el material o que no cuenten con su correspondiente anotación o señalamiento en la remisión de entrega, ni por defectos o fallas sobre el mismo que sean susceptibles de ser verificados a simple vista o\n"
+"con ayuda de instrumentos de medición básicos. El firmante se entiende autorizado para recibir las mercancías. Agofer realiza entregas de mercancías por intermedio de terceros. El transportador ha recibido a conformidad la mercancía y es responsable por los daños ocurridos a la misma durante el transporte."
+
+#. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_guide_line__stock_uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
-"Unidad de medida por defecto utilizada para todas las operaciones de stock"
+msgstr "Unidad de medida por defecto utilizada para todas las operaciones de stock."
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_form
 msgid "Define your terms and conditions ..."
 msgstr "Defina sus terminos y condiciones ..."
 
@@ -276,6 +359,11 @@ msgstr "Fecha de Entrega"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight_invoice
 msgid "Delivered Weight"
 msgstr "Peso Entregado"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Delivery Address"
+msgstr "Dirección de Entrega"
 
 #. module: stock_extended
 #: model:ir.actions.act_window,name:stock_extended.action_delivery_agofer
@@ -354,6 +442,22 @@ msgid "Delivery Method"
 msgstr "Método entrega"
 
 #. module: stock_extended
+#: model:ir.actions.act_window,name:stock_extended.action_delivery_rate
+#: model:ir.model,name:stock_extended.model_delivery_rate
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__rate_id
+#: model:ir.ui.menu,name:stock_extended.stock_delivery_rate
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_tree
+msgid "Delivery Rate"
+msgstr "Tarifas de Entrega"
+
+#. module: stock_extended
+#: model:ir.model,name:stock_extended.model_delivery_rate_line
+msgid "Delivery Rate Line"
+msgstr "Linea Tarifas de Entrega"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__account_delivery_state
 msgid "Delivery State"
 msgstr "Estado de Entrega"
@@ -366,6 +470,7 @@ msgstr "Subtipo de Guia"
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__carrier_type
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__guide_type
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__rate_type
 msgid "Delivery Type"
 msgstr "Tipo de envío"
 
@@ -380,8 +485,25 @@ msgid "Departure Date"
 msgstr "Fecha de Salida"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Description"
+msgstr "Descripcion"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
+msgid "Destination"
+msgstr "Destino"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__city_dest_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__city_dest_id
 msgid "Destination Location"
+msgstr "Ubicación de destino"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Destiny"
 msgstr "Destino"
 
 #. module: stock_extended
@@ -389,6 +511,8 @@ msgstr "Destino"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__display_name
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_res_partner__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__display_name
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__display_name
@@ -418,6 +542,7 @@ msgstr "Borrador"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_picking__driver_id
 #: model:ir.model.fields.selection,name:stock_extended.selection__res_partner__type__driver
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
@@ -464,8 +589,14 @@ msgstr "Actividades futuras"
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_search
 msgid "Group By"
 msgstr "Agrupar por"
+
+#. module: stock_extended
+#: model:res.groups,name:stock_extended.group_guide_adjust
+msgid "Guide Adjust"
+msgstr "Ajuste de la guía"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__guide_account_invoice_id
@@ -499,6 +630,11 @@ msgid "Has Novelty"
 msgstr "Tiene Novedad"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__show_update_price_kg
+msgid "Has Price(Kg) Changed"
+msgstr "Ha cambiado el precio (kg)"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__guide_bool
 msgid "Has Return"
 msgstr "Tiene devoluciones"
@@ -508,6 +644,8 @@ msgstr "Tiene devoluciones"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__id
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__id
 #: model:ir.model.fields,field_description:stock_extended.field_res_partner__id
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv__id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__id
@@ -557,12 +695,8 @@ msgstr "Información"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_stock_picking__incoterm
-msgid ""
-"International Commercial Terms are a series of predefined commercial terms "
-"used in international transactions."
-msgstr ""
-"Los términos de comercio internacional son una serie de condiciones "
-"comerciales usadas en las transacciones internacionales."
+msgid "International Commercial Terms are a series of predefined commercial terms used in international transactions."
+msgstr "Los términos de comercio internacional son una serie de condiciones comerciales usadas en las transacciones internacionales."
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__account_id
@@ -650,6 +784,8 @@ msgstr "Tipo de costo"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate____last_update
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_res_partner____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_sale_advance_payment_inv____last_update
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost____last_update
@@ -663,6 +799,8 @@ msgstr "Última Modificación el"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__write_uid
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__write_uid
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__write_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__write_uid
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
@@ -670,6 +808,8 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__write_date
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__write_date
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__write_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__write_date
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -721,6 +861,7 @@ msgstr "Minimula"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__driver_mobile
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 msgid "Mobile"
 msgstr "Celular"
 
@@ -740,6 +881,11 @@ msgstr "Peso de Movimientos"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Name"
 msgstr "Nombre"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_rate__rate_type__national
+msgid "National"
+msgstr "Nacional"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__activity_date_deadline
@@ -763,7 +909,12 @@ msgstr "Siguiente tipo de actividad"
 #: model_terms:ir.actions.act_window,help:stock_extended.action_customer_pick
 #: model_terms:ir.actions.act_window,help:stock_extended.action_delivery_agofer
 msgid "No transfer found. Let's create one!"
-msgstr "Crea una nueva transferencia"
+msgstr "Crea una nueva transferencia!"
+
+#. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_condition__not_apply
+msgid "Not apply"
+msgstr "No aplica"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_condition__not_apply
@@ -776,8 +927,14 @@ msgstr "No aplica"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_form
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_form
 msgid "Notes"
 msgstr "Notas"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Notes from who receives"
+msgstr "Anotaciones de quien recibe"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__name
@@ -816,6 +973,11 @@ msgid "Number of unread messages"
 msgstr "Número de mensajes no leidos"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Observations"
+msgstr "Observaciones"
+
+#. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide__guide_subtype__other
 msgid "Other"
 msgstr "Otro"
@@ -834,6 +996,11 @@ msgstr "Peatón"
 #: model:ir.model.fields.selection,name:stock_extended.selection__delivery_guide_line__account_delivery_state__pending
 msgid "Pending"
 msgstr "Pendiente"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Phone"
+msgstr "Teléfono"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__pick_bool
@@ -911,15 +1078,31 @@ msgstr "Por favor agregue guías"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__price_kg
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__price_kg
 msgid "Price (Kg)"
 msgstr "Precio (Kg)"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__price
+msgid "Price (Kg) Adjust"
+msgstr "Precio (Kg) Ajustado"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
 msgid "Price by Kg"
 msgstr "Precio por Kg"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "Price(Kg) Rate"
+msgstr "Precio (Kg) Tarifa"
+
+#. module: stock_extended
+#: code:addons/stock_extended/models/delivery_guide.py:0
+#, python-format
+msgid "Price(Kg) have been recomputed according to pricelist <b>%s<b>"
+msgstr "El precio (kg) se ha vuelto a calcular de acuerdo con la lista de precios <b>%s<b>"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_form
@@ -930,6 +1113,11 @@ msgstr "Control de Impresión"
 #: model:ir.actions.report,name:stock_extended.report_delivery_guide
 msgid "Print Guide"
 msgstr "Guía de Entrega"
+
+#. module: stock_extended
+#: model:ir.actions.report,name:stock_extended.report_stock_picking
+msgid "Print Remission"
+msgstr "Imprimir Remision"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__stock_product_id
@@ -957,15 +1145,31 @@ msgid "Purchase"
 msgstr "Compras"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Qty"
+msgstr "Cant"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__stock_product_qty
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost_lines__product_qty
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__rate_id
+#: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__rate_id
+msgid "Rate"
+msgstr "Tarifa"
+
+#. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
 msgid "Reason"
 msgstr "Motivo"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "Recompute the price(Kg) based on this Adjust Weight"
+msgstr "Vuelva a calcular el precio (kg) basado en este ajuste de peso"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
@@ -1014,13 +1218,13 @@ msgid "Returned Weight"
 msgstr "Peso Retornado"
 
 #. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__message_has_sms_error
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
+msgid "Returns Invoice"
+msgstr "Devuelve Factura"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide_line__account_order_id
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 msgid "Sale Order"
 msgstr "Pedido"
 
@@ -1047,15 +1251,14 @@ msgstr "Métodos de envío"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__shipping_type
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 msgid "Shipping Type"
 msgstr "Tipo de Entrega"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
-"Mostrar todos los registros que tienen la próxima fecha de acción antes de "
-"hoy"
+msgstr "Mostrar todos los registros que tienen la próxima fecha de acción antes de hoy"
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_delivery
@@ -1074,7 +1277,15 @@ msgid "Slab"
 msgstr "Plancha"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Source"
+msgstr "Origen"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__city_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__city_id
 msgid "Source Location"
 msgstr "Origen"
 
@@ -1161,6 +1372,7 @@ msgstr "Lleva Factura"
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__notes
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__notes
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__notes
 msgid "Terms and Conditions"
 msgstr "Terminos y condiciones"
 
@@ -1171,26 +1383,15 @@ msgid "The picking %s has already been printed"
 msgstr "La transferencia %s ya ha sido impresa"
 
 #. module: stock_extended
-#: code:addons/stock_extended/models/delivery_guide.py:0
-#, python-format
-msgid "The price exceeds the allowed tolerance"
-msgstr "El precio excede la tolerancia permitida"
-
-#. module: stock_extended
 #: code:addons/stock_extended/wizard/sale_advance_payment_inv.py:0
 #, python-format
-msgid ""
-"The product used to invoice a down payment should be of type 'Service'. "
-"Please use another product or update this product."
+msgid "The product used to invoice a down payment should be of type 'Service'. Please use another product or update this product."
 msgstr ""
 
 #. module: stock_extended
 #: code:addons/stock_extended/wizard/sale_advance_payment_inv.py:0
 #, python-format
-msgid ""
-"The product used to invoice a down payment should have an invoice policy "
-"set to \"Ordered quantities\". Please update your deposit product to be "
-"able to create a deposit invoice."
+msgid "The product used to invoice a down payment should have an invoice policy set to \"Ordered quantities\". Please update your deposit product to be able to create a deposit invoice."
 msgstr ""
 
 #. module: stock_extended
@@ -1198,6 +1399,17 @@ msgstr ""
 #, python-format
 msgid "The quantity cannot be greater than the delivered"
 msgstr "La cantidad no puede ser mayor a la transferida"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "This will update the price(kg) based on the currently set adjust weight."
+msgstr "Esto actualizará el precio (kg) según el peso de ajuste establecido actualmente."
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__name
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_form
+msgid "Title"
+msgstr ""
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_stock_picking_tree_delivery
@@ -1212,15 +1424,17 @@ msgstr "Actividades de Hoy"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_carrier__tolerance
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__carrier_tolerance
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__rate_tolerance
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__tolerance
 msgid "Tolerance (%)"
 msgstr "Tolerancia (%)"
 
 #. module: stock_extended
 #: model:ir.model.fields,help:stock_extended.field_delivery_carrier__tolerance
-#: model:ir.model.fields,help:stock_extended.field_delivery_guide__carrier_tolerance
+#: model:ir.model.fields,help:stock_extended.field_delivery_guide__rate_tolerance
+#: model:ir.model.fields,help:stock_extended.field_delivery_rate__tolerance
 msgid "Tolerance allowed in price."
-msgstr "Tolerancia permitida en el precio"
+msgstr "Tolerancia permitida en el precio."
 
 #. module: stock_extended
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
@@ -1284,14 +1498,18 @@ msgstr "Inventario"
 #: model_terms:ir.actions.act_window,help:stock_extended.action_customer_pick
 #: model_terms:ir.actions.act_window,help:stock_extended.action_delivery_agofer
 msgid "Transfers allow you to move products from one location to another."
-msgstr ""
-"Las transferencias le permiten mover productos de una ubicación a otra."
+msgstr "Las transferencias le permiten mover productos de una ubicación a otra."
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_landed_cost__carrier_partner_id
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__carrier_partner_id
 msgid "Transporter"
 msgstr "Transportador"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Transporter Data"
+msgstr "Datos del Transportador"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_vehicle__truck
@@ -1343,6 +1561,11 @@ msgid "Unreserve"
 msgstr "Anular Reserva"
 
 #. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Uom"
+msgstr "U.M"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__guide_update
 msgid "Update"
 msgstr "Actualizar"
@@ -1351,6 +1574,11 @@ msgstr "Actualizar"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Update Moves"
 msgstr "Actualizar Movimientos"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
+msgid "Update Price"
+msgstr "Actualizar Precio"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__upload_date
@@ -1363,7 +1591,13 @@ msgid "Upload Late"
 msgstr "Cargue Retrasado"
 
 #. module: stock_extended
+#: model:ir.model.fields.selection,name:stock_extended.selection__delivery_rate__rate_type__urban
+msgid "Urban"
+msgstr "Urbano"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__user_id
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_invoice_search
 msgid "User"
 msgstr "Usuario"
@@ -1372,6 +1606,18 @@ msgstr "Usuario"
 #: model:ir.model.fields,field_description:stock_extended.field_stock_picking__print_user_id
 msgid "User Print"
 msgstr "Usuario que imprimió"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate_line__name
+#: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_rate_form
+msgid "Value"
+msgstr "Valor"
+
+#. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__rate_line_id
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_rate__rate_lines_ids
+msgid "Values"
+msgstr "Valores"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_condition__van
@@ -1408,14 +1654,31 @@ msgstr "Historial de comunicaciones del sitio web"
 
 #. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_invoiced
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_guide_form
 msgid "Weight"
 msgstr "Peso"
 
 #. module: stock_extended
+#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__weight_adjust
+msgid "Weight Adjust"
+msgstr "Peso Ajustado"
+
+#. module: stock_extended
 #: model:ir.model.fields,field_description:stock_extended.field_delivery_invoice__weight_returned
 msgid "Weight Returned"
 msgstr "Peso Retornado"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_stock_picking_remission
+msgid "Weight Total"
+msgstr "Peso total"
+
+#. module: stock_extended
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_branch
+#: model_terms:ir.ui.view,arch_db:stock_extended.template_delivery_guide_customer
+msgid "Weight in (Kg)"
+msgstr "Peso en (Kg)"
 
 #. module: stock_extended
 #: model:ir.model.fields.selection,name:stock_extended.selection__stock_picking__shipping_type_vehicle__wheelbarrow
@@ -1438,8 +1701,3 @@ msgstr "No puede imprimir la transferencia %s"
 #: model_terms:ir.ui.view,arch_db:stock_extended.view_delivery_carrier_form
 msgid "e.g. UPS Express"
 msgstr "por ejemplo, UPS Express"
-
-#. module: stock_extended
-#: model:ir.model.fields,field_description:stock_extended.field_delivery_guide__carrier_id
-msgid "name"
-msgstr "Nombre"
