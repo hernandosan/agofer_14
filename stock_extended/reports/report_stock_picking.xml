@@ -27,7 +27,7 @@
                 <t t-call="web.external_layout">
                     <p t-call="stock_extended.style_table"/>
                     <div>
-                        <h2 style="text-align: center; color: #ff8a00"><span>Remission N°: </span><span
+                        <h2 style="text-align: center; color: #ff8a00"><span>Remission N°:&#160;&#160;</span><span
                                 t-field="doc.name"/></h2>
                         <br></br>
                         <div class="a_header">
@@ -42,13 +42,13 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Delivery Address</th>
+                                        <th colspan="2">Delivery Address</th>
                                         <th>Mobile</th>
                                         <th>Phone</th>
                                         <th>User</th>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td colspan="2">
                                             <i class="fa fa-map-marker" aria-hidden="true"></i>
                                             <span t-field="doc.partner_id.street"/>
                                             <span t-field="doc.partner_id.city_id"/>
@@ -72,6 +72,7 @@
                                     </tr>
                                     <tr>
                                         <th>Sale Order</th>
+                                        <th>Invoice</th>
                                         <th>Date Sale Order</th>
                                         <th>Shipping Type</th>
                                         <th>Weight Total</th>
@@ -80,6 +81,10 @@
                                         <td>
                                             <i class="fa fa-file-text" aria-hidden="true"></i>
                                             <span t-field="doc.sale_id"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id.invoice_ids"/>
                                         </td>
                                         <td>
                                             <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -91,8 +96,7 @@
                                         </td>
                                         <td>
                                             <i class="fa fa-balance-scale" aria-hidden="true"></i>
-                                            <t>
-                                            </t>
+                                            <span t-field="doc.shipping_weight"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -137,7 +141,7 @@
                         <hr style="border: 1px solid #696969"></hr>
                         <br></br>
                         <div class="a_body">
-                            <table style="height: 300px;">
+                            <table>
                                 <tr>
                                     <th>Description</th>
                                     <th>Qty</th>
@@ -150,7 +154,7 @@
                                         <td><span t-field="line.product_id"/></td>
                                         <td><span t-field="line.product_uom_qty"/></td>
                                         <td><span t-field="line.product_uom"/></td>
-                                        <td><span t-field="line.weight"/></td>
+                                        <td><span t-field="line.product_id.weight"/></td>
                                         <td><span t-field="line.weight"/></td>
                                     </tr>
                                 </t>
@@ -174,7 +178,7 @@
                             </table>
                         </div>
                         <br/>
-                        <div class="footer">
+                        <div class="div_3">
                             <h6 style="text-align: center;">Transporter Data</h6>
                             <table>
                                 <thead>
@@ -196,10 +200,8 @@
                                 <tbody>
                                     <tr>
                                         <td style="font-weight: bold; text-align: center;">Carrier Signature</td>
-                                        <td style="font-weight: bold;">By signing this receipt, I am satisfied with the
-                                            goods detailed in
-                                            this
-                                            reference.</td>
+                                        <td style="font-weight: bold; text-align: center;">By signing this receipt, I am
+                                            satisfied with the goods detailed in this reference.</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -211,16 +213,14 @@
                                     </tr>
                                     <tr>
                                         <td style="font-size: xx-small; text-align: justify;" colspan="2">Dear customer,
-                                            no claims are
-                                            accepted after 10 days of receipt of the invoice. Check the merchandise that
-                                            we are delivering to you. We are not responsible for shortages or
-                                            deterioration detected after
-                                            delivered the material or that do not have its corresponding annotation or
-                                            indication in the delivery remission, nor for defects or failures on the
-                                            same that are likely to be verified by the naked eye or
-                                            with the help of basic measuring instruments. The signatory is understood to
-                                            be authorized to receive the goods. Agofer delivers goods through third
-                                            parties. The transporter has received
+                                            no claims are accepted after 10 days of receipt of the invoice. Check the
+                                            merchandise that we are delivering to you. We are not responsible for
+                                            shortages or deterioration detected after delivered the material or that do
+                                            not have its corresponding annotation or indication in the delivery
+                                            remission, nor for defects or failures on the same that are likely to be
+                                            verified by the naked eye or with the help of basic measuring instruments.
+                                            The signatory is understood to be authorized to receive the goods. Agofer
+                                            delivers goods through third parties. The transporter has received
                                             conformity of the merchandise and is responsible for any damage to it during
                                             transport.</td>
                                     </tr>

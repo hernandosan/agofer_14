@@ -56,7 +56,7 @@
                     <field name="name" decoration-bf="1"/>
                     <field name="partner_id"/>
                     <field name="driver_id"/>
-                    <field name="carrier_id" optional="hide"/>
+                    <field name="rate_id" optional="hide"/>
                     <field name="date_scheduled"/>
                     <field name="price" optional="hide"/>
                     <field name="weight_invoice"/>
@@ -79,9 +79,9 @@
                         <button string="Draft" type="object" name="action_draft" states="confirm"/>
                         <button string="Confirm" type="object" name="action_confirm" states="draft"
                                 class="oe_highlight"/>
-                        <button string="Progress" type="object" name="action_progress" states="confirm"
-                                class="oe_highlight"/>
-                        <button string="Delivered" type="object" name="action_delivered" states="progress"
+<!--                        <button string="Progress" type="object" name="action_progress" states="confirm"-->
+<!--                                class="oe_highlight"/>-->
+                        <button string="Delivered" type="object" name="action_delivered" states="draft"
                                 class="oe_highlight"/>
                         <button string="Checked" type="object" name="action_checked" states="delivered"
                                 class="oe_highlight" groups="stock.group_stock_manager"/>
@@ -108,36 +108,51 @@
                                 <field name="guide_bool" invisible="True"/>
                                 <field name="partner_id" widget="res_partner_many2one"
                                        context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
-                                       attrs="{'readonly':[('state','not in',('draft'))]}"/>
-                                <field name="driver_id" domain="[('parent_id','=',partner_id)]"
-                                       attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="carrier_id"
+                                       attrs="{'readonly':[('state','not in', 'draft')]}"/>
+                                <field name="driver_id" domain="[('parent_id','=',partner_id)]" create="false"
+                                       attrs="{'readonly':[('state','!=','draft')]}" required="True"/>
+                                <field name="rate_id" required="True"
                                        attrs="{'readonly':[('state','!=','draft')], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                             </group>
                             <group>
                                 <field name="weight_invoice" attrs="{'invisible':[('guide_type','=','branch')]}"/>
                                 <field name="weight_return" attrs="{'invisible':[('guide_type','=','branch')]}"/>
-                                <field name="weight_move" attrs="{'invisible':[('guide_type','=','customer')], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
+                                <field name="weight_move"
+                                       attrs="{'invisible':[('guide_type','=','customer')], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
                                 <field name="weight_manual" attrs="{'invisible':[('guide_type','=','customer')]}"/>
                                 <field name="weight_total"/>
+                                <field name="show_update_price_kg" invisible="True"/>
+                                <label for="weight_adjust" groups="stock_extended.group_guide_adjust"/>
+                                <div groups="stock_extended.group_guide_adjust" class="o_row">
+                                    <field name="weight_adjust"/>
+                                    <button name="update_prices" type="object"
+                                            string=" Update Price"
+                                            help="Recompute the price(Kg) based on this Adjust Weight"
+                                            class="btn-link mb-1 px-0" icon="fa-refresh"
+                                            confirm="This will update the price(kg) based on the currently set adjust weight."
+                                            attrs="{'invisible':['|',('show_update_price_kg', '=', False), ('state', '=', 'draft')]}"/>
+                                </div>
                             </group>
                             <group>
+                                <field name="rate_line_id" domain="[('rate_id', '=', rate_id)]" string="Price(Kg) Rate"
+                                       widget="selection"
+                                       attrs="{'readonly':[('state','!=','draft')], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="price_kg" invisible="True"/>
-                                <field name="carrier_tolerance" invisible="True"/>
-                                <field name="price" attrs="{'readonly':[('state','not in', ('draft'))], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
-                                <field name="price_standby"/>
+                                <field name="rate_tolerance" invisible="True"/>
+                                <field name="price" readonly="True"/>
+                                <field name="price_additional" groups="stock_extended.group_guide_adjust"/>
+                                <field name="price_standby" attrs="{'invisible':[('guide_type', '=', 'customer')]}"/>
                                 <field name="price_total"/>
                             </group>
                             <group>
                                 <field name="invoices_ids" widget="many2many_tags"
                                        attrs="{'readonly':[('state','!=','draft')], 'invisible':[('guide_type','!=','customer')]}"
-                                       domain="[('move_type','=','out_invoice'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]"/>
+                                       domain="[('move_type','=','out_invoice'),('state','=','posted'),('delivery_state','in',('pending','partial', 'progress'))]"/>
                                 <field name="guide_update" invisible="True"/>
                                 <label for="invoices_returns_ids" attrs="{'invisible':[('guide_bool','=',False)]}"/>
                                 <div class="o_row" attrs="{'invisible':[('guide_bool','=',False)]}">
                                     <field name="invoices_returns_ids" widget="many2many_tags"
-                                           attrs="{'readonly':[('state','!=','progress')], 'invisible':[('guide_bool','=',False)]}"
+                                           attrs="{'readonly':[('state','!=','draft')], 'invisible':[('guide_bool','=',False)]}"
                                            domain="[('move_type','=','out_refund'),('state','=','posted'),('delivery_state','in',('pending','partial','progress'))]"/>
                                     <button name="action_update" type="object" string=" Update Moves"
                                             class="btn-link mb-1 px-0" icon="fa-refresh"

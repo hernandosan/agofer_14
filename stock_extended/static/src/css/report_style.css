@@ -11,7 +11,6 @@
 .a_body table {
     width: 100%;
     border: hidden;
-    height: 300px;
 }
 
 .a_body tr {
@@ -79,21 +78,3 @@
     bottom: -925px;
     width: 228mm;
 }
-
-o_boxed_footer {
-    max-height: 200px !important;
-}
-
-footer {
-    max-height: 200px !important;
-}
-
-.o_boxed_footer {
-    max-height: 200px !important;
-}
-
-.footer {
-    max-height: 200px !important;
-}
-
-

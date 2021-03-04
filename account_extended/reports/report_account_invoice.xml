@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="invoices" inherit_id="account.report_invoice">
+            <xpath expr="//t/t/t[2]" position="replace">
+                <t t-call="account_extended.report_invoice_document_agofer" t-lang="lang"/>
+            </xpath>
+        </template>
+
+        <template id="report_invoice_document_agofer">
+            <t t-set="is_einvoice" t-value="o.state in ['open','paid'] and (o.ei_cufe or o.ei_cude)"/>
+            <t t-set="is_old_einvoice" t-value="is_einvoice and not (o.date_invoice > '2020-09-30')"/>
+            <div class="header">
+                <div class="row">
+                    <div t-attf-class="{{ is_einvoice and 'col-xs-8' or 'col-xs-9' }}">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h1 class="panel-title" style="color:black;">
+                                    <strong t-if="o.type == 'out_invoice' and o.state in ['open','paid'] and (is_envoice or o.ei_state == 'pending')">
+                                        Factura de venta</strong>
+                                    <strong t-if="o.type == 'out_invoice' and o.state in ['open','paid'] and (is_einvoice and o.ei_state != 'pending')">
+                                        Factura electrónica de venta</strong>
+                                    <strong t-if="o.type == 'out_invoice' and o.state == 'proforma2'">PRO-FORMA</strong>
+                                    <strong t-if="o.type == 'out_invoice' and o.state == 'draft'">Factura
+                                        borrador</strong>
+                                    <strong t-if="o.type == 'out_invoice' and o.state == 'cancel'">Factura
+                                        anulada</strong>
+
+                                    <strong t-if="o.type == 'out_refund' and o.state in ['open','paid']">
+                                        Devolución</strong>
+                                    <strong t-if="o.type == 'out_refund' and o.state  in ['draft','proforma','proforma2']">
+                                        Devolución borrador</strong>
+                                    <strong t-if="o.type == 'out_refund' and o.state == 'cancel'">Devolución
+                                        anulada</strong>
+
+                                    <strong t-if="o.type == 'in_refund'">Devolución de proveedor</strong>
+                                    <t t-if="o.type == 'in_invoice'">
+                                        <strong t-if="o.journal_id.code == 'NFR'">Soporte en adquisición efectuada a
+                                            no-obligados a facturar</strong>
+                                        <strong t-if="o.journal_id.code != 'NFR'">Factura de proveedor</strong>
+                                    </t>
+
+                                    <span t-field="o.number"/>
+                                    <small class="not-first-page"> (…continúa)</small>
+                                </h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <p>
+                                            <strong>Fecha:</strong>
+                                            <span t-field="o.date_invoice"/>
+                                            <small t-field="o.create_date"
+                                                   t-field-options="{&quot;format&quot;:&quot;HH:mm:ss&quot;}"/>
+                                        </p>
+                                        <p t-if="o.type == 'out_invoice' and o.state in ['open','paid','draft']">
+                                            <strong>Fecha de vencimiento:</strong>
+                                            <span t-field="o.date_due"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <p t-if="o.type in ['out_invoice','in_invoice'] and o.payment_term.note">
+                                            <strong>Condición de pago:</strong>
+                                            <span t-field="o.payment_term.note" style="font-weight:normal;"/>
+                                        </p>
+                                        <p>
+                                            <t t-if="o.stock_picking_id.incoterm">
+                                                <strong>Términos de negociación: </strong>
+                                                <code t-esc="o.stock_picking_id.incoterm.name"/>
+                                                :
+                                                <t t-esc="o.stock_picking_id.incoterm.description"/>
+                                            </t>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-if="is_einvoice" class="col-xs-2">
+                        <img t-att-src="'/report/barcode/?type=QR&amp;value=%s&amp;width=%s&amp;height=%s' % (is_old_einvoice and o.ei_qr_text or o.ei_qr.replace('&amp;', '%26'), 153, 153)"/>
+                    </div>
+                    <div class="col-xs-2">
+                        <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
+                             width="153" height="80"/>
+                    </div>
+                </div>
+            </div>
+            <div class="page">
+                <t t-set="weight"
+                   t-value="'{:,.2f}'.format(sum((l.product_id.weight &gt; 0 and l.product_id.weight * l.quantity or 0) for l in o.invoice_line))"/>
+                <!-- For PDF Outline: -->
+                <div style="position: absolute; left: -999px;">
+                    <h1 class="h6">
+                        <span t-if="o.type == 'out_invoice' and o.state in ['open','paid'] and (is_envoice or o.ei_state == 'pending')">
+                            Factura de venta</span>
+                        <span t-if="o.type == 'out_invoice' and o.state in ['open','paid'] and (is_einvoice and o.ei_state != 'pending')">
+                            Factura electrónica de venta</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'proforma2'">PRO-FORMA</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Factura borrador</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Factura anulada</span>
+
+                        <span t-if="o.type == 'out_refund' and o.state in ['open','paid']">Devolución</span>
+                        <span t-if="o.type == 'out_refund' and o.state  in ['draft','proforma','proforma2']">Devolución
+                            borrador</span>
+                        <span t-if="o.type == 'out_refund' and o.state == 'cancel'">Devolución anulada</span>
+
+                        <span t-if="o.type == 'in_refund'">Devolución de proveedor</span>
+                        <t t-if="o.type == 'in_invoice'">
+                            <span t-if="o.journal_id.code == 'NFR'">Soporte en adquisición</span>
+                            <span t-if="o.journal_id.code != 'NFR'">Factura de proveedor</span>
+                        </t>
+                        <span t-field="o.number"/>
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title" style="color:black;">
+                                    <strong t-field="o.partner_id.name"/>
+                                    &#160;
+                                    <span class="text-nowrap">
+                                        <span t-field="o.partner_id.ref_type.name"/>
+                                        <span t-field="o.partner_id.ref"/>
+                                        <span t-if="o.partner_id.ref_type.code == 'NI'">
+                                            –
+                                            <span t-raw="o.partner_id.dev_ref"/>
+                                        </span>
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div t-attf-class="{{ o.partner_shipping_id != o.partner_id and 'col-xs-6' or 'col-xs-12' }}">
+                                        <div class="list-group mb0">
+                                            <div class="h5 list-group-item-heading"
+                                                 t-if="o.partner_shipping_id == o.partner_id">Dirección:</div>
+                                            <div class="h5 list-group-item-heading"
+                                                 t-if="o.partner_shipping_id != o.partner_id">Dirección de
+                                                facturación:</div>
+                                            <p class="list-group-item-text" t-field="o.partner_id.street"/>
+                                            <t t-if="o.partner_id.street2">
+                                                <p class="list-group-item-text" t-field="o.partner_id.street2"/>
+                                            </t>
+                                            <p class="list-group-item-text">
+                                                <span t-field="o.partner_id.city_id.name"/>,
+                                                <span class="list-group-item-text"
+                                                      t-field="o.partner_id.state_id.name"/>
+                                            </p>
+                                            <p class="list-group-item-text" t-if="o.partner_id.phone"
+                                               itemprop="telephone">
+                                                <i class="fa fa-phone"/>
+                                                <span t-field="o.partner_id.phone"/>
+                                            </p>
+                                            <!-- p class="list-group-item-text" t-if="o.partner_id.fax" itemprop="fax"><i class="fa fa-fax"/><span t-field="o.partner_id.fax"/></p -->
+                                            <p class="list-group-item-text" t-if="o.partner_id.email" itemprop="email">
+                                                <i class="fa fa-envelope-o"/>
+                                                <small t-esc="o.partner_id.email.split(';')[0]"/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div t-if="o.partner_shipping_id != o.partner_id" class="col-xs-6">
+                                        <div class="list-group mb0">
+                                            <div t-if="o.type not in ['out_refund','in_invoice']"
+                                                 class="h5 list-group-item-heading">
+                                                Dirección de envío:
+                                            </div>
+                                            <div t-if="o.type in ['out_refund','in_invoice']"
+                                                 class="h5 list-group-item-heading">
+                                                Dirección de recepción:
+                                            </div>
+                                            <p class="list-group-item-text" t-field="o.partner_shipping_id.street"/>
+                                            <t t-if="o.partner_id.street2">
+                                                <p class="list-group-item-text"
+                                                   t-field="o.partner_shipping_id.street2"/>
+                                            </t>
+                                            <p class="list-group-item-text">
+                                                <span t-field="o.partner_shipping_id.city_id.name"/>,
+                                                <span class="list-group-item-text"
+                                                      t-field="o.partner_shipping_id.state_id.name"/>
+                                            </p>
+                                            <p class="list-group-item-text" t-if="o.partner_shipping_id.phone"
+                                               itemprop="telephone">
+                                                <i class="fa fa-phone"/>
+                                                <span t-field="o.partner_shipping_id.phone"/>
+                                            </p>
+                                            <p class="list-group-item-text" t-if="o.partner_shipping_id.fax"
+                                               itemprop="fax">
+                                                <i class="fa fa-fax"/>
+                                                <span t-field="o.partner_shipping_id.fax"/>
+                                            </p>
+                                            <p class="list-group-item-text" t-if="o.partner_shipping_id.email"
+                                               itemprop="email">
+                                                <span t-field="o.partner_shipping_id.email"/>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 input-group">
+                        <p style="font-size:9t; line-height:10pt;">
+                            Agofer S.A.S. NIT 800.216.499–1 :
+                        </p>
+                        <ul class="fa-ul" style="font-size:8pt; line-height:9pt; margin-left:1.2em;">
+                            <li>
+                                <i class="fa-li fa fa-caret-right"/>
+                                Autorretenedor Res. №0010 1994-02-11
+                            </li>
+                            <li>
+                                <i class="fa-li fa fa-caret-right"/>
+                                Gran contribuyente Res.DIAN №9061 2020-12-10
+                            </li>
+                            <li>
+                                <i class="fa-li fa fa-caret-right"/>
+                                Régimen Común y Agente Retenedor de IVA
+                            </li>
+                            <li>
+                                <i class="fa-li fa fa-caret-right"/>
+                                Actividad Económica CIIU 4752
+                            </li>
+                            <t t-if="o.journal_id.resolucion">
+                                <t t-foreach="o.journal_id.resolucion.split('|')" t-as="res">
+                                    <li>
+                                        <i class="fa-li fa fa-caret-right"/>
+                                        <t t-esc="res"/>
+                                    </li>
+                                </t>
+                            </t>
+                        </ul>
+                        <img t-att-src="'whatsappnumber'" width="142" height="16"/>
+                    </div>
+                </div>
+                <div class="row mt4 mb8" t-if="o.type in ['out_invoice','out_refund']">
+                    <div class="col-xs-3">
+                        <strong>Source:</strong>
+                        <p t-if="o.type == 'out_invoice'">
+                            <t t-if="o.origin">
+                                <span t-field="o.origin"/>
+                                <t t-if="o.stock_picking_id and o.stock_picking_id.sale_id and o.stock_picking_id.sale_id.date_order">
+                                    <small t-field="o.stock_picking_id.sale_id.date_order"
+                                           t-field-options="{&quot;format&quot;:&quot;YYYY-MM-dd&quot;}"/>
+                                </t>
+                            </t>
+                        </p>
+                        <t t-if="o.type == 'out_refund'">
+                            <p t-field="o.origin"/>
+                            <p t-if="o.stock_picking_id and o.stock_picking_id.origin">
+                                <t t-set="codrem" t-value="o.stock_picking_id.origin"/>
+                                <t t-set="rem" t-value="o.env['stock.picking'].search([('name','=',codrem)])"/>
+                                <t t-if="rem.picking_invoice_id">
+                                    <span t-esc="rem.picking_invoice_id.number"/>
+                                    <small t-esc="rem.picking_invoice_id.date_invoice"/>
+                                </t>
+                            </p>
+                            <p t-if="o.name">
+                                <strong>Description:</strong>
+                                <br/>
+                                <span t-field="o.name"/>
+                            </p>
+                        </t>
+                    </div>
+                    <div t-if="o.type == 'out_invoice'" class="col-xs-3">
+                        <strong>Orden de compra:</strong>
+                        <p t-if="o.stock_picking_id.sale_id and o.stock_picking_id.sale_id.client_order_ref">
+                            <span t-field="o.stock_picking_id.sale_id.client_order_ref"/>
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        <t t-set="asesor" t-value="o.user_id and o.user_id or o.partner_id.user_id"/>
+                        <strong>
+                            <t t-esc="asesor.employee_id.gender == 'female' and 'Asesora' or 'Asesor'"/>
+                            comercial:
+                        </strong>
+                        <p>
+                            <span t-field="asesor.primer_nombre"/>
+                            <t t-if="asesor.otros_nombres">
+                                <span t-esc="asesor.otros_nombres[:1]"/>.
+                            </t>
+                            <span t-field="asesor.primer_apellido"/>
+                            <br/>
+                            <small t-field="asesor.email"/>
+                            <br/>
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        <strong>Peso teórico total:</strong>
+                        <p>
+                            <t t-raw="weight"/>
+                            kg
+                        </p>
+                    </div>
+                </div>
+
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Description</th>
+                            <th class="text-center" colspan="2">Quantity</th>
+                            <th class="text-right">Unit Price</th>
+                            <th class="text-right" groups="sale.group_discount_per_so_line">Discount (%)</th>
+                            <th class="text-right">Valor</th>
+                            <th t-if="o.type == 'out_invoice'" class="text-right">IVA</th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <t t-set="barras"/>
+                        <tr t-foreach="o.invoice_line" t-as="l">
+                            <t t-set="iva"/>
+                            <t t-foreach="l.invoice_line_tax_id" t-as="tax">
+                                <t t-if="tax.description[:3] == 'IVA'">
+                                    <t t-set="iva" t-value="tax.name[-4:]"/>
+                                </t>
+                            </t>
+                            <td>
+                                <tt>
+                                    <small t-esc="l_index + 1"/>
+                                </tt>
+                            </td>
+                            <td>
+                                <tt>
+                                    <small t-field="l.product_id.code"/>
+                                </tt>
+                                <span t-field="l.product_id.name"/>
+                                <t t-if="l.product_id.categ_id.id == 9">
+                                    <i class="fa fa-tag"></i>
+                                    <t t-set="barras" t-value="True"/>
+                                </t>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{:,.2f}'.format(l.quantity)"/>
+                            </td>
+                            <td>
+                                <span t-field="l.uos_id" groups="product.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{:,.0f}'.format(l.price_unit)"/>
+                            </td>
+                            <td class="text-right" groups="sale.group_discount_per_so_line">
+                                <span t-field="l.discount"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.price_subtotal"
+                                      t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                            </td>
+                            <td t-if="o.type == 'out_invoice'" class="text-right">
+                                <small>
+                                    <t t-esc="iva"/>
+                                </small>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <small>
+                                    <t t-esc="len(o.invoice_line)"/>
+                                    <t t-esc="len(o.invoice_line) == 1 and 'ítem' or 'ítems'"/>
+                                </small>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div style="page-break-inside:avoid;">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div t-if="o.tax_line and o.type != 'out_invoice'" class="panel panel-default">
+                                <table class="table table-condensed small">
+                                    <thead>
+                                        <tr>
+                                            <th>Tax</th>
+                                            <th class="text-right">Base</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.tax_line" t-as="t">
+                                            <td>
+                                                <small t-field="t.name"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="t.base"
+                                                      t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="t.amount"
+                                                      t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <p t-if="o.comment and o.comment != 'false'">
+                                    <strong>Observaciones:</strong>
+                                    <br/>
+                                    <span t-esc="'\n'.join([line for line in o.comment.split('\n') if line.strip() != ''])"/>
+                                </p>
+                                <p t-if="o.fiscal_position.note">
+                                    <strong>Fiscal Position Remark:</strong>
+                                    <span t-field="o.fiscal_position.note"/>
+                                </p>
+                            </div>
+                            <div t-if="o.type == 'out_invoice' and barras" class="panel panel-info">
+                                <div class="panel-heading" style="padding: 5px;">
+                                    <h4 class="panel-title">
+                                        Barras corrugadas para refuerzo de concreto
+                                    </h4>
+                                </div>
+                                <div class="panel-body" style="padding: 5px;">
+                                    <ul class="fa-ul mb0">
+                                        <li>
+                                            <i class="fa-li fa fa-tag"></i>
+                                            Revise y conserve las etiquetas;
+                                            lo exige la Res.1856 de 2017 –
+                                            agofer.com.co/politicas/
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pull-right mb0">
+                            <table class="table table-condensed mb2">
+                                <tr class="border-black">
+                                    <td>
+                                        <strong>Total Without Taxes</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_untaxed"
+                                              t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Taxes</td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_tax"
+                                              t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black">
+                                    <td>
+                                        <strong t-if="o.type == 'out_invoice'">
+                                            Neto a Pagar
+                                        </strong>
+                                        <strong t-if="o.type != 'out_invoice'">
+                                            Total
+                                        </strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_total"
+                                              t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb4">
+                        <div t-if="is_einvoice" class="col-xs-5">
+                            <pre class="text-uppercase" style="font-size:8pt; line-height:8pt;"><strong><t
+                                    t-esc="o.type == 'out_invoice' and 'CUFE' or 'CUDE'"/>:</strong><t
+                                    t-esc="o.type == 'out_invoice' and o.ei_cufe or o.ei_cude"/></pre>
+                        </div>
+                        <div class="col-xs-3">
+                            <div t-if="o.type == 'out_invoice'" class="text-center">
+                                <div style="line-height:9pt; font-size:8pt;">
+                                    <span>
+                                        Favor realizar sus pagos a la
+                                        <br/>
+                                        Cuenta Corriente 210-05341-9
+                                        <br/>
+                                        Banco de Occidente
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 pull-right">
+                            <div t-if="o.type == 'out_invoice'" class="text-right bg-info" style="padding:4pt;">
+                                <div style="line-height:8pt; font-size:8pt;">
+                                    <span class="text-capitalize" t-esc="o.amount_total"
+                                          t-esc-options="{&quot;widget&quot;: &quot;num2words&quot;}"/>
+                                    &amp;nbsp;Pesos
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" t-if="o.type == 'out_invoice'">
+                        <div class="col-xs-12">
+                            <div class="alert alert-info mb8" style="padding:8px;">
+                                <p class="text-justify text-default" style="font-size:9pt;line-height:9pt;color:black;">
+                                    <span t-if="is_einvoice">
+                                        Ésta es una <strong><em>representación gráfica</em></strong>
+                                        de la factura electrónica, que para todos sus
+                                        efectos cumple con lo dispuesto en el
+                                        Art.&#160;774 del Código de Comercio, y en el
+                                        Decreto 2242 de 2015.
+                                    </span>
+                                    <span t-if="not is_einvoice">
+                                        Esta factura cumple, para todos sus
+                                        efectos, con lo dispuesto en el
+                                        Art.&#160;774 del Código de Comercio.
+                                    </span>
+                                    Las mercancías viajan por cuenta y riesgo del comprador
+                                    salvo estipulación al contrario en esta misma factura.
+                                    Solo se aceptan devoluciones dentro de los
+                                    diez días calendario siguientes a la recepción de
+                                    la mercancía, conforme al Art.&#160;2 de la
+                                    Ley&#160;1231 de 2008, y no se aceptan reclamos
+                                    después de diez días de recibida la factura.
+                                    Esta factura causará intereses moratorios a la tasa
+                                    máxima permitida por la ley, a partir de la fecha de
+                                    vencimiento.
+                                    Se hace constar que la firma de una persona distinta al
+                                    comprador indica que dicha persona se encuentra
+                                    autorizada expresamente por el comprador para recibir
+                                    la mercancía y firmar el documento como dependiente
+                                    suyo, acorde al Art.&#160;640 del Código de Comercio.
+                                    Firmada la presente, el cliente autoriza a ser
+                                    consultado y reportado en bases de datos y
+                                    centrales de riesgos, y confirma la autorización
+                                    dada a Agofer para almacenar y tratar sus datos
+                                    personales según la Ley&#160;1581 de 2012.
+                                    La celebración del presente contrato se realiza
+                                    únicamente en las jurisdicciones donde Agofer está
+                                    matriculado ante cámara de comercio. Todo
+                                    material es entregado al cliente en las instalaciones
+                                    de Agofer. La actividad de transporte de mercancías no
+                                    es ejecutada por Agofer: es asumida por el cliente a
+                                    través de terceros no vinculados a la Compañía.
+                                    Este documento es prueba de la negociación
+                                    realizada entre el cliente y Agofer S.A.S. en la
+                                    jurisdicción de <t t-esc="o.journal_id.name.rsplit(' ',1)[-1]"/>.
+                                    El cierre de esta venta es realizado únicamente por el
+                                    personal autorizado en nuestra sucursal en dicha ciudad.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="position:relative;" t-if="o.type == 'out_invoice'">
+                        <div class="col-xs-8">
+                            <div class="panel panel-default" style="border:0; box-shadow:none;">
+                                <p style="font-size:9pt; line-height:9pt;">
+                                    Al pagar esta factura exija recibo de caja o recibo
+                                    provisional de caja; sin éste no se aceptan reclamos.
+                                    Si paga con cheque, coloque sello restrictivo a nombre
+                                    de <strong>Agofer&#160;S.A.S.</strong>
+                                    Verifique la mercancía al momento de ser entregada; Agofer
+                                    no se hace responsable por faltantes o deterioro detectados
+                                    después de entregado el material o que no cuenten con su
+                                    correspondiente anotación o señalamiento en la factura o
+                                    remisión, ni por vicios sobre el mismo que sean suceptibles
+                                    de ser verificados a simple vista o con ayuda de
+                                    instrumentos de medición básicos.
+                                    <span t-if="is_einvoice">
+                                        <br/>
+                                        Para aceptar o rechazar esta factura, consulte el mensaje enviado vía e-mail
+                                        junto con los documentos adjuntos.
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <div class="panel panel-default mb4">
+                                        <div class="panel-body" style="min-height:2cm; padding-top: 0px;">
+                                            <p class="small">
+                                                <t t-if="o.stock_picking_id.carrier_nombre">
+                                                    <strong>Transportador: </strong>
+                                                    <span t-field="o.stock_picking_id.carrier_nombre"/>
+                                                    <br/>
+                                                </t>
+
+                                                <t t-if="o.stock_picking_id.carrier_id">
+                                                    <strong>Empresa de transporte: </strong>
+                                                    <t t-esc="' '.join(o.stock_picking_id.carrier_id.partner_id.name.split()[0:3]) or ''"/>
+                                                    <br/>
+                                                </t>
+
+                                                <t t-if="o.stock_picking_id.carrier_placa">
+                                                    <strong>Placa: </strong>
+                                                    <kbd t-field="o.stock_picking_id.carrier_placa"/>
+                                                </t>
+                                            </p>
+                                        </div>
+                                        <div class="panel-footer" style="padding:2px;">
+                                            <small style="font-size:8pt; font-weight:normal; line-height:8pt;">
+                                                Datos transporte
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="panel panel-default mb4">
+                                        <div class="panel-body"
+                                             style="min-height:2cm; padding-top:5px; overflow:hidden;">
+                                            <img t-att-src="'firmaurl'" width="109" height="58"/>
+                                        </div>
+                                        <div class="panel-footer" style="padding:2px;">
+                                            <small style="font-size:8pt; font-weight:normal; line-height:8pt;">
+                                                Firma autorizada Agofer
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4" style="position:absolute;bottom:0;right:0;">
+                            <div class="panel panel-default mb4">
+                                <div class="panel-body" style="min-height:3.2cm; padding-top: 0px;">
+                                    <small style="font-size:8pt; font-weight:normal; line-height:8pt;">
+                                        Acepto esta factura y recibo conforme
+                                    </small>
+                                </div>
+                                <div class="panel-footer" style="padding:2px;">
+                                    <small style="font-size:8pt; font-weight:normal; line-height:8pt;">
+                                        Nombre | CC | Firma | Sello | Fecha
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <t t-if="o.ei_validation_date and (o.ei_cufe or o.ei_cude)">
+                    <t t-set="urlvalidacion"
+                       t-value="'https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=%s' % (o.ei_cufe or o.ei_cude)"/>
+                    <div style="font-size:9px">
+                        <strong>Fecha de validación:</strong>
+                        <span t-esc="o.ei_validation_date[:-6]"/>
+                        <span class="pull-right">
+                            <strong>Información:</strong>
+                            <t t-esc="urlvalidacion[8:]"/>
+                        </span>
+                    </div>
+                </t>
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <small>
+                        <span t-field="o.company_id.rml_footer"/>
+                    </small>
+                </div>
+                <div class="row text-center" style="font-size:10px;">
+                    <div class="col-xs-4">
+                        <strong>
+                            <i class="fa fa-exclamation-circle"></i>
+                            #NoBajemosLaGuardia
+                        </strong>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong t-field="o.company_id.website"/>
+                    </div>
+                    <div class="col-xs-4">
+                        AvancysERP • Por Avancys S.A.S. • NIT 900297700
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </data>
+</odoo>
