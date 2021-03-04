@@ -9,9 +9,6 @@
                 <xpath expr="//field[@name='date']" position="after">
                     <field name="niif_bool" optional="hide"/>
                 </xpath>
-                <xpath expr="//field[@name='amount_total_signed']" position="after">
-                    <field name="niif_amount_total_signed" sum="Total NIIF Amount" string="Total NIIF" decoration-bf="1"/>
-                </xpath>
             </field>
         </record>
 

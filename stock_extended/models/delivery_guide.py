@@ -13,9 +13,6 @@ class DeliveryGuide(models.Model):
     analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
 
-    carrier_id = fields.Many2one('delivery.carrier', 'name')
-    carrier_tolerance = fields.Float('Tolerance (%)', related='carrier_id.tolerance')
-
     company_id = fields.Many2one('res.company', 'Company', required=True, readonly=True,
                                  default=lambda self: self.env.company)
 
