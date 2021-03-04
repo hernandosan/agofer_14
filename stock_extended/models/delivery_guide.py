@@ -58,12 +58,12 @@ class DeliveryGuide(models.Model):
 
     notes = fields.Text('Terms and Conditions')
 
-    partner_id = fields.Many2one('res.partner', 'Carrier', required=True)
+    partner_id = fields.Many2one('res.partner', 'Company Carrier', required=True)
 
     pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings',
                                     copy=False)
 
-    price = fields.Monetary('Price (Kg)', tracking=True, copy=False)
+    price = fields.Monetary('Price (Kg) Adjust', tracking=True, copy=False)
     price_additional = fields.Monetary('Additional Cost')
     price_standby = fields.Monetary('Stand By')
     price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
@@ -77,18 +77,17 @@ class DeliveryGuide(models.Model):
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_manual = fields.Float('Manual Weight', tracking=True)
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
-    weight_adjust = fields.Float('Adjust Weight', digits='Stock Weight')
+    weight_adjust = fields.Float('Weight Adjust', digits='Stock Weight')
 
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirm'),
-        ('progress', 'Progress'),
         ('delivered', 'Delivered'),
         ('checked', 'Checked'),
         ('invoiced', 'Invoiced'),
         ('cancel', 'Cancel')], 'State', default='draft', copy=False, tracking=True)
 
-    show_update_price_kg = fields.Boolean(string='Has Price(Kg) Changed', default=False)
+    show_update_price_kg = fields.Boolean(string='Has Price(Kg) Changed')
 
     @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
     def _compute_weight(self):
@@ -135,13 +134,13 @@ class DeliveryGuide(models.Model):
             getattr(guide, '_action_confirm_%s' % guide.guide_type)()
         self.write({'state': 'confirm'})
 
-    def action_progress(self):
-        self.invoices_ids.write({'delivery_state': 'progress'})
-        self.guide_account_invoice_ids.write({'account_delivery_state': 'progress'})
-        self.write({
-            'state': 'progress',
-            'date_progress': fields.Date.today(),
-        })
+    # def action_progress(self):
+    #     self.invoices_ids.write({'delivery_state': 'progress'})
+    #     self.guide_account_invoice_ids.write({'account_delivery_state': 'progress'})
+    #     self.write({
+    #         'state': 'progress',
+    #         'date_progress': fields.Date.today(),
+    #     })
 
     def action_delivered(self):
         self.write({
@@ -241,8 +240,12 @@ class DeliveryGuide(models.Model):
             self.show_update_price_kg = True
 
     def update_prices(self):
-        self.update({'price': ((self.rate_line_id.name * self.weight_adjust)/self.weight_total)})
-        self.show_update_price_kg = False
+        price = (self.rate_line_id.name * self.weight_adjust) / self.weight_total
+        vals = {
+            'price': price,
+            'show_update_price_kg': False,
+        }
+        self.write(vals)
         self.message_post(body=_("Price(Kg) have been recomputed according to pricelist <b>%s<b>", self.weight_adjust))
 
 

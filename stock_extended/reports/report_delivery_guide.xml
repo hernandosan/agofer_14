@@ -34,7 +34,7 @@
                     <div class="page">
                         <h2 style="text-align: center; color: #ff8a00"><span>Delivery Guide</span></h2>
                         <br></br>
-                        <div class="driver">
+                        <div class="a_header">
                             <table>
                                 <tr>
                                     <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
@@ -78,7 +78,7 @@
                     </div>
                     <hr style="border: 1px solid #696969"></hr>
                     <br></br>
-                    <div class="delivery">
+                    <div class="a_body">
                         <table>
                             <tr>
                                 <th>Invoice or Referral</th>
@@ -102,7 +102,7 @@
                     </div>
                     <br></br>
                     <br></br>
-                    <div class="total">
+                    <div class="a_total">
                         <table>
                             <tr>
                                 <th>Total agreed value</th>
@@ -126,7 +126,7 @@
                     <div class="page">
                         <h2 style="text-align: center; color: #ff8a00;"><span>Loading Orders</span></h2>
                         <br></br>
-                        <div class="driver">
+                        <div class="a_header">
                             <table>
                                 <tr>
                                     <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
@@ -176,7 +176,7 @@
                     </div>
                     <br></br>
                     <t t-if="doc.guide_subtype == 'picking'">
-                        <div class="delivery">
+                        <div class="a_body">
                             <table>
                                 <tr>
                                     <th>Referral</th>
@@ -199,7 +199,7 @@
                         <br></br>
                     </t>
                     <t t-if="doc.guide_subtype != 'picking'">
-                        <div class="delivery">
+                        <div class="a_body">
                             <table>
                                 <tr>
                                     <th>Progress Date</th>
@@ -230,7 +230,7 @@
                         <br></br>
                     </t>
                     <br></br>
-                    <div class="total">
+                    <div class="a_total">
                         <table>
                             <tr>
                                 <th>Total agreed value</th>

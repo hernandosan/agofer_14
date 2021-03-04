@@ -34,6 +34,7 @@
         'reports/report_delivery_guide.xml',
         'reports/report_stock_picking.xml',
         'wizard/sale_advance_payment_inv_view.xml',
+        'wizard/update_delivery_guide_view.xml',
         # 'views/account_move_view.xml',
         'views/delivery_carrier_view.xml',
         # 'views/delivery_guide_move_view.xml',
