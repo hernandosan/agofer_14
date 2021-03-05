@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "account_payment_order_extended",
+    'name': "Account Payment Order Agofer",
 
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    'summary': "Account Payment Order Agofer",
 
-    'description': """
-        Long description of module's purpose
-    """,
+    'description': "Account Payment Order Agofer",
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Agofer",
+    'website': "http://www.agofer.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    'category': 'Banking Addons',
+    'version': '14.1',
 
     # any module necessary for this one to work correctly
     'depends': ['account_payment_order'],
@@ -25,6 +21,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/account_payment_method.xml',
         'reports/account_payment_order_report.xml',
         'views/account_payment_order_view.xml',
     ],
