@@ -19,7 +19,7 @@ class AccountPaymentOrder(models.Model):
             str(self.date_done or fields.Date.today()).replace('-', ''),
             str(len(self.payment_line_ids)).zfill(6),
             '0'.zfill(12),
-            str(sum(line.amount_company_currency for line in self.payment_line_ids)),
+            str(sum(line.amount_company_currency for line in self.payment_line_ids)).zfill(12),
             self.company_partner_bank_id.acc_number.zfill(11),
             'S'
         )
@@ -29,8 +29,9 @@ class AccountPaymentOrder(models.Model):
         for line in self.payment_line_ids:
             tuple_string = (
                 6,
-                line.partner_id.ref_num.zfill(15),
-                line.partner_id.name.ljust(18),
+                # line.partner_id.ref_num.zfill(15),
+                line.partner_id.vat.zfill(15),
+                line.partner_id.name[:18].ljust(18),
                 line.partner_bank_id.bank_id.bic.zfill(9),
                 line.partner_bank_id.acc_number.zfill(17),
                 'S',

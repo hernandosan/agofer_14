@@ -8,9 +8,7 @@
             <field name="report_type">qweb-text</field>
             <field name="report_name">account_payment_order_extended.template_bancolombia</field>
         </record>
-        <template id="template_bancolombia">
-            <t t-esc="docs.report_bancolombia()"/>
-        </template>
 
+        <template id="template_bancolombia"><t t-esc="docs.report_bancolombia()"/></template>
     </data>
 </odoo>

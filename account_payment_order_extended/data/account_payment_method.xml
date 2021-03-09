@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="account_payment_method_electronic_out" model="account.payment.method">
             <field name="name">Electronic</field>
             <field name="code">electronic</field>
@@ -9,6 +8,5 @@
             <field name="sequence">10</field>
             <field name="active">True</field>
         </record>
-
     </data>
 </odoo>
