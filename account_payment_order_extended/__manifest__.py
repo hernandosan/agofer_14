@@ -25,6 +25,7 @@
         'reports/account_payment_order_report.xml',
         'views/account_payment_order_view.xml',
         'views/res_bank_view.xml',
+        'wizard/account_payment_line_create_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
