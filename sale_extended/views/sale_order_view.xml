@@ -3,7 +3,7 @@
         <record id="view_sale_order_form" model="ir.ui.view">
             <field name="name">view.sale.order.form</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
                     <attribute name="groups">account.group_account_invoice</attribute>
@@ -18,52 +18,39 @@
                     <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
-                    <attribute name="domain">['|',('id','=',partner_id),('parent_id','=','partner_id')]</attribute>
+                    <attribute name="domain">[('id', 'child_of', partner_id)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
-                    <attribute name="domain">[('id','child_of',partner_id)]</attribute>
+                    <attribute name="domain">[('id', 'child_of', partner_id)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='show_update_pricelist']" position="before">
-                    <field name="pricelists_ids" invisible="True"/>
-                    <field name="teams_ids" invisible="True"/>
-                    <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" options="{'no_create': True}" 
-                        required="True" domain="[('id','in',teams_ids)]" attrs="{'readonly': [('state','in',('sale','done'))]}"/>
+                    <field name="branch_id" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}" required="True" />
+                    <field name="branch_pricelists_ids" invisible="True" />
+                    <field name="branch_warehouses_ids" invisible="True" />
+                    <field name="branch_journal_invoice_id" invisible="True" />
+                    <field name="branch_journal_refund_id" invisible="True" />
                 </xpath>
                 <xpath expr="//field[@name='pricelist_id']" position="attributes">
-                    <attribute name="domain">[('id','in',pricelists_ids)]</attribute>
+                    <attribute name="domain">[('id','in',branch_pricelists_ids)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="attributes">
-                    <attribute name="groups">account_credit_control.group_account_credit_control_user,sales_team.group_sale_manager</attribute>
+                    <attribute name="groups">account_credit_control.group_account_credit_control_user,sales_team.group_sale_salesman_all_leads</attribute>
                     <attribute name="attrs">{'readonly': [('state','in',('done','cancel'))]}</attribute>
                     <attribute name="required">True</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[1]/field[@name='price_unit']" position="attributes">
-                    <attribute name="groups">sale_extended.group_price_unit</attribute>
+                    <attribute name="readonly">True</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[1]/field[@name='price_unit']" position="after">
-                    <field name="price_unit_discount"/>
-                    <field name="price_kilogram"/>
-                    <field name="weight"/>
+                    <field name="price_kilogram" />
+                    <field name="weight" />
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
-                    <attribute name="groups">sale_extended.group_price_unit</attribute>
+                    <attribute name="readonly">True</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="price_unit_discount"/>
-                    <field name="price_kilogram" optional="hide"/>
-                    <field name="weight" optional="show" sum="Weight"/>
-                </xpath>
-                <xpath expr="//group[@name='sales_person']" position="replace">
-                    <group name="sales_person" string="Sales">
-                        <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
-                        <!-- <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" options="{'no_create': True}"/> -->
-                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                        <field name="require_signature"/>
-                        <field name="require_payment"/>
-                        <field name="reference" readonly="1" attrs="{'invisible': [('reference', '=', False)]}"/>
-                        <field name="client_order_ref"/>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                    </group>
+                    <field name="price_kilogram" optional="show" />
+                    <field name="weight" optional="show" sum="Weight" />
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']/label[1]" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -72,42 +59,31 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="inside">
-                    <field name="shipping_type" required="True" attrs="{'readonly': [('state','not in',('draft','sent'))]}"/>
-                    <field name="delivery_assistant" 
-                        attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}"/>
+                    <field name="shipping_type" required="True" attrs="{'readonly': [('state','not in',('draft','sent'))]}" />
+                    <field name="delivery_assistant" attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}" />
                 </xpath>
                 <xpath expr="//group[@name='sale_shipping']" position="after">
                     <group string="Shipping Date">
-                        <field name="shipping_bool" invisible="True"/>
-                        <field name="delivery_bool" 
-                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="upload_delay" invisible="True"/>
-                        <field name="upload_date" 
-                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="delivery_delay" invisible="True"/>
-                        <field name="delivery_date" 
-                            attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_bool" 
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_date" 
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_name" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_vat" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_license" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_file" filename="pick_file_name"
-                            attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}"/>
-                        <field name="pick_file_name" invisible="True"/>
+                        <field name="shipping_bool" invisible="True" />
+                        <field name="delivery_bool" attrs="{'invisible': [('shipping_type','!=','delivery')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="upload_delay" invisible="True" />
+                        <field name="upload_date" attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="delivery_delay" invisible="True" />
+                        <field name="delivery_date" attrs="{'invisible': [('shipping_type','!=','delivery')], 'required': [('shipping_type','=','delivery'),('delivery_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_bool" attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_date" attrs="{'invisible': [('shipping_type','!=','pick')], 'required': [('shipping_type','=','pick'),('pick_bool','=',False)], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_name" filename="pick_file_name" attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_vat" filename="pick_file_name" attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_license" filename="pick_file_name" attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_file" filename="pick_file_name" attrs="{'invisible': [('shipping_type','!=','pick')], 'readonly': [('state','not in',('draft','sent'))]}" />
+                        <field name="pick_file_name" invisible="True" />
                     </group>
                 </xpath>
                 <xpath expr="//page[@name='other_information']" position="before">
                     <group string="Payments">
-                        <field name="payment_journal_id" invisible="True"/>
-                        <field name="payment_account_id" invisible="True"/>
-                        <field name="payments_id" attrs="{'readonly': [('state','not in',('draft','sent'))]}" 
-                        context="{
+                        <field name="payment_journal_id" invisible="True" />
+                        <field name="payment_account_id" invisible="True" />
+                        <field name="payments_id" attrs="{'readonly': [('state','not in',('draft','sent'))]}" context="{
                             'default_payment_type': 'inbound',
                             'default_partner_type': 'customer',
                             'default_partner_id': partner_id,
@@ -117,39 +93,22 @@
                             'default_destination_account_id': payment_account_id,
                             'default_journal_id': payment_journal_id,
                             'default_destination_account_id': payment_account_id,
-                        }"/>
+                        }" />
                     </group>
                 </xpath>
             </field>
         </record>
 
-        <!-- <record id="view_sale_order_form_sale" model="ir.ui.view">
-            <field name="name">view.sale.order.form.sale</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_stock.view_sales_order_auto_done_setting"/>
-            <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_done']" position="attributes">
-                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
-                </xpath>
-                <xpath expr="//button[@name='action_unlock']" position="attributes">
-                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
-                </xpath>
-            </field>
-        </record> -->
-
         <record id="view_sale_order_form_stock" model="ir.ui.view">
             <field name="name">view.sale.order.form.stock</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='warehouse_id']" position="before">
-                    <field name="warehouses_ids" invisible="True"/>
-                </xpath>
                 <xpath expr="//field[@name='warehouse_id']" position="attributes">
-                    <attribute name="domain">[('id','in',warehouses_ids)]</attribute>
+                    <attribute name="domain">[('id','in',branch_warehouses_ids)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='incoterm']" position="attributes">
-                    <attribute name="required">1</attribute>
+                    <attribute name="required">True</attribute>
                 </xpath>
             </field>
         </record>

@@ -6,21 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-05 22:02+0000\n"
-"PO-Revision-Date: 2021-03-05 17:04-0500\n"
-"Last-Translator: Reyes Hernando Santana rhsantana@agofer.com.co\n"
+"POT-Creation-Date: 2021-03-09 19:21+0000\n"
+"PO-Revision-Date: 2021-03-09 19:21+0000\n"
+"Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"Language: es_CO\n"
-"X-Generator: Poedit 2.4.2\n"
 
 #. module: account_payment_order_extended
 #: model:ir.actions.report,name:account_payment_order_extended.report_bancolombia
 msgid "Bancolombia"
-msgstr "Bancolombia"
+msgstr ""
 
 #. module: account_payment_order_extended
 #: model:ir.model,name:account_payment_order_extended.model_res_bank
@@ -46,7 +44,7 @@ msgstr "Comunicación"
 #. module: account_payment_order_extended
 #: model:ir.model.fields.selection,name:account_payment_order_extended.selection__res_partner_bank__acc_type__current
 msgid "Current"
-msgstr "Actual"
+msgstr "Corriente"
 
 #. module: account_payment_order_extended
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_account_payment_line__display_name
@@ -57,12 +55,17 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: account_payment_order_extended
+#: model:account.payment.method,name:account_payment_order_extended.account_payment_method_electronic_out
+msgid "Electronic"
+msgstr "Electrónico"
+
+#. module: account_payment_order_extended
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_account_payment_line__id
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_account_payment_order__id
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_res_bank__id
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_res_partner_bank__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: account_payment_order_extended
 #: model:ir.model.fields,help:account_payment_order_extended.field_account_payment_line__communication
@@ -80,7 +83,7 @@ msgstr "Última modificación en"
 #. module: account_payment_order_extended
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_account_payment_order__order_type
 msgid "Order Type"
-msgstr "Tipo de pedido"
+msgstr "Tipo de Orden"
 
 #. module: account_payment_order_extended
 #: model:ir.model.fields,field_description:account_payment_order_extended.field_account_payment_order__payment_date
@@ -110,7 +113,7 @@ msgstr "Reporte"
 #. module: account_payment_order_extended
 #: model:ir.model.fields.selection,name:account_payment_order_extended.selection__res_partner_bank__acc_type__saving
 msgid "Saving"
-msgstr "Guardando"
+msgstr "Ahorros"
 
 #. module: account_payment_order_extended
 #: model:ir.model.fields.selection,name:account_payment_order_extended.selection__account_payment_order__order_type__220
