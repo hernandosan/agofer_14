@@ -11,17 +11,32 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    credit_type = fields.Selection(related='payment_term_id.credit_type', store=True)
+    # Branch
+    branch_id = fields.Many2one('hr.branch', 'Branch', help="Dispatch branch")
+    branch_pricelists_ids = fields.Many2many(
+        related='branch_id.sale_pricelists_ids')
+    branch_warehouses_ids = fields.Many2many(
+        related='branch_id.stock_warehouses_ids')
+    branch_journal_invoice_id = fields.Many2one(
+        related='branch_id.account_journal_invoice_id')
+    branch_journal_refund_id = fields.Many2one(
+        related='branch_id.account_journal_refund_id')
+    # Credit
+    credit_type = fields.Selection(
+        related='payment_term_id.credit_type', store=True)
     # Delivery
     delivery_assistant = fields.Boolean('Delivery Assistant')
     delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
-    delivery_delay = fields.Float('Customer Delivery Time', compute='_compute_delay')
+    delivery_delay = fields.Float(
+        'Customer Delivery Time', compute='_compute_delay')
     # Incoterm
-    incoterm = fields.Many2one(default=lambda self: self.env['account.incoterms'].search([], limit=1))
+    incoterm = fields.Many2one(
+        default=lambda self: self.env['account.incoterms'].search([], limit=1))
     # Payments
     payment_account_id = fields.Many2one(related='team_id.account_advance_id')
     payment_journal_id = fields.Many2one(related='team_id.journal_advance_id')
+    payment_term_id = fields.Many2one(tracking=True)
     payments_id = fields.One2many('account.payment', 'order_id', 'Payments')
     # Pick
     pick_file = fields.Binary('Authorization Pick', copy=False)
@@ -31,32 +46,34 @@ class SaleOrder(models.Model):
     pick_license = fields.Char('Pick License')
     pick_name = fields.Char('Pick Name')
     pick_vat = fields.Char('Pick VAT')
-    # Pricelist
-    pricelists_ids = fields.Many2many(related='team_id.pricelists_ids')
     # Shipping
     shipping_bool = fields.Boolean('Shipping Bool', copy=False)
-    shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type', default='delivery')
+    shipping_type = fields.Selection([('delivery', 'Delivery Agofer'), (
+        'pick', 'Customer Pick')], 'Shipping Type', default='delivery')
     # Stock
     warehouses_ids = fields.Many2many(related='team_id.warehouses_ids')
-    # Team
-    teams_ids = fields.Many2many(related='user_id.teams_ids')
     # Upload
     upload_date = fields.Date('Upload Date')
-    upload_delay = fields.Float('Customer Upload Time', compute='_compute_delay')
+    upload_delay = fields.Float(
+        'Customer Upload Time', compute='_compute_delay')
     # User
     user_id = fields.Many2one(copy=False)
 
     @api.depends('order_line.upload_delay', 'order_line.delivery_delay')
     def _compute_delay(self):
         for sale in self:
-            upload_delay = max(line.upload_delay for line in sale.order_line) if sale.order_line else 0
-            delivery_delay = max(line.delivery_delay for line in sale.order_line) if sale.order_line else 0
-            sale.update({'upload_delay': upload_delay, 'delivery_delay': delivery_delay})
+            upload_delay = max(
+                line.upload_delay for line in sale.order_line) if sale.order_line else 0
+            delivery_delay = max(
+                line.delivery_delay for line in sale.order_line) if sale.order_line else 0
+            sale.update({'upload_delay': upload_delay,
+                         'delivery_delay': delivery_delay})
 
     @api.onchange('date_order')
     def _onchange_date_order(self):
         if self.date_order:
-            self.upload_date = self.date_order + timedelta(days=self.delivery_delay or 2)
+            self.upload_date = self.date_order + \
+                timedelta(days=self.delivery_delay or 2)
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -93,7 +110,8 @@ class SaleOrder(models.Model):
         #     values['user_id'] = user_id
 
         if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.env.company.invoice_terms:
-            values['note'] = self.with_context(lang=self.partner_id.lang).env.company.invoice_terms
+            values['note'] = self.with_context(
+                lang=self.partner_id.lang).env.company.invoice_terms
         if not self.env.context.get('not_self_saleperson') or not self.team_id:
             values['team_id'] = self.env['crm.team'].with_context(
                 default_team_id=self.partner_id.team_id.id
@@ -102,13 +120,16 @@ class SaleOrder(models.Model):
 
     @api.onchange('team_id')
     def _onchange_team_id(self):
-        self.warehouse_id = self.team_id.warehouses_ids[0] if self.team_id and  self.team_id.warehouses_ids else self.warehouse_id
-        self.pricelist_id = self.team_id.pricelists_ids[0] if self.team_id and  self.team_id.pricelists_ids else self.pricelist_id
+        self.warehouse_id = self.team_id.warehouses_ids[
+            0] if self.team_id and self.team_id.warehouses_ids else self.warehouse_id
+        self.pricelist_id = self.team_id.pricelists_ids[
+            0] if self.team_id and self.team_id.pricelists_ids else self.pricelist_id
 
     @api.onchange('upload_date')
     def _onchange_upload_date(self):
         if self.upload_date:
-            self.delivery_date = self.upload_date + timedelta(days=self.delivery_delay or 1)
+            self.delivery_date = self.upload_date + \
+                timedelta(days=self.delivery_delay or 1)
 
     def action_confirm(self):
         self.action_before_confirm()
@@ -134,7 +155,8 @@ class SaleOrder(models.Model):
                 if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
-                    body = _("Order confirmed by discount. User: %s, Order: %s \n") % (user, order) + msg_validate
+                    body = _("Order confirmed by discount. User: %s, Order: %s \n") % (
+                        user, order) + msg_validate
                     _logger.warning(body)
                     sale.message_post(body=body)
                 else:
@@ -152,11 +174,13 @@ class SaleOrder(models.Model):
                 if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
-                    body = _("Order confirmed by cost. User: %s, Order: %s \n") % (user, order) + msg_validate
+                    body = _("Order confirmed by cost. User: %s, Order: %s \n") % (
+                        user, order) + msg_validate
                     _logger.warning(body)
                     sale.message_post(body=body)
                 else:
-                    msg = _('Order blocked by cost of product. \n') + msg_validate
+                    msg = _('Order blocked by cost of product. \n') + \
+                        msg_validate
                     raise ValidationError(msg)
 
     def _validate_standard_price(self):
@@ -170,7 +194,8 @@ class SaleOrder(models.Model):
                 if self.env.user.has_group('sales_team.group_sale_manager'):
                     user = self.env.user.login
                     order = sale.name
-                    body = _("Order confirmed by quanity. User %s, Order %s \n") % (user, order) + msg_validate
+                    body = _("Order confirmed by quanity. User %s, Order %s \n") % (
+                        user, order) + msg_validate
                     _logger.warning(body)
                     sale.message_post(body=body)
                 else:
@@ -195,11 +220,13 @@ class SaleOrder(models.Model):
             if self.env.user.has_group('sales_team.group_sale_manager'):
                 user = self.env.user.login
                 order = self.name
-                body = _("Order confirmed by days. User: %s, Order: %s") % (user, order)
+                body = _("Order confirmed by days. User: %s, Order: %s") % (
+                    user, order)
                 _logger.warning(body)
                 self.message_post(body=body)
             else:
-                msg = _("Order blocked by days. Delivery date cannot be less than three days")
+                msg = _(
+                    "Order blocked by days. Delivery date cannot be less than three days")
                 raise ValidationError(msg)
 
     def validate_credit_type(self):
@@ -214,16 +241,19 @@ class SaleOrder(models.Model):
         self.ensure_one()
         decimal_places = self.currency_id.decimal_places
         amount_total = self.amount_total
-        amount_payment = sum(payment.currency_id._convert(payment.amount, self.currency_id, self.company_id, payment.date) for payment in self._sale_payments_id()) or 0.0
+        amount_payment = sum(payment.currency_id._convert(payment.amount, self.currency_id,
+                                                          self.company_id, payment.date) for payment in self._sale_payments_id()) or 0.0
         if amount_payment < amount_total:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user') or self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                 user = self.env.user.login
                 order = self.name
-                body = _("Order confirmed by cash. User: %s, Order: %s") % (user, order)
+                body = _("Order confirmed by cash. User: %s, Order: %s") % (
+                    user, order)
                 _logger.warning(body)
                 self.message_post(body=body)
             else:
-                msg = _("Order blocked by cash. Total: $ %s, Payment: $ %s") % (round(amount_total,decimal_places), round(amount_payment,decimal_places))
+                msg = _("Order blocked by cash. Total: $ %s, Payment: $ %s") % (
+                    round(amount_total, decimal_places), round(amount_payment, decimal_places))
                 raise ValidationError(msg)
 
     def validate_credit_control(self):
@@ -234,18 +264,21 @@ class SaleOrder(models.Model):
 
     def _validate_credit_quota(self):
         self.ensure_one()
-        amount_total = self.currency_id._convert(self.amount_total, self.company_id.currency_id, self.company_id, self.date_order)
+        amount_total = self.currency_id._convert(
+            self.amount_total, self.company_id.currency_id, self.company_id, self.date_order)
         credit_quota = self.partner_id.commercial_partner_id.credit_quota
         decimal_places = self.company_id.currency_id.decimal_places
         if amount_total > credit_quota:
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user') or self.env.user.has_group('sales_team.group_sale_salesman_all_leads'):
                 user = self.env.user.login
                 order = self.name
-                body = _("Order confirmed by quota. User: %s, Order: %s") % (user, order)
+                body = _("Order confirmed by quota. User: %s, Order: %s") % (
+                    user, order)
                 _logger.warning(body)
                 self.message_post(body=body)
             else:
-                msg = _("Order blocked by quota. Quota: $ %s, Value: $ %s") % (round(credit_quota,decimal_places), round(amount_total,decimal_places))
+                msg = _("Order blocked by quota. Quota: $ %s, Value: $ %s") % (
+                    round(credit_quota, decimal_places), round(amount_total, decimal_places))
                 raise ValidationError(msg)
 
     def _validate_credit_maturity(self):
@@ -255,17 +288,20 @@ class SaleOrder(models.Model):
             if self.env.user.has_group('account_credit_control.group_account_credit_control_user'):
                 user = self.env.user.login
                 order = self.name
-                body = _("Order confirmed by maturity. User: %s, Order: %s") % (user, order)
+                body = _("Order confirmed by maturity. User: %s, Order: %s") % (
+                    user, order)
                 _logger.warning(body)
                 self.message_post(body=body)
             else:
-                msg = _("Order blocked by maturity. Maturity: $ %s") % (credit_maturity)
+                msg = _("Order blocked by maturity. Maturity: $ %s") % (
+                    credit_maturity)
                 raise ValidationError(msg)
 
     def run_reservation(self):
         incoterm = self.env.ref('sale_extended.incoterm_res').id
         date = datetime.now() - timedelta(days=15)
-        sales = self.search([('state','=','done'),('incoterm','=',incoterm),('date_order','<=',date),('shipping_bool','=',False)])
+        sales = self.search([('state', '=', 'done'), ('incoterm', '=', incoterm),
+                             ('date_order', '<=', date), ('shipping_bool', '=', False)])
         sales.action_reservation()
 
     def action_reservation(self):
@@ -316,32 +352,39 @@ class SaleOrder(models.Model):
 
     def _sale_payments_id(self):
         self.ensure_one()
-        state = 'posted' if self._context.get('state') and self._context.get('state') == 'posted' else 'cancel'
+        state = 'posted' if self._context.get(
+            'state') and self._context.get('state') == 'posted' else 'cancel'
         return self.payments_id.filtered(lambda p: p.state != state)
 
     def _create_invoices(self, grouped=False, final=False, date=None):
-        moves = super(SaleOrder, self)._create_invoices(grouped=grouped, final=final, date=date)
+        moves = super(SaleOrder, self)._create_invoices(
+            grouped=grouped, final=final, date=date)
         moves.action_post()
         return moves
 
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
-        journal_id = self.team_id._team_return_journal_id() if invoice_vals.get('move_type') == 'out_refund' else self.team_id._team_invoice_journal_id()
-        invoice_vals.update(journal_id=journal_id.id, delivery_state='pending', order_id=self.id)
+        journal_id = self.team_id._team_return_journal_id() if invoice_vals.get(
+            'move_type') == 'out_refund' else self.team_id._team_invoice_journal_id()
+        invoice_vals.update(journal_id=journal_id.id,
+                            delivery_state='pending', order_id=self.id)
         return invoice_vals
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    delivery_delay = fields.Float(related='product_id.delivery_delay', store=True)
+    delivery_delay = fields.Float(
+        related='product_id.delivery_delay', store=True)
     price_unit = fields.Float(copy=False)
-    price_unit_discount = fields.Float('Unit Price Discount', compute='_compute_price', digits='Product Price')
-    price_kilogram = fields.Float('Kg Price', digits='Product Price', compute='_compute_price')
+    price_kilogram = fields.Float(
+        'Kg Price', digits='Product Price', compute='_compute_price_kilogram')
     pricelist_id = fields.Many2one(related='order_id.pricelist_id', store=True)
-    shipping_type = fields.Selection(related='order_id.shipping_type', store=True)
+    shipping_type = fields.Selection(
+        related='order_id.shipping_type', store=True)
     upload_delay = fields.Float(related='product_id.upload_delay', store=True)
-    weight = fields.Float('Weight', digits='Stock Weight', compute='_compute_weight')
+    weight = fields.Float('Weight', digits='Stock Weight',
+                          compute='_compute_weight')
 
     @api.onchange('discount')
     def _onchange_discount(self):
@@ -351,22 +394,23 @@ class SaleOrderLine(models.Model):
                 msg = _('Order blocked by discount. \n') + message
                 raise ValidationError(msg)
 
-    @api.depends('price_unit', 'discount', 'product_uom', 'product_id')
-    def _compute_price(self):
-        for line in self:
-            boolean = line.price_unit and line.product_uom and line.product_id
-            price_unit_discount = line.price_unit * (1 - (line.discount or 0.0) / 100.0) if boolean else 0.0
-            price = line.product_uom._compute_price(price_unit_discount, line.product_id.uom_id) if boolean else 0.0
-            price_kilogram = price / line.product_id.weight if boolean and line.product_id.weight else 0.0
+    @api.depends('price_unit', 'product_uom', 'product_id')
+    def _compute_price_kilogram(self):
+        self.update({'price_kilogram': 0.0})
+        for line in self.filtered(lambda l: l.product_id and l.product_id.weight):
+            price_unit = line.product_uom._compute_price(
+                line.price_unit, line.product_id.uom_id)
+            price_kilogram = price_unit / line.product_id.weight
             line.update({
-                'price_unit_discount': price_unit_discount,
                 'price_kilogram': price_kilogram
             })
 
     @api.depends('product_uom', 'product_uom_qty', 'product_id')
     def _compute_weight(self):
-        for line in self:
-            quantity = line.product_uom._compute_quantity(line.product_uom_qty, line.product_id.uom_id)
+        self.update({'weight': 0.0})
+        for line in self.filtered(lambda l: l.product_id and l.product_id.weight):
+            quantity = line.product_uom._compute_quantity(
+                line.product_uom_qty, line.product_id.uom_id)
             line.update({
                 'weight': quantity * line.product_id.weight
             })
@@ -408,7 +452,8 @@ class SaleOrderLine(models.Model):
         for line in self:
             warehouse = line.order_id.warehouse_id
             location = warehouse.lot_stock_id
-            free_qty_today = line.product_id.with_context({'warehouse': warehouse.id, 'location': location.id}).free_qty
+            free_qty_today = line.product_id.with_context(
+                {'warehouse': warehouse.id, 'location': location.id}).free_qty
             product_uom_qty = line.product_uom_qty
             if product_uom_qty > free_qty_today:
                 msg += line._msg_product_qty(product_uom_qty, free_qty_today)

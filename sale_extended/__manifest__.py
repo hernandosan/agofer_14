@@ -18,8 +18,10 @@
 
     # any module necessary for this one to work correctly
     'depends': [
+        'account_credit_control_extended',
+        'account_payment_extended',
+        'hr_branch_extended',
         'sale_stock', 
-        'account_credit_control_extended'
     ],
 
     # always loaded
@@ -31,6 +33,7 @@
         'data/ir_cron_data.xml',
         'views/account_payment_view.xml',
         'views/crm_team_view.xml',
+        'views/hr_branch_view.xml',
         'views/product_pricelist_view.xml',
         'views/product_template_view.xml',
         'views/res_partner_view.xml',
