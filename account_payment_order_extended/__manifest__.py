@@ -7,7 +7,7 @@
     'description': "Account Payment Order Agofer",
 
     'author': "Agofer",
-    'website': "http://www.agofer.com",
+    'website': "https://www.agofer.com.co",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
@@ -24,6 +24,7 @@
         'data/account_payment_method.xml',
         'reports/account_payment_order_report.xml',
         'views/account_payment_order_view.xml',
+        'views/res_bank_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
