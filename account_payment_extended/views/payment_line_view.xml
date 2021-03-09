@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_payment_line_form">
+            <field name="name">view.payment.line.form</field>
+            <field name="model">payment.line</field>
+            <field name="arch" type="xml">
+                <form string="Payment Line">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="line_id" readonly="True" />
+                                <field name="account_id" readonly="True" />
+                                <field name="date" readonly="True" />
+                                <field name="date_maturity" readonly="True" />
+                            </group>
+                            <group>
+                                <field name="amount_currency" readonly="True" />
+                                <field name="amount_residual_currency" readonly="True" />
+                                <field name="total_bool" readonly="True" />
+                                <field name="total_currency" readonly="True" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

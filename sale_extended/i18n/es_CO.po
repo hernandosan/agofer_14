@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 15:49+0000\n"
-"PO-Revision-Date: 2021-03-01 15:49+0000\n"
+"POT-Creation-Date: 2021-03-09 19:25+0000\n"
+"PO-Revision-Date: 2021-03-09 19:25+0000\n"
 "Last-Translator: Juan Pablo Arcos jparcos@agofer.com.co\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_hr_branch_form
 msgid "Account"
 msgstr "Contabilidad"
 
@@ -43,11 +44,6 @@ msgid "Apply On"
 msgstr "Aplicar"
 
 #. module: sale_extended
-#: model:ir.model,name:sale_extended.model_ir_attachment
-msgid "Attachment"
-msgstr "Adjunto"
-
-#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__pick_file
 msgid "Authorization Pick"
 msgstr "Autorización de Recogida"
@@ -61,6 +57,11 @@ msgstr "Nombre de la Autorización de Recogida"
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Avatar"
 msgstr ""
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__branch_id
+msgid "Branch"
+msgstr "Sucursal"
 
 #. module: sale_extended
 #: code:addons/sale_extended/models/sale_order.py:0
@@ -185,12 +186,16 @@ msgstr ""
 "desde la confirmación del pedido de venta hasta la entrega"
 
 #. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_sale_order__branch_id
+msgid "Dispatch branch"
+msgstr "Sucursal de despacho"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_account_invoice_report__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_account_move__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__display_name
-#: model:ir.model.fields,field_description:sale_extended.field_ir_attachment__display_name
-#: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__display_name
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__display_name
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__display_name
@@ -203,9 +208,9 @@ msgid "Display Name"
 msgstr "Nombre Público"
 
 #. module: sale_extended
-#: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__discount_freight
-msgid "Freight percentage"
-msgstr "Porcentaje de flete"
+#: model:ir.model,name:sale_extended.model_hr_branch
+msgid "HR Branch"
+msgstr "TH Sucursal"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__datetime
@@ -222,8 +227,7 @@ msgstr "Precio Historico"
 #: model:ir.model.fields,field_description:sale_extended.field_account_move__id
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__id
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__id
-#: model:ir.model.fields,field_description:sale_extended.field_ir_attachment__id
-#: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__id
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item__id
 #: model:ir.model.fields,field_description:sale_extended.field_product_template__id
@@ -263,6 +267,8 @@ msgstr ""
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__journal_invoice_id
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__account_journal_invoice_id
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__branch_journal_invoice_id
 msgid "Invoice Journal"
 msgstr "Diario de Facturación"
 
@@ -316,8 +322,7 @@ msgstr "Meta de Kilogramos"
 #: model:ir.model.fields,field_description:sale_extended.field_account_move____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team____last_update
-#: model:ir.model.fields,field_description:sale_extended.field_ir_attachment____last_update
-#: model:ir.model.fields,field_description:sale_extended.field_product_pricelist____last_update
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_history____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_pricelist_item____last_update
 #: model:ir.model.fields,field_description:sale_extended.field_product_template____last_update
@@ -340,26 +345,20 @@ msgid "Last Updated on"
 msgstr "Actualizado"
 
 #. module: sale_extended
-#: model:ir.model.fields,help:sale_extended.field_product_pricelist__discount_maximum
-msgid "Maximum discount allowed in the order"
-msgstr "Descuento máximo permitido en el pedido"
-
-#. module: sale_extended
-#: model:ir.model.fields,help:sale_extended.field_product_pricelist__discount_freight
-msgid "Maximum discount allowed when the customer collects"
-msgstr "Descuento máximo permitido cuando el cliente recoge"
-
-#. module: sale_extended
-#: model:ir.model.fields,field_description:sale_extended.field_product_pricelist__discount_maximum
-msgid "Maximum percentage"
-msgstr "Porcentaje máximo"
-
-#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__members_ids
 #: model:ir.model.fields,field_description:sale_extended.field_res_users__teams_ids
-#: model:ir.model.fields,field_description:sale_extended.field_sale_order__teams_ids
 msgid "Members"
 msgstr "Miembros"
+
+#. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__sale_boolean
+msgid "Modify"
+msgstr "Modificar"
+
+#. module: sale_extended
+#: model:ir.model.fields,help:sale_extended.field_hr_branch__sale_boolean
+msgid "Modify the price list"
+msgstr ""
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_account_payment__order_id
@@ -469,6 +468,11 @@ msgid "Partial"
 msgstr "Parcial"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__payment_term_id
+msgid "Payment Terms"
+msgstr "Plazos de pago"
+
+#. module: sale_extended
 #: model:ir.model,name:sale_extended.model_account_payment
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__payments_id
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
@@ -506,7 +510,6 @@ msgid "Pick VAT"
 msgstr "Cédula Quien Recoge"
 
 #. module: sale_extended
-#: model:ir.model,name:sale_extended.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__pricelist_id
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
 msgid "Pricelist"
@@ -524,7 +527,8 @@ msgstr "Regla de Tarifa"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__pricelists_ids
-#: model:ir.model.fields,field_description:sale_extended.field_sale_order__pricelists_ids
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__sale_pricelists_ids
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__branch_pricelists_ids
 msgid "Pricelists"
 msgstr "Listas de precios"
 
@@ -572,9 +576,20 @@ msgid "RESERVATION"
 msgstr "RESERVA"
 
 #. module: sale_extended
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__account_journal_refund_id
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__branch_journal_refund_id
+msgid "Refund Journal"
+msgstr "Diario de Devolución"
+
+#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__journal_return_id
 msgid "Return Journal"
 msgstr "Diario de Devolución"
+
+#. module: sale_extended
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_hr_branch_form
+msgid "Sale"
+msgstr "Venta"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
@@ -593,11 +608,6 @@ msgstr "Orden de Venta"
 #: model:ir.cron,name:sale_extended.ir_cron_run_reservation
 msgid "Sale: run reservation"
 msgstr "Venta: correr reserva"
-
-#. module: sale_extended
-#: model_terms:ir.ui.view,arch_db:sale_extended.view_sale_order_form
-msgid "Sales"
-msgstr "Ventas"
 
 #. module: sale_extended
 #: model:ir.model,name:sale_extended.model_sale_order
@@ -641,6 +651,7 @@ msgstr "Tipo de Entrega"
 
 #. module: sale_extended
 #: model_terms:ir.ui.view,arch_db:sale_extended.view_crm_team_form
+#: model_terms:ir.ui.view,arch_db:sale_extended.view_hr_branch_form
 msgid "Stock"
 msgstr "Almacén"
 
@@ -704,16 +715,6 @@ msgid "Unit Price"
 msgstr "Precio Unitario"
 
 #. module: sale_extended
-#: model:ir.model.fields,field_description:sale_extended.field_sale_order_line__price_unit_discount
-msgid "Unit Price Discount"
-msgstr "Precio Unitario"
-
-#. module: sale_extended
-#: model:res.groups,name:sale_extended.group_price_unit
-msgid "Unit Price Modify"
-msgstr "Modificar Precio Unitario"
-
-#. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__upload_date
 msgid "Upload Date"
 msgstr "Fecha de Cargue"
@@ -725,6 +726,8 @@ msgstr "Usuarios"
 
 #. module: sale_extended
 #: model:ir.model.fields,field_description:sale_extended.field_crm_team__warehouses_ids
+#: model:ir.model.fields,field_description:sale_extended.field_hr_branch__stock_warehouses_ids
+#: model:ir.model.fields,field_description:sale_extended.field_sale_order__branch_warehouses_ids
 #: model:ir.model.fields,field_description:sale_extended.field_sale_order__warehouses_ids
 msgid "Warehouses"
 msgstr "Almacenes"

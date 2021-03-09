@@ -36,7 +36,7 @@ class AccountPaymentOrder(models.Model):
                 'S',
                 27 if line.partner_bank_id.acc_type == 'saving' else 37,
                 str(line.amount_company_currency).zfill(10),
-                line.communication.ljust(9),
+                (line.communication or '').ljust(9),
                 (line.move_line_id.ref or '').ljust(12),
                 ' '
             )
