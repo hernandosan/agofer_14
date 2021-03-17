@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id="role_sale_salesman" model="res.users.role">
-            <field name="name">Commercial Advisor</field>
+            <field name="name">Salesman Sale</field>
             <field name="implied_ids"
                 eval="[
                     (4, ref('sales_team.group_sale_salesman')),
@@ -17,7 +17,7 @@
         </record>
 
         <record id="role_sale_biller" model="res.users.role">
-            <field name="name">Biller</field>
+            <field name="name">Biller Sale</field>
             <field name="child_id" ref="role_sale_salesman"/>
             <field name="implied_ids"
                 eval="[
@@ -31,7 +31,7 @@
         </record>
 
         <record id="role_sale_cashier" model="res.users.role">
-            <field name="name">Cashier</field>
+            <field name="name">Cashier Sale</field>
             <field name="child_id" ref="role_sale_biller"/>
             <field name="implied_ids"
                 eval="[
@@ -43,7 +43,7 @@
         </record>
 
         <record id="role_sale_admin" model="res.users.role">
-            <field name="name">User Admin</field>
+            <field name="name">Admin Sale</field>
             <field name="child_id" ref="role_sale_cashier"/>
             <field name="implied_ids" 
                 eval="[
@@ -52,7 +52,9 @@
                     (4, ref('purchase.group_purchase_user')),
                     (4, ref('stock.group_stock_multi_locations')),
                     (4, ref('stock.group_stock_multi_warehouses')),
-                    (4, ref('stock_extended.group_stock_info'))
+                    (4, ref('stock_extended.group_stock_info')),
+                    (4, ref('sale_extended.group_delete_attachment')),
+                    (4, ref('stock.group_stock_user'))
                 ]"/>
         </record>
 

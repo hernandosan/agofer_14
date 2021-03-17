@@ -28,6 +28,7 @@
         # OCA
         'account_asset_management',
         'account_tax_balance',
+        'account_financial_report',
         'auth_oauth_multi_token',
         # Odoo
         'auth_oauth',
@@ -42,7 +43,7 @@
         'purchase_requisition',
         # Extended
         'account_extended',
-        'base_user_role_extended',
+        # 'base_user_role_extended',
         'helpdesk_mgmt_extended',
         'hr_extended',
         'mrp_extended',
@@ -64,7 +65,7 @@
         'demo/demo.xml',
     ],
 
-    'pre_init_hook': 'pre_init_hook',
-
-    'post_init_hook': 'post_init_hook',
+    # 'pre_init_hook': 'pre_init_hook',
+    #
+    # 'post_init_hook': 'post_init_hook',
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_delivery_guide_wizard" model="ir.actions.act_window">
+            <field name="name">Update Delivery Guide</field>
+            <field name="res_model">update.delivery.guide</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="stock_extended.model_delivery_guide"/>
+        </record>
+
+        <record id="update_delivery_guide_view" model="ir.ui.view">
+            <field name="name">Update Delivery</field>
+            <field name="model">update.delivery.guide</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="guides_ids" widget="many2many_tags"/>
+                    </group>
+                    <footer>
+                        <button name="update_delivery" string="Update Delivery" type="object"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

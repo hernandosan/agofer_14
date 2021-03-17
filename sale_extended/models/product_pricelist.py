@@ -4,15 +4,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
-class ProductPricelist(models.Model):
-    _inherit = 'product.pricelist'
-
-    discount_maximum = fields.Float('Maximum percentage', default=10, help='Maximum discount allowed in the order')
-    discount_freight = fields.Float('Freight percentage', default=2, help='Maximum discount allowed when the customer collects')
-
-
 class ProductPricelistItem(models.Model):
     _inherit = 'product.pricelist.item'
+
+    applied_on = fields.Selection(default='0_product_variant')
 
     @api.model
     def create(self, vals):

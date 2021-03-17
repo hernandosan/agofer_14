@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_res_partner_inherit_form" model="ir.ui.view">
+            <field name="name">view.res.partner.inherit.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group[1]/field[@name='name']" position="after">
+                    <field required="1" attrs="{'invisible': [('type', '!=', 'driver')]}" name="vat"/>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group[2]/field[@name='mobile']" position="after">
+                    <field required="1" attrs="{'invisible': [('type', '!=', 'driver')]}" name="plate"/>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group/field[@name='name']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group/label" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'driver')]}</attribute>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group/div" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'driver')]}</attribute>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group[2]/field[@name='email']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'driver')]}</attribute>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field/form/sheet/group/group[2]/field[@name='phone']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'driver')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

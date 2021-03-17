@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_delivery_rate_form" model="ir.ui.view">
+            <field name="name">view.delivery.rate.form</field>
+            <field name="model">delivery.rate</field>
+            <field name="arch" type="xml">
+                <form string="Delivery Rate">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1 placeholder="Title">
+                                Delivery Rate
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="city_id"/>
+                                <field name="city_dest_id"/>
+                                <field name="product_id"/>
+                            </group>
+                            <group>
+                                <field name="rate_type"/>
+                                <field name="tolerance" invisible="1"/>
+                                <field name="rate_lines_ids">
+                                    <tree editable="bottom">
+                                        <field name="name" string="Value"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes" class="oe_inline"
+                                       placeholder="Define your terms and conditions ..."/>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_delivery_rate_tree" model="ir.ui.view">
+            <field name="name">view.delivery.rate.tree</field>
+            <field name="model">delivery.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Delivery Rate">
+                    <field name="display_name"/>
+                    <field name="city_id"/>
+                    <field name="city_dest_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_delivery_rate_search" model="ir.ui.view">
+            <field name="name">view.delivery.rate.search</field>
+            <field name="model">delivery.rate</field>
+            <field name="arch" type="xml">
+                <search string="Delivery Rate">
+                    <group expand="1" string="Group By">
+                        <field name="name"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_delivery_rate" model="ir.actions.act_window">
+            <field name="name">Delivery Rate</field>
+            <field name="res_model">delivery.rate</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Creation of pricing for delivery guide
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Delivery Rate"
+                  id="stock_delivery_rate"
+                  parent="delivery.menu_delivery"
+                  action="action_delivery_rate"
+                  sequence="20"/>
+
+    </data>
+</odoo>

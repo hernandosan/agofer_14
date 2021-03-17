@@ -10,7 +10,7 @@ class CreditDocument(models.Model):
 
     type_id = fields.Many2one('credit.document.type', 'Document Type', required=True)
     partner_id = fields.Many2one('res.partner', 'Partner', required=True)
-    file_data = fields.Binary('File', ir_attachment=True)
+    file_data = fields.Binary('File', attachment=True)
     file_name = fields.Char('File Name')
     description = fields.Text('Description')
 

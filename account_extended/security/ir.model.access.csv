@@ -8,3 +8,4 @@ acces_account_consignment_user,acces.account.consignment.user,model_account_cons
 acces_account_consignment_invoice,acces.account.consignment.invoice,model_account_consignment,account.group_account_invoice,1,1,1,0
 acces_account_consignment_manager,acces.account.consignment.manager,model_account_consignment,account.group_account_manager,1,1,1,1
 access_account_consignment_wizard,access_account_consignment_wizard,model_account_consignment_wizard,base.group_user,1,0,0,0
+access_account_journal_info,account.journal.info,account.model_account_journal,group_account_user,1,0,0,0

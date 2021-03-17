@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <record id="view_hr_branch_form" model="ir.ui.view">
+            <field name="name">view.hr.branch.form</field>
+            <field name="model">hr.branch</field>
+            <field name="inherit_id" ref="hr_branch_extended.view_hr_branch_form"/>
+            <field name="arch" type="xml">
+                <!-- Account -->
+                <xpath expr="//notebook/page/group/group[@name='account']" position="attributes">
+                    <attribute name="string">Account</attribute>
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/group/group[@name='account']" position="inside">
+                    <field name="account_journal_invoice_id" />
+                    <field name="account_journal_refund_id" />
+                </xpath>
+                <!-- Sale -->
+                <xpath expr="//notebook/page/group/group[@name='sale']" position="attributes">
+                    <attribute name="string">Sale</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/group/group[@name='sale']" position="inside">
+                    <field name="sale_pricelists_ids" widget="many2many_tags" />
+                    <field name="sale_boolean" groups="base.group_no_one"/>
+                </xpath>
+                <!-- Stock -->
+                <xpath expr="//notebook/page/group/group[@name='stock']" position="attributes">
+                    <attribute name="string">Stock</attribute>
+                    <attribute name="groups">stock.group_stock_manager</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/group/group[@name='stock']" position="inside">
+                    <field name="stock_warehouses_ids" widget="many2many_tags" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

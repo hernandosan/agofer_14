@@ -1,0 +1,85 @@
+<odoo>
+    <data>
+        <record id="view_account_payment_form" model="ir.ui.view">
+            <field name="name">view.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_type']" position="after">
+                    <field name="account_type" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                </xpath>
+                <xpath expr="//field[@name='destination_account_id']" position="before">
+                    <field name="branch_id" attrs="{'invisible': [('account_type', 'not in', ('advance', 'cross'))], 'required': [('account_type', 'in', ('advance', 'cross'))]}" />
+                </xpath>
+                <xpath expr="//group[@name='group3']" position="replace">
+                    <group name="group3">
+                        <label for="amount" attrs="{'invisible': [('account_type', '=', 'payment')]}"/>
+                        <div name="amount_div" class="o_row" attrs="{'invisible': [('account_type', '=', 'payment')]}">
+                            <field name="amount"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   required="1"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   groups="base.group_multi_currency"/>
+                        </div>
+                        <label for="amount_lines" attrs="{'invisible': [('account_type', '!=', 'payment')]}"/>
+                        <div class="o_row" attrs="{'invisible': [('account_type', '!=', 'payment')]}">
+                            <field name="amount_lines"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   required="1"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   groups="base.group_multi_currency"/>
+                        </div>
+                        <field name="date"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="ref" string="Memo"/>
+                    </group>
+                </xpath>
+                <xpath expr="//sheet/group" position="after">
+                    <notebook>
+                        <page name="lines" string="Payment Lines" attrs="{'invisible': [('account_type','=','advance')]}">
+                            <button name="compute_lines" string="Compute Lines" type="object" attrs="{'invisible': [('state','!=','draft'), ('account_type','!=','advance')]}" />
+                            <separator />
+                            <label for="line_debit_ids" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
+                            <field name="line_debit_ids" attrs="{'invisible': [('payment_type','!=','inbound')], 'readonly': [('state','!=','draft')]}">
+                                <tree string="Receivable Accounts" editable="bottom" create="0">
+                                    <field name="line_id" readonly="True" />
+                                    <field name="account_id" readonly="True" />
+                                    <field name="date" readonly="True" />
+                                    <field name="date_maturity" readonly="True" />
+                                    <field name="date_payment" invisible="True" />
+                                    <field name="amount_currency" readonly="True" sum="Amount" />
+                                    <field name="amount" invisible="True" />
+                                    <field name="amount_residual_currency" readonly="True" sum="Residual Amount" />
+                                    <field name="amount_residual" invisible="True" />
+                                    <field name="total_bool" />
+                                    <field name="total_currency" sum="Residual Amount" />
+                                    <field name="total" invisible="True" />
+                                </tree>
+                            </field>
+                            <label for="line_credit_ids" attrs="{'invisible': [('payment_type','!=','outbound')]}" />
+                            <field name="line_credit_ids" attrs="{'invisible': [('payment_type','!=','outbound')], 'readonly': [('state','!=','draft')]}">
+                                <tree string="Payable Accounts" editable="bottom" create="0">
+                                    <field name="line_id" readonly="True" />
+                                    <field name="account_id" readonly="True" />
+                                    <field name="date" readonly="True" />
+                                    <field name="date_maturity" readonly="True" />
+                                    <field name="amount_currency" readonly="True" sum="Amount" />
+                                    <field name="amount" invisible="True" />
+                                    <field name="amount_residual_currency" readonly="True" sum="Residual Amount" />
+                                    <field name="amount_residual" invisible="True" />
+                                    <field name="total_bool" />
+                                    <field name="total_currency" sum="Residual Amount" />
+                                    <field name="total" invisible="True" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <record id="report_credit_wallet" model="ir.actions.report">
-            <field name="name">Credit Wallet</field>
+        <record id="report_credit_control" model="ir.actions.report">
+            <field name="name">Credit Control</field>
             <field name="model">res.partner</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">account_credit_control_extended.template_credit_interest_wizard</field>
+            <field name="report_name">account_credit_control_extended.template_credit_control</field>
         </record>
 
         <template id="style_table">
             <link rel="stylesheet" type="text/css" href="/account_credit_control_extended/static/src/css/report_style.css"/>
         </template>
 
-        <template id="template_credit_customer_wallet">
+        <template id="template_credit_control">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="account_credit_control_extended.template_credit_control_document" t-lang="doc.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="template_credit_control_document">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-call="web.external_layout">
                         <p t-call="account_credit_control_extended.style_table"></p>
+                        <t t-set="values_report" t-value="doc.credit_control_report()"/>
                         <div id="header" class="page">
                             <h1 style="text-align:center;">Portfolio Customer</h1>
                             <br></br>
+                            
                             <table>
                                 <tr>
                                     <th name="th_date">Date Print</th>
-                                    <td name="td_date"><span t-field="doc.payment_date"/></td>
+                                    <td name="td_date"><span t-esc="values_report['date_today']"/></td>
                                     <th name="th_partner">Customer</th>
                                     <td name="td_partner"><span t-field="doc.name"/></td>
                                 </tr>
@@ -35,7 +45,7 @@
                                 </tr>
                                 <tr>
                                     <th name="th_payment_term">Payment Deadline</th>
-                                    <td name="td_payment_term"><span t-field="doc.property_supplier_payment_term_id"/></td>
+                                    <td name="td_payment_term"><span t-field="doc.property_payment_term_id"/></td>
                                     <th name="th_res_users">Salesman</th>
                                     <td name="td_res_users"><span t-field="doc.user_id"/></td>
                                 </tr>
@@ -55,12 +65,12 @@
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    <t t-foreach="doc.credit_customer_wallet()" t-as="line">
+                                    <t t-foreach="values_report['body_lines']" t-as="line">
                                         <tr>
                                             <td name="td_move_id"><span t-field="line.move_id"/></td>
                                             <td name="td_date"><span t-field="line.move_id.invoice_date"/></td>
                                             <td name="td_date_maturity"><span t-field="line.move_id.invoice_date_due"/></td>
-                                            <t t-set="days" t-value="doc.days_maturity(line.move_id.invoice_date_due)"/>
+                                            <t t-set="days" t-value="doc.days_maturity(values_report['date_today'], line.move_id.invoice_date_due)"/>
                                             <td name="td_days_maturity"><span t-esc="days"/></td>
                                             <td name="td_amount_total"><span t-field="line.move_id.amount_total_signed"/></td>
                                             <td name="td_amount_total"><span t-field="line.move_id.amount_residual_signed"/></td>
@@ -73,8 +83,8 @@
                             <table>
                                 <thead>
                                     <th width="60%">TOTAL:</th>
-                                    <td name="td_amount_total" width="20%"><span t-field="doc.amount_total_invoice"/></td>
-                                    <td name="td_amount_residual" width="20%"><span t-field="doc.amount_residual_invoice"/></td>
+                                    <td name="td_amount_total" width="20%"><span t-esc="values_report['invoice_total']"/></td>
+                                    <td name="td_amount_residual" width="20%"><span t-esc="values_report['invoice_residual']"/></td>
                                 </thead>
                             </table>
                         </div>
@@ -91,13 +101,14 @@
                                         <th name="th_amount_taxed" width="25%">Amount Residual</th>
                                     </tr>
                                 </thead>
+
                                 <tbody >
-                                    <t t-foreach="doc.sale_order_customer()" t-as="line">
+                                    <t t-foreach="values_report['sale_order']" t-as="sale">
                                         <tr>
-                                            <td name="td_move_id" ><span t-field="line.id"/></td>
-                                            <td name="td_date"><span t-field="line.expected_date"/></td>
-                                            <td name="td_amount_total"><span t-field="line.payment_term_id" /></td>
-                                            <td name="td_amount_total"><span t-field="line.amount_total"/></td>
+                                            <td name="td_sale_name" ><span t-field="sale.name"/></td>
+                                            <td name="td_sale_date"><span t-field="sale.expected_date"/></td>
+                                            <td name="td_sale_payment"><span t-field="sale.payment_term_id" /></td>
+                                            <td name="td_sale_amount"><span t-field="sale.amount_total"/></td>
                                         </tr>
                                     </t>
                                 </tbody>
@@ -107,7 +118,7 @@
                             <table>
                                 <thead>
                                     <th width="70%">TOTAL:</th>
-                                    <td width="25%"><span t-field="doc.amount_total_sale"/></td>
+                                    <td width="25%"><span t-esc="values_report['sale_total']"/></td>
                                 </thead>
                             </table>
                         </div>
@@ -116,11 +127,12 @@
                             <table>
                                 <thead>
                                     <th width="70%">TOTAL INVOICES AND SALES:</th>
-                                    <th width="25%"><span t-field="doc.amount_total_inv_sal"/></th>
+                                    <t t-set="amount_invoice_sale" t-value="values_report['invoice_residual'] + values_report['sale_total']"/>
+                                    <th width="25%"><span t-esc="amount_invoice_sale"/></th>
                                 </thead>
                             </table>
                         </div>
-                        <br></br>
+                        <!-- <br></br>
                         <div id="header">
                             <table>
                                 <thead>
@@ -140,7 +152,7 @@
                                     </t>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> -->
                     </t>
                 </t>
             </t>

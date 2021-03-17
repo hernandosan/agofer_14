@@ -2,17 +2,36 @@
 <odoo>
     <data>
 
+        <template id="assets_backend" name="helpdesk assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/helpdesk_mgmt_extended/static/src/js/select.js"></script>
+            </xpath>
+        </template>
+
         <template id="helpdesk_create_ticket_type" inherit_id="helpdesk_mgmt.portal_create_ticket">
             <xpath expr="//div[2]" position="after">
                 <div class="form-group">
                     <label class="col-md-3 col-sm-4 control-label" for="type">Type</label>
                     <div class="col-md-7 col-sm-8">
-                        <select class="form-control" id="type" name="type">
-                            <t t-foreach="types" t-as="type">
-                                <option t-attf-value="#{type.id}">
-                                    <t t-esc="type.name"/>
+                        <select class="form-control" id="types" name="types">
+                            <option>--Selection--</option>
+                            <t t-foreach="types" t-as="cate">
+                                <option t-attf-value="#{cate.id}">
+                                    <t t-esc="cate.name"/>
                                 </option>
                             </t>
+                        </select>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[4]" position="replace">
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="category">Category</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="category" name="category">
+                            <t t-foreach="categories" t-as="cat">
+                                <option>--Selection--</option>
+                            </t>>
                         </select>
                     </div>
                 </div>

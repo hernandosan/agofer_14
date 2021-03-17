@@ -3,6 +3,25 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+selection_type_vehicle = [
+    ('automobile', 'Automobile'),
+    ('carry', 'Carry'),
+    ('minimule', 'Minimule'),
+    ('pedestrian', 'Pedestrian'),
+    ('simple', 'Simple'),
+    ('tractomule', 'Tractomule'),
+    ('truck', 'Truck'),
+    ('turbo', 'Turbo'),
+    ('wheelbarrow', 'Wheelbarrow'),
+]
+
+selection_condition_vehicle = [
+    ('bodywork', 'Bodywork'),
+    ('not_apply', 'Not apply'),
+    ('slab', 'Slab'),
+    ('van', 'Van')
+]
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -13,6 +32,8 @@ class StockPicking(models.Model):
     delivery_assistant = fields.Boolean('Delivery Assistant')
     delivery_bool = fields.Boolean('Delivery Bool')
     delivery_date = fields.Date('Delivery Date')
+    # Driver
+    driver_id = fields.Many2one('res.partner', 'Driver')
     # Incoterm
     incoterm = fields.Many2one('account.incoterms', 'Incoterm', 
         help="International Commercial Terms are a series of predefined commercial terms used in international transactions.")
@@ -32,6 +53,8 @@ class StockPicking(models.Model):
     sale_invoice_status = fields.Selection(related='sale_id.invoice_status')
     # Shipping
     shipping_type = fields.Selection([('delivery','Delivery Agofer'),('pick','Customer Pick')], 'Shipping Type')
+    shipping_type_vehicle = fields.Selection(selection_type_vehicle, 'Vehicle Type')
+    shipping_type_condition = fields.Selection(selection_condition_vehicle, 'Vehicle Condition')
     # Upload
     upload_date = fields.Date('Upload Date')
     # Warehouse

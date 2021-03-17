@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="report_stock_picking" model="ir.actions.report">
+            <field name="name">Print Remission</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock_extended.template_stock_picking</field>
+            <field name="report_file">stock_extended.template_stock_picking</field>
+        </record>
+
+        <template id="style_table">
+            <link rel="stylesheet" type="text/css" href="/stock_extended/static/src/css/report_style.css"/>
+        </template>
+
+        <template id="template_stock_picking">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="stock_extended.template_stock_picking_remission" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="template_stock_picking_remission">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <p t-call="stock_extended.style_table"/>
+                    <div>
+                        <h2 style="text-align: center; color: #ff8a00"><span>Remission N°:&#160;&#160;</span><span
+                                t-field="doc.name"/></h2>
+                        <br></br>
+                        <div class="a_header">
+                            <t t-if="doc.sale_id is not null">
+                                <table>
+                                    <tr>
+                                        <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
+                                            <h3><strong><span t-field="doc.partner_id.name"/></strong></h3>
+                                        </td>
+                                        <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                            <span>NIT: </span><span t-field="doc.partner_id.ref_num"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">Delivery Address</th>
+                                        <th>Mobile</th>
+                                        <th>Phone</th>
+                                        <th>User</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                            <span t-field="doc.partner_id.street"/>
+                                            <span t-field="doc.partner_id.city_id"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="doc.partner_id.mobile is not False">
+                                                <i class="fa fa-mobile" aria-hidden="true"></i>
+                                                <span t-field="doc.partner_id.mobile"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="doc.partner_id.phone is not False">
+                                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                                <span t-field="doc.partner_id.phone"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id.user_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sale Order</th>
+                                        <th>Invoice</th>
+                                        <th>Date Sale Order</th>
+                                        <th>Shipping Type</th>
+                                        <th>Weight Total</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id.invoice_ids"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id.date_order"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-truck" aria-hidden="true"></i>
+                                            <span t-field="doc.sale_id.shipping_type"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                            <span t-field="doc.shipping_weight"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <table>
+                                    <tr>
+                                        <td style="text-align: left; background-color: #f2f2f2;" colspan="3">
+                                            <h3><strong><span t-field="doc.partner_id.name"/></strong></h3>
+                                        </td>
+                                        <td style="text-align: left; background-color: #f2f2f2;" colspan="2">
+                                            <span>NIT: </span><span t-field="doc.partner_id.ref_num"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th>Destiny</th>
+                                        <th>Weight Total</th>
+                                        <th>Create User</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="doc.location_id"/>
+                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            <span t-field="doc.location_dest_id"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                            <span t-field="doc.weight"/>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            <span t-field="doc.create_uid"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                        </div>
+                        <hr style="border: 1px solid #696969"></hr>
+                        <br></br>
+                        <div class="a_body">
+                            <table>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Uom</th>
+                                    <th>Weight</th>
+                                    <th>Weight Total</th>
+                                </tr>
+                                <t t-foreach="doc.move_ids_without_package" t-as="line">
+                                    <tr style="border-bottom: solid 1px #0000FF;">
+                                        <td><span t-field="line.product_id"/></td>
+                                        <td><span t-field="line.product_uom_qty"/></td>
+                                        <td><span t-field="line.product_uom"/></td>
+                                        <td><span t-field="line.product_id.weight"/></td>
+                                        <td><span t-field="line.weight"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                        <br/>
+                        <div>
+                            <table style="border: solid 1px #0000FF; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Observations</th>
+                                        <th>Notes from who receives</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="height: 50px;"><span t-field="doc.note"></span></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        <div class="div_3">
+                            <h6 style="text-align: center;">Transporter Data</h6>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td style="text-align: left; background-color: #f2f2f2;">
+                                            <strong><span t-field="doc.carrier_partner_id"/></strong>
+                                        </td>
+                                        <td style="text-align: left; background-color: #f2f2f2;">
+                                            &#160;&#160;&#160;&#160;<i class="fa fa-user-o"
+                                                                       aria-hidden="true"></i>&#160;<span
+                                                t-field="doc.driver_id.name"/>
+                                            &#160;<i class="fa fa-mobile" aria-hidden="true"></i>&#160;<span
+                                                t-field="doc.driver_id.mobile"/>
+                                            &#160;<i class="fa fa-id-card-o" aria-hidden="true"></i>&#160;<span>
+                                            Plate: </span><span t-field="doc.driver_id.plate"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: bold; text-align: center;">Carrier Signature</td>
+                                        <td style="font-weight: bold; text-align: center;">By signing this receipt, I am
+                                            satisfied with the goods detailed in this reference.</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td style="height: 60px; vertical-align: text-bottom; text-align: center;">
+                                            <br/><br/><i class="fa fa-id-card" aria-hidden="true"></i>
+                                            <span>Name - ID - Signature - Seal</span>
+                                            <span>Customer / Responsible Employee</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: xx-small; text-align: justify;" colspan="2">Dear customer,
+                                            no claims are accepted after 10 days of receipt of the invoice. Check the
+                                            merchandise that we are delivering to you. We are not responsible for
+                                            shortages or deterioration detected after delivered the material or that do
+                                            not have its corresponding annotation or indication in the delivery
+                                            remission, nor for defects or failures on the same that are likely to be
+                                            verified by the naked eye or with the help of basic measuring instruments.
+                                            The signatory is understood to be authorized to receive the goods. Agofer
+                                            delivers goods through third parties. The transporter has received
+                                            conformity of the merchandise and is responsible for any damage to it during
+                                            transport.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

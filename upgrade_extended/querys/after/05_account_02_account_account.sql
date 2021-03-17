@@ -65,6 +65,8 @@ FROM dblink('dbname=agofer_08','SELECT
 
 select setval('account_account_id_seq', (select max(id) from account_account));
 
+update account_account set active = False where length(code) != 8;
+
 update account_account as aa 
 set internal_type = aat.type
 from account_account_type aat 

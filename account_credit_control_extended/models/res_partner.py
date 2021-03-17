@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    credit_control = fields.Boolean('Credit Control')
+    credit_control = fields.Boolean('Credit Control', default=True, tracking=True)
     credit_limit = fields.Monetary('Credit Limit', tracking=True)
     credit_type = fields.Selection([
-        ('insured','Insured Quota'),
-        ('administrative','Administrative Quota'),
-        ('committee','Committee Quota')], 'Quota Type', tracking=True)
+        ('insured', 'Insured Quota'),
+        ('administrative', 'Administrative Quota'),
+        ('committee', 'Committee Quota')], 'Quota Type', default='insured', tracking=True)
     credit_maturity = fields.Monetary(compute='_compute_credit_maturity', string='Total Receivable Maturity')
     credit_quota = fields.Monetary(compute='_compute_credit_quota', string='Total Quota')
     document_ids = fields.One2many('credit.document', 'partner_id', 'Documents')
@@ -52,72 +53,42 @@ class ResPartner(models.Model):
     def action_credit_interest(self):
         action = self.env.ref('account_credit_control_extended.action_credit_interest_wizard').sudo()
         result = action.read()[0]
-        domain = [
-            ('partner_id', '=', self.id), 
-            ('full_reconcile_id', '=', False), 
-            ('balance', '!=', 0), 
-            ('account_id.reconcile', '=', True), 
-            ('date_maturity', '<', fields.Date.today()), 
-            ('move_id.move_type', '=', 'out_invoice')
-        ]
-        ids = self.env['account.move.line'].search(domain).ids
+        ids = self._aml_maturity().ids
         result['context'] = {
             'default_partner_id': self.id,
             'default_lines_ids': [(6, 0, ids)],
         }
         return result
 
-    payment_date = fields.Date('Payment Date', default=fields.Date.today())
-    date_maturity = fields.Date('Days')
-    amount_residual_invoice = fields.Monetary('Amount Residual', compute='amount_totals_invoice')
-    amount_total_invoice = fields.Monetary('Amount Total', compute='amount_totals_invoice')
-    amount_total_sale = fields.Monetary('Amount Total', compute='amount_totals_sale')
-    amount_total_inv_sal = fields.Monetary('Amount Total Invoice and Sale', compute='totals')
-
-    def credit_customer_wallet(self):
+    def _aml_maturity(self):
         self.ensure_one()
+        date = self._context.get('date_matirity') or fields.Date.today()
         domain = [
-            ('partner_id', 'child_of', self.id),
-            ('account_id.user_type_id.type', 'in', ('receivable', 'payable')),
-            ('reconciled', '=', False)
+            ('partner_id', '=', self.id), 
+            ('reconciled', '!=', True), 
+            ('account_id.internal_type', '=', 'receivable'), 
+            ('move_id.state', '=', 'posted'), 
+            ('date_maturity', '<', date)
         ]
         return self.env['account.move.line'].search(domain)
 
-    def days_maturity(self, date_maturity):
-        return (fields.Date.from_string(self.payment_date) - fields.Date.from_string(date_maturity)).days
+    def credit_control_report(self):
+        # Invoice
+        invoice_lines = self._aml_maturity()
+        invoice_total = sum(invoice_lines.move_id.mapped('amount_total_signed'))
+        invoice_residual = sum(invoice_lines.move_id.mapped('amount_residual_signed'))
+        # Sale Order
+        sale_order = self.env['sale.order'].search([('partner_id', 'child_of', self.id), ('state', '=', 'draft')])
+        sale_total = sum(sale_order.mapped('amount_total'))
+        vals = {
+            'date_today': fields.Date.today(),
+            'body_lines': invoice_lines,
+            'invoice_total': invoice_total,
+            'invoice_residual': invoice_residual,
+            'sale_order': sale_order,
+            'sale_total': sale_total,
+        }
+        return vals
 
-    def sale_order_customer(self):
-        self.ensure_one()
-        domain = [
-            ('partner_id', 'child_of', self.id),
-            ('state', 'in', ('draft', 'sale')),
-        ]
-        return self.env['sale.order'].search(domain)
-
-    def amount_totals_invoice(self):
-        for record in self:
-            amount_residual = 0
-            amount_total = 0
-            for line in record.credit_customer_wallet():
-                amount_residual += line.move_id.amount_residual_signed
-                amount_total += line.move_id.amount_total_signed
-            record.amount_residual_invoice = round(amount_residual, 2)
-            record.amount_total_invoice = round(amount_total, 2)
-
-    def amount_totals_sale(self):
-        for record in self:
-            amount_total = 0
-            for line in record.sale_order_customer():
-                amount_total += line.amount_total
-            record.amount_total_sale = round(amount_total, 2)
-
-    def totals(self):
-        self.amount_total_inv_sal = round((self.amount_residual_invoice + self.amount_total_sale), 2)
-
-    def customer_amount_residual(self):
-        self.ensure_one()
-        domain = [
-            ('partner_id', 'child_of', self.id),
-            ('act_type', '=', 'payable'),
-        ]
-        return self.env['account.move.line'].search(domain)
+    def days_maturity(self, date_invoice, date_maturity):
+        return (fields.Date.from_string(date_invoice) - fields.Date.from_string(date_maturity)).days
