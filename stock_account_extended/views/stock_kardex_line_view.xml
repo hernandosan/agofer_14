@@ -54,6 +54,8 @@
             <field name="name">Kardex List</field>
             <field name="res_model">stock.kardex.line</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{create':False}</field>
+            <field name="view_id" ref="view_stock_kardex_line_tree"/>
         </record>
 
         <!-- <menuitem
