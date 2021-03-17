@@ -10,6 +10,8 @@
         <template id="report_invoice_document_agofer">
             <t t-set="is_einvoice" t-value="o.state in ['open','paid'] and (o.ei_cufe or o.ei_cude)"/>
             <t t-set="is_old_einvoice" t-value="is_einvoice and not (o.date_invoice > '2020-09-30')"/>
+
+
             <div class="header">
                 <div class="row">
                     <div t-attf-class="{{ is_einvoice and 'col-xs-8' or 'col-xs-9' }}">
@@ -32,7 +34,6 @@
                                         Devolución borrador</strong>
                                     <strong t-if="o.type == 'out_refund' and o.state == 'cancel'">Devolución
                                         anulada</strong>
-
                                     <strong t-if="o.type == 'in_refund'">Devolución de proveedor</strong>
                                     <t t-if="o.type == 'in_invoice'">
                                         <strong t-if="o.journal_id.code == 'NFR'">Soporte en adquisición efectuada a
@@ -44,6 +45,8 @@
                                     <small class="not-first-page"> (…continúa)</small>
                                 </h1>
                             </div>
+
+
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-5">
@@ -75,8 +78,12 @@
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
+
+
                     <div t-if="is_einvoice" class="col-xs-2">
                         <img t-att-src="'/report/barcode/?type=QR&amp;value=%s&amp;width=%s&amp;height=%s' % (is_old_einvoice and o.ei_qr_text or o.ei_qr.replace('&amp;', '%26'), 153, 153)"/>
                     </div>
@@ -84,8 +91,11 @@
                         <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
                              width="153" height="80"/>
                     </div>
+
+
                 </div>
             </div>
+
             <div class="page">
                 <t t-set="weight"
                    t-value="'{:,.2f}'.format(sum((l.product_id.weight &gt; 0 and l.product_id.weight * l.quantity or 0) for l in o.invoice_line))"/>
@@ -623,6 +633,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="footer">
                 <t t-if="o.ei_validation_date and (o.ei_cufe or o.ei_cude)">
                     <t t-set="urlvalidacion"

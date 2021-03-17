@@ -76,12 +76,12 @@
             <field name="arch" type="xml">
                 <form string="Delivery Guide">
                     <header>
-                        <button string="Draft" type="object" name="action_draft" states="confirm"/>
+                        <button string="Draft" type="object" name="action_draft" states="confirm, progress"/>
                         <button string="Confirm" type="object" name="action_confirm" states="draft"
                                 class="oe_highlight"/>
-<!--                        <button string="Progress" type="object" name="action_progress" states="confirm"-->
-<!--                                class="oe_highlight"/>-->
-                        <button string="Delivered" type="object" name="action_delivered" states="draft"
+                        <button string="Progress" type="object" name="action_progress" states="confirm"
+                                class="oe_highlight"/>
+                        <button string="Delivered" type="object" name="action_delivered" states="progress"
                                 class="oe_highlight"/>
                         <button string="Checked" type="object" name="action_checked" states="delivered"
                                 class="oe_highlight" groups="stock.group_stock_manager"/>
@@ -112,7 +112,7 @@
                                 <field name="driver_id" domain="[('parent_id','=',partner_id)]" create="false"
                                        attrs="{'readonly':[('state','!=','draft')]}" required="True"/>
                                 <field name="rate_id" required="True"
-                                       attrs="{'readonly':[('state','!=','draft')], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
+                                       attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                             </group>
                             <group>
                                 <field name="weight_invoice" attrs="{'invisible':[('guide_type','=','branch')]}"/>
@@ -121,6 +121,7 @@
                                        attrs="{'invisible':[('guide_type','=','customer')], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
                                 <field name="weight_manual" attrs="{'invisible':[('guide_type','=','customer')]}"/>
                                 <field name="weight_total"/>
+                                <field name="subtotal"/>
                                 <field name="show_update_price_kg" invisible="True"/>
                                 <label for="weight_adjust" groups="stock_extended.group_guide_adjust"/>
                                 <div groups="stock_extended.group_guide_adjust" class="o_row">
@@ -134,15 +135,20 @@
                                 </div>
                             </group>
                             <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
                                 <field name="rate_line_id" domain="[('rate_id', '=', rate_id)]" string="Price(Kg) Rate"
                                        widget="selection"
-                                       attrs="{'readonly':[('state','!=','draft')], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
-                                <field name="company_id" groups="base.group_multi_company"/>
+                                       attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                                 <field name="rate_tolerance" invisible="True"/>
                                 <field name="price" readonly="True"/>
-                                <field name="price_additional" groups="stock_extended.group_guide_adjust"/>
+                                <field name="price_additional" attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))]}" />
                                 <field name="price_standby" attrs="{'invisible':[('guide_type', '=', 'customer')]}"/>
                                 <field name="price_total"/>
+                                <label for="tolerance" string="Tolerance"/>
+                                <div name="tolerance" class="o_row">
+                                    <field name="tolerance" readonly="1" decoration-danger="tolerance >= 10"/>
+                                    <span class="text-muted"> %</span>
+                                </div>
                             </group>
                             <group>
                                 <field name="invoices_ids" widget="many2many_tags"
@@ -332,12 +338,19 @@
                             <page string="Tracking" attrs="{'invisible':[('state','in',('draft','cancel'))]}">
                                 <group>
                                     <group>
-                                        <field name="date_progress" string="Departure Date"/>
-                                        <field name="date_delivered"/>
+                                        <field name="date_progress" string="Departure Date" readonly="True"/>
+                                        <field name="date_delivered" readonly="True"/>
                                     </group>
                                     <group>
-                                        <field name="date_checked"/>
-                                        <field name="date_invoiced"/>
+                                        <field name="date_checked" readonly="True"/>
+                                        <field name="date_invoiced" readonly="True"/>
+                                    </group>
+                                    <group attrs="{'invisible':[('state', 'in', ('drat', 'confirm'))]}">
+                                        <label for="file_data" string="Document Delivered"/>
+                                        <div name="file_data" class="o_row">
+                                            <field name="file_data" filename="file_name"/>
+                                            <field name="file_name" invisible="1"/>
+                                        </div>
                                     </group>
                                 </group>
                             </page>
@@ -345,16 +358,20 @@
                                 <group>
                                     <group>
                                         <field name="driver_name" readonly="True"/>
-                                        <field name="driver_mobile" readonly="True"/>
+                                        <field name="driver_identification" readonly="True"/>
                                     </group>
                                     <group>
                                         <field name="driver_plate" readonly="True"/>
+                                        <field name="driver_mobile" readonly="True"/>
+                                    </group>
+                                    <group>
                                         <field name="driver_comment" readonly="True"/>
                                     </group>
                                 </group>
                             </page>
                             <page string="Notes">
                                 <field name="notes" class="oe_inline"
+                                       attrs="{'required':[('price_additional', '>', '0')]}"
                                        placeholder="Define your terms and conditions ..."/>
                                 <div class="oe_clear"/>
                             </page>

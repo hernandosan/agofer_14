@@ -29,6 +29,10 @@ class DeliveryGuide(models.Model):
     driver_mobile = fields.Char(related='driver_id.mobile')
     driver_name = fields.Char(related='driver_id.name')
     driver_plate = fields.Char(related='driver_id.plate')
+    driver_identification = fields.Char(related='driver_id.vat')
+
+    file_data = fields.Binary('File')
+    file_name = fields.Char('File Name')
 
     guide_bool = fields.Boolean('Has Return', default=False, copy=False)
     guide_account_invoice_ids = fields.One2many('delivery.guide.line', 'guide_account_invoice_id', 'Invoices',
@@ -72,6 +76,8 @@ class DeliveryGuide(models.Model):
     rate_line_id = fields.Many2one('delivery.rate.line', 'Values')
     rate_tolerance = fields.Float('Tolerance (%)', related='rate_id.tolerance')
 
+    subtotal = fields.Monetary('Subtotal Cost', compute='_compute_subtotal')
+
     weight_invoice = fields.Float('Delivered Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
@@ -84,11 +90,13 @@ class DeliveryGuide(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirm'),
+        ('progress', 'Progress'),
         ('delivered', 'Delivered'),
         ('checked', 'Checked'),
         ('invoiced', 'Invoiced'),
         ('cancel', 'Cancel')], 'State', default='draft', copy=False, tracking=True)
 
+    tolerance = fields.Float('Tolerance', digits='Stock Weight', compute='_compute_tolerance')
 
     @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
     def _compute_weight(self):
@@ -106,10 +114,23 @@ class DeliveryGuide(models.Model):
                 'weight_total': weight_total,
             })
 
+    @api.depends('moves_ids', 'guide_account_invoice_ids')
+    def _compute_subtotal(self):
+        for guide in self:
+            subtotal = sum(invoice.amount_untaxed for invoice in guide.guide_account_invoice_ids.account_order_id)
+            guide.update({
+                'subtotal': subtotal,
+            })
+
     @api.depends('price', 'weight_total')
     def _compute_price_total(self):
         for guide in self:
             guide.price_total = (guide.price * guide.weight_total) + guide.price_standby + guide.price_additional
+
+    @api.depends('price_total', 'subtotal')
+    def _compute_tolerance(self):
+        for guide in self:
+            guide.tolerance = 0 if guide.subtotal == 0 else ((guide.price_total*100)/guide.subtotal)
 
     @api.onchange('rate_line_id')
     def _onchange_rate_line_id(self):
@@ -131,23 +152,31 @@ class DeliveryGuide(models.Model):
         self.write({'state': 'draft'})
 
     def action_confirm(self):
+        self._compute_price_total()
         for guide in self:
             getattr(guide, '_action_confirm_%s' % guide.guide_type)()
         self.write({'state': 'confirm'})
+        self.price = self.rate_line_id.name
 
-    # def action_progress(self):
-    #     self.invoices_ids.write({'delivery_state': 'progress'})
-    #     self.guide_account_invoice_ids.write({'account_delivery_state': 'progress'})
-    #     self.write({
-    #         'state': 'progress',
-    #         'date_progress': fields.Date.today(),
-    #     })
+    def action_progress(self):
+        if self.tolerance > 10 and not self.env.user.has_group('stock.group_stock_manager'):
+            raise ValidationError(_("The tolerance is greater than allowed"))
+        else:
+            self.invoices_ids.write({'delivery_state': 'progress'})
+            self.guide_account_invoice_ids.write({'account_delivery_state': 'progress'})
+            self.write({
+                'state': 'progress',
+                'date_progress': fields.Date.today(),
+            })
 
     def action_delivered(self):
-        self.write({
-            'state': 'delivered',
-            'date_delivered': fields.Date.today(),
-        })
+        if self.file_name is False:
+            raise ValidationError(_("Delivery document missing"))
+        else:
+            self.write({
+                'state': 'delivered',
+                'date_delivered': fields.Date.today(),
+            })
 
     def action_checked(self):
         self.write({

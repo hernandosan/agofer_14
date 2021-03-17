@@ -11,4 +11,4 @@ class UpdateDeliveryGuide(models.Model):
     guides_ids = fields.Many2many('delivery.guide', string='Delivery guides', default=_default_guides_ids)
 
     def update_delivery(self):
-        self.guides_ids.filtered(lambda g: g.state == 'confirm').action_delivered()
+        self.guides_ids.filtered(lambda g: g.state == 'confirm').action_checked()

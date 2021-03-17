@@ -30,6 +30,7 @@
         'data/ir_sequence.xml',
         'reports/report_account_invoice.xml',
         'reports/report_account_move.xml',
+        'reports/report_try.xml',
         'views/account_account_view.xml',
         'views/account_consignment_view.xml',
         'views/account_journal_view.xml',
