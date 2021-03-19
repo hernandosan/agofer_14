@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_external_layout_extended_external_layout_extended,external_layout_extended.external_layout_extended,model_external_layout_extended_external_layout_extended,base.group_user,1,1,1,1

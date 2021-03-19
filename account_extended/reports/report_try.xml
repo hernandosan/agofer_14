@@ -630,7 +630,7 @@
                                             <div class="panel panel-default mb4">
                                                 <div class="panel-body"
                                                      style="min-height:2cm; padding-top:5px; overflow:hidden;">
-                                                    <img t-att-src="'firmaurl'" width="109" height="58"/>
+                                                    <img src="/account_extended/static/img/Firma.png" style="width:109; height:58"/>
                                                 </div>
                                                 <div class="panel-footer" style="padding:2px;">
                                                     <small style="font-size:8pt; font-weight:normal; line-height:8pt;">
