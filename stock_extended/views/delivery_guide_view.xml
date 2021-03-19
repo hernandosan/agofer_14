@@ -95,9 +95,12 @@
                             <!--<button string="Valuation" type="object" name="action_view_stock_valuation_layers" class="oe_stat_button" icon="fa-dollar" groups="stock.group_stock_manager" attrs="{'invisible': ['|' , ('state', 'not in', ['done']), ('stock_valuation_layer_ids', '=', [])]}"/>-->
                         </div>
                         <div class="oe_title">
-                            <label for="name" class="oe_edit_only" string="Delivery Guide"/>
+                            <label for="name" class="oe_edit_only" string="Delivery Guide"
+                                   attrs="{'invisible':[('guide_type','!=','customer')]}"/>
+                            <label for="name" class="oe_edit_only" string="Manual Loading Orders"
+                                   attrs="{'invisible':[('guide_type','!=','branch')]}"/>
                             <h1>
-                                <field name="name" placeholder="Delivery Guide Name"/>
+                                <field name="name"/>
                             </h1>
                         </div>
                         <group>
@@ -111,20 +114,35 @@
                                        attrs="{'readonly':[('state','not in', 'draft')]}"/>
                                 <field name="driver_id" domain="[('parent_id','=',partner_id)]" create="false"
                                        attrs="{'readonly':[('state','!=','draft')]}" required="True"/>
-                                <field name="rate_id" required="True"
+                                <field name="rate_id"
                                        attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                             </group>
                             <group>
                                 <field name="weight_invoice" attrs="{'invisible':[('guide_type','=','branch')]}"/>
                                 <field name="weight_return" attrs="{'invisible':[('guide_type','=','branch')]}"/>
-                                <field name="weight_move"
-                                       attrs="{'invisible':[('guide_type','=','customer')], 'invisible':[('guide_subtype', 'in' , ('standby', 'other'))]}"/>
-                                <field name="weight_manual" attrs="{'invisible':[('guide_type','=','customer')]}"/>
-                                <field name="weight_total"/>
-                                <field name="subtotal"/>
+                                <field name="show_update_weight_manual" invisible="True"/>
+                                <label for="weight_manual"
+                                       attrs="{'invisible':['|', ('guide_type','=','customer'), ('state', '=', 'draft')]}"/>
+                                <div class="o_row"
+                                     attrs="{'invisible':['|', ('guide_type','=','customer'), ('state', '=', 'draft')]}">
+                                    <field name="weight_manual"/>
+                                    <button name="update_prices_manual" type="object"
+                                            string=" Update Price"
+                                            help="Recompute the price(Kg) based on this Weight Manual"
+                                            class="btn-link mb-1 px-0" icon="fa-refresh"
+                                            confirm="This will update the price total based on the currently set weight manual."
+                                            attrs="{'invisible':['|',('show_update_weight_manual', '=', False),('guide_subtype', 'in', ('standby', 'other'))]}"/>
+                                </div>
+                                <field name="weight_theoretical" readonly="True"
+                                       attrs="{'invisible':['|', ('guide_subtype', '!=', 'picking'), ('weight_manual','=',0)]}"/>
+                                <field name="weight_total"
+                                       attrs="{'invisible':[('guide_subtype','in', ('repicking', 'standby', 'other'))]}"/>
+                                <field name="subtotal" attrs="{'invisible':[('guide_type','=','branch')]}"/>
                                 <field name="show_update_price_kg" invisible="True"/>
-                                <label for="weight_adjust" groups="stock_extended.group_guide_adjust"/>
-                                <div groups="stock_extended.group_guide_adjust" class="o_row">
+                                <label for="weight_adjust" groups="stock_extended.group_guide_adjust"
+                                       attrs="{'invisible':[('guide_type','=','branch')]}"/>
+                                <div groups="stock_extended.group_guide_adjust" class="o_row"
+                                     attrs="{'invisible':[('guide_type','=','branch')]}">
                                     <field name="weight_adjust"/>
                                     <button name="update_prices" type="object"
                                             string=" Update Price"
@@ -136,16 +154,20 @@
                             </group>
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="rate_line_id" domain="[('rate_id', '=', rate_id)]" string="Price(Kg) Rate"
+                                <field name="rate_line_id" domain="[('rate_id', '=', rate_id)]" string="Price Rate"
                                        widget="selection"
-                                       attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'required':[('guide_subtype', 'in', ('picking', 'repicking'))],'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
+                                       attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'invisible':[('guide_subtype', 'in' ,('standby', 'other'))]}"/>
                                 <field name="rate_tolerance" invisible="True"/>
-                                <field name="price" readonly="True"/>
-                                <field name="price_additional" attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))]}" />
-                                <field name="price_standby" attrs="{'invisible':[('guide_type', '=', 'customer')]}"/>
+                                <field name="price" readonly="True" attrs="{'invisible':[('weight_adjust', '=', 0)]}"/>
+                                <field name="price_additional"
+                                       attrs="{'readonly':[('state', 'in', ('progress', 'delivered', 'checked'))], 'invisible':[('guide_subtype', 'in', ('picking', 'standby'))]}"/>
+                                <field name="price_standby"
+                                       attrs="{'invisible':['|', ('guide_type', '=', 'customer'), ('guide_subtype', '!=', 'standby')]}"/>
                                 <field name="price_total"/>
-                                <label for="tolerance" string="Tolerance"/>
-                                <div name="tolerance" class="o_row">
+                                <label for="tolerance" string="Tolerance"
+                                       attrs="{'invisible':[('guide_type','!=','customer')]}"/>
+                                <div name="tolerance" class="o_row"
+                                     attrs="{'invisible':[('guide_type','!=','customer')]}">
                                     <field name="tolerance" readonly="1" decoration-danger="tolerance >= 10"/>
                                     <span class="text-muted"> %</span>
                                 </div>
@@ -371,7 +393,7 @@
                             </page>
                             <page string="Notes">
                                 <field name="notes" class="oe_inline"
-                                       attrs="{'required':[('price_additional', '>', '0')]}"
+                                       attrs="{'required':['|', ('price_additional', '>', '0'), ('guide_subtype', 'in', ('standby', 'other'))]}"
                                        placeholder="Define your terms and conditions ..."/>
                                 <div class="oe_clear"/>
                             </page>

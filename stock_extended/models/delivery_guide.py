@@ -48,7 +48,7 @@ class DeliveryGuide(models.Model):
         ('picking', 'Picking'),
         ('repicking', 'Repicking'),
         ('standby', 'Stand By'),
-        ('other', 'Other')], 'Delivery Subtype', copy=False, tracking=True)
+        ('other', 'Other')], 'Order Type', copy=False, tracking=True)
     guide_update = fields.Boolean('Update', default=False, copy=False)
 
     invoices_ids = fields.Many2many('account.move', 'guide_invoice_rel', 'guide_id', 'invoice_id', 'Invoices',
@@ -67,14 +67,14 @@ class DeliveryGuide(models.Model):
     pickings_ids = fields.Many2many('stock.picking', 'guide_picking_rel', 'guide_id', 'picking_id', 'Pickings',
                                     copy=False)
 
-    price = fields.Monetary('Price (Kg) Adjust', tracking=True, copy=False)
+    price = fields.Monetary('Price Adjust', tracking=True, copy=False)
     price_additional = fields.Monetary('Additional Cost')
     price_standby = fields.Monetary('Stand By')
-    price_total = fields.Monetary('Total Cost (Kg)', compute='_compute_price_total')
+    price_total = fields.Monetary('Total Cost', compute='_compute_price_total')
 
     rate_id = fields.Many2one('delivery.rate', 'Delivery Rate')
     rate_line_id = fields.Many2one('delivery.rate.line', 'Values')
-    rate_tolerance = fields.Float('Tolerance (%)', related='rate_id.tolerance')
+    rate_tolerance = fields.Float('Tolerance (%) ', related='rate_id.tolerance')
 
     subtotal = fields.Monetary('Subtotal Cost', compute='_compute_subtotal')
 
@@ -82,10 +82,12 @@ class DeliveryGuide(models.Model):
     weight_return = fields.Float('Returned Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_move = fields.Float('Moves Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_manual = fields.Float('Manual Weight', tracking=True)
+    weight_theoretical = fields.Float('Theoretical Weight', digits='Stock Weight')
     weight_total = fields.Float('Total Weight', compute='_compute_weight', digits='Stock Weight', store=True)
     weight_adjust = fields.Float('Weight Adjust', digits='Stock Weight')
 
     show_update_price_kg = fields.Boolean(string='Has Price(Kg) Changed')
+    show_update_weight_manual = fields.Boolean(string='Has Price(Kg) Changed')
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -98,7 +100,7 @@ class DeliveryGuide(models.Model):
 
     tolerance = fields.Float('Tolerance', digits='Stock Weight', compute='_compute_tolerance')
 
-    @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids', 'weight_manual')
+    @api.depends('moves_ids', 'guide_stock_invoice_ids', 'guide_stock_refund_ids')
     def _compute_weight(self):
         for guide in self:
             weight_invoice = sum(
@@ -106,12 +108,13 @@ class DeliveryGuide(models.Model):
             weight_return = sum(
                 move.stock_weight for move in guide.guide_stock_refund_ids if move.stock_state != 'cancel')
             weight_move = sum(move.weight for move in guide.moves_ids if move.state != 'cancel')
-            weight_total = weight_invoice + weight_return + weight_move + guide.weight_manual
+            weight_total = weight_invoice + weight_return + weight_move
             guide.update({
                 'weight_invoice': weight_invoice,
                 'weight_return': weight_return,
                 'weight_move': weight_move,
                 'weight_total': weight_total,
+                'weight_theoretical': weight_total,
             })
 
     @api.depends('moves_ids', 'guide_account_invoice_ids')
@@ -170,13 +173,22 @@ class DeliveryGuide(models.Model):
             })
 
     def action_delivered(self):
-        if self.file_name is False:
-            raise ValidationError(_("Delivery document missing"))
+        if self.guide_type == 'customer':
+            if self.file_name is False:
+                raise ValidationError(_("Delivery document missing"))
+            else:
+                self.write({
+                    'state': 'delivered',
+                    'date_delivered': fields.Date.today(),
+                })
         else:
-            self.write({
-                'state': 'delivered',
-                'date_delivered': fields.Date.today(),
-            })
+            if self.env.user.has_group('stock.group_stock_manager'):
+                self.write({
+                    'state': 'delivered',
+                    'date_delivered': fields.Date.today(),
+                })
+            else:
+                raise ValidationError(_("You do not have permissions to carry out this process"))
 
     def action_checked(self):
         self.write({
@@ -269,6 +281,13 @@ class DeliveryGuide(models.Model):
         else:
             self.show_update_price_kg = True
 
+    @api.onchange('weight_manual')
+    def _onchange_weight_manual(self):
+        if self.weight_manual != self.weight_manual:
+            self.show_update_weight_manual = False
+        else:
+            self.show_update_weight_manual = True
+
     def update_prices(self):
         price = (self.rate_line_id.name * self.weight_adjust) / self.weight_total
         vals = {
@@ -276,7 +295,16 @@ class DeliveryGuide(models.Model):
             'show_update_price_kg': False,
         }
         self.write(vals)
-        self.message_post(body=_("Price(Kg) have been recomputed according to pricelist <b>%s<b>", self.weight_adjust))
+        self.message_post(body=_("Price(Kg) have been recomputed according to weight adjust <b>%s<b>", self.weight_adjust))
+
+    def update_prices_manual(self):
+        weight = self.weight_manual
+        vals = {
+            'weight_total': weight,
+            'show_update_weight_manual': False,
+        }
+        self.write(vals)
+        self.message_post(body=_("Price Total have been recomputed according to weight manual" + "<b>%s<b>", self.weight_manual))
 
 
 class DeliveryGuideLine(models.Model):

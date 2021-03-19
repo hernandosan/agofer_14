@@ -13,7 +13,7 @@ class DeliveryRate(models.Model):
     name = fields.Char('Title')
     rate_lines_ids = fields.One2many('delivery.rate.line', 'rate_id', 'Values')
     rate_type = fields.Selection([('urban', 'Urban'), ('national', 'National')], 'Delivery Type', required=True)
-    price_kg = fields.Monetary('Price (Kg)')
+    price_kg = fields.Monetary('Price by (Kg)')
     product_id = fields.Many2one('product.product', 'Product', required=True)
     tolerance = fields.Float('Tolerance (%)', help='Tolerance allowed in price.')
     notes = fields.Text('Terms and Conditions')

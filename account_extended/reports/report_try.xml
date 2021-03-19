@@ -58,21 +58,21 @@
         <template id="template_invoice_try_report">
             <t t-foreach="docs" t-as="o">
                 <t t-call="account_extended.external_layout_extended">
-                    <t t-set="is_einvoice" t-value="o.state in ['open','paid'] and (o.ei_cufe or o.ei_cude)"/>
-                    <t t-set="is_old_einvoice" t-value="is_einvoice and not (o.date_invoice > '2020-09-30')"/>
+<!--                    <t t-set="is_einvoice" t-value="o.state in ['open','paid'] and (o.ei_cufe or o.ei_cude)"/>-->
+<!--                    <t t-set="is_old_einvoice" t-value="is_einvoice and not (o.date_invoice > '2020-09-30')"/>-->
                     <div class="header">
                         <div class="row">
-                            <div t-attf-class="{{ is_einvoice and 'col-xs-8' or 'col-xs-9' }}">
+                            <div t-attf-class="{{'col-xs-8' or 'col-xs-9'}}">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <h1 class="panel-title" style="color:black;">
-                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'open' and o.payment_state == 'paid'"> Factura de venta</strong>
-                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'open' and o.payment_state == 'paid'"> Factura electrónica de venta</strong>
-                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'proforma2'"> PRO-FORMA</strong>
+                                        <h1 style="color:black;">
+                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'posted' and o.payment_state == 'paid'"> Factura de venta</strong>
+                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'posted' and o.payment_state == 'paid'"> Factura electrónica de venta</strong>
+                                            <strong t-if="o.move_type == 'out_invoice' and o.state == 'posted'"> PRO-FORMA</strong>
                                             <strong t-if="o.move_type == 'out_invoice' and o.state == 'draft'">Factura borrador</strong>
                                             <strong t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">Factura anulada</strong>
-                                            <strong t-if="o.move_type == 'out_refund' and o.state == 'open' and o.payment_state == 'paid'">Devolución</strong>
-                                            <strong t-if="o.move_type == 'out_refund' and o.state  in ['draft','proforma','proforma2']">Devolución borrador</strong>
+                                            <strong t-if="o.move_type == 'out_refund' and o.state == 'posted' and o.payment_state == 'paid'">Devolución</strong>
+                                            <strong t-if="o.move_type == 'out_refund' and o.state  in ['draft','posted','proforma2']">Devolución borrador</strong>
                                             <strong t-if="o.move_type == 'out_refund' and o.state == 'cancel'">Devolución anulada</strong>
                                             <strong t-if="o.move_type == 'in_refund'">Devolución de proveedor</strong>
                                             <t t-if="o.move_type == 'in_invoice'">
@@ -91,15 +91,15 @@
                                                     <span t-field="o.invoice_date"/>
                                                     <small t-field="o.create_date" t-field-options="{&quot;format&quot;:&quot;HH:mm:ss&quot;}"/>
                                                 </p>
-                                                <p t-if="o.move_type == 'out_invoice' and o.state in ['open', 'draft'] and o.payment_state == 'paid'">
+                                                <p t-if="o.move_type == 'out_invoice'">
                                                     <strong>Fecha de vencimiento:</strong>
-                                                    <span t-field="o.date_order"/>
+                                                    <span t-field="o.invoice_date_due"/>
                                                 </p>
                                             </div>
                                             <div class="col-xs-7">
-                                                <p t-if="o.move_type in ['out_invoice','in_invoice'] and o.order_id.note">
+                                                <p t-if="o.move_type in ['out_invoice','in_invoice'] and o.invoice_payment_term_id.note">
                                                     <strong>Condición de pago:</strong>
-                                                    <span t-field="o.order_id.note" style="font-weight:normal;"/>
+                                                    <span t-field="o.invoice_payment_term_id.note" style="font-weight:normal;"/>
                                                 </p>
                                                 <p>
                                                     <t t-if="o.invoice_incoterm_id">
@@ -116,7 +116,7 @@
                                         </div>
                                         <div class="col-xs-2">
                                             <img t-if="o.company_id.logo"
-                                                 t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
+                                                 t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
                                                  width="153" height="80"/>
                                         </div>
                                     </div>
@@ -154,10 +154,10 @@
                                             <strong t-field="o.partner_id.name"/>&#160;
                                             <span class="text-nowrap">
                                                 <span t-field="o.partner_id.ref_type_id.name"/>
-                                                <span t-field="o.partner_id.ref"/>
+                                                <span t-field="o.partner_id.ref_num"/>
                                                 <span t-if="o.partner_id.ref_type_id.code == 'NI'">
                                                     –
-                                                    <span t-raw="o.partner_id.dev_ref"/>
+                                                    <span t-raw="o.partner_id.verification_code"/>
                                                 </span>
                                             </span>
                                         </h3>
@@ -253,7 +253,8 @@
                                         </t>
                                     </t>
                                 </ul>
-                                <img t-att-src="'whatsappnumber'" width="142" height="16"/>
+                                <i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i>
+                                WhatsApp 310 674 4444
                             </div>
                         </div>
                         <div class="row mt4 mb8" t-if="o.move_type in ['out_invoice','out_refund']">
